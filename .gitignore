@@ -1,0 +1,57 @@
+## Miscellaneous
+local.properties
+/local.properties
+.externalNativeBuild
+.cxx
+
+## Build files
+/build/
+**/build
+
+## Android Studio files
+*.iml
+.idea/assetWizardSettings.xml
+.idea/modules.xml
+.idea/jarRepositories.xml
+.idea/compiler.xml
+.idea/kotlinc.xml
+.idea/inspectionProfiles/Project_Default.xml
+.idea/caches
+.idea/.name
+
+## User-specific stuff
+.idea/workspace.xml
+.idea/tasks.xml
+.idea/dictionaries
+.idea/androidTestResultsUserPreferences.xml
+.idea/deploymentTargetDropDown.xml
+.idea/shelf/*
+
+## Sensitive or high-churn files
+.idea/dataSources.ids
+.idea/dataSources.xml
+.idea/sqlDataSources.xml
+.idea/dynamic.xml
+.idea/uiDesigner.xml
+.idea/navEditor.xml
+
+##  Gradle
+.idea/gradle.xml
+.idea/libraries
+.idea/encodings.xml
+.idea/misc.xml
+.idea/vcs.xml
+.gradle
+
+## Captures
+captures
+
+## File-based project format
+*.ipr
+*.iws
+/.idea/caches/build_file_checksums.ser
+/.idea/caches/gradle_models.ser
+
+## Generated Files
+*.DS_Store
+wget-log
