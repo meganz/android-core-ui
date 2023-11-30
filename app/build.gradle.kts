@@ -50,8 +50,10 @@ android {
 }
 
 dependencies {
-    //This dependency can be replaced with library to test
+    //You can switch dependency on local module with library to test
     implementation(project(":core-ui"))
+    //implementation("mega.android.core:ui:1.0")
+
     implementation("androidx.core:core-ktx:1.12.0")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.2")
     implementation("androidx.activity:activity-compose:1.8.1")

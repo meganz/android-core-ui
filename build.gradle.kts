@@ -22,7 +22,10 @@ allprojects {
     repositories {
         google()
         mavenCentral()
-        maven(url = "https://jitpack.io")
+        maven {
+            url =
+                uri("${System.getenv("ARTIFACTORY_BASE_URL")}/artifactory/mega-gradle/core-ui")
+        }
     }
 }
 
