@@ -75,7 +75,7 @@ fun AndroidTheme(
 }
 
 object AppTheme {
-    internal val colors: AppColors
+    val colors: AppColors
         @Composable
         get() = LocalColorPalette.current
 
