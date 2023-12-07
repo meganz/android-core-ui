@@ -115,13 +115,13 @@ private fun BaseTextField(
     var showPassword by remember { mutableStateOf(false) }
     val focusedColor = when {
         successText.isNullOrBlank().not() -> AppTheme.colors.support.success
-        errorText.isNullOrBlank().not() -> AppTheme.colors.text.error
+        errorText.isNullOrBlank().not() -> AppTheme.colors.support.error
         else -> AppTheme.colors.border.strongSelected
     }
     val unfocusedColor = when {
         successText.isNullOrBlank().not() -> AppTheme.colors.support.success
-        errorText.isNullOrBlank().not() -> AppTheme.colors.text.error
-        else -> AppTheme.colors.border.subtle
+        errorText.isNullOrBlank().not() -> AppTheme.colors.support.error
+        else -> AppTheme.colors.border.strong
     }
     val colors = OutlinedTextFieldDefaults.colors(
         focusedTextColor = AppTheme.colors.text.primary,
@@ -135,12 +135,12 @@ private fun BaseTextField(
         unfocusedBorderColor = unfocusedColor,
         focusedLabelColor = focusedColor,
         unfocusedLabelColor = unfocusedColor,
-        errorBorderColor = AppTheme.colors.text.error,
-        errorTextColor = AppTheme.colors.text.error,
+        errorBorderColor = AppTheme.colors.support.error,
+        errorTextColor = AppTheme.colors.text.primary,
         focusedPlaceholderColor = AppTheme.colors.text.primary,
         unfocusedPlaceholderColor = AppTheme.colors.text.placeholder,
         disabledTextColor = AppTheme.colors.text.disabled,
-        disabledContainerColor = AppTheme.colors.background.blur,
+        disabledContainerColor = AppTheme.colors.button.disabled,
         disabledBorderColor = AppTheme.colors.border.disabled,
     )
 

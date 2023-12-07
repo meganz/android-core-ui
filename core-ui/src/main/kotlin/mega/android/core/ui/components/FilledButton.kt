@@ -40,7 +40,7 @@ fun PrimaryFilledButton(
         isLoading = isLoading,
         onClick = onClick,
         containerColorDefault = AppTheme.colors.button.primary,
-        containerColorDisabled = AppTheme.colors.background.blur,
+        containerColorDisabled = AppTheme.colors.button.disabled,
         containerColorPressed = AppTheme.colors.button.primaryPressed,
         textColorDefault = AppTheme.colors.text.inverseAccent,
         textColorDisabled = AppTheme.colors.text.disabled
@@ -64,7 +64,7 @@ fun SecondaryFilledButton(
         isLoading = isLoading,
         onClick = onClick,
         containerColorDefault = AppTheme.colors.button.secondary,
-        containerColorDisabled = AppTheme.colors.background.blur,
+        containerColorDisabled = AppTheme.colors.button.disabled,
         containerColorPressed = AppTheme.colors.button.secondary,
         textColorDefault = AppTheme.colors.text.accent,
         textColorDisabled = AppTheme.colors.text.disabled

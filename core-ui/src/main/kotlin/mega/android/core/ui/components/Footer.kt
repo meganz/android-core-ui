@@ -24,7 +24,8 @@ fun SuccessFooter(modifier: Modifier = Modifier, text: String) {
     Footer(
         modifier = modifier,
         text = text,
-        color = AppTheme.colors.text.success,
+        iconColor = AppTheme.colors.support.success,
+        textColor = AppTheme.colors.text.primary,
         iconResId = R.drawable.ic_check_circle
     )
 }
@@ -34,7 +35,8 @@ fun ErrorFooter(modifier: Modifier = Modifier, text: String) {
     Footer(
         modifier = modifier,
         text = text,
-        color = AppTheme.colors.text.error,
+        iconColor = AppTheme.colors.text.error,
+        textColor = AppTheme.colors.text.error,
         iconResId = R.drawable.ic_alert_triangle
     )
 }
@@ -42,7 +44,8 @@ fun ErrorFooter(modifier: Modifier = Modifier, text: String) {
 @Composable
 private fun Footer(
     text: String,
-    color: Color,
+    iconColor: Color,
+    textColor: Color,
     @DrawableRes iconResId: Int,
     modifier: Modifier = Modifier,
 ) {
@@ -53,7 +56,7 @@ private fun Footer(
                 .padding(end = LocalSpacing.current.x12)
                 .size(16.dp),
             painter = painterResource(id = iconResId),
-            tint = color,
+            tint = iconColor,
             contentDescription = text
         )
         Text(
@@ -61,8 +64,8 @@ private fun Footer(
                 .fillMaxWidth()
                 .align(Alignment.CenterVertically),
             text = text,
-            style = AppTheme.typography.labelMedium,
-            color = color
+            style = AppTheme.typography.bodyMedium,
+            color = textColor
         )
     }
 }

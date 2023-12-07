@@ -23,9 +23,9 @@ fun PrimaryTextButton(
         modifier = modifier,
         text = text,
         enabled = enabled,
-        textColorDefault = AppTheme.colors.text.primary,
+        textColorDefault = AppTheme.colors.button.primary,
         textColorDisabled = AppTheme.colors.text.disabled,
-        textColorPressed = AppTheme.colors.button.primaryPressed,
+        textColorPressed = AppTheme.colors.button.primary,
         onClick = onClick
     )
 }

@@ -45,7 +45,7 @@ fun ClickableSpannedText(
     ClickableText(
         modifier = modifier,
         text = annotatedLinkString,
-        style = baseStyle,
+        style = baseStyle.copy(color = AppTheme.colors.text.primary),
         onClick = { position ->
             annotatedLinkString.getStringAnnotations(ANNOTATION_TAG, position, position + 1)
                 .firstOrNull()?.let { onAnnotationClick(it.item) }
