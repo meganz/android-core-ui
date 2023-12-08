@@ -14,11 +14,14 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.ImeAction
@@ -133,8 +136,6 @@ private fun BaseTextField(
         ),
         focusedBorderColor = focusedColor,
         unfocusedBorderColor = unfocusedColor,
-        focusedLabelColor = focusedColor,
-        unfocusedLabelColor = unfocusedColor,
         errorBorderColor = AppTheme.colors.support.error,
         errorTextColor = AppTheme.colors.text.primary,
         focusedPlaceholderColor = AppTheme.colors.text.primary,
@@ -151,7 +152,7 @@ private fun BaseTextField(
         Text(
             modifier = Modifier.fillMaxWidth(),
             text = label,
-            style = AppTheme.typography.titleMedium,
+            style = AppTheme.typography.titleSmall,
             color = AppTheme.colors.text.primary
         )
 
@@ -192,7 +193,7 @@ private fun BaseTextField(
                                     onValueChanged?.invoke("")
                                 },
                             painter = painterResource(id = R.drawable.ic_close),
-                            tint = AppTheme.colors.text.primary,
+                            tint = AppTheme.colors.icon.primary,
                             contentDescription = "Clear Text"
                         )
 
@@ -269,5 +270,17 @@ private fun DefaultSuccessTextFieldPreview() {
 private fun PasswordTextFieldPreview() {
     AndroidThemeForPreviews {
         PasswordTextInputField(Modifier, "Password", onValueChanged = {})
+    }
+}
+
+@CombinedThemePreviews
+@Composable
+private fun PasswordTextFieldFocusedPreview() {
+    AndroidThemeForPreviews {
+        val focusRequester = remember { FocusRequester() }
+        PasswordTextInputField(Modifier.focusRequester(focusRequester), "Password", onValueChanged = {})
+        LaunchedEffect(Unit) {
+            focusRequester.requestFocus()
+        }
     }
 }

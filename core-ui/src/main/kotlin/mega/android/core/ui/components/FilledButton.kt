@@ -43,7 +43,8 @@ fun PrimaryFilledButton(
         containerColorDisabled = AppTheme.colors.button.disabled,
         containerColorPressed = AppTheme.colors.button.primaryPressed,
         textColorDefault = AppTheme.colors.text.inverseAccent,
-        textColorDisabled = AppTheme.colors.text.disabled
+        textColorDisabled = AppTheme.colors.text.onColorDisabled,
+        loaderIconColor = AppTheme.colors.icon.inverseAccent
     )
 }
 
@@ -65,9 +66,10 @@ fun SecondaryFilledButton(
         onClick = onClick,
         containerColorDefault = AppTheme.colors.button.secondary,
         containerColorDisabled = AppTheme.colors.button.disabled,
-        containerColorPressed = AppTheme.colors.button.secondary,
+        containerColorPressed = AppTheme.colors.button.secondaryPressed,
         textColorDefault = AppTheme.colors.text.accent,
-        textColorDisabled = AppTheme.colors.text.disabled
+        textColorDisabled = AppTheme.colors.text.onColorDisabled,
+        loaderIconColor = AppTheme.colors.icon.accent
     )
 }
 
@@ -83,6 +85,7 @@ private fun FilledButton(
     containerColorDisabled: Color,
     textColorDefault: Color,
     textColorDisabled: Color,
+    loaderIconColor: Color,
 ) {
     val interactionSource = remember { MutableInteractionSource() }
     val isButtonPressed by interactionSource.collectIsPressedAsState()
@@ -108,7 +111,7 @@ private fun FilledButton(
             CircularProgressIndicator(
                 modifier = Modifier
                     .size(buttonDefaultHeight / 2),
-                color = contentColor,
+                color = loaderIconColor,
             )
         } else {
             Text(

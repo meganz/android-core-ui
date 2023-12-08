@@ -64,7 +64,7 @@ private fun Footer(
                 .fillMaxWidth()
                 .align(Alignment.CenterVertically),
             text = text,
-            style = AppTheme.typography.bodyMedium,
+            style = AppTheme.typography.titleSmall,
             color = textColor
         )
     }
