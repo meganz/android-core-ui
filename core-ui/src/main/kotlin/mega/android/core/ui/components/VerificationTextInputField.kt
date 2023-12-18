@@ -95,7 +95,7 @@ fun VerificationTextInputField(
                                     isCodeCorrect == false -> {
                                         BorderStroke(
                                             width = TextFieldDefaults.UnfocusedIndicatorThickness,
-                                            color = AppTheme.colors.text.error
+                                            color = AppTheme.colors.support.error
                                         )
                                     }
 
@@ -103,7 +103,7 @@ fun VerificationTextInputField(
                                     isCodeCorrect == true -> {
                                         BorderStroke(
                                             width = TextFieldDefaults.UnfocusedIndicatorThickness,
-                                            color = AppTheme.colors.text.success
+                                            color = AppTheme.colors.support.success
                                         )
                                     }
 
@@ -111,7 +111,7 @@ fun VerificationTextInputField(
                                     focusState.value && selection -> {
                                         BorderStroke(
                                             width = TextFieldDefaults.UnfocusedIndicatorThickness,
-                                            color = AppTheme.colors.border.subtleSelected
+                                            color = AppTheme.colors.border.strongSelected
                                         )
                                     }
 

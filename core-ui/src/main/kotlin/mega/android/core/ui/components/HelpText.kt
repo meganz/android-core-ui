@@ -21,7 +21,7 @@ import mega.android.core.ui.theme.spacing.LocalSpacing
 
 @Composable
 fun SuccessFooter(modifier: Modifier = Modifier, text: String) {
-    Footer(
+    HelpText(
         modifier = modifier,
         text = text,
         iconColor = AppTheme.colors.support.success,
@@ -32,7 +32,7 @@ fun SuccessFooter(modifier: Modifier = Modifier, text: String) {
 
 @Composable
 fun ErrorFooter(modifier: Modifier = Modifier, text: String) {
-    Footer(
+    HelpText(
         modifier = modifier,
         text = text,
         iconColor = AppTheme.colors.text.error,
@@ -42,7 +42,7 @@ fun ErrorFooter(modifier: Modifier = Modifier, text: String) {
 }
 
 @Composable
-private fun Footer(
+private fun HelpText(
     text: String,
     iconColor: Color,
     textColor: Color,
@@ -64,7 +64,7 @@ private fun Footer(
                 .fillMaxWidth()
                 .align(Alignment.CenterVertically),
             text = text,
-            style = AppTheme.typography.titleSmall,
+            style = AppTheme.typography.bodySmall,
             color = textColor
         )
     }
