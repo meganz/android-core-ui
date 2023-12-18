@@ -21,7 +21,6 @@ import mega.android.core.ui.theme.AppTheme
 
 val TOOLBAR_DEFAULT_HEIGHT = 64.dp
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DefaultToolbar(
     title: String,
@@ -29,41 +28,41 @@ fun DefaultToolbar(
     modifier: Modifier = Modifier,
     onIconClicked: () -> Unit = {}
 ) {
-    TopAppBar(
-        modifier = modifier,
-        windowInsets = WindowInsets(top = 0.dp, bottom = 0.dp),
-        title = { Text(text = title) },
-        navigationIcon = {
-            IconButton(
-                modifier = Modifier
-                    .wrapContentHeight(),
-                onClick = onIconClicked
-            ) {
-                Icon(
-                    painter = icon,
-                    contentDescription = "$title Navigation Icon"
-                )
-            }
-        },
-        colors = TopAppBarDefaults.topAppBarColors(
-            containerColor = AppTheme.colors.background.pageBackground,
-            navigationIconContentColor = AppTheme.colors.text.primary,
-            titleContentColor = AppTheme.colors.text.primary,
-            actionIconContentColor = AppTheme.colors.text.primary
-        )
-    )
+    DefaultTopAppBar(modifier, title, navigationIcon = {
+        IconButton(
+            modifier = Modifier
+                .wrapContentHeight(),
+            onClick = onIconClicked
+        ) {
+            Icon(
+                painter = icon,
+                contentDescription = "$title Navigation Icon"
+            )
+        }
+    })
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NoIconToolbar(
     title: String,
     modifier: Modifier = Modifier,
 ) {
+    DefaultTopAppBar(modifier, title)
+}
+
+@Composable
+@OptIn(ExperimentalMaterial3Api::class)
+private fun DefaultTopAppBar(modifier: Modifier, title: String, navigationIcon: @Composable () -> Unit = {} ) {
     TopAppBar(
         modifier = modifier,
         windowInsets = WindowInsets(top = 0.dp, bottom = 0.dp),
-        title = { Text(text = title) },
+        title = {
+            Text(
+                text = title,
+                style = AppTheme.typography.titleLarge
+            )
+        },
+        navigationIcon = navigationIcon,
         colors = TopAppBarDefaults.topAppBarColors(
             containerColor = AppTheme.colors.background.pageBackground,
             navigationIconContentColor = AppTheme.colors.text.primary,
@@ -79,7 +78,7 @@ private fun DefaultToolbarPreview() {
     AndroidThemeForPreviews {
         DefaultToolbar(
             title = "Title",
-            icon = painterResource(id = R.drawable.ic_arrow_back)
+            icon = painterResource(id = R.drawable.ic_arrow_left)
         ) {}
     }
 }
