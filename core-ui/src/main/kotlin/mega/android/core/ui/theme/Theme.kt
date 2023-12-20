@@ -22,6 +22,7 @@ import mega.android.core.ui.theme.tokens.DefaultSemanticTokensDark
 import mega.android.core.ui.theme.tokens.DefaultSemanticTokensLight
 import mega.android.core.ui.theme.tokens.Focus
 import mega.android.core.ui.theme.tokens.Icon
+import mega.android.core.ui.theme.tokens.IconColor
 import mega.android.core.ui.theme.tokens.Indicator
 import mega.android.core.ui.theme.tokens.Link
 import mega.android.core.ui.theme.tokens.Notifications
@@ -82,6 +83,10 @@ object AppTheme {
     @Composable
     internal fun textColor(textColor: TextColor) =
         LocalColorPalette.current.text.getTextColor(textColor)
+
+    @Composable
+    internal fun iconColor(iconColor: IconColor) =
+        LocalColorPalette.current.icon.getIconColor(iconColor)
 
     val typography: Typography
         @Composable

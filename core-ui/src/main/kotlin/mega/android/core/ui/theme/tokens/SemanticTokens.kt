@@ -101,7 +101,29 @@ public data class Icon(
     public val onColorDisabled: Color = Color.Magenta,
     public val inverse: Color = Color.Magenta,
     public val disabled: Color = Color.Magenta,
-)
+) {
+    public fun getIconColor(iconColor: IconColor): Color = when (iconColor) {
+        IconColor.Primary -> primary
+        IconColor.Secondary -> secondary
+        IconColor.Accent -> accent
+        IconColor.InverseAccent -> inverseAccent
+        IconColor.OnColor -> onColor
+        IconColor.OnColorDisabled -> onColorDisabled
+        IconColor.Inverse -> inverse
+        IconColor.Disabled -> disabled
+    }
+}
+
+public enum class IconColor {
+    Primary,
+    Secondary,
+    Accent,
+    InverseAccent,
+    OnColor,
+    OnColorDisabled,
+    Inverse,
+    Disabled,
+}
 
 public data class Support(
     public val success: Color = Color.Magenta,
