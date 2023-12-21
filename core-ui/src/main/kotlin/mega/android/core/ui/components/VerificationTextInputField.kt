@@ -26,6 +26,7 @@ import androidx.compose.ui.graphics.*
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import mega.android.core.ui.preview.CombinedThemePreviews
 import mega.android.core.ui.theme.AndroidThemeForPreviews
@@ -73,8 +74,9 @@ fun VerificationTextInputField(
                 focusState.value = it.hasFocus
             },
             enabled = isEnabled,
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.NumberPassword),
             keyboardActions = KeyboardActions.Default,
+            visualTransformation = VisualTransformation.None,
             singleLine = true,
             cursorBrush = SolidColor(Color.Unspecified)
         ) {
