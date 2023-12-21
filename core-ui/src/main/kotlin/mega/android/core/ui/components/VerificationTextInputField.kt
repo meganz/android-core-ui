@@ -78,12 +78,8 @@ fun VerificationTextInputField(
             singleLine = true,
             cursorBrush = SolidColor(Color.Unspecified)
         ) {
-            Row(horizontalArrangement = Arrangement.SpaceEvenly) {
+            Row(horizontalArrangement = Arrangement.SpaceBetween, modifier = Modifier.fillMaxWidth()) {
                 repeat(DEFAULT_VERIFICATION_INPUT_LENGTH) { position ->
-                    if (position != 0) {
-                        // box horizontal margin
-                        Spacer(modifier = Modifier.width(spacing.x16))
-                    }
                     val selection = position == value.length
 
                     // Box for type each character
