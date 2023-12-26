@@ -28,6 +28,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
+import androidx.core.text.isDigitsOnly
 import mega.android.core.ui.preview.CombinedThemePreviews
 import mega.android.core.ui.theme.AndroidThemeForPreviews
 import mega.android.core.ui.theme.AppTheme
@@ -65,7 +66,7 @@ fun VerificationTextInputField(
             value = textFieldValue,
             onValueChange = {
                 val newText = it.text.take(DEFAULT_VERIFICATION_INPUT_LENGTH)
-                if (lastTextValue != newText) {
+                if (lastTextValue != newText && newText.isDigitsOnly()) {
                     lastTextValue = newText
                     onValueChange(newText)
                 }
@@ -74,9 +75,8 @@ fun VerificationTextInputField(
                 focusState.value = it.hasFocus
             },
             enabled = isEnabled,
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.NumberPassword),
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
             keyboardActions = KeyboardActions.Default,
-            visualTransformation = VisualTransformation.None,
             singleLine = true,
             cursorBrush = SolidColor(Color.Unspecified)
         ) {
