@@ -2,6 +2,7 @@ package mega.android.core.ui.theme
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Shapes
 import androidx.compose.material3.Typography
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
@@ -79,6 +80,10 @@ object AppTheme {
     internal val colors: AppColors
         @Composable
         get() = LocalColorPalette.current
+
+    internal val shapes: Shapes
+        @Composable
+        get() = mega.android.core.ui.theme.shape.shapes
 
     @Composable
     internal fun textColor(textColor: TextColor) =
