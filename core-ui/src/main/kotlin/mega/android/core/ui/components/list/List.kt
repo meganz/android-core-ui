@@ -151,7 +151,6 @@ private fun ListItem(
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .background(color = AppTheme.colors.background.surface1)
             .clickable { onClickListener() }
             .padding(
                 vertical = LocalSpacing.current.x12,
