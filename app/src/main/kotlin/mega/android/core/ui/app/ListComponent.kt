@@ -15,7 +15,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import mega.android.core.ui.components.MegaText
-import mega.android.core.ui.components.image.Icon
+import mega.android.core.ui.components.image.MegaIcon
 import mega.android.core.ui.components.list.MultiLineListItem
 import mega.android.core.ui.components.list.OneLineListItem
 import mega.android.core.ui.theme.AppTheme
@@ -48,7 +48,7 @@ fun ListComponentCatalog() {
         OneLineListItem(
             text = "List item",
             leadingElement = {
-                Icon(
+                MegaIcon(
                     painter = painterResource(id = R.drawable.ic_launcher_foreground),
                     tint = IconColor.Primary,
                     contentDescription = null,
@@ -58,7 +58,7 @@ fun ListComponentCatalog() {
                 )
             },
             trailingElement = {
-                Icon(
+                MegaIcon(
                     painter = painterResource(id = R.drawable.ic_launcher_foreground),
                     contentDescription = null,
                     tint = IconColor.Primary,
@@ -72,7 +72,7 @@ fun ListComponentCatalog() {
             title = "List item",
             subtitle = "Supporting line text lorem ipsum lorem ipsum",
             leadingElement = {
-                Icon(
+                MegaIcon(
                     painter = painterResource(id = R.drawable.ic_launcher_foreground),
                     contentDescription = null,
                     tint = IconColor.Primary,
@@ -82,7 +82,7 @@ fun ListComponentCatalog() {
                 )
             },
             trailingElement = {
-                Icon(
+                MegaIcon(
                     painter = painterResource(id = R.drawable.ic_launcher_foreground),
                     contentDescription = null,
                     tint = IconColor.Primary,

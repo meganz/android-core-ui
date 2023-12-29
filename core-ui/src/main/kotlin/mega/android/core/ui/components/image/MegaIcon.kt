@@ -8,7 +8,7 @@ import mega.android.core.ui.theme.AppTheme
 import mega.android.core.ui.theme.tokens.IconColor
 
 @Composable
-fun Icon(
+fun MegaIcon(
     painter: Painter,
     tint: IconColor,
     modifier: Modifier = Modifier,

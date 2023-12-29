@@ -184,9 +184,9 @@ private fun BaseTextField(
             isError = successText.isNullOrBlank() && !errorText.isNullOrBlank(),
             visualTransformation = if (!isPasswordMode || showPassword) VisualTransformation.None else PasswordVisualTransformation(),
             trailingIcon = {
-                if (isFocused) {
+                if (baseText.isNotEmpty()) {
                     when {
-                        baseText.isNotBlank() && isPasswordMode.not() -> Icon(
+                        isPasswordMode.not() && isFocused -> Icon(
                             modifier = Modifier
                                 .clickable {
                                     baseText = ""
