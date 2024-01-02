@@ -1,0 +1,19 @@
+[versions]
+compose-bom = "2023.09.01"
+compose-compiler = "1.5.3"
+gson = "2.9.0"
+kotlinpoet = "1.14.2"
+
+[libraries]
+compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "compose-bom" }
+compose-compiler = { module = "androidx.compose.compiler:compiler", version.ref = "compose-compiler" }
+google-gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
+kotlinpoet = { module = "com.squareup:kotlinpoet", version.ref = "kotlinpoet" }
+material3 = { group = "androidx.compose.material3", name = "material3" }
+ui = { group = "androidx.compose.ui", name = "ui" }
+ui-foundation = { group = "androidx.compose.foundation", name = "foundation" }
+ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
+ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
+
+[bundles]
+compose-bom = ["ui", "ui-tooling", "ui-tooling-preview", "material3", "ui-foundation"]

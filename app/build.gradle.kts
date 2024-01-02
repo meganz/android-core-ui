@@ -52,6 +52,7 @@ android {
 dependencies {
     //You can switch dependency on local module with library to test
     implementation(project(":core-ui"))
+    implementation(project(":shared:theme"))
     //implementation("mega.android.core:ui:1.0")
 
     implementation("androidx.core:core-ktx:1.12.0")
