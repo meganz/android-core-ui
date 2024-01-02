@@ -1,4 +1,4 @@
-package mega.android.core.ui.components
+package mega.android.core.ui.components.toolbar
 
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.wrapContentHeight
@@ -65,9 +65,9 @@ private fun DefaultTopAppBar(modifier: Modifier, title: String, navigationIcon: 
         navigationIcon = navigationIcon,
         colors = TopAppBarDefaults.topAppBarColors(
             containerColor = AppTheme.colors.background.pageBackground,
-            navigationIconContentColor = AppTheme.colors.text.primary,
+            navigationIconContentColor = AppTheme.colors.icon.primary,
             titleContentColor = AppTheme.colors.text.primary,
-            actionIconContentColor = AppTheme.colors.text.primary
+            actionIconContentColor = AppTheme.colors.icon.primary
         )
     )
 }
