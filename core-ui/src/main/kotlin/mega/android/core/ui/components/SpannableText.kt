@@ -23,6 +23,41 @@ import mega.android.core.ui.theme.AndroidThemeForPreviews
 import mega.android.core.ui.theme.AppTheme
 
 /**
+ * Text with link, you can use this component to show text with link
+ *
+ * @param value
+ * @param spanAnnotations the list of the tag and the annotation
+ * key is [SpanIndicator] for open and close tags, value is the annotation
+ * eg: [SpanIndicator('A') to "The annotation string to link"]
+ * @param onAnnotationClick will receive clicks on spanned text with not null annotation
+ * @param modifier
+ * @param baseStyle the style to apply for all text
+ */
+@Composable
+fun LinkSpannedText(
+    value: String,
+    spanAnnotations: Map<SpanIndicator, String>,
+    onAnnotationClick: (annotation: String) -> Unit,
+    modifier: Modifier = Modifier,
+    baseStyle: TextStyle = LocalTextStyle.current
+) {
+    val styles = spanAnnotations.mapValues { SpanStyleWithAnnotation(linkSpanStyle(), it.value) }
+    val annotatedLinkString = remember(value, styles) { spannedTextWithAnnotation(value, styles) }
+
+    ClickableText(
+        modifier = modifier,
+        text = annotatedLinkString,
+        style = baseStyle.copy(color = AppTheme.colors.text.primary),
+        onClick = { position ->
+            annotatedLinkString
+                .getStringAnnotations(ANNOTATION_TAG, position, position + 1)
+                .firstOrNull()
+                ?.let { onAnnotationClick(it.item) }
+        }
+    )
+}
+
+/**
  * High light text from mega format and receive clicks on spanned text
  * @param value
  * @param baseStyle the style apply for all text
@@ -32,6 +67,10 @@ import mega.android.core.ui.theme.AppTheme
  * @param onAnnotationClick will receive clicks on spanned text with not null annotation
  * @param modifier
  */
+@Deprecated(
+    message = "Use LinkText instead",
+    replaceWith = ReplaceWith("LinkText", "mega.android.core.ui.components.LinkText")
+)
 @Composable
 fun ClickableSpannedText(
     value: String,
@@ -54,7 +93,7 @@ fun ClickableSpannedText(
 }
 
 @Composable
-fun getPrimaryLinkSpanStyle() = SpanStyle(color = AppTheme.colors.link.primary)
+private fun linkSpanStyle() = SpanStyle(color = AppTheme.colors.link.primary)
 
 @OptIn(ExperimentalTextApi::class)
 private fun spannedTextWithAnnotation(
@@ -128,6 +167,31 @@ private fun ClickableSpannedTextPreview() {
                 }
             },
             baseStyle = AppTheme.typography.titleSmall.copy(color = AppTheme.colors.text.primary)
+        )
+    }
+}
+
+@CombinedThemePreviews
+@Composable
+private fun LinkTextPreview() {
+    var counter by remember { mutableIntStateOf(1) }
+
+    AndroidThemeForPreviews {
+        LinkSpannedText(
+            value = "Click [A]here[/A] to increase the counter: [B]$counter[/B]\n and [R]here[/R] to reset",
+            spanAnnotations = hashMapOf(
+                SpanIndicator('A') to "url or whatever you want to receive in onAnnotationClick",
+                SpanIndicator('R') to "reset",
+                SpanIndicator('B') to "d"
+            ),
+            onAnnotationClick = { annotation ->
+                if (annotation == "reset") {
+                    counter = 1
+                } else {
+                    counter += 1
+                }
+            },
+            baseStyle = AppTheme.typography.titleSmall
         )
     }
 }

@@ -35,6 +35,7 @@ fun MainComposeView() {
     ) {
         item {
             ListComponentCatalog()
+            TextComponentCatalog()
         }
     }
 }
