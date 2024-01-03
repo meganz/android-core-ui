@@ -10,11 +10,13 @@ import mega.android.core.ui.theme.AppTheme
 fun MegaScaffold(
     modifier: Modifier,
     snackbarHost: @Composable () -> Unit,
+    bottomBar: @Composable () -> Unit,
     content: @Composable (PaddingValues) -> Unit,
 ) {
     Scaffold(
         modifier = modifier,
         snackbarHost = snackbarHost,
+        bottomBar = bottomBar,
         content = content,
         containerColor = AppTheme.colors.background.pageBackground
     )
