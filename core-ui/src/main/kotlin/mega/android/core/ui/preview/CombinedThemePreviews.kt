@@ -19,4 +19,5 @@ import androidx.compose.ui.tooling.preview.Preview
     group = "themes",
     uiMode = Configuration.UI_MODE_NIGHT_NO
 )
+@Preview(apiLevel = 33)
 annotation class CombinedThemePreviews

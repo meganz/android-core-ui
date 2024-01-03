@@ -35,7 +35,12 @@ fun MainComposeView() {
     ) {
         item {
             ListComponentCatalog()
+        }
+        item {
             TextComponentCatalog()
+        }
+        item {
+            CheckboxCatalog()
         }
     }
 }
