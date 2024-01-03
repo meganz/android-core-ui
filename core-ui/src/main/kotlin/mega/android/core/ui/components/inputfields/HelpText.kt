@@ -1,4 +1,4 @@
-package mega.android.core.ui.components
+package mega.android.core.ui.components.inputfields
 
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.layout.Row

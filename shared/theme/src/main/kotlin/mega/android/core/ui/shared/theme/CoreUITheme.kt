@@ -7,7 +7,7 @@ import mega.android.core.ui.shared.theme.tokens.CoreUISemanticTokensLight
 import mega.android.core.ui.theme.AndroidTheme
 
 /**
- * Android theme with VPN app specific color tokens
+ * Android theme with Core-UI app specific color tokens
  *
  * @param isDark
  * @param content
@@ -24,7 +24,7 @@ fun CoreUITheme(
 )
 
 /**
- * VPN app theme to be used for Previews in modules that depend on core:theme
+ * Core-UI app theme to be used for Previews in modules that depend on shared:theme
  *
  * @param content
  */

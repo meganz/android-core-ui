@@ -1,4 +1,4 @@
-package mega.android.core.ui.components
+package mega.android.core.ui.components.inputfields
 
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.AnimationSpec
@@ -26,7 +26,6 @@ import androidx.compose.ui.graphics.*
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
-import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.core.text.isDigitsOnly
 import mega.android.core.ui.preview.CombinedThemePreviews

@@ -1,4 +1,4 @@
-package mega.android.core.ui.components
+package mega.android.core.ui.components.inputfields
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -79,6 +79,7 @@ fun PasswordTextInputField(
     modifier: Modifier,
     label: String,
     text: String = "",
+    imeAction: ImeAction = ImeAction.Done,
     successText: String? = null,
     errorText: String? = null,
     onValueChanged: ((String) -> Unit)? = null,
@@ -88,7 +89,7 @@ fun PasswordTextInputField(
     label = label,
     text = text,
     keyboardType = KeyboardType.Password,
-    imeAction = ImeAction.Done,
+    imeAction = imeAction,
     capitalization = KeyboardCapitalization.None,
     successText = successText,
     errorText = errorText,
