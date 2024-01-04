@@ -12,7 +12,7 @@ import androidx.compose.ui.res.vectorResource
 import mega.android.core.ui.theme.AppTheme
 
 @Composable
-fun RowScope.MegaNavigationBarItem(
+fun RowScope.NavigationBottomBarItem(
     @DrawableRes defaultIcon: Int,
     @DrawableRes selectedIcon: Int,
     label: String,
