@@ -1,27 +1,20 @@
-package mega.android.core.ui.app
+package mega.android.core.ui.app.component
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.material3.Divider
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import mega.android.core.ui.components.MegaText
+import mega.android.core.ui.app.R
+import mega.android.core.ui.app.util.Section
 import mega.android.core.ui.components.image.MegaIcon
 import mega.android.core.ui.components.list.MultiLineListItem
 import mega.android.core.ui.components.list.OneLineListItem
-import mega.android.core.ui.theme.AppTheme
 import mega.android.core.ui.theme.spacing.LocalSpacing
 import mega.android.core.ui.theme.tokens.IconColor
-import mega.android.core.ui.theme.tokens.TextColor
 
 @Composable
 fun ListComponentCatalog() {
@@ -91,34 +84,5 @@ fun ListComponentCatalog() {
                 )
             }
         )
-    }
-}
-
-@Composable
-fun Section(header: String, content: @Composable ColumnScope.() -> Unit) {
-    Column(
-        modifier = Modifier.padding(vertical = LocalSpacing.current.x2)
-    ) {
-        MegaText(
-            modifier = Modifier.padding(
-                start = LocalSpacing.current.x16,
-                bottom = LocalSpacing.current.x4
-            ),
-            text = header,
-            textColor = TextColor.Primary,
-            style = AppTheme.typography.titleMedium
-        )
-        Divider(
-            color = Color.Gray, thickness = 1.dp,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = LocalSpacing.current.x16)
-        )
-        Spacer(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(1.dp)
-        )
-        content()
     }
 }

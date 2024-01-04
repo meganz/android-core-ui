@@ -8,6 +8,10 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import mega.android.core.ui.app.component.CheckboxCatalog
+import mega.android.core.ui.app.component.DividerComponentCatalog
+import mega.android.core.ui.app.component.ListComponentCatalog
+import mega.android.core.ui.app.component.TextComponentCatalog
 import mega.android.core.ui.components.surface.ThemedSurface
 import mega.android.core.ui.preview.CombinedThemePreviews
 import mega.android.core.ui.shared.theme.CoreUITheme
@@ -41,6 +45,9 @@ fun MainComposeView() {
         }
         item {
             CheckboxCatalog()
+        }
+        item {
+            DividerComponentCatalog()
         }
     }
 }

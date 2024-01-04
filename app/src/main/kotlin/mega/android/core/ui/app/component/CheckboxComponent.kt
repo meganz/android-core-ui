@@ -1,4 +1,4 @@
-package mega.android.core.ui.app
+package mega.android.core.ui.app.component
 
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -9,6 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import mega.android.core.ui.app.util.Section
 import mega.android.core.ui.components.checkbox.Checkbox
 import mega.android.core.ui.theme.spacing.LocalSpacing
 

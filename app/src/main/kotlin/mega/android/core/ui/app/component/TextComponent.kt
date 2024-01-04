@@ -1,4 +1,4 @@
-package mega.android.core.ui.app
+package mega.android.core.ui.app.component
 
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
@@ -10,6 +10,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import mega.android.core.ui.app.util.Section
 import mega.android.core.ui.components.LinkSpannedText
 import mega.android.core.ui.model.SpanIndicator
 import mega.android.core.ui.theme.AppTheme
