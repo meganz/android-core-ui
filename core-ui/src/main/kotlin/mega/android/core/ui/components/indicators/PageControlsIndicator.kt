@@ -1,4 +1,4 @@
-package mega.android.core.ui.components
+package mega.android.core.ui.components.indicators
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
@@ -20,7 +20,6 @@ import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 import mega.android.core.ui.preview.CombinedThemePreviews
@@ -33,7 +32,7 @@ import mega.android.core.ui.theme.spacing.LocalSpacing
  */
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun CircularPagerIndicator(
+fun PageControlsIndicator(
     pagerState: PagerState,
     itemCount: Int,
     onClick: (Int) -> Unit,
@@ -44,8 +43,8 @@ fun CircularPagerIndicator(
     val indicatorSize = 8.dp
     val indicatorSpacing = spacing.x16
     val widthInPx = LocalDensity.current.run { indicatorSize.toPx() }
-    val selectedColor = AppTheme.colors.text.primary
-    val defaultColor = AppTheme.colors.text.disabled
+    val selectedColor = AppTheme.colors.icon.accent
+    val defaultColor = AppTheme.colors.icon.disabled
 
     val currentItem by remember {
         derivedStateOf {
@@ -73,20 +72,16 @@ fun CircularPagerIndicator(
         items(itemCount) { index ->
             Box(
                 modifier = Modifier
-                    .clip(CircleShape)
                     .size(indicatorSize)
+                    .clickable {
+                        // the page count is infinity, need to calculation to correct result
+                        // if(currentItem < index) need to slide (index - currentItem) counts
+                        // if(currentItem > index) need to slide (currentItem - index) counts
+                        onClick.invoke(pagerState.currentPage + (index - currentItem))
+                    }
                     .background(
                         color = if ((index == currentItem)) selectedColor else defaultColor,
                         shape = CircleShape
-                    )
-                    // Need `.then` because otherwise the clickable area gap between items will be limited
-                    .then(
-                        //the pge count is infinity, need to calculation to correct result
-                        //if(currentItem < index) need to slide (index - currentItem) counts
-                        //if(currentItem > index) need to slide (currentItem - index) counts
-                        Modifier.clickable {
-                            onClick.invoke(pagerState.currentPage + (index - currentItem))
-                        }
                     )
             )
         }
@@ -98,7 +93,7 @@ fun CircularPagerIndicator(
 @Composable
 private fun CircularPagerIndicatorPreview() {
     AndroidThemeForPreviews {
-        CircularPagerIndicator(
+        PageControlsIndicator(
             pagerState = rememberPagerState(
                 initialPage = 0,
                 initialPageOffsetFraction = 0f,
