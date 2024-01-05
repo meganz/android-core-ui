@@ -130,7 +130,21 @@ public data class Support(
     public val warning: Color = Color.Magenta,
     public val error: Color = Color.Magenta,
     public val info: Color = Color.Magenta,
-)
+) {
+    public fun getSupportColor(supportColor: SupportColor): Color = when (supportColor) {
+        SupportColor.Success -> success
+        SupportColor.Warning -> warning
+        SupportColor.Error -> error
+        SupportColor.Info -> info
+    }
+}
+
+public enum class SupportColor {
+    Success,
+    Warning,
+    Error,
+    Info,
+}
 
 public data class Components(
     public val selectionControl: Color = Color.Magenta,

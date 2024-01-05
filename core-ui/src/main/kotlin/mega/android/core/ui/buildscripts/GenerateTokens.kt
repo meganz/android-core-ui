@@ -76,7 +76,7 @@ class GenerateTokens {
         assetsFolder = assetsFolder,
         coreType = JsonColor::class,
         semanticType = JsonColorRef::class,
-        exposeGroupsAsEnums = ExposeGroupsAsEnums(listOf("Text", "Icon"), enumSuffix = "Color"),
+        exposeGroupsAsEnums = ExposeGroupsAsEnums(listOf("Text", "Icon", "Support"), enumSuffix = "Color"),
     )
 
     private fun <T : JsonCoreUiObject, E : JsonCoreUiObject> generateTokens(
