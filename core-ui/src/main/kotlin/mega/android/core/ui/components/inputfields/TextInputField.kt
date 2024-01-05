@@ -119,12 +119,12 @@ private fun BaseTextField(
     var showPassword by remember { mutableStateOf(false) }
     val focusedColor = when {
         successText.isNullOrBlank().not() -> AppTheme.colors.support.success
-        errorText.isNullOrBlank().not() -> AppTheme.colors.support.error
+        errorText != null -> AppTheme.colors.support.error
         else -> AppTheme.colors.border.strongSelected
     }
     val unfocusedColor = when {
         successText.isNullOrBlank().not() -> AppTheme.colors.support.success
-        errorText.isNullOrBlank().not() -> AppTheme.colors.support.error
+        errorText != null -> AppTheme.colors.support.error
         else -> AppTheme.colors.border.strong
     }
     val colors = OutlinedTextFieldDefaults.colors(
@@ -182,7 +182,7 @@ private fun BaseTextField(
             interactionSource = interactionSource,
             singleLine = true,
             textStyle = AppTheme.typography.bodyLarge,
-            isError = successText.isNullOrBlank() && !errorText.isNullOrBlank(),
+            isError = successText.isNullOrBlank() && errorText != null,
             visualTransformation = if (!isPasswordMode || showPassword) VisualTransformation.None else PasswordVisualTransformation(),
             trailingIcon = {
                 if (baseText.isNotEmpty()) {
@@ -279,7 +279,10 @@ private fun PasswordTextFieldPreview() {
 private fun PasswordTextFieldFocusedPreview() {
     AndroidThemeForPreviews {
         val focusRequester = remember { FocusRequester() }
-        PasswordTextInputField(Modifier.focusRequester(focusRequester), "Password", onValueChanged = {})
+        PasswordTextInputField(
+            Modifier.focusRequester(focusRequester),
+            "Password",
+            onValueChanged = {})
         LaunchedEffect(Unit) {
             focusRequester.requestFocus()
         }
