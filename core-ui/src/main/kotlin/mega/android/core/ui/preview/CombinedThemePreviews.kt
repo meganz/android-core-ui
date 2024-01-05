@@ -11,13 +11,14 @@ import androidx.compose.ui.tooling.preview.Preview
     backgroundColor = 0xFF121212,
     name = "1-Dark theme",
     group = "themes",
-    uiMode = Configuration.UI_MODE_NIGHT_YES
+    uiMode = Configuration.UI_MODE_NIGHT_YES,
+    apiLevel = 33
 )
 @Preview(
     showBackground = true,
     name = "2-Light theme",
     group = "themes",
-    uiMode = Configuration.UI_MODE_NIGHT_NO
+    uiMode = Configuration.UI_MODE_NIGHT_NO,
+    apiLevel = 33
 )
-@Preview(apiLevel = 33)
 annotation class CombinedThemePreviews
