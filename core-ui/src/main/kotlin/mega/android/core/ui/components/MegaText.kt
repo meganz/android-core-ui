@@ -6,6 +6,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
@@ -25,6 +26,7 @@ import mega.android.core.ui.theme.tokens.TextColor
  * @param maxLines
  * @param minLines
  * @param style
+ * @param textAlign
  */
 @Composable
 fun MegaText(
@@ -35,6 +37,7 @@ fun MegaText(
     maxLines: Int = Int.MAX_VALUE,
     minLines: Int = 1,
     style: TextStyle = LocalTextStyle.current,
+    textAlign: TextAlign? = null,
 ) = Text(
     text,
     modifier = modifier,
@@ -43,6 +46,7 @@ fun MegaText(
     maxLines = maxLines,
     minLines = minLines,
     style = style,
+    textAlign = textAlign,
 )
 
 @CombinedThemePreviews
