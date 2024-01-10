@@ -11,6 +11,7 @@ import androidx.compose.ui.Modifier
 import mega.android.core.ui.app.component.CheckboxCatalog
 import mega.android.core.ui.app.component.DividerComponentCatalog
 import mega.android.core.ui.app.component.ListComponentCatalog
+import mega.android.core.ui.app.component.ProgressIndicatorCatalog
 import mega.android.core.ui.app.component.TextComponentCatalog
 import mega.android.core.ui.components.surface.ThemedSurface
 import mega.android.core.ui.preview.CombinedThemePreviews
@@ -48,6 +49,9 @@ fun MainComposeView() {
         }
         item {
             DividerComponentCatalog()
+        }
+        item {
+            ProgressIndicatorCatalog()
         }
     }
 }
