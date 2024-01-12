@@ -10,6 +10,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MediumTopAppBar
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.painter.Painter
@@ -29,6 +30,7 @@ fun LargeToolbar(
     icon: Painter? = null,
     onIconClicked: () -> Unit = {},
     trailingElement: (@Composable (RowScope.() -> Unit))? = null,
+    scrollBehavior: TopAppBarScrollBehavior? = null
 ) {
     MediumTopAppBar(modifier = modifier,
         windowInsets = WindowInsets(top = 0.dp, bottom = 0.dp),
@@ -58,9 +60,10 @@ fun LargeToolbar(
             if (trailingElement != null) {
                 trailingElement()
             }
-        })
+        }, scrollBehavior = scrollBehavior)
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @CombinedThemePreviews
 @Composable
 private fun LargeToolbarPreview() {
@@ -69,6 +72,7 @@ private fun LargeToolbarPreview() {
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @CombinedThemePreviews
 @Composable
 private fun LargeToolbarWithLeadingIconPreview() {
@@ -77,6 +81,7 @@ private fun LargeToolbarWithLeadingIconPreview() {
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @CombinedThemePreviews
 @Composable
 private fun LargeToolbarWithBothIconsPreview() {
