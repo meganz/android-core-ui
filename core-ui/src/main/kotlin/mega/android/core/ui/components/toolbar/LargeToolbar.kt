@@ -7,7 +7,7 @@ import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.MediumTopAppBar
+import androidx.compose.material3.LargeTopAppBar
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.TopAppBarScrollBehavior
@@ -21,7 +21,6 @@ import mega.android.core.ui.preview.CombinedThemePreviews
 import mega.android.core.ui.theme.AndroidThemeForPreviews
 import mega.android.core.ui.theme.AppTheme
 
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LargeToolbar(
@@ -32,13 +31,10 @@ fun LargeToolbar(
     trailingElement: (@Composable (RowScope.() -> Unit))? = null,
     scrollBehavior: TopAppBarScrollBehavior? = null
 ) {
-    MediumTopAppBar(modifier = modifier,
+    LargeTopAppBar(
+        modifier = modifier,
         windowInsets = WindowInsets(top = 0.dp, bottom = 0.dp),
-        title = {
-            Text(
-                text = title, style = AppTheme.typography.headlineMedium
-            )
-        },
+        title = { Text(text = title) },
         navigationIcon = {
             if (icon != null) {
                 IconButton(
@@ -60,7 +56,9 @@ fun LargeToolbar(
             if (trailingElement != null) {
                 trailingElement()
             }
-        }, scrollBehavior = scrollBehavior)
+        },
+        scrollBehavior = scrollBehavior
+    )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
