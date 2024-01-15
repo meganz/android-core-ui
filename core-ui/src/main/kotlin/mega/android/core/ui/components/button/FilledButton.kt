@@ -2,11 +2,9 @@ package mega.android.core.ui.components.button
 
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsPressedAsState
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
@@ -17,7 +15,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
@@ -28,7 +25,7 @@ import mega.android.core.ui.preview.CombinedThemePreviews
 import mega.android.core.ui.theme.AndroidThemeForPreviews
 import mega.android.core.ui.theme.AppTheme
 
-private val iconDefaultSize = 24.dp
+private val buttonDefaultHeight = 48.dp
 
 @Composable
 fun PrimaryFilledButton(
@@ -41,7 +38,7 @@ fun PrimaryFilledButton(
     isLoading: Boolean = false,
 ) {
     FilledButton(
-        modifier = modifier.wrapContentHeight(),
+        modifier = modifier.heightIn(buttonDefaultHeight),
         text = text,
         leadingIcon = leadingIcon,
         trailingIcon = trailingIcon,
@@ -70,7 +67,7 @@ fun SecondaryFilledButton(
     isLoading: Boolean = false
 ) {
     FilledButton(
-        modifier = modifier.wrapContentHeight(),
+        modifier = modifier.heightIn(buttonDefaultHeight),
         text = text,
         leadingIcon = leadingIcon,
         trailingIcon = trailingIcon,
@@ -115,7 +112,7 @@ private fun FilledButton(
     }
 
     Button(
-        modifier = modifier.padding(horizontal = 24.dp, vertical = 14.dp),
+        modifier = modifier,
         interactionSource = interactionSource,
         shape = RoundedCornerShape(8.dp),
         onClick = onClick,
@@ -129,34 +126,32 @@ private fun FilledButton(
 
         if (isLoading) {
             CircularProgressIndicator(
-                modifier = Modifier.size(iconDefaultSize),
+                modifier = Modifier.size(buttonDefaultHeight / 2),
                 color = loaderIconColor,
             )
         } else {
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                leadingIcon?.let {
-                    Icon(
-                        modifier = Modifier
-                            .size(iconDefaultSize)
-                            .padding(end = 8.dp),
-                        painter = leadingIcon,
-                        tint = iconColor,
-                        contentDescription = "Leading Icon"
-                    )
-                }
-                Text(
-                    text = text, style = AppTheme.typography.labelLarge, color = textColor
+            leadingIcon?.let {
+                Icon(
+                    modifier = Modifier
+                        .size(buttonDefaultHeight / 2)
+                        .padding(end = 8.dp),
+                    painter = leadingIcon,
+                    tint = iconColor,
+                    contentDescription = "Leading Icon"
                 )
-                trailingIcon?.let {
-                    Icon(
-                        modifier = Modifier
-                            .size(iconDefaultSize)
-                            .padding(start = 8.dp),
-                        painter = trailingIcon,
-                        tint = iconColor,
-                        contentDescription = "Trailing Icon"
-                    )
-                }
+            }
+            Text(
+                text = text, style = AppTheme.typography.labelLarge, color = textColor
+            )
+            trailingIcon?.let {
+                Icon(
+                    modifier = Modifier
+                        .size(buttonDefaultHeight / 2)
+                        .padding(start = 8.dp),
+                    painter = trailingIcon,
+                    tint = iconColor,
+                    contentDescription = "Trailing Icon"
+                )
             }
 
         }
