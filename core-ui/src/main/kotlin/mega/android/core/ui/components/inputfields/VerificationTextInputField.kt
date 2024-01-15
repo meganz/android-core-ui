@@ -24,6 +24,7 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.graphics.*
 import androidx.compose.ui.text.TextRange
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
@@ -36,10 +37,9 @@ import mega.android.core.ui.theme.spacing.LocalSpacing
 /**
  * Verification code text field
  * @param value                     the default value or remember value
+ * @param onValueChange             the input field value change observer
  * @param isCodeCorrect             Pass the verification state
  * @param errorText                 when error state show the error text
- * @param onValueChange             the input field value change observer
- * @param textColor                 the input field text color
  * @param isEnabled                  the input field enable state
  */
 @Composable
@@ -76,9 +76,12 @@ fun VerificationTextInputField(
             enabled = isEnabled,
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
             keyboardActions = KeyboardActions.Default,
+            textStyle = TextStyle(color = Color.Transparent),
             singleLine = true,
             cursorBrush = SolidColor(Color.Unspecified)
-        ) {
+        ) { inner->
+            inner()
+
             Row(horizontalArrangement = Arrangement.SpaceBetween, modifier = Modifier.fillMaxWidth()) {
                 repeat(DEFAULT_VERIFICATION_INPUT_LENGTH) { position ->
                     val selection = position == value.length
