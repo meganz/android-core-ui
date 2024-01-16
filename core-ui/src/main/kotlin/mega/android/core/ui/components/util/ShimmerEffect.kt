@@ -13,11 +13,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.unit.IntSize
 import mega.android.core.ui.theme.AppTheme
 
-fun Modifier.shimmerEffect(): Modifier = composed {
+fun Modifier.shimmerEffect(shape: Shape = RectangleShape): Modifier = composed {
     var size by remember {
         mutableStateOf(IntSize.Zero)
     }
@@ -38,7 +40,8 @@ fun Modifier.shimmerEffect(): Modifier = composed {
             ),
             start = Offset(startOffsetX, 0f),
             end = Offset(startOffsetX + size.width.toFloat(), size.height.toFloat())
-        )
+        ),
+        shape = shape
     ).onGloballyPositioned {
         size = it.size
     }
