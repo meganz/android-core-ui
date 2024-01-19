@@ -131,6 +131,7 @@ private fun BaseTextField(
         focusedTextColor = AppTheme.colors.text.primary,
         unfocusedTextColor = AppTheme.colors.text.primary,
         cursorColor = AppTheme.colors.text.primary,
+        errorCursorColor = AppTheme.colors.text.primary,
         selectionColors = TextSelectionColors(
             handleColor = AppTheme.colors.text.primary,
             backgroundColor = AppTheme.colors.text.primary.copy(alpha = 0.4f),
