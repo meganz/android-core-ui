@@ -11,7 +11,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.*
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.*
@@ -156,7 +155,7 @@ fun VerificationTextInputField(
         }
 
         if (isCodeCorrect == false) {
-            ErrorFooter(
+            HelpTextError(
                 modifier = Modifier
                     .padding(top = spacing.x4)
                     .fillMaxWidth(),

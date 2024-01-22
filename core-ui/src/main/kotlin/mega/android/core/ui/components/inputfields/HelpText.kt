@@ -12,32 +12,80 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import mega.android.core.ui.R
 import mega.android.core.ui.preview.CombinedThemePreviews
 import mega.android.core.ui.theme.AndroidThemeForPreviews
 import mega.android.core.ui.theme.AppTheme
 import mega.android.core.ui.theme.spacing.LocalSpacing
+import mega.android.core.ui.theme.tokens.TextColor
 
 @Composable
-fun SuccessFooter(modifier: Modifier = Modifier, text: String) {
+fun HelpTextSuccess(
+    text: String,
+    modifier: Modifier = Modifier,
+    textColor: TextColor = TextColor.Success,
+    textStyle: TextStyle = AppTheme.typography.bodySmall,
+) {
     HelpText(
         modifier = modifier,
         text = text,
         iconColor = AppTheme.colors.support.success,
-        textColor = AppTheme.colors.text.primary,
+        textColor = textColor,
+        textStyle = textStyle,
         iconResId = R.drawable.ic_check_circle
     )
 }
 
 @Composable
-fun ErrorFooter(modifier: Modifier = Modifier, text: String) {
+fun HelpTextError(
+    text: String,
+    modifier: Modifier = Modifier,
+    textColor: TextColor = TextColor.Error,
+    textStyle: TextStyle = AppTheme.typography.bodySmall,
+) {
     HelpText(
         modifier = modifier,
         text = text,
         iconColor = AppTheme.colors.text.error,
-        textColor = AppTheme.colors.text.error,
+        textColor = textColor,
+        textStyle = textStyle,
         iconResId = R.drawable.ic_alert_triangle
+    )
+}
+
+@Composable
+fun HelpTextWarning(
+    text: String,
+    modifier: Modifier = Modifier,
+    textColor: TextColor = TextColor.Warning,
+    textStyle: TextStyle = AppTheme.typography.bodySmall,
+) {
+    HelpText(
+        modifier = modifier,
+        text = text,
+        iconColor = AppTheme.colors.support.warning,
+        textColor = textColor,
+        textStyle = textStyle,
+        iconResId = R.drawable.ic_alert_circle
+    )
+}
+
+@Composable
+fun HelpTextInfo(
+    text: String,
+    modifier: Modifier = Modifier,
+    textColor: TextColor = TextColor.Secondary,
+    textStyle: TextStyle = AppTheme.typography.bodySmall,
+) {
+    HelpText(
+        modifier = modifier,
+        text = text,
+        iconColor = AppTheme.colors.icon.secondary,
+        textColor = textColor,
+        textStyle = textStyle,
+        iconResId = R.drawable.ic_info
     )
 }
 
@@ -45,15 +93,15 @@ fun ErrorFooter(modifier: Modifier = Modifier, text: String) {
 private fun HelpText(
     text: String,
     iconColor: Color,
-    textColor: Color,
+    textColor: TextColor,
+    textStyle: TextStyle,
     @DrawableRes iconResId: Int,
     modifier: Modifier = Modifier,
 ) {
     Row(modifier = modifier) {
         Icon(
             modifier = Modifier
-                .align(Alignment.CenterVertically)
-                .padding(end = LocalSpacing.current.x12)
+                .padding(top = LocalSpacing.current.x2, end = LocalSpacing.current.x12)
                 .size(16.dp),
             painter = painterResource(id = iconResId),
             tint = iconColor,
@@ -64,24 +112,40 @@ private fun HelpText(
                 .fillMaxWidth()
                 .align(Alignment.CenterVertically),
             text = text,
-            style = AppTheme.typography.bodySmall,
-            color = textColor
+            style = textStyle,
+            color = AppTheme.textColor(textColor = textColor)
         )
     }
 }
 
 @CombinedThemePreviews
 @Composable
-fun ErrorFooterPreview() {
+fun HelpTextErrorPreview() {
     AndroidThemeForPreviews {
-        ErrorFooter(text = "Error footer text example")
+        HelpTextError(text = "Error footer text example")
     }
 }
 
 @CombinedThemePreviews
 @Composable
-fun SuccessFooterPreview() {
+fun HelpTextSuccessPreview() {
     AndroidThemeForPreviews {
-        SuccessFooter(text = "Success footer text example")
+        HelpTextSuccess(text = "Success footer text example")
+    }
+}
+
+@CombinedThemePreviews
+@Composable
+fun HelpTextWarningPreview() {
+    AndroidThemeForPreviews {
+        HelpTextWarning(text = "Warning footer text example")
+    }
+}
+
+@CombinedThemePreviews
+@Composable
+fun HelpTextInfoPreview() {
+    AndroidThemeForPreviews {
+        HelpTextInfo(text = "Warning footer text example")
     }
 }

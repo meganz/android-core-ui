@@ -35,6 +35,7 @@ import mega.android.core.ui.preview.CombinedThemePreviews
 import mega.android.core.ui.theme.AndroidThemeForPreviews
 import mega.android.core.ui.theme.AppTheme
 import mega.android.core.ui.theme.spacing.LocalSpacing
+import mega.android.core.ui.theme.tokens.TextColor
 
 /**
  * Text input field
@@ -223,14 +224,15 @@ private fun BaseTextField(
 
         when {
             !successText.isNullOrBlank() -> {
-                SuccessFooter(
+                HelpTextSuccess(
                     modifier = footerModifier,
-                    text = successText
+                    text = successText,
+                    textColor = TextColor.Primary
                 )
             }
 
             !errorText.isNullOrBlank() -> {
-                ErrorFooter(
+                HelpTextError(
                     modifier = footerModifier,
                     text = errorText
                 )
