@@ -1,17 +1,24 @@
+package mega.android.core.ui.components.prompt
+
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.unit.dp
 import mega.android.core.ui.components.MegaText
 import mega.android.core.ui.preview.CombinedThemePreviews
 import mega.android.core.ui.theme.AndroidThemeForPreviews
 import mega.android.core.ui.theme.AppTheme
 import mega.android.core.ui.theme.spacing.LocalSpacing
 import mega.android.core.ui.theme.tokens.TextColor
+
+private val promptHeight = 38.dp
 
 @Composable
 fun SuccessPrompt(
@@ -58,8 +65,10 @@ internal fun BasePrompt(
     Box(
         modifier = modifier
             .fillMaxWidth()
+            .height(promptHeight)
             .background(color = backgroundColor, shape = RectangleShape)
             .padding(horizontal = LocalSpacing.current.x16, vertical = LocalSpacing.current.x4),
+        contentAlignment = Alignment.Center,
     ) {
         MegaText(
             text = message, textColor = TextColor.Primary, style = AppTheme.typography.bodyMedium

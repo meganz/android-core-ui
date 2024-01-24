@@ -1,3 +1,5 @@
+package mega.android.core.ui.components.banner
+
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable

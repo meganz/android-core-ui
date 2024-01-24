@@ -101,7 +101,7 @@ private fun HelpText(
     Row(modifier = modifier) {
         Icon(
             modifier = Modifier
-                .padding(top = LocalSpacing.current.x2, end = LocalSpacing.current.x12)
+                .padding(top = LocalSpacing.current.x2, end = LocalSpacing.current.x8)
                 .size(16.dp),
             painter = painterResource(id = iconResId),
             tint = iconColor,
