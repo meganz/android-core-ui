@@ -47,6 +47,7 @@ dependencies {
     implementation(libs.coil.compose)
     implementation(libs.core.ktx)
     implementation(libs.appcompat)
+    implementation(libs.constraintlayout.compose)
     testImplementation(libs.junit)
     androidTestImplementation(libs.junit.test.ext)
     androidTestImplementation(libs.espresso.core)
