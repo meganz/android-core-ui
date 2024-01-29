@@ -1,5 +1,6 @@
 package mega.android.core.ui.components.toolbar
 
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -18,41 +19,45 @@ import mega.android.core.ui.preview.CombinedThemePreviews
 import mega.android.core.ui.theme.AndroidThemeForPreviews
 import mega.android.core.ui.theme.AppTheme
 
-
 val TOOLBAR_DEFAULT_HEIGHT = 64.dp
 
 @Composable
-fun DefaultToolbar(
-    title: String,
-    icon: Painter,
-    modifier: Modifier = Modifier,
-    onIconClicked: () -> Unit = {}
-) {
-    DefaultTopAppBar(modifier, title, navigationIcon = {
-        IconButton(
-            modifier = Modifier
-                .wrapContentHeight(),
-            onClick = onIconClicked
-        ) {
-            Icon(
-                painter = icon,
-                contentDescription = "$title Navigation Icon"
-            )
-        }
-    })
-}
-
-@Composable
-fun NoIconToolbar(
+fun MegaTopAppBar(
     title: String,
     modifier: Modifier = Modifier,
+    navigationIcon: Painter? = null,
+    trailingIcons: @Composable RowScope.() -> Unit = {},
+    onNavigationIconClicked: () -> Unit = {},
 ) {
-    DefaultTopAppBar(modifier, title)
+    DefaultTopAppBar(
+        modifier = modifier,
+        title = title,
+        navigationIcon = {
+            navigationIcon?.let {
+                IconButton(
+                    modifier = Modifier
+                        .wrapContentHeight(),
+                    onClick = onNavigationIconClicked
+                ) {
+                    Icon(
+                        painter = navigationIcon,
+                        contentDescription = "$title Navigation Icon"
+                    )
+                }
+            }
+        },
+        actions = trailingIcons
+    )
 }
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
-private fun DefaultTopAppBar(modifier: Modifier, title: String, navigationIcon: @Composable () -> Unit = {} ) {
+private fun DefaultTopAppBar(
+    modifier: Modifier,
+    title: String,
+    navigationIcon: @Composable () -> Unit = {},
+    actions: @Composable RowScope.() -> Unit = {},
+) {
     TopAppBar(
         modifier = modifier,
         windowInsets = WindowInsets(top = 0.dp, bottom = 0.dp),
@@ -63,6 +68,7 @@ private fun DefaultTopAppBar(modifier: Modifier, title: String, navigationIcon: 
             )
         },
         navigationIcon = navigationIcon,
+        actions = actions,
         colors = TopAppBarDefaults.topAppBarColors(
             containerColor = AppTheme.colors.background.pageBackground,
             navigationIconContentColor = AppTheme.colors.icon.primary,
@@ -74,19 +80,20 @@ private fun DefaultTopAppBar(modifier: Modifier, title: String, navigationIcon: 
 
 @CombinedThemePreviews
 @Composable
-private fun DefaultToolbarPreview() {
+private fun MegaTopAppBarPreview() {
     AndroidThemeForPreviews {
-        DefaultToolbar(
+        MegaTopAppBar(
             title = "Title",
-            icon = painterResource(id = R.drawable.ic_arrow_left)
-        ) {}
-    }
-}
-
-@CombinedThemePreviews
-@Composable
-private fun NoIconToolbarPreview() {
-    AndroidThemeForPreviews {
-        NoIconToolbar(title = "Title")
+            navigationIcon = painterResource(id = R.drawable.ic_arrow_left),
+            trailingIcons = {
+                IconButton(modifier = Modifier.wrapContentHeight(), onClick = {}) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_close),
+                        contentDescription = "Cancel Icon"
+                    )
+                }
+            },
+            onNavigationIconClicked = {}
+        )
     }
 }

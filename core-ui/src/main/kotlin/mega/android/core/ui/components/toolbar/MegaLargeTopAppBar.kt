@@ -23,7 +23,7 @@ import mega.android.core.ui.theme.AppTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun LargeToolbar(
+fun MegaLargeTopAppBar(
     title: String,
     modifier: Modifier = Modifier,
     icon: Painter? = null,
@@ -66,7 +66,7 @@ fun LargeToolbar(
 @Composable
 private fun LargeToolbarPreview() {
     AndroidThemeForPreviews {
-        LargeToolbar(title = "Title")
+        MegaLargeTopAppBar(title = "Title")
     }
 }
 
@@ -75,7 +75,7 @@ private fun LargeToolbarPreview() {
 @Composable
 private fun LargeToolbarWithLeadingIconPreview() {
     AndroidThemeForPreviews {
-        LargeToolbar(title = "Title", icon = painterResource(id = R.drawable.ic_arrow_left))
+        MegaLargeTopAppBar(title = "Title", icon = painterResource(id = R.drawable.ic_arrow_left))
     }
 }
 
@@ -84,7 +84,7 @@ private fun LargeToolbarWithLeadingIconPreview() {
 @Composable
 private fun LargeToolbarWithBothIconsPreview() {
     AndroidThemeForPreviews {
-        LargeToolbar(title = "Title",
+        MegaLargeTopAppBar(title = "Title",
             icon = painterResource(id = R.drawable.ic_arrow_left),
             trailingElement = {
                 Icon(

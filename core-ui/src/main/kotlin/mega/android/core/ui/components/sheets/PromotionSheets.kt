@@ -36,7 +36,7 @@ import mega.android.core.ui.components.MegaText
 import mega.android.core.ui.components.button.PrimaryFilledButton
 import mega.android.core.ui.components.button.SecondaryFilledButton
 import mega.android.core.ui.components.list.MultiLineListItem
-import mega.android.core.ui.components.toolbar.DefaultToolbar
+import mega.android.core.ui.components.toolbar.MegaTopAppBar
 import mega.android.core.ui.preview.CombinedThemePreviews
 import mega.android.core.ui.theme.AndroidThemeForPreviews
 import mega.android.core.ui.theme.AppTheme
@@ -82,15 +82,15 @@ fun PromotionalIllustrationSheet(
         ) {
             val (closeButton, content, buttonContainer) = createRefs()
 
-            DefaultToolbar(
+            MegaTopAppBar(
                 modifier = Modifier
                     .constrainAs(closeButton) {
                         top.linkTo(parent.top, margin = spacing.x16)
                         start.linkTo(parent.start, margin = spacing.x4)
                     },
                 title = "",
-                icon = painterResource(id = R.drawable.ic_close),
-                onIconClicked = {
+                navigationIcon = painterResource(id = R.drawable.ic_close),
+                onNavigationIconClicked = {
                     coroutineScope.launch {
                         sheetState.hide()
                         onDismissRequest()

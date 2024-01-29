@@ -2,7 +2,7 @@
  * This file is to publish the library to Maven on Artifactory
  */
 
-def libVersion = '1.25'
+def libVersion = '1.26'
 def libGroupId = 'mega.android.core'
 
 project('core-ui') {
