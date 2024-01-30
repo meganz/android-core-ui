@@ -9,8 +9,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.widthIn
@@ -34,7 +32,6 @@ import mega.android.core.ui.theme.spacing.LocalSpacing
 import mega.android.core.ui.theme.tokens.TextColor
 
 private val listItemMinHeight = 60.dp
-private val listItemMaxHeight = 90.dp
 private val headerListItemMinHeight = 36.dp
 private val leadingElementContainerSize = 32.dp
 private val vpnCountrySelectedListItemMaxWidth = 382.dp
@@ -95,7 +92,7 @@ fun OneLineListItem(
     onClickListener: () -> Unit = {},
 ) = ListItem(
     modifier = modifier
-        .height(listItemMinHeight),
+        .defaultMinSize(minHeight = listItemMinHeight),
     title = text,
     subtitle = null,
     leadingElement = leadingElement,
@@ -112,7 +109,8 @@ fun TwoLineListItem(
     trailingElement: (@Composable (() -> Unit))? = null,
     onClickListener: () -> Unit = {},
 ) = ListItem(
-    modifier = modifier.heightIn(min = listItemMinHeight, max = listItemMaxHeight),
+    modifier = modifier
+        .defaultMinSize(minHeight = listItemMinHeight),
     title = title,
     subtitle = subtitle,
     leadingElement = leadingElement,
@@ -130,12 +128,14 @@ fun MultiLineListItem(
     trailingElement: (@Composable (() -> Unit))? = null,
     onClickListener: () -> Unit = {},
 ) = ListItem(
-    modifier = modifier.heightIn(min = listItemMinHeight, max = listItemMaxHeight),
+    modifier = modifier
+        .defaultMinSize(minHeight = listItemMinHeight),
     title = title,
     subtitle = subtitle,
     leadingElement = leadingElement,
     trailingElement = trailingElement,
-    onClickListener = onClickListener
+    onClickListener = onClickListener,
+    subtitleMaxLines = Int.MAX_VALUE
 )
 
 @Composable
