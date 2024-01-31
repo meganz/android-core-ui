@@ -5,6 +5,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -12,6 +13,7 @@ import mega.android.core.ui.app.component.CheckboxCatalog
 import mega.android.core.ui.app.component.DividerComponentCatalog
 import mega.android.core.ui.app.component.ListComponentCatalog
 import mega.android.core.ui.app.component.ProgressIndicatorCatalog
+import mega.android.core.ui.app.component.PromotionalSheetsCatalog
 import mega.android.core.ui.app.component.PromptCatalog
 import mega.android.core.ui.app.component.ShimmerListItem
 import mega.android.core.ui.app.component.TextComponentCatalog
@@ -39,6 +41,7 @@ fun MainComposeView() {
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
+            .navigationBarsPadding()
     ) {
         item {
             ListComponentCatalog()
@@ -60,6 +63,9 @@ fun MainComposeView() {
         }
         item {
             PromptCatalog()
+        }
+        item {
+            PromotionalSheetsCatalog()
         }
     }
 }
