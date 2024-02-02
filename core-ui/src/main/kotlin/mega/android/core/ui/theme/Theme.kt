@@ -1,15 +1,20 @@
 package mega.android.core.ui.theme
 
+import android.app.Activity
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Shapes
 import androidx.compose.material3.Typography
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.staticCompositionLocalOf
+import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.platform.LocalView
+import androidx.core.view.WindowCompat
 import mega.android.core.ui.theme.AppTheme.typography
 import mega.android.core.ui.theme.colors.AppColors
 import mega.android.core.ui.theme.shape.shapes
@@ -65,6 +70,18 @@ fun AndroidTheme(
     val colorPalette by remember(colors) {
         mutableStateOf(colors)
     }
+
+    val view = LocalView.current
+    if (!view.isInEditMode) {
+        SideEffect {
+            val window = (view.context as Activity).window
+            window.statusBarColor = colors.background.pageBackground.toArgb()
+            window.navigationBarColor = colors.background.pageBackground.toArgb()
+            WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = !isDark
+            WindowCompat.getInsetsController(window, view).isAppearanceLightNavigationBars = !isDark
+        }
+    }
+
     CompositionLocalProvider(
         LocalColorPalette provides colorPalette,
         LocalSpacing provides Dimensions()
