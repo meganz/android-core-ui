@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.input.KeyboardType
 import mega.android.core.ui.app.component.CheckboxCatalog
 import mega.android.core.ui.app.component.DividerComponentCatalog
 import mega.android.core.ui.app.component.ListComponentCatalog
@@ -17,6 +18,7 @@ import mega.android.core.ui.app.component.PromotionalSheetsCatalog
 import mega.android.core.ui.app.component.PromptCatalog
 import mega.android.core.ui.app.component.ShimmerListItem
 import mega.android.core.ui.app.component.TextComponentCatalog
+import mega.android.core.ui.components.inputfields.TextInputField
 import mega.android.core.ui.components.surface.ThemedSurface
 import mega.android.core.ui.preview.CombinedThemePreviews
 import mega.android.core.ui.shared.theme.CoreUITheme
@@ -66,6 +68,9 @@ fun MainComposeView() {
         }
         item {
             PromotionalSheetsCatalog()
+        }
+        item {
+            TextInputField(modifier = Modifier, label = "Test", keyboardType = KeyboardType.Email, maxCharLimit = 190)
         }
     }
 }

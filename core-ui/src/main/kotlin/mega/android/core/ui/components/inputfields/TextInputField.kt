@@ -53,6 +53,7 @@ fun TextInputField(
     text: String = "",
     successText: String? = null,
     errorText: String? = null,
+    maxCharLimit: Int = Int.MAX_VALUE,
     onValueChanged: ((String) -> Unit)? = null,
     onFocusChanged: ((Boolean) -> Unit)? = null,
 ) = BaseTextField(
@@ -65,6 +66,7 @@ fun TextInputField(
     successText = successText,
     errorText = errorText,
     isPasswordMode = false,
+    maxCharLimit = maxCharLimit,
     onValueChanged = onValueChanged,
     onFocusChanged = onFocusChanged
 )
@@ -83,6 +85,7 @@ fun PasswordTextInputField(
     imeAction: ImeAction = ImeAction.Done,
     successText: String? = null,
     errorText: String? = null,
+    maxCharLimit: Int = Int.MAX_VALUE,
     onValueChanged: ((String) -> Unit)? = null,
     onFocusChanged: ((Boolean) -> Unit)? = null,
 ) = BaseTextField(
@@ -95,6 +98,7 @@ fun PasswordTextInputField(
     successText = successText,
     errorText = errorText,
     isPasswordMode = true,
+    maxCharLimit = maxCharLimit,
     onValueChanged = onValueChanged,
     onFocusChanged = onFocusChanged,
 )
@@ -110,6 +114,7 @@ private fun BaseTextField(
     capitalization: KeyboardCapitalization,
     successText: String?,
     errorText: String?,
+    maxCharLimit: Int = Int.MAX_VALUE,
     onValueChanged: ((String) -> Unit)? = null,
     onFocusChanged: ((Boolean) -> Unit)? = null,
 ) {
@@ -176,8 +181,10 @@ private fun BaseTextField(
             ),
             value = baseText,
             onValueChange = {
-                baseText = it
-                onValueChanged?.invoke(it)
+                if (it.length <= maxCharLimit) {
+                    baseText = it
+                    onValueChanged?.invoke(it)
+                }
             },
             colors = colors,
             shape = RoundedCornerShape(8.dp),
