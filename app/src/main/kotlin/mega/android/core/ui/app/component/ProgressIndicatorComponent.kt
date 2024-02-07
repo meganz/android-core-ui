@@ -9,9 +9,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import mega.android.core.ui.app.util.Section
 import mega.android.core.ui.components.indicators.LargeHUD
+import mega.android.core.ui.components.indicators.LargeInfiniteSpinnerIndicator
 import mega.android.core.ui.components.indicators.LargeSpinnerIndicator
 import mega.android.core.ui.components.indicators.ProgressBarIndicator
 import mega.android.core.ui.components.indicators.SmallHUD
+import mega.android.core.ui.components.indicators.SmallInfiniteSpinnerIndicator
 import mega.android.core.ui.components.indicators.SmallSpinnerIndicator
 import mega.android.core.ui.theme.spacing.LocalSpacing
 
@@ -39,8 +41,8 @@ fun ProgressIndicatorCatalog() {
 
     Section(header = "Indeterminate Spinner Indicator") {
         Row {
-            SmallSpinnerIndicator(modifier = Modifier.padding(16.dp))
-            LargeSpinnerIndicator(modifier = Modifier.padding(16.dp))
+            SmallInfiniteSpinnerIndicator(modifier = Modifier.padding(16.dp))
+            LargeInfiniteSpinnerIndicator(modifier = Modifier.padding(16.dp))
         }
     }
 

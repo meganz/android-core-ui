@@ -19,7 +19,6 @@ import mega.android.core.ui.components.util.blurShadow
 import mega.android.core.ui.preview.CombinedThemePreviews
 import mega.android.core.ui.theme.AndroidThemeForPreviews
 import mega.android.core.ui.theme.AppTheme
-import mega.android.core.ui.theme.LocalColorPalette
 import mega.android.core.ui.theme.spacing.LocalSpacing
 import mega.android.core.ui.theme.tokens.IconColor
 
@@ -39,7 +38,7 @@ fun ProgressBarIndicator(
             .fillMaxWidth(),
         progress = progressPercentage / 100f,
         trackColor = Color.Transparent,
-        color = LocalColorPalette.current.icon.getIconColor(IconColor.Accent)
+        color = AppTheme.iconColor(IconColor.Accent)
     )
 }
 
@@ -68,6 +67,30 @@ fun LargeSpinnerIndicator(
 }
 
 @Composable
+fun SmallInfiniteSpinnerIndicator(
+    modifier: Modifier = Modifier,
+    iconColor: IconColor = IconColor.Accent,
+) {
+    SpinnerIndicator(
+        spinnerVariant = SpinnerVariant.Small,
+        modifier = modifier,
+        iconColor = iconColor
+    )
+}
+
+@Composable
+fun LargeInfiniteSpinnerIndicator(
+    modifier: Modifier = Modifier,
+    iconColor: IconColor = IconColor.Accent,
+) {
+    SpinnerIndicator(
+        spinnerVariant = SpinnerVariant.Large,
+        modifier = modifier,
+        iconColor = iconColor
+    )
+}
+
+@Composable
 fun SmallHUD(modifier: Modifier = Modifier) {
     HUD(
         spinnerVariant = SpinnerVariant.Small,
@@ -88,26 +111,26 @@ private fun SpinnerIndicator(
     spinnerVariant: SpinnerVariant,
     modifier: Modifier = Modifier,
     progressPercentage: Float = 0f,
+    iconColor: IconColor = IconColor.Accent
 ) {
     CircularProgressIndicator(
-        modifier = modifier
-            .size(spinnerVariant.size),
+        modifier = modifier.size(spinnerVariant.size),
         progress = progressPercentage / 100f,
         trackColor = Color.Transparent,
-        color = LocalColorPalette.current.icon.getIconColor(IconColor.Accent)
+        color = AppTheme.iconColor(iconColor)
     )
 }
 
 @Composable
 private fun SpinnerIndicator(
     spinnerVariant: SpinnerVariant,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    iconColor: IconColor = IconColor.Accent
 ) {
     CircularProgressIndicator(
-        modifier = modifier
-            .size(spinnerVariant.size),
+        modifier = modifier.size(spinnerVariant.size),
         trackColor = Color.Transparent,
-        color = LocalColorPalette.current.icon.getIconColor(IconColor.Accent)
+        color = AppTheme.iconColor(iconColor)
     )
 }
 
