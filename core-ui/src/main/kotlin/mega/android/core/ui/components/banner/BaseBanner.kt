@@ -71,7 +71,7 @@ internal fun BaseBanner(
                 MegaText(
                     text = body,
                     textColor = TextColor.Primary,
-                    style = AppTheme.typography.bodyLarge
+                    style = AppTheme.typography.bodyMedium
                 )
 
                 buttonText?.let {
