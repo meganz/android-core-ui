@@ -19,17 +19,17 @@ import mega.android.core.ui.R
 import mega.android.core.ui.app.util.Section
 import mega.android.core.ui.components.button.PrimaryFilledButton
 import mega.android.core.ui.components.common.PromotionalListAttributes
-import mega.android.core.ui.components.sheets.PromotionalFullImageSheet
-import mega.android.core.ui.components.sheets.PromotionalIllustrationSheet
-import mega.android.core.ui.components.sheets.PromotionalImageSheet
-import mega.android.core.ui.components.sheets.PromotionalPlainSheet
+import mega.android.core.ui.components.dialogs.PromotionalFullImageDialog
+import mega.android.core.ui.components.dialogs.PromotionalIllustrationDialog
+import mega.android.core.ui.components.dialogs.PromotionalImageDialog
+import mega.android.core.ui.components.dialogs.PromotionalPlainDialog
 import mega.android.core.ui.theme.spacing.LocalSpacing
 
 @Composable
-fun PromotionalSheetsCatalog() {
+fun PromotionalDialogsCatalog() {
     Spacer(modifier = Modifier.height(LocalSpacing.current.x16))
 
-    Section(header = "Promotional Sheets") {
+    Section(header = "Promotional Dialog") {
         LazyVerticalGrid(
             columns = GridCells.Fixed(3),
             modifier = Modifier
@@ -39,73 +39,73 @@ fun PromotionalSheetsCatalog() {
             horizontalArrangement = Arrangement.SpaceEvenly
         ) {
             item {
-                var showPlainSheet by remember { mutableStateOf(false) }
+                var showPlainDialog by remember { mutableStateOf(false) }
 
                 PrimaryFilledButton(
                     modifier = Modifier.wrapContentSize(),
                     text = "Plain",
                     onClick = {
-                        showPlainSheet = true
+                        showPlainDialog = true
                     }
                 )
 
-                if (showPlainSheet) {
-                    PromotionalPlainSheetComponent {
-                        showPlainSheet = false
+                if (showPlainDialog) {
+                    PromotionalPlainDialogComponent {
+                        showPlainDialog = false
                     }
                 }
             }
 
             item {
-                var showImageSheet by remember { mutableStateOf(false) }
+                var showImageDialog by remember { mutableStateOf(false) }
 
                 PrimaryFilledButton(
                     modifier = Modifier.wrapContentSize(),
                     text = "Image",
                     onClick = {
-                        showImageSheet = true
+                        showImageDialog = true
                     }
                 )
 
-                if (showImageSheet) {
-                    PromotionalImageSheetComponent {
-                        showImageSheet = false
+                if (showImageDialog) {
+                    PromotionalImageDialogComponent {
+                        showImageDialog = false
                     }
                 }
             }
 
             item {
-                var showFullImageSheet by remember { mutableStateOf(false) }
+                var showFullImageDialog by remember { mutableStateOf(false) }
 
                 PrimaryFilledButton(
                     modifier = Modifier.wrapContentSize(),
                     text = "Full Image",
                     onClick = {
-                        showFullImageSheet = true
+                        showFullImageDialog = true
                     }
                 )
 
-                if (showFullImageSheet) {
-                    PromotionalFullImageSheetComponent {
-                        showFullImageSheet = false
+                if (showFullImageDialog) {
+                    PromotionalFullImageDialogComponent {
+                        showFullImageDialog = false
                     }
                 }
             }
 
             item {
-                var showIllustrationSheet by remember { mutableStateOf(false) }
+                var showIllustrationDialog by remember { mutableStateOf(false) }
 
                 PrimaryFilledButton(
                     modifier = Modifier.wrapContentSize(),
                     text = "Illustration",
                     onClick = {
-                        showIllustrationSheet = true
+                        showIllustrationDialog = true
                     }
                 )
 
-                if (showIllustrationSheet) {
-                    PromotionalIllustrationSheetComponent {
-                        showIllustrationSheet = false
+                if (showIllustrationDialog) {
+                    PromotionalIllustrationDialogComponent {
+                        showIllustrationDialog = false
                     }
                 }
             }
@@ -114,25 +114,10 @@ fun PromotionalSheetsCatalog() {
 }
 
 @Composable
-private fun PromotionalPlainSheetComponent(
+private fun PromotionalImageDialogComponent(
     onDismissRequest: () -> Unit
 ) {
-    PromotionalPlainSheet(
-        title = "Title",
-        headline = "Headline",
-        primaryButton = "Button" to {},
-        secondaryButton = "Button 2" to {},
-        onDismissRequest = onDismissRequest,
-        listItems = listItemSamples,
-        footer = "*terms and conditions. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip"
-    )
-}
-
-@Composable
-private fun PromotionalFullImageSheetComponent(
-    onDismissRequest: () -> Unit
-) {
-    PromotionalFullImageSheet(
+    PromotionalImageDialog(
         imageUrl = "https:images.unsplash.com/photo-1579353977828-2a4eab540b9a?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8c2FtcGxlfGVufDB8fDB8fHww",
         title = "Title",
         headline = "Headline",
@@ -145,10 +130,26 @@ private fun PromotionalFullImageSheetComponent(
 }
 
 @Composable
-private fun PromotionalIllustrationSheetComponent(
+private fun PromotionalFullImageDialogComponent(
     onDismissRequest: () -> Unit
 ) {
-    PromotionalIllustrationSheet(
+    PromotionalFullImageDialog(
+        imageUrl = "https:images.unsplash.com/photo-1579353977828-2a4eab540b9a?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8c2FtcGxlfGVufDB8fDB8fHww",
+        title = "Title",
+        headline = "Headline",
+        primaryButton = "Button" to {},
+        secondaryButton = "Button 2" to {},
+        onDismissRequest = onDismissRequest,
+        listItems = listItemSamples,
+        footer = "*terms and conditions. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip"
+    )
+}
+
+@Composable
+private fun PromotionalIllustrationDialogComponent(
+    onDismissRequest: () -> Unit
+) {
+    PromotionalIllustrationDialog(
         illustration = R.drawable.illustration_mega_anniversary,
         title = "Title",
         headline = "Headline",
@@ -161,11 +162,10 @@ private fun PromotionalIllustrationSheetComponent(
 }
 
 @Composable
-private fun PromotionalImageSheetComponent(
+private fun PromotionalPlainDialogComponent(
     onDismissRequest: () -> Unit
 ) {
-    PromotionalImageSheet(
-        imageUrl = "https:images.unsplash.com/photo-1579353977828-2a4eab540b9a?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8c2FtcGxlfGVufDB8fDB8fHww",
+    PromotionalPlainDialog(
         title = "Title",
         headline = "Headline",
         primaryButton = "Button" to {},
@@ -176,7 +176,7 @@ private fun PromotionalImageSheetComponent(
     )
 }
 
-private val listItemSamples = IntRange(1, 3).map {
+private val listItemSamples = IntRange(1, 10).map {
     PromotionalListAttributes(
         title = "Title $it",
         subtitle = "Subtitle $it",

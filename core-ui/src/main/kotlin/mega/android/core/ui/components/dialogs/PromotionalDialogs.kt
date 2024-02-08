@@ -1,33 +1,28 @@
-package mega.android.core.ui.components.sheets
+package mega.android.core.ui.components.dialogs
 
-import android.app.Activity
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.ModalBottomSheet
-import androidx.compose.material3.SheetState
-import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -36,13 +31,13 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.window.DialogProperties
 import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.constraintlayout.compose.ConstraintLayoutScope
 import androidx.constraintlayout.compose.Dimension
-import androidx.core.view.WindowCompat
-import kotlinx.coroutines.launch
 import mega.android.core.ui.R
 import mega.android.core.ui.components.button.PrimaryFilledButton
 import mega.android.core.ui.components.button.SecondaryFilledButton
@@ -52,106 +47,98 @@ import mega.android.core.ui.components.common.PromotionalImage
 import mega.android.core.ui.components.common.PromotionalListAttributes
 import mega.android.core.ui.components.image.MegaIcon
 import mega.android.core.ui.components.toolbar.MegaTopAppBar
-import mega.android.core.ui.preview.CombinedThemePreviews
+import mega.android.core.ui.preview.CombinedThemePreviewsTablet
 import mega.android.core.ui.theme.AndroidThemeForPreviews
 import mega.android.core.ui.theme.AppTheme
 import mega.android.core.ui.theme.spacing.LocalSpacing
 import mega.android.core.ui.theme.tokens.IconColor
 
-typealias SheetButtonAttribute = Pair<String, () -> Unit>
-
-private val bottomSheetShape = RoundedCornerShape(
-    topStart = 24.dp,
-    topEnd = 24.dp,
-)
+typealias DialogButtonAttribute = Pair<String, () -> Unit>
 
 /**
- * Promotional sheet with image in the center below the toolbar.
- * Figma: https://www.figma.com/file/5ShSh0nuHWlYYjamj1dz4m/%5BDSN-1630%5D-What%E2%80%99s-new-dialog?node-id=823%3A8511
+ * Promo dialog with image in the center below the toolbar.
+ * This is specifically designed for tablets
+ * Figma: https://www.figma.com/file/5ShSh0nuHWlYYjamj1dz4m/%5BDSN-1630%5D-What%E2%80%99s-new-dialog?node-id=742%3A7109
  */
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun PromotionalImageSheet(
+fun PromotionalImageDialog(
     imageUrl: String,
     title: String,
     headline: String,
-    primaryButton: SheetButtonAttribute? = null,
-    secondaryButton: SheetButtonAttribute? = null,
+    primaryButton: DialogButtonAttribute? = null,
+    secondaryButton: DialogButtonAttribute? = null,
     listItems: List<PromotionalListAttributes> = emptyList(),
     contentText: String? = null,
     footer: String? = null,
-    onDismissRequest: () -> Unit = {},
-    isVisible: Boolean = false
+    onDismissRequest: () -> Unit = {}
 ) {
-    val coroutineScope = rememberCoroutineScope()
-    val spacing = LocalSpacing.current
-    val sheetState: SheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
-    val scrollState = rememberScrollState()
-    var isScrollable by rememberSaveable { mutableStateOf(false) }
-
-    LaunchedEffect(scrollState) {
-        isScrollable = scrollState.canScrollForward
-    }
-
-    ModalBottomSheetScaffold(
+    Dialog(
         onDismissRequest = onDismissRequest,
-        sheetState = sheetState,
-        isVisible = isVisible
+        properties = DialogProperties(decorFitsSystemWindows = false)
     ) {
-        ConstraintLayout(
-            modifier = Modifier
-                .fillMaxSize()
-        ) {
+        val spacing = LocalSpacing.current
+        val scrollState = rememberScrollState()
+        var isScrollable by rememberSaveable { mutableStateOf(false) }
+
+        LaunchedEffect(scrollState) {
+            isScrollable = scrollState.canScrollForward
+        }
+
+        DialogContent {
             val (toolbar, content, buttonContainer) = createRefs()
 
             MegaTopAppBar(
                 modifier = Modifier
                     .constrainAs(toolbar) {
                         top.linkTo(parent.top, margin = spacing.x8)
-                        start.linkTo(parent.start, margin = spacing.x16)
-                        end.linkTo(parent.end, margin = spacing.x16)
+                        linkTo(
+                            start = parent.start,
+                            end = parent.end,
+                            startMargin = spacing.x16,
+                            endMargin = spacing.x16
+                        )
                     },
                 title = "",
                 navigationIcon = painterResource(id = R.drawable.ic_close),
-                onNavigationIconClicked = {
-                    coroutineScope.launch {
-                        sheetState.hide()
-                        onDismissRequest()
-                    }
-                }
+                onNavigationIconClicked = onDismissRequest
             )
 
             Column(
                 modifier = Modifier
                     .constrainAs(content) {
                         height = Dimension.preferredWrapContent
-                        width = Dimension.fillToConstraints
-                        top.linkTo(toolbar.bottom, margin = spacing.x16)
+                        linkTo(
+                            top = toolbar.bottom,
+                            bottom = buttonContainer.top,
+                            topMargin = spacing.x16,
+                            bias = 0f
+                        )
                         start.linkTo(parent.start, margin = spacing.x16)
                         end.linkTo(parent.end, margin = spacing.x16)
-                        bottom.linkTo(buttonContainer.top)
                     }
                     .verticalScroll(scrollState, enabled = true)
             ) {
                 PromotionalImage(
                     modifier = Modifier
-                        .fillMaxWidth(),
+                        .widthIn(max = 328.dp)
+                        .align(alignment = Alignment.CenterHorizontally),
                     imageUrl = imageUrl,
                     description = title
                 )
 
                 PromotionalContent(
-                    modifier = Modifier.padding(top = spacing.x32),
+                    modifier = Modifier.padding(top = spacing.x24),
                     title = title,
                     headline = headline,
-                    listItems = listItems,
                     contentText = contentText,
-                    footer = footer
+                    footer = footer,
+                    listItems = listItems
                 )
             }
 
-            SheetActions(
+            DialogActions(
                 modifier = Modifier
+                    .background(AppTheme.colors.background.pageBackground)
                     .constrainAs(buttonContainer) {
                         bottom.linkTo(parent.bottom)
                         start.linkTo(parent.start)
@@ -167,26 +154,23 @@ fun PromotionalImageSheet(
 }
 
 /**
- * Promo sheet with full image that occupies the toolbar
- * Figma: https://www.figma.com/file/5ShSh0nuHWlYYjamj1dz4m/%5BDSN-1630%5D-What%E2%80%99s-new-dialog?type=design&node-id=823-8509
+ * Promotional dialog with full image that occupies the toolbar
+ * This is specifically designed for tablets
+ * Figma:
  */
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun PromotionalFullImageSheet(
+fun PromotionalFullImageDialog(
     imageUrl: String,
     title: String,
     headline: String,
-    primaryButton: SheetButtonAttribute? = null,
-    secondaryButton: SheetButtonAttribute? = null,
+    primaryButton: DialogButtonAttribute? = null,
+    secondaryButton: DialogButtonAttribute? = null,
     listItems: List<PromotionalListAttributes> = emptyList(),
     contentText: String? = null,
     footer: String? = null,
     onDismissRequest: () -> Unit = {},
-    isVisible: Boolean = false
 ) {
     val spacing = LocalSpacing.current
-    val coroutineScope = rememberCoroutineScope()
-    val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     val scrollState = rememberScrollState()
     var isScrollable by rememberSaveable { mutableStateOf(false) }
 
@@ -194,15 +178,11 @@ fun PromotionalFullImageSheet(
         isScrollable = scrollState.canScrollForward
     }
 
-    ModalBottomSheetScaffold(
+    Dialog(
         onDismissRequest = onDismissRequest,
-        sheetState = sheetState,
-        isVisible = isVisible
+        properties = DialogProperties(decorFitsSystemWindows = false)
     ) {
-        ConstraintLayout(
-            modifier = Modifier
-                .fillMaxSize()
-        ) {
+        DialogContent {
             val (closeButton, content, buttonContainer) = createRefs()
 
             Column(
@@ -223,7 +203,7 @@ fun PromotionalFullImageSheet(
                 PromotionalFullImage(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .clip(RoundedCornerShape(topStart = 24.dp, topEnd = 24.dp)),
+                        .clip(RoundedCornerShape(topStart = 8.dp, topEnd = 8.dp)),
                     imageUrl = imageUrl,
                     description = title
                 )
@@ -246,12 +226,7 @@ fun PromotionalFullImageSheet(
                         top.linkTo(content.top, margin = spacing.x16)
                         start.linkTo(content.start, margin = spacing.x16)
                     },
-                onClick = {
-                    coroutineScope.launch {
-                        sheetState.hide()
-                        onDismissRequest()
-                    }
-                },
+                onClick = onDismissRequest,
                 shape = CircleShape,
                 colors = ButtonDefaults.buttonColors(
                     containerColor = Color.Black.copy(alpha = 0.5f),
@@ -265,8 +240,9 @@ fun PromotionalFullImageSheet(
                 )
             }
 
-            SheetActions(
+            DialogActions(
                 modifier = Modifier
+                    .background(AppTheme.colors.background.pageBackground)
                     .constrainAs(buttonContainer) {
                         bottom.linkTo(parent.bottom)
                         start.linkTo(parent.start)
@@ -283,25 +259,22 @@ fun PromotionalFullImageSheet(
 
 /**
  * Promotional sheet with illustration in the center below the toolbar
- * Figma: https://www.figma.com/file/5ShSh0nuHWlYYjamj1dz4m/%5BDSN-1630%5D-What%E2%80%99s-new-dialog?node-id=823%3A8511
+ * This is specifically designed for tablets
+ * Figma: https://www.figma.com/file/5ShSh0nuHWlYYjamj1dz4m/%5BDSN-1630%5D-What%E2%80%99s-new-dialog?node-id=742%3A7290
  */
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun PromotionalIllustrationSheet(
+fun PromotionalIllustrationDialog(
     title: String,
     headline: String,
     @DrawableRes illustration: Int? = null,
-    primaryButton: SheetButtonAttribute? = null,
-    secondaryButton: SheetButtonAttribute? = null,
+    primaryButton: DialogButtonAttribute? = null,
+    secondaryButton: DialogButtonAttribute? = null,
     listItems: List<PromotionalListAttributes> = emptyList(),
     contentText: String? = null,
     footer: String? = null,
-    onDismissRequest: () -> Unit = {},
-    isVisible: Boolean = false
+    onDismissRequest: () -> Unit = {}
 ) {
-    val coroutineScope = rememberCoroutineScope()
     val spacing = LocalSpacing.current
-    val sheetState: SheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     val scrollState = rememberScrollState()
     var isScrollable by rememberSaveable { mutableStateOf(false) }
 
@@ -309,32 +282,27 @@ fun PromotionalIllustrationSheet(
         isScrollable = scrollState.canScrollForward
     }
 
-    ModalBottomSheetScaffold(
+    Dialog(
         onDismissRequest = onDismissRequest,
-        sheetState = sheetState,
-        isVisible = isVisible
+        properties = DialogProperties(decorFitsSystemWindows = false)
     ) {
-        ConstraintLayout(
-            modifier = Modifier
-                .fillMaxSize()
-        ) {
+        DialogContent {
             val (toolbar, content, buttonContainer) = createRefs()
 
             MegaTopAppBar(
                 modifier = Modifier
                     .constrainAs(toolbar) {
                         top.linkTo(parent.top, margin = spacing.x8)
-                        start.linkTo(parent.start, margin = spacing.x16)
-                        end.linkTo(parent.end, margin = spacing.x16)
+                        linkTo(
+                            start = parent.start,
+                            end = parent.end,
+                            startMargin = spacing.x16,
+                            endMargin = spacing.x16
+                        )
                     },
                 title = "",
                 navigationIcon = painterResource(id = R.drawable.ic_close),
-                onNavigationIconClicked = {
-                    coroutineScope.launch {
-                        sheetState.hide()
-                        onDismissRequest()
-                    }
-                }
+                onNavigationIconClicked = onDismissRequest
             )
 
             Column(
@@ -374,8 +342,9 @@ fun PromotionalIllustrationSheet(
                 )
             }
 
-            SheetActions(
+            DialogActions(
                 modifier = Modifier
+                    .background(AppTheme.colors.background.pageBackground)
                     .constrainAs(buttonContainer) {
                         bottom.linkTo(parent.bottom)
                         start.linkTo(parent.start)
@@ -391,22 +360,22 @@ fun PromotionalIllustrationSheet(
 }
 
 /**
- * Promotional sheet with only text and buttons.
- * Figma: https://www.figma.com/file/5ShSh0nuHWlYYjamj1dz4m/%5BDSN-1630%5D-What%E2%80%99s-new-dialog?node-id=823%3A8511
+ * Promotional dialog with only text and buttons.
+ * This is specifically designed for tablets
+ * Figma: https://www.figma.com/file/5ShSh0nuHWlYYjamj1dz4m/%5BDSN-1630%5D-What%E2%80%99s-new-dialog?node-id=742%3A6825
  */
 @Composable
-fun PromotionalPlainSheet(
+fun PromotionalPlainDialog(
     title: String,
     headline: String,
-    primaryButton: SheetButtonAttribute? = null,
-    secondaryButton: SheetButtonAttribute? = null,
+    primaryButton: DialogButtonAttribute? = null,
+    secondaryButton: DialogButtonAttribute? = null,
     listItems: List<PromotionalListAttributes> = emptyList(),
     contentText: String? = null,
     footer: String? = null,
     onDismissRequest: () -> Unit = {},
-    isVisible: Boolean = false
 ) {
-    PromotionalIllustrationSheet(
+    PromotionalIllustrationDialog(
         title = title,
         headline = headline,
         primaryButton = primaryButton,
@@ -415,57 +384,36 @@ fun PromotionalPlainSheet(
         contentText = contentText,
         footer = footer,
         onDismissRequest = onDismissRequest,
-        isVisible = isVisible,
         illustration = null
     )
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun ModalBottomSheetScaffold(
-    onDismissRequest: () -> Unit,
-    sheetState: SheetState,
-    isVisible: Boolean = false,
-    content: @Composable ColumnScope.() -> Unit,
+private fun DialogContent(
+    modifier: Modifier = Modifier,
+    content: @Composable ConstraintLayoutScope.() -> Unit
 ) {
-    val activity = LocalView.current.context as Activity
-
-    SideEffect {
-        WindowCompat.setDecorFitsSystemWindows(activity.window, false)
-    }
-
-    LaunchedEffect(isVisible) {
-        if (isVisible) {
-            sheetState.expand()
-        } else {
-            sheetState.hide()
-        }
-    }
-
-    ModalBottomSheet(
-        modifier = Modifier
+    ConstraintLayout(
+        modifier = modifier
             .fillMaxSize()
+            .padding(vertical = LocalSpacing.current.x48)
+            .clip(AppTheme.shapes.small)
+            .background(AppTheme.colors.background.pageBackground)
             .navigationBarsPadding(),
-        onDismissRequest = onDismissRequest,
-        sheetState = sheetState,
-        containerColor = AppTheme.colors.background.pageBackground,
-        scrimColor = AppTheme.colors.background.surface1,
-        dragHandle = null,
-        shape = bottomSheetShape,
         content = content
     )
 }
 
 @Composable
-private fun SheetActions(
+private fun DialogActions(
     modifier: Modifier,
-    primaryButton: SheetButtonAttribute? = null,
-    secondaryButton: SheetButtonAttribute? = null,
+    primaryButton: DialogButtonAttribute? = null,
+    secondaryButton: DialogButtonAttribute? = null,
     isDividerVisible: Boolean = false
 ) {
     val borderStrokeColor = AppTheme.colors.border.strong
 
-    Column(
+    Row(
         modifier = modifier
             .then(
                 if (isDividerVisible) {
@@ -484,87 +432,92 @@ private fun SheetActions(
             .padding(
                 vertical = LocalSpacing.current.x24,
                 horizontal = LocalSpacing.current.x16,
-            )
+            ),
+        horizontalArrangement = Arrangement.spacedBy(LocalSpacing.current.x24),
     ) {
-        if (primaryButton != null) {
-            PrimaryFilledButton(
-                modifier = Modifier
-                    .fillMaxWidth(),
-                text = primaryButton.first,
-                onClick = primaryButton.second
-            )
-        }
-
         if (secondaryButton != null) {
             SecondaryFilledButton(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(top = LocalSpacing.current.x16),
+                    .weight(1f),
                 text = secondaryButton.first,
                 onClick = secondaryButton.second
+            )
+        }
+
+        if (primaryButton != null) {
+            PrimaryFilledButton(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(1f),
+                text = primaryButton.first,
+                onClick = primaryButton.second
             )
         }
     }
 }
 
+@CombinedThemePreviewsTablet
 @Composable
-@CombinedThemePreviews
-private fun PreviewPromotionalPlainSheet() {
+private fun PromotionalImageDialogComponent() {
     AndroidThemeForPreviews {
-        PromotionalIllustrationSheet(
-            illustration = null,
+        PromotionalImageDialog(
+            imageUrl = "https:images.unsplash.com/photo-1579353977828-2a4eab540b9a?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8c2FtcGxlfGVufDB8fDB8fHww",
             title = "Title",
             headline = "Headline",
             primaryButton = "Button" to {},
             secondaryButton = "Button 2" to {},
+            onDismissRequest = {},
             listItems = listItemSamples,
             footer = "*terms and conditions. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip"
         )
     }
 }
 
+@CombinedThemePreviewsTablet
 @Composable
-@CombinedThemePreviews
-private fun PreviewPromotionalFullImageSheetWithList() {
+private fun PromotionalFullImageDialogComponent() {
     AndroidThemeForPreviews {
-        PromotionalFullImageSheet(
-            imageUrl = "",
+        PromotionalFullImageDialog(
+            imageUrl = "https:images.unsplash.com/photo-1579353977828-2a4eab540b9a?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8c2FtcGxlfGVufDB8fDB8fHww",
             title = "Title",
             headline = "Headline",
             primaryButton = "Button" to {},
             secondaryButton = "Button 2" to {},
+            onDismissRequest = {},
             listItems = listItemSamples,
             footer = "*terms and conditions. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip"
         )
     }
 }
 
+@CombinedThemePreviewsTablet
 @Composable
-@CombinedThemePreviews
-private fun PreviewPromotionalImageSheetWithList() {
+private fun PromotionalIllustrationDialogComponent() {
     AndroidThemeForPreviews {
-        PromotionalImageSheet(
-            imageUrl = "",
-            title = "Title",
-            headline = "Headline",
-            primaryButton = "Button" to {},
-            secondaryButton = "Button 2" to {},
-            listItems = listItemSamples,
-            footer = "*terms and conditions. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip"
-        )
-    }
-}
-
-@Composable
-@CombinedThemePreviews
-private fun PreviewPromotionalIllustrationSheetWithList() {
-    AndroidThemeForPreviews {
-        PromotionalIllustrationSheet(
+        PromotionalIllustrationDialog(
             illustration = R.drawable.illustration_mega_anniversary,
             title = "Title",
             headline = "Headline",
             primaryButton = "Button" to {},
             secondaryButton = "Button 2" to {},
+            onDismissRequest = {},
+            listItems = listItemSamples,
+            footer = "*terms and conditions. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip"
+        )
+    }
+}
+
+@CombinedThemePreviewsTablet
+@Composable
+private fun PromotionalPlainDialogComponent() {
+    AndroidThemeForPreviews {
+        PromotionalPlainDialog(
+            title = "Title",
+            headline = "Headline",
+            primaryButton = "Button" to {},
+            secondaryButton = "Button 2" to {},
+            onDismissRequest = {},
             listItems = listItemSamples,
             footer = "*terms and conditions. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip"
         )

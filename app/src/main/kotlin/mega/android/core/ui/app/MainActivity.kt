@@ -15,6 +15,7 @@ import mega.android.core.ui.app.component.ContentListComponent
 import mega.android.core.ui.app.component.DividerComponentCatalog
 import mega.android.core.ui.app.component.ListComponentCatalog
 import mega.android.core.ui.app.component.ProgressIndicatorCatalog
+import mega.android.core.ui.app.component.PromotionalDialogsCatalog
 import mega.android.core.ui.app.component.PromotionalSheetsCatalog
 import mega.android.core.ui.app.component.PromptCatalog
 import mega.android.core.ui.app.component.ShimmerListItem
@@ -72,6 +73,9 @@ fun MainComposeView() {
         }
         item {
             PromotionalSheetsCatalog()
+        }
+        item {
+            PromotionalDialogsCatalog()
         }
         item {
             TextInputField(modifier = Modifier, label = "Test", keyboardType = KeyboardType.Email, maxCharLimit = 190)
