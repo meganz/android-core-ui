@@ -9,12 +9,17 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.unit.dp
 import mega.android.core.ui.app.util.Section
 import mega.android.core.ui.components.LinkSpannedText
+import mega.android.core.ui.model.MegaSpanStyle
 import mega.android.core.ui.model.SpanIndicator
+import mega.android.core.ui.model.SpanStyleWithAnnotation
 import mega.android.core.ui.theme.AppTheme
 import mega.android.core.ui.theme.spacing.LocalSpacing
+import mega.android.core.ui.theme.tokens.LinkColor
+import mega.android.core.ui.theme.tokens.TextColor
 
 @Composable
 fun TextComponentCatalog() {
@@ -25,10 +30,25 @@ fun TextComponentCatalog() {
 
         LinkSpannedText(
             value = "Click [A]here[/A] to increase the counter: [B]$counter[/B]\n and [R]here[/R] to reset",
-            spanAnnotations = hashMapOf(
-                SpanIndicator('A') to "url or whatever you want to receive in onAnnotationClick",
-                SpanIndicator('R') to "reset",
-                SpanIndicator('B') to "d"
+            spanStyles = hashMapOf(
+                SpanIndicator('A') to SpanStyleWithAnnotation(
+                    MegaSpanStyle.LinkColorStyle(
+                        SpanStyle(),
+                        LinkColor.Primary
+                    ), "url or whatever you want to receive in onAnnotationClick"
+                ),
+                SpanIndicator('R') to SpanStyleWithAnnotation(
+                    MegaSpanStyle.TextColorStyle(
+                        SpanStyle(),
+                        TextColor.Secondary
+                    ), "reset"
+                ),
+                SpanIndicator('B') to SpanStyleWithAnnotation(
+                    MegaSpanStyle.LinkColorStyle(
+                        SpanStyle(),
+                        LinkColor.Primary
+                    ), "d"
+                )
             ),
             onAnnotationClick = { annotation ->
                 if (annotation == "reset") {

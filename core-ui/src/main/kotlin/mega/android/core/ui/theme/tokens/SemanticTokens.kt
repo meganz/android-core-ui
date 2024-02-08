@@ -173,7 +173,19 @@ public data class Link(
     public val primary: Color = Color.Magenta,
     public val inverse: Color = Color.Magenta,
     public val visited: Color = Color.Magenta,
-)
+) {
+    public fun getLinkColor(linkColor: LinkColor): Color = when (linkColor) {
+        LinkColor.Primary -> primary
+        LinkColor.Inverse -> inverse
+        LinkColor.Visited -> visited
+    }
+}
+
+public enum class LinkColor {
+    Primary,
+    Inverse,
+    Visited,
+}
 
 public data class Focus(
     public val colorFocus: Color = Color.Magenta,
