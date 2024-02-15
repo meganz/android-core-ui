@@ -2,6 +2,7 @@ package mega.android.core.ui.app.component
 
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -13,6 +14,7 @@ import mega.android.core.ui.app.util.Section
 import mega.android.core.ui.components.image.MegaIcon
 import mega.android.core.ui.components.list.MultiLineListItem
 import mega.android.core.ui.components.list.OneLineListItem
+import mega.android.core.ui.components.list.VpnSelectedCountryListItem
 import mega.android.core.ui.theme.spacing.LocalSpacing
 import mega.android.core.ui.theme.tokens.IconColor
 
@@ -83,6 +85,15 @@ fun ListComponentCatalog() {
                         .size(24.dp),
                 )
             }
+        )
+    }
+    Section(header = "VPN Country List Item") {
+        VpnSelectedCountryListItem(
+            modifier = Modifier.padding(all = LocalSpacing.current.x16),
+            title = "Selected Country",
+            subtitle = "Australia",
+            countryFlag = painterResource(id = R.drawable.australia),
+            rightIcon = painterResource(id = R.drawable.ic_chevron_right)
         )
     }
 }

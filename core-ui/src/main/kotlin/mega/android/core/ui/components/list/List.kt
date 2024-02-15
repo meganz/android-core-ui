@@ -1,6 +1,7 @@
 package mega.android.core.ui.components.list
 
-import androidx.annotation.DrawableRes
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -20,6 +21,9 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -142,29 +146,33 @@ fun MultiLineListItem(
 fun VpnSelectedCountryListItem(
     title: String,
     subtitle: String,
-    @DrawableRes countryFlagRes: Int,
-    @DrawableRes rightIconRes: Int,
+    countryFlag: Painter,
+    rightIcon: Painter,
     modifier: Modifier = Modifier,
+    colorFilter: ColorFilter? = null,
     onClickListener: () -> Unit = {},
 ) = ListItem(
     modifier = modifier
         .clip(AppTheme.shapes.small)
-        .widthIn(max = vpnCountrySelectedListItemMaxWidth),
+        .widthIn(max = vpnCountrySelectedListItemMaxWidth)
+        .background(AppTheme.colors.background.surface1),
     title = title,
     subtitle = subtitle,
     subtitleMaxLines = VPN_SUBTITLE_MAX_LINES,
     leadingElement = {
-        Icon(
-            painter = painterResource(id = countryFlagRes),
-            contentDescription = null,
+        Image(
+            painter = countryFlag,
+            contentDescription = subtitle,
             modifier = Modifier
                 .size(32.dp)
                 .align(Alignment.Center),
+            contentScale = ContentScale.Inside,
+            colorFilter = colorFilter
         )
     },
     trailingElement = {
         Icon(
-            painter = painterResource(id = rightIconRes),
+            painter = rightIcon,
             contentDescription = null,
             modifier = Modifier.size(24.dp),
             tint = AppTheme.colors.icon.primary
@@ -385,8 +393,8 @@ private fun VpnSelectedCountryListItemPreview() {
             modifier = Modifier,
             title = "Selected server",
             subtitle = "Country name",
-            countryFlagRes = R.drawable.ic_alert_triangle,
-            rightIconRes = R.drawable.ic_check_circle,
+            countryFlag = painterResource(id = R.drawable.ic_alert_triangle),
+            rightIcon = painterResource(id = R.drawable.ic_check_circle),
         )
     }
 }
