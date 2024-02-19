@@ -14,6 +14,8 @@ import mega.android.core.ui.app.util.Section
 import mega.android.core.ui.components.image.MegaIcon
 import mega.android.core.ui.components.list.MultiLineListItem
 import mega.android.core.ui.components.list.OneLineListItem
+import mega.android.core.ui.components.list.PrimaryHeaderListItem
+import mega.android.core.ui.components.list.SecondaryHeaderListItem
 import mega.android.core.ui.components.list.VpnSelectedCountryListItem
 import mega.android.core.ui.theme.spacing.LocalSpacing
 import mega.android.core.ui.theme.tokens.IconColor
@@ -84,7 +86,20 @@ fun ListComponentCatalog() {
                     modifier = Modifier
                         .size(24.dp),
                 )
-            }
+            })
+    }
+    Section(header = "Primary Header") {
+        PrimaryHeaderListItem(text = "Header Text")
+    }
+    Section(header = "Primary Header With Icon") {
+        PrimaryHeaderListItem(text = "Header Text", rightIconRes = R.drawable.ic_chevron_down)
+    }
+    Section(header = "Secondary Header") {
+        SecondaryHeaderListItem(text = "Header Text")
+    }
+    Section(header = "Secondary Header With Icon") {
+        SecondaryHeaderListItem(
+            text = "Header Text", rightIconRes = R.drawable.ic_chevron_down
         )
     }
     Section(header = "VPN Country List Item") {

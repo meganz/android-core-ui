@@ -1,5 +1,6 @@
 package mega.android.core.ui.components.list
 
+import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -29,10 +30,12 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import mega.android.core.ui.R
 import mega.android.core.ui.components.MegaText
+import mega.android.core.ui.components.image.MegaIcon
 import mega.android.core.ui.preview.CombinedThemePreviews
 import mega.android.core.ui.theme.AndroidThemeForPreviews
 import mega.android.core.ui.theme.AppTheme
 import mega.android.core.ui.theme.spacing.LocalSpacing
+import mega.android.core.ui.theme.tokens.IconColor
 import mega.android.core.ui.theme.tokens.TextColor
 
 private val listItemMinHeight = 60.dp
@@ -48,11 +51,14 @@ private const val MULTI_LINE_LIST_SUBTITLE_MAX_LINES = 2
 fun PrimaryHeaderListItem(
     text: String,
     modifier: Modifier = Modifier,
+    @DrawableRes rightIconRes: Int? = null,
 ) {
     HeaderListItem(
         modifier = modifier,
         text = text,
         textColor = TextColor.Primary,
+        rightIconRes = rightIconRes,
+        iconColor = IconColor.Primary,
     )
 }
 
@@ -60,11 +66,14 @@ fun PrimaryHeaderListItem(
 fun SecondaryHeaderListItem(
     text: String,
     modifier: Modifier = Modifier,
+    @DrawableRes rightIconRes: Int? = null,
 ) {
     HeaderListItem(
         modifier = modifier,
         text = text,
         textColor = TextColor.Secondary,
+        rightIconRes = rightIconRes,
+        iconColor = IconColor.Secondary,
     )
 }
 
@@ -73,18 +82,33 @@ private fun HeaderListItem(
     text: String,
     textColor: TextColor,
     modifier: Modifier = Modifier,
+    @DrawableRes rightIconRes: Int?,
+    iconColor: IconColor,
 ) {
-    MegaText(
+    Row(
         modifier = modifier
             .defaultMinSize(minHeight = headerListItemMinHeight)
             .fillMaxWidth()
-            .padding(horizontal = LocalSpacing.current.x16, vertical = LocalSpacing.current.x8),
-        text = text,
-        textColor = textColor,
-        style = AppTheme.typography.titleSmall,
-        maxLines = TITLE_MAX_LINES,
-        overflow = TextOverflow.Ellipsis
-    )
+            .padding(horizontal = LocalSpacing.current.x16, vertical = LocalSpacing.current.x8)
+    ) {
+        MegaText(
+            text = text,
+            textColor = textColor,
+            style = AppTheme.typography.titleSmall,
+            maxLines = TITLE_MAX_LINES,
+            overflow = TextOverflow.Ellipsis
+        )
+        rightIconRes?.let {
+            MegaIcon(
+                modifier = modifier
+                    .size(16.dp).padding(start = LocalSpacing.current.x8)
+                    .align(Alignment.CenterVertically),
+                painter = painterResource(id = rightIconRes),
+                tint = iconColor,
+                contentDescription = null
+            )
+        }
+    }
 }
 
 @Composable
@@ -371,9 +395,17 @@ private fun MultiLineListItemPreviewWithElements() {
 
 @Composable
 @CombinedThemePreviews
-fun HeaderListItemPreview() {
+fun SecondaryHeaderListItemPreview() {
     AndroidThemeForPreviews {
         SecondaryHeaderListItem(text = "Header text")
+    }
+}
+
+@Composable
+@CombinedThemePreviews
+fun SecondaryHeaderListItemWithIconPreview() {
+    AndroidThemeForPreviews {
+        SecondaryHeaderListItem(text = "Header text", rightIconRes = R.drawable.ic_arrow_left)
     }
 }
 
@@ -382,6 +414,14 @@ fun HeaderListItemPreview() {
 fun PrimaryHeaderListItemPreview() {
     AndroidThemeForPreviews {
         PrimaryHeaderListItem(text = "Header text")
+    }
+}
+
+@Composable
+@CombinedThemePreviews
+fun PrimaryHeaderListItemWithIconPreview() {
+    AndroidThemeForPreviews {
+        PrimaryHeaderListItem(text = "Header text", rightIconRes = R.drawable.ic_check_filled)
     }
 }
 
