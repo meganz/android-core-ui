@@ -9,10 +9,12 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material3.Icon
@@ -98,10 +100,11 @@ private fun HeaderListItem(
             maxLines = TITLE_MAX_LINES,
             overflow = TextOverflow.Ellipsis
         )
+        Spacer(modifier = Modifier.width(8.dp))
         rightIconRes?.let {
             MegaIcon(
                 modifier = modifier
-                    .size(16.dp).padding(start = LocalSpacing.current.x8)
+                    .size(16.dp)
                     .align(Alignment.CenterVertically),
                 painter = painterResource(id = rightIconRes),
                 tint = iconColor,
