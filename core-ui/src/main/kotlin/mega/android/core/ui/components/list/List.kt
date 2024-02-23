@@ -54,6 +54,7 @@ fun PrimaryHeaderListItem(
     text: String,
     modifier: Modifier = Modifier,
     @DrawableRes rightIconRes: Int? = null,
+    onClickListener: () -> Unit = {},
 ) {
     HeaderListItem(
         modifier = modifier,
@@ -61,6 +62,7 @@ fun PrimaryHeaderListItem(
         textColor = TextColor.Primary,
         rightIconRes = rightIconRes,
         iconColor = IconColor.Primary,
+        onClickListener = onClickListener
     )
 }
 
@@ -69,6 +71,7 @@ fun SecondaryHeaderListItem(
     text: String,
     modifier: Modifier = Modifier,
     @DrawableRes rightIconRes: Int? = null,
+    onClickListener: () -> Unit = {},
 ) {
     HeaderListItem(
         modifier = modifier,
@@ -76,6 +79,7 @@ fun SecondaryHeaderListItem(
         textColor = TextColor.Secondary,
         rightIconRes = rightIconRes,
         iconColor = IconColor.Secondary,
+        onClickListener = onClickListener
     )
 }
 
@@ -86,13 +90,13 @@ private fun HeaderListItem(
     modifier: Modifier = Modifier,
     @DrawableRes rightIconRes: Int?,
     iconColor: IconColor,
+    onClickListener: () -> Unit,
 ) {
-    Row(
-        modifier = modifier
-            .defaultMinSize(minHeight = headerListItemMinHeight)
-            .fillMaxWidth()
-            .padding(horizontal = LocalSpacing.current.x16, vertical = LocalSpacing.current.x8)
-    ) {
+    Row(modifier = modifier
+        .defaultMinSize(minHeight = headerListItemMinHeight)
+        .fillMaxWidth()
+        .padding(horizontal = LocalSpacing.current.x16, vertical = LocalSpacing.current.x8)
+        .clickable { onClickListener() }) {
         MegaText(
             text = text,
             textColor = textColor,
