@@ -191,7 +191,7 @@ private fun ContentListItem(
             .fillMaxWidth()
             .clickable { onClickListener() },
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(spacing.x24),
+        horizontalArrangement = Arrangement.spacedBy(spacing.x16),
     ) {
         if (leadingElement != null) {
             leadingElement()
