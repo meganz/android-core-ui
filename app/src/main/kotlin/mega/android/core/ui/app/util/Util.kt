@@ -10,7 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import mega.android.core.ui.components.MegaText
-import mega.android.core.ui.components.divider.Divider
+import mega.android.core.ui.components.divider.SubtleDivider
 import mega.android.core.ui.theme.AppTheme
 import mega.android.core.ui.theme.spacing.LocalSpacing
 import mega.android.core.ui.theme.tokens.TextColor
@@ -29,7 +29,7 @@ fun Section(header: String, content: @Composable ColumnScope.() -> Unit) {
             textColor = TextColor.Primary,
             style = AppTheme.typography.titleMedium
         )
-        Divider(
+        SubtleDivider(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = LocalSpacing.current.x16)

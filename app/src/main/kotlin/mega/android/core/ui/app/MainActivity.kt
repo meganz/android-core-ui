@@ -14,6 +14,7 @@ import mega.android.core.ui.app.component.BottomSheetComponentCatalog
 import mega.android.core.ui.app.component.CheckboxCatalog
 import mega.android.core.ui.app.component.ContentListComponent
 import mega.android.core.ui.app.component.DividerComponentCatalog
+import mega.android.core.ui.app.component.DropDownMenuComponent
 import mega.android.core.ui.app.component.ListComponentCatalog
 import mega.android.core.ui.app.component.ProgressIndicatorCatalog
 import mega.android.core.ui.app.component.PromotionalDialogsCatalog
@@ -48,6 +49,9 @@ fun MainComposeView() {
             .fillMaxSize()
             .navigationBarsPadding()
     ) {
+        item {
+            DropDownMenuComponent()
+        }
         item {
             ListComponentCatalog()
         }
