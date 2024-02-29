@@ -48,6 +48,7 @@ fun MegaLargeTopAppBar(
         },
         colors = TopAppBarDefaults.topAppBarColors(
             containerColor = AppTheme.colors.background.pageBackground,
+            scrolledContainerColor = AppTheme.colors.background.pageBackground,
             navigationIconContentColor = AppTheme.colors.icon.primary,
             titleContentColor = AppTheme.colors.text.primary,
             actionIconContentColor = AppTheme.colors.icon.primary
