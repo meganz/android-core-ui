@@ -225,7 +225,7 @@ private fun ContentListItem(
 
 @CombinedThemePreviews
 @Composable
-fun ImageContentListItemPreview() {
+private fun ImageContentListItemPreview() {
     AndroidThemeForPreviews {
         ImageContentListItem(
             modifier = Modifier
@@ -255,7 +255,7 @@ fun ImageContentListItemPreview() {
 
 @CombinedThemePreviews
 @Composable
-fun IconContentListItemPreview() {
+private fun IconContentListItemPreview() {
     AndroidThemeForPreviews {
         IconContentListItem(
             modifier = Modifier
@@ -285,7 +285,7 @@ fun IconContentListItemPreview() {
 
 @CombinedThemePreviews
 @Composable
-fun PlainContentListItemPreview() {
+private fun PlainContentListItemPreview() {
     AndroidThemeForPreviews {
         PlainContentListItem(
             modifier = Modifier
@@ -314,7 +314,7 @@ fun PlainContentListItemPreview() {
 
 @CombinedThemePreviews
 @Composable
-fun NumberContentListItemPreview() {
+private fun NumberContentListItemPreview() {
     AndroidThemeForPreviews {
         NumberContentListItem(
             modifier = Modifier

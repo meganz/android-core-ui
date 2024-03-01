@@ -3,6 +3,7 @@ package mega.android.core.ui.components.image
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import mega.android.core.ui.R
@@ -15,13 +16,13 @@ import mega.android.core.ui.theme.tokens.SupportColor
 @Composable
 fun MegaIcon(
     painter: Painter,
-    tint: IconColor,
     modifier: Modifier = Modifier,
+    tint: IconColor? = null,
     contentDescription: String? = null,
 ) {
     Icon(
         painter = painter,
-        tint = AppTheme.iconColor(iconColor = tint),
+        tint = if (tint != null) AppTheme.iconColor(iconColor = tint) else Color.Unspecified,
         contentDescription = contentDescription,
         modifier = modifier
     )
@@ -30,13 +31,13 @@ fun MegaIcon(
 @Composable
 fun MegaIcon(
     painter: Painter,
-    tint: SupportColor,
     modifier: Modifier = Modifier,
+    supportTint: SupportColor? = null,
     contentDescription: String? = null,
 ) {
     Icon(
         painter = painter,
-        tint = AppTheme.supportColor(supportColor = tint),
+        tint = if (supportTint != null) AppTheme.supportColor(supportColor = supportTint) else Color.Unspecified,
         contentDescription = contentDescription,
         modifier = modifier
     )
@@ -59,7 +60,18 @@ private fun MegaIconPreviewDark() {
     AndroidThemeForPreviews {
         MegaIcon(
             painter = painterResource(id = R.drawable.ic_close),
-            tint = SupportColor.Success
+            supportTint = SupportColor.Success
+        )
+    }
+}
+
+@Composable
+@CombinedThemePreviews
+private fun MegaIconPreviewUnspecified() {
+    AndroidThemeForPreviews {
+        MegaIcon(
+            painter = painterResource(id = R.drawable.ic_close),
+            tint = null
         )
     }
 }
