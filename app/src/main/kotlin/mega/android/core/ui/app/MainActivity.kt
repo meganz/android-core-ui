@@ -22,6 +22,7 @@ import mega.android.core.ui.app.component.PromotionalSheetsCatalog
 import mega.android.core.ui.app.component.PromptCatalog
 import mega.android.core.ui.app.component.ShimmerListItem
 import mega.android.core.ui.app.component.TextComponentCatalog
+import mega.android.core.ui.app.component.TextThumbnailComponentCatalog
 import mega.android.core.ui.components.inputfields.TextInputField
 import mega.android.core.ui.components.surface.ThemedSurface
 import mega.android.core.ui.preview.CombinedThemePreviews
@@ -81,6 +82,9 @@ fun MainComposeView() {
         }
         item {
             PromotionalDialogsCatalog()
+        }
+        item {
+            TextThumbnailComponentCatalog()
         }
         item {
             TextInputField(modifier = Modifier, label = "Test", keyboardType = KeyboardType.Email, maxCharLimit = 190)
