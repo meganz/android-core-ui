@@ -1,9 +1,10 @@
 package mega.android.core.ui.components.list
 
 import androidx.annotation.DrawableRes
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
@@ -54,7 +55,9 @@ fun PrimaryHeaderListItem(
     text: String,
     modifier: Modifier = Modifier,
     @DrawableRes rightIconRes: Int? = null,
+    enableClick: Boolean = true,
     onClickListener: () -> Unit = {},
+    onLongClickListener: () -> Unit = {},
 ) {
     HeaderListItem(
         modifier = modifier,
@@ -62,7 +65,9 @@ fun PrimaryHeaderListItem(
         textColor = TextColor.Primary,
         rightIconRes = rightIconRes,
         iconColor = IconColor.Primary,
-        onClickListener = onClickListener
+        enableClick = enableClick,
+        onClickListener = onClickListener,
+        onLongClickListener = onLongClickListener,
     )
 }
 
@@ -71,7 +76,9 @@ fun SecondaryHeaderListItem(
     text: String,
     modifier: Modifier = Modifier,
     @DrawableRes rightIconRes: Int? = null,
+    enableClick: Boolean = true,
     onClickListener: () -> Unit = {},
+    onLongClickListener: () -> Unit = {},
 ) {
     HeaderListItem(
         modifier = modifier,
@@ -79,10 +86,13 @@ fun SecondaryHeaderListItem(
         textColor = TextColor.Secondary,
         rightIconRes = rightIconRes,
         iconColor = IconColor.Secondary,
-        onClickListener = onClickListener
+        enableClick = enableClick,
+        onClickListener = onClickListener,
+        onLongClickListener = onLongClickListener,
     )
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun HeaderListItem(
     text: String,
@@ -90,13 +100,19 @@ private fun HeaderListItem(
     modifier: Modifier = Modifier,
     @DrawableRes rightIconRes: Int?,
     iconColor: IconColor,
+    enableClick: Boolean = true,
     onClickListener: () -> Unit,
+    onLongClickListener: () -> Unit,
 ) {
     Row(modifier = modifier
         .defaultMinSize(minHeight = headerListItemMinHeight)
-        .fillMaxWidth()
         .padding(horizontal = LocalSpacing.current.x16, vertical = LocalSpacing.current.x8)
-        .clickable { onClickListener() }) {
+        .combinedClickable (
+            enabled = enableClick,
+            onClick = onClickListener,
+            onLongClick = onLongClickListener
+        )
+    ) {
         MegaText(
             text = text,
             textColor = textColor,
@@ -124,7 +140,9 @@ fun OneLineListItem(
     modifier: Modifier = Modifier,
     leadingElement: (@Composable (BoxScope.() -> Unit))? = null,
     trailingElement: (@Composable (() -> Unit))? = null,
+    enableClick: Boolean = true,
     onClickListener: () -> Unit = {},
+    onLongClickListener: () -> Unit = {},
 ) = ListItem(
     modifier = modifier
         .defaultMinSize(minHeight = listItemMinHeight),
@@ -132,7 +150,9 @@ fun OneLineListItem(
     subtitle = null,
     leadingElement = leadingElement,
     trailingElement = trailingElement,
-    onClickListener = onClickListener
+    enableClick = enableClick,
+    onClickListener = onClickListener,
+    onLongClickListener = onLongClickListener,
 )
 
 @Composable
@@ -142,7 +162,9 @@ fun TwoLineListItem(
     modifier: Modifier = Modifier,
     leadingElement: (@Composable (BoxScope.() -> Unit))? = null,
     trailingElement: (@Composable (() -> Unit))? = null,
+    enableClick: Boolean = true,
     onClickListener: () -> Unit = {},
+    onLongClickListener: () -> Unit = {},
 ) = ListItem(
     modifier = modifier
         .defaultMinSize(minHeight = listItemMinHeight),
@@ -150,7 +172,9 @@ fun TwoLineListItem(
     subtitle = subtitle,
     leadingElement = leadingElement,
     trailingElement = trailingElement,
+    enableClick = enableClick,
     onClickListener = onClickListener,
+    onLongClickListener = onLongClickListener,
     subtitleMaxLines = TWO_LINE_LIST_SUBTITLE_MAX_LINES,
 )
 
@@ -161,7 +185,9 @@ fun MultiLineListItem(
     modifier: Modifier = Modifier,
     leadingElement: (@Composable (BoxScope.() -> Unit))? = null,
     trailingElement: (@Composable (() -> Unit))? = null,
+    enableClick: Boolean = true,
     onClickListener: () -> Unit = {},
+    onLongClickListener: () -> Unit = {},
 ) = ListItem(
     modifier = modifier
         .defaultMinSize(minHeight = listItemMinHeight),
@@ -169,7 +195,9 @@ fun MultiLineListItem(
     subtitle = subtitle,
     leadingElement = leadingElement,
     trailingElement = trailingElement,
+    enableClick = enableClick,
     onClickListener = onClickListener,
+    onLongClickListener = onLongClickListener,
     subtitleMaxLines = Int.MAX_VALUE
 )
 
@@ -182,6 +210,7 @@ fun VpnSelectedCountryListItem(
     modifier: Modifier = Modifier,
     colorFilter: ColorFilter? = null,
     onClickListener: () -> Unit = {},
+    onLongClickListener: () -> Unit = {},
 ) = ListItem(
     modifier = modifier
         .clip(AppTheme.shapes.small)
@@ -209,9 +238,12 @@ fun VpnSelectedCountryListItem(
             tint = AppTheme.colors.icon.primary
         )
     },
+    enableClick = true,
     onClickListener = onClickListener,
+    onLongClickListener = onLongClickListener
 )
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun ListItem(
     modifier: Modifier,
@@ -219,13 +251,19 @@ private fun ListItem(
     subtitle: String? = null,
     leadingElement: (@Composable (BoxScope.() -> Unit))? = null,
     trailingElement: (@Composable (() -> Unit))? = null,
+    enableClick: Boolean = true,
     onClickListener: () -> Unit = {},
+    onLongClickListener: () -> Unit = {},
     subtitleMaxLines: Int = MULTI_LINE_LIST_SUBTITLE_MAX_LINES,
 ) {
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .clickable { onClickListener() }
+            .combinedClickable (
+                enabled = enableClick,
+                onClick = onClickListener,
+                onLongClick = onLongClickListener
+            )
             .padding(
                 vertical = LocalSpacing.current.x12,
                 horizontal = LocalSpacing.current.x16
