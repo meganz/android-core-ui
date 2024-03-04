@@ -22,12 +22,12 @@ fun TextThumbnailComponentCatalog() {
             modifier = Modifier.padding(horizontal = 8.dp),
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            TextThumbnail(modifier = Modifier.size(32.dp), text = "Hello", numberOfCharacters = 1)
-            TextThumbnail(modifier = Modifier.size(32.dp), text = "Hello", numberOfCharacters = 2)
-            TextThumbnail(modifier = Modifier.size(32.dp), text = "Hello", numberOfCharacters = 3)
-            TextThumbnail(modifier = Modifier.size(64.dp), text = "Hello", numberOfCharacters = 1)
-            TextThumbnail(modifier = Modifier.size(64.dp), text = "Hello", numberOfCharacters = 2)
-            TextThumbnail(modifier = Modifier.size(64.dp), text = "Hello", numberOfCharacters = 3)
+            TextThumbnail(modifier = Modifier.size(32.dp), text = "Hello", numberOfCharacters = 1, randomInt = 1)
+            TextThumbnail(modifier = Modifier.size(32.dp), text = "Hello", numberOfCharacters = 2, randomInt = 2)
+            TextThumbnail(modifier = Modifier.size(32.dp), text = "Hello", numberOfCharacters = 3, randomInt = 3)
+            TextThumbnail(modifier = Modifier.size(64.dp), text = "Hello", numberOfCharacters = 1, randomInt = 1)
+            TextThumbnail(modifier = Modifier.size(64.dp), text = "Hello", numberOfCharacters = 2, randomInt = 2)
+            TextThumbnail(modifier = Modifier.size(64.dp), text = "Hello", numberOfCharacters = 3, randomInt = 1)
         }
     }
 }

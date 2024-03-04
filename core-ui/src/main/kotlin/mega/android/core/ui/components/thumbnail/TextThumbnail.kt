@@ -14,16 +14,16 @@ import mega.android.core.ui.theme.AndroidThemeForPreviews
 import mega.android.core.ui.theme.AppTheme
 import mega.android.core.ui.theme.spacing.LocalSpacing
 import mega.android.core.ui.theme.tokens.TextColor
-import kotlin.random.Random.Default.nextInt
 
 @Composable
 fun TextThumbnail(
     modifier: Modifier,
     text: String,
     numberOfCharacters: Int,
+    randomInt: Int,
     shape: Shape = AppTheme.shapes.extraSmall
 ) {
-    val backgroundColor = when (nextInt(1, 4)) {
+    val backgroundColor = when (randomInt) {
         1 -> AppTheme.colors.indicator.yellow
         2 -> AppTheme.colors.indicator.green
         3 -> AppTheme.colors.indicator.blue
@@ -47,7 +47,8 @@ private fun TextThumbnailPreview() {
         TextThumbnail(
             modifier = Modifier.size(LocalSpacing.current.x32),
             text = "Hello",
-            numberOfCharacters = 2
+            numberOfCharacters = 2,
+            randomInt = 1
         )
     }
 }
