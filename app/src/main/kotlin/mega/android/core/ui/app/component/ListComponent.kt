@@ -111,4 +111,14 @@ fun ListComponentCatalog() {
             rightIcon = painterResource(id = R.drawable.ic_chevron_right)
         )
     }
+
+    Section(header = "VPN Country List Item - Shimmer") {
+        VpnSelectedCountryListItem(
+            modifier = Modifier.padding(all = LocalSpacing.current.x16),
+            title = "Selected Country",
+            subtitle = null,
+            countryFlag = null,
+            rightIcon = painterResource(id = R.drawable.ic_chevron_right)
+        )
+    }
 }

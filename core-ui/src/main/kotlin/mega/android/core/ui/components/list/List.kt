@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -34,6 +35,7 @@ import androidx.compose.ui.unit.dp
 import mega.android.core.ui.R
 import mega.android.core.ui.components.MegaText
 import mega.android.core.ui.components.image.MegaIcon
+import mega.android.core.ui.components.util.shimmerEffect
 import mega.android.core.ui.preview.CombinedThemePreviews
 import mega.android.core.ui.theme.AndroidThemeForPreviews
 import mega.android.core.ui.theme.AppTheme
@@ -104,14 +106,15 @@ private fun HeaderListItem(
     onClickListener: () -> Unit,
     onLongClickListener: () -> Unit,
 ) {
-    Row(modifier = modifier
-        .defaultMinSize(minHeight = headerListItemMinHeight)
-        .padding(horizontal = LocalSpacing.current.x16, vertical = LocalSpacing.current.x8)
-        .combinedClickable (
-            enabled = enableClick,
-            onClick = onClickListener,
-            onLongClick = onLongClickListener
-        )
+    Row(
+        modifier = modifier
+            .defaultMinSize(minHeight = headerListItemMinHeight)
+            .padding(horizontal = LocalSpacing.current.x16, vertical = LocalSpacing.current.x8)
+            .combinedClickable(
+                enabled = enableClick,
+                onClick = onClickListener,
+                onLongClick = onLongClickListener
+            )
     ) {
         MegaText(
             text = text,
@@ -204,8 +207,8 @@ fun MultiLineListItem(
 @Composable
 fun VpnSelectedCountryListItem(
     title: String,
-    subtitle: String,
-    countryFlag: Painter,
+    subtitle: String?,
+    countryFlag: Painter?,
     rightIcon: Painter,
     modifier: Modifier = Modifier,
     colorFilter: ColorFilter? = null,
@@ -220,15 +223,30 @@ fun VpnSelectedCountryListItem(
     subtitle = subtitle,
     subtitleMaxLines = VPN_SUBTITLE_MAX_LINES,
     leadingElement = {
-        Image(
-            painter = countryFlag,
-            contentDescription = subtitle,
+        Box(
             modifier = Modifier
                 .size(32.dp)
-                .align(Alignment.Center),
-            contentScale = ContentScale.Inside,
-            colorFilter = colorFilter
-        )
+                .align(Alignment.Center)
+        ) {
+            if (countryFlag != null) {
+                Image(
+                    painter = countryFlag,
+                    contentDescription = subtitle,
+                    modifier = Modifier
+                        .size(32.dp)
+                        .align(Alignment.Center),
+                    contentScale = ContentScale.Inside,
+                    colorFilter = colorFilter
+                )
+            } else {
+                Spacer(
+                    modifier = Modifier
+                        .size(32.dp)
+                        .align(Alignment.Center)
+                        .shimmerEffect()
+                )
+            }
+        }
     },
     trailingElement = {
         Icon(
@@ -240,7 +258,8 @@ fun VpnSelectedCountryListItem(
     },
     enableClick = true,
     onClickListener = onClickListener,
-    onLongClickListener = onLongClickListener
+    onLongClickListener = onLongClickListener,
+    replaceNullSubtitleWithShimmer = true
 )
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -255,11 +274,12 @@ private fun ListItem(
     onClickListener: () -> Unit = {},
     onLongClickListener: () -> Unit = {},
     subtitleMaxLines: Int = MULTI_LINE_LIST_SUBTITLE_MAX_LINES,
+    replaceNullSubtitleWithShimmer: Boolean = false
 ) {
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .combinedClickable (
+            .combinedClickable(
                 enabled = enableClick,
                 onClick = onClickListener,
                 onLongClick = onLongClickListener
@@ -305,6 +325,13 @@ private fun ListItem(
                     style = AppTheme.typography.bodyMedium,
                     maxLines = subtitleMaxLines,
                     overflow = TextOverflow.Ellipsis
+                )
+            } else if (replaceNullSubtitleWithShimmer) {
+                Spacer(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(20.dp)
+                        .shimmerEffect()
                 )
             }
         }
@@ -479,6 +506,20 @@ private fun VpnSelectedCountryListItemPreview() {
             title = "Selected server",
             subtitle = "Country name",
             countryFlag = painterResource(id = R.drawable.ic_alert_triangle),
+            rightIcon = painterResource(id = R.drawable.ic_check_circle),
+        )
+    }
+}
+
+@Composable
+@CombinedThemePreviews
+private fun VpnSelectedCountryListItemShimmerPreview() {
+    AndroidThemeForPreviews {
+        VpnSelectedCountryListItem(
+            modifier = Modifier,
+            title = "Selected server",
+            subtitle = null,
+            countryFlag = null,
             rightIcon = painterResource(id = R.drawable.ic_check_circle),
         )
     }
