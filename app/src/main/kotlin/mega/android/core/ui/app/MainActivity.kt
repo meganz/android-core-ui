@@ -11,6 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
 import mega.android.core.ui.app.component.BottomSheetComponentCatalog
+import mega.android.core.ui.app.component.ButtonComponentCatalog
 import mega.android.core.ui.app.component.CheckboxCatalog
 import mega.android.core.ui.app.component.ContentListComponent
 import mega.android.core.ui.app.component.DividerComponentCatalog
@@ -55,6 +56,9 @@ fun MainComposeView() {
         }
         item {
             ListComponentCatalog()
+        }
+        item {
+            ButtonComponentCatalog()
         }
         item {
             ContentListComponent()

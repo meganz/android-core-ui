@@ -1,4 +1,4 @@
-package mega.android.core.ui.components
+package mega.android.core.ui.components.button
 
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsPressedAsState
@@ -17,7 +17,7 @@ import mega.android.core.ui.theme.AndroidThemeForPreviews
 import mega.android.core.ui.theme.AppTheme
 
 @Composable
-fun PrimaryTextButton(
+fun TextOnlyButton(
     text: String,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
@@ -72,6 +72,6 @@ private fun BaseTextButton(
 @Composable
 private fun PrimaryTextButtonPreview() {
     AndroidThemeForPreviews {
-        PrimaryTextButton(text = "TextButton", onClick = {})
+        TextOnlyButton(text = "TextButton", onClick = {})
     }
 }
