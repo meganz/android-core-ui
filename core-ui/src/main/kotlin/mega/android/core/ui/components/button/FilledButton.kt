@@ -115,7 +115,7 @@ private fun FilledButton(
         modifier = modifier,
         interactionSource = interactionSource,
         shape = RoundedCornerShape(8.dp),
-        onClick = onClick,
+        onClick = { if (!isLoading) onClick() },
         colors = ButtonDefaults.buttonColors(
             containerColor = containerColor,
         ),
