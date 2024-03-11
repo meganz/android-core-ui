@@ -1,11 +1,11 @@
 package mega.android.core.ui.components.dropdown
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsHoveredAsState
 import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.widthIn
@@ -23,7 +23,7 @@ import androidx.compose.ui.unit.dp
 import mega.android.core.ui.components.divider.StrongDivider
 import mega.android.core.ui.theme.AppTheme
 
-private val menuItemMinWidth = 200.dp
+private val menuItemMinWidth = 220.dp
 
 data class DropDownItem(
     val id: Int,
@@ -78,13 +78,13 @@ internal fun MegaDropDownMenuItem(
             .wrapContentHeight()
     ) {
         DropdownMenuItem(
-            modifier = modifier.background(backgroundColor)
-                .padding(vertical = 8.dp, horizontal = 12.dp),
+            modifier = modifier.background(backgroundColor),
             onClick = onClick,
             text = { Text(text = dropDownItem.text, style = AppTheme.typography.bodyLarge) },
             leadingIcon = dropDownItem.leadingIcon,
             trailingIcon = dropDownItem.trailingIcon,
             enabled = dropDownItem.enabled,
+            contentPadding = PaddingValues(horizontal = 8.dp, vertical = 12.dp),
             colors = MenuDefaults.itemColors(
                 textColor = AppTheme.colors.text.primary,
                 leadingIconColor = AppTheme.colors.icon.primary,
