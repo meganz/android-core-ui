@@ -11,6 +11,7 @@ import mega.android.core.ui.preview.CombinedThemePreviews
 import mega.android.core.ui.theme.AndroidThemeForPreviews
 import mega.android.core.ui.theme.AppTheme
 import mega.android.core.ui.theme.tokens.IconColor
+import mega.android.core.ui.theme.tokens.LinkColor
 import mega.android.core.ui.theme.tokens.SupportColor
 
 @Composable
@@ -44,6 +45,22 @@ fun MegaIcon(
 }
 
 @Composable
+fun MegaIcon(
+    painter: Painter,
+    modifier: Modifier = Modifier,
+    linkColorTint: LinkColor? = null,
+    contentDescription: String? = null,
+) {
+    Icon(
+        painter = painter,
+        tint = if (linkColorTint != null) AppTheme.linkColor(linkColor = linkColorTint) else Color.Unspecified,
+        contentDescription = contentDescription,
+        modifier = modifier
+    )
+}
+
+
+@Composable
 @CombinedThemePreviews
 private fun MegaIconPreview() {
     AndroidThemeForPreviews {
@@ -56,11 +73,22 @@ private fun MegaIconPreview() {
 
 @Composable
 @CombinedThemePreviews
-private fun MegaIconPreviewDark() {
+private fun MegaIconWithSupportTintPreview() {
     AndroidThemeForPreviews {
         MegaIcon(
             painter = painterResource(id = R.drawable.ic_close),
             supportTint = SupportColor.Success
+        )
+    }
+}
+
+@Composable
+@CombinedThemePreviews
+private fun MegaIconWithLinkColorTintPreview() {
+    AndroidThemeForPreviews {
+        MegaIcon(
+            painter = painterResource(id = R.drawable.ic_close),
+            linkColorTint = LinkColor.Primary
         )
     }
 }
