@@ -37,6 +37,8 @@ import mega.android.core.ui.theme.AppTheme
 import mega.android.core.ui.theme.spacing.LocalSpacing
 import mega.android.core.ui.theme.tokens.TextColor
 
+private val inputFieldHeight = 52.dp
+
 /**
  * Text input field
  * @param modifier
@@ -168,7 +170,7 @@ private fun BaseTextField(
             modifier = Modifier
                 .padding(vertical = spacing.x4)
                 .fillMaxWidth()
-                .height(56.dp)
+                .height(inputFieldHeight)
                 .onFocusChanged {
                     isFocused = it.isFocused
                     onFocusChanged?.invoke(it.isFocused)

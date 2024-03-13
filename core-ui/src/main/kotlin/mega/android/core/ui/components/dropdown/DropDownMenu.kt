@@ -84,7 +84,7 @@ internal fun MegaDropDownMenuItem(
             leadingIcon = dropDownItem.leadingIcon,
             trailingIcon = dropDownItem.trailingIcon,
             enabled = dropDownItem.enabled,
-            contentPadding = PaddingValues(horizontal = 8.dp, vertical = 12.dp),
+            contentPadding = PaddingValues(horizontal = 12.dp, vertical = 8.dp),
             colors = MenuDefaults.itemColors(
                 textColor = AppTheme.colors.text.primary,
                 leadingIconColor = AppTheme.colors.icon.primary,
