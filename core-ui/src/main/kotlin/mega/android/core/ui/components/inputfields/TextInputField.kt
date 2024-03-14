@@ -37,7 +37,7 @@ import mega.android.core.ui.theme.AppTheme
 import mega.android.core.ui.theme.spacing.LocalSpacing
 import mega.android.core.ui.theme.tokens.TextColor
 
-private val inputFieldHeight = 52.dp
+private val inputFieldHeight = 56.dp
 
 /**
  * Text input field
