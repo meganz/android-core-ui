@@ -30,7 +30,12 @@ fun TextThumbnail(
         else -> AppTheme.colors.indicator.blue
     }
     val chars = text.trim().take(numberOfCharacters)
-    Box(modifier = modifier.background(color = backgroundColor, shape = shape)) {
+    Box(
+        modifier = modifier.background(
+            color = if (chars.isEmpty()) AppTheme.colors.background.surface3 else backgroundColor,
+            shape = shape
+        )
+    ) {
         MegaText(
             modifier = Modifier.align(Alignment.Center),
             text = chars,
