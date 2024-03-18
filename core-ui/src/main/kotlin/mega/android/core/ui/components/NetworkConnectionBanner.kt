@@ -10,7 +10,13 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
+import mega.android.core.ui.components.prompt.ErrorPrompt
+import mega.android.core.ui.components.prompt.SuccessPrompt
+import mega.android.core.ui.preview.BooleanProvider
+import mega.android.core.ui.preview.CombinedThemePreviews
+import mega.android.core.ui.theme.AndroidThemeForPreviews
 import mega.android.core.ui.theme.AppTheme
 
 @Composable
@@ -36,5 +42,43 @@ fun NetworkConnectionBanner(
                 color = AppTheme.colors.text.primary
             )
         }
+    }
+}
+
+@Composable
+fun NetworkConnectionBanner(
+    isBannerVisible: Boolean,
+    isConnectedToNetwork: Boolean,
+    message: String,
+    modifier: Modifier = Modifier
+) {
+    AnimatedVisibility(
+        visible = isBannerVisible
+    ) {
+        if (isConnectedToNetwork) {
+            SuccessPrompt(
+                modifier = modifier,
+                message = message
+            )
+        } else {
+            ErrorPrompt(
+                modifier = modifier,
+                message = message
+            )
+        }
+    }
+}
+
+@CombinedThemePreviews
+@Composable
+private fun NetworkConnectionBannerPreview(
+    @PreviewParameter(BooleanProvider::class) isConnectedToNetwork: Boolean,
+) {
+    AndroidThemeForPreviews {
+        NetworkConnectionBanner(
+            isBannerVisible = true,
+            isConnectedToNetwork = isConnectedToNetwork,
+            message = "Message"
+        )
     }
 }
