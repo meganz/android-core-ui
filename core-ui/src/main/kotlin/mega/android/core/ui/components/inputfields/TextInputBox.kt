@@ -2,9 +2,11 @@ package mega.android.core.ui.components.inputfields
 
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
@@ -44,6 +46,7 @@ fun TextInputBox(
     capitalization: KeyboardCapitalization = KeyboardCapitalization.Words,
     text: String = "",
     maxCharLimit: Int = Int.MAX_VALUE,
+    optionalLabelText: String? = null,
     onValueChanged: ((String) -> Unit)? = null,
     onFocusChanged: ((Boolean) -> Unit)? = null,
 ) {
@@ -78,12 +81,21 @@ fun TextInputBox(
         modifier = modifier
             .fillMaxWidth()
     ) {
-        Text(
-            modifier = Modifier.fillMaxWidth(),
-            text = label,
-            style = AppTheme.typography.titleSmall,
-            color = AppTheme.colors.text.primary
-        )
+        Row(modifier = Modifier.wrapContentWidth()){
+            Text(
+                text = label,
+                style = AppTheme.typography.titleSmall,
+                color = AppTheme.colors.text.primary
+            )
+            optionalLabelText?.let {
+                Text(
+                    modifier = Modifier.padding(start = spacing.x8),
+                    text = optionalLabelText,
+                    style = AppTheme.typography.bodyMedium,
+                    color = AppTheme.colors.text.secondary
+                )
+            }
+        }
 
         OutlinedTextField(
             modifier = Modifier
@@ -129,6 +141,22 @@ private fun TextInputBoxPreview() {
             capitalization = KeyboardCapitalization.None,
             label = "Notes",
             text = "This is a note",
+            onValueChanged = {
+            })
+    }
+}
+
+@CombinedThemePreviews
+@Composable
+private fun OptionalTextInputBoxPreview() {
+    AndroidThemeForPreviews {
+        TextInputBox(modifier = Modifier,
+            keyboardType = KeyboardType.Text,
+            imeAction = ImeAction.Done,
+            capitalization = KeyboardCapitalization.None,
+            label = "Notes",
+            text = "This is a note",
+            optionalLabelText = "(Optional)",
             onValueChanged = {
             })
     }

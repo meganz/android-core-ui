@@ -3,9 +3,11 @@ package mega.android.core.ui.components.inputfields
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.text.selection.TextSelectionColors
@@ -56,6 +58,7 @@ fun TextInputField(
     successText: String? = null,
     errorText: String? = null,
     maxCharLimit: Int = Int.MAX_VALUE,
+    optionalLabelText: String? = null,
     onValueChanged: ((String) -> Unit)? = null,
     onFocusChanged: ((Boolean) -> Unit)? = null,
 ) = BaseTextField(
@@ -69,6 +72,7 @@ fun TextInputField(
     errorText = errorText,
     isPasswordMode = false,
     maxCharLimit = maxCharLimit,
+    optionalLabelText = optionalLabelText,
     onValueChanged = onValueChanged,
     onFocusChanged = onFocusChanged
 )
@@ -117,6 +121,7 @@ private fun BaseTextField(
     successText: String?,
     errorText: String?,
     maxCharLimit: Int = Int.MAX_VALUE,
+    optionalLabelText: String? = null,
     onValueChanged: ((String) -> Unit)? = null,
     onFocusChanged: ((Boolean) -> Unit)? = null,
 ) {
@@ -159,12 +164,21 @@ private fun BaseTextField(
         modifier = modifier
             .fillMaxWidth()
     ) {
-        Text(
-            modifier = Modifier.fillMaxWidth(),
-            text = label,
-            style = AppTheme.typography.titleSmall,
-            color = AppTheme.colors.text.primary
-        )
+        Row(modifier = Modifier.wrapContentWidth()){
+            Text(
+                text = label,
+                style = AppTheme.typography.titleSmall,
+                color = AppTheme.colors.text.primary
+            )
+            optionalLabelText?.let {
+                Text(
+                    modifier = Modifier.padding(start = spacing.x8),
+                    text = optionalLabelText,
+                    style = AppTheme.typography.bodyMedium,
+                    color = AppTheme.colors.text.secondary
+                )
+            }
+        }
 
         OutlinedTextField(
             modifier = Modifier
@@ -298,5 +312,19 @@ private fun PasswordTextFieldFocusedPreview() {
         LaunchedEffect(Unit) {
             focusRequester.requestFocus()
         }
+    }
+}
+
+@CombinedThemePreviews
+@Composable
+private fun OptionalTextFieldPreview() {
+    AndroidThemeForPreviews {
+        TextInputField(
+            Modifier,
+            "Username",
+            optionalLabelText = "(Optional)",
+            onValueChanged = {},
+            keyboardType = KeyboardType.Text
+        )
     }
 }
