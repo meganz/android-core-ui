@@ -20,6 +20,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
@@ -127,9 +128,9 @@ private fun BaseTextField(
 ) {
     val spacing = LocalSpacing.current
     val interactionSource: MutableInteractionSource = remember { MutableInteractionSource() }
-    var baseText by remember(text) { mutableStateOf(text) }
+    var baseText by rememberSaveable(text) { mutableStateOf(text) }
     var isFocused by remember { mutableStateOf(false) }
-    var showPassword by remember { mutableStateOf(false) }
+    var showPassword by rememberSaveable { mutableStateOf(false) }
     val focusedColor = when {
         successText.isNullOrBlank().not() -> AppTheme.colors.support.success
         errorText != null -> AppTheme.colors.support.error
