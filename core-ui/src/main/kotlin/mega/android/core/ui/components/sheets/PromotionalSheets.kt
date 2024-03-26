@@ -1,17 +1,19 @@
 package mega.android.core.ui.components.sheets
 
-import android.app.Activity
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -21,12 +23,12 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.SheetState
-import androidx.compose.material3.rememberModalBottomSheetState
+import androidx.compose.material3.SheetValue
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
@@ -36,12 +38,11 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalView
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
-import androidx.core.view.WindowCompat
 import kotlinx.coroutines.launch
 import mega.android.core.ui.R
 import mega.android.core.ui.components.button.PrimaryFilledButton
@@ -57,6 +58,7 @@ import mega.android.core.ui.theme.AndroidThemeForPreviews
 import mega.android.core.ui.theme.AppTheme
 import mega.android.core.ui.theme.spacing.LocalSpacing
 import mega.android.core.ui.theme.tokens.IconColor
+
 
 typealias SheetButtonAttribute = Pair<String, () -> Unit>
 
@@ -75,6 +77,7 @@ fun PromotionalImageSheet(
     imageUrl: String,
     title: String,
     headline: String,
+    showCloseButton: Boolean = true,
     primaryButton: SheetButtonAttribute? = null,
     secondaryButton: SheetButtonAttribute? = null,
     listItems: List<PromotionalListAttributes> = emptyList(),
@@ -85,7 +88,14 @@ fun PromotionalImageSheet(
 ) {
     val coroutineScope = rememberCoroutineScope()
     val spacing = LocalSpacing.current
-    val sheetState: SheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+    val density = LocalDensity.current
+    val sheetState = remember {
+        SheetState(
+            skipPartiallyExpanded = true,
+            density = density,
+            initialValue = SheetValue.Expanded
+        )
+    }
     val scrollState = rememberScrollState()
     var isScrollable by rememberSaveable { mutableStateOf(false) }
 
@@ -99,20 +109,19 @@ fun PromotionalImageSheet(
         isVisible = isVisible
     ) {
         ConstraintLayout(
-            modifier = Modifier
-                .fillMaxSize()
+            modifier = Modifier.fillMaxSize()
         ) {
             val (toolbar, content, buttonContainer) = createRefs()
 
             MegaTopAppBar(
                 modifier = Modifier
                     .constrainAs(toolbar) {
-                        top.linkTo(parent.top, margin = spacing.x8)
+                        top.linkTo(parent.top)
                         start.linkTo(parent.start, margin = spacing.x16)
                         end.linkTo(parent.end, margin = spacing.x16)
                     },
                 title = "",
-                navigationIcon = painterResource(id = R.drawable.ic_close),
+                navigationIcon = if (showCloseButton) painterResource(id = R.drawable.ic_close) else null,
                 onNavigationIconClicked = {
                     coroutineScope.launch {
                         sheetState.hide()
@@ -150,13 +159,16 @@ fun PromotionalImageSheet(
                 )
             }
 
+            val bottomPadding =
+                WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding()
+
             SheetActions(
                 modifier = Modifier
                     .constrainAs(buttonContainer) {
-                        bottom.linkTo(parent.bottom)
+                        bottom.linkTo(parent.bottom, margin = bottomPadding)
                         start.linkTo(parent.start)
                         end.linkTo(parent.end)
-                        height = Dimension.fillToConstraints
+                        height = Dimension.wrapContent
                     },
                 primaryButton = primaryButton,
                 secondaryButton = secondaryButton,
@@ -176,6 +188,7 @@ fun PromotionalFullImageSheet(
     imageUrl: String,
     title: String,
     headline: String,
+    showCloseButton: Boolean = true,
     primaryButton: SheetButtonAttribute? = null,
     secondaryButton: SheetButtonAttribute? = null,
     listItems: List<PromotionalListAttributes> = emptyList(),
@@ -185,8 +198,15 @@ fun PromotionalFullImageSheet(
     isVisible: Boolean = false
 ) {
     val spacing = LocalSpacing.current
+    val density = LocalDensity.current
     val coroutineScope = rememberCoroutineScope()
-    val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+    val sheetState = remember {
+        SheetState(
+            skipPartiallyExpanded = true,
+            density = density,
+            initialValue = SheetValue.Expanded
+        )
+    }
     val scrollState = rememberScrollState()
     var isScrollable by rememberSaveable { mutableStateOf(false) }
 
@@ -200,8 +220,7 @@ fun PromotionalFullImageSheet(
         isVisible = isVisible
     ) {
         ConstraintLayout(
-            modifier = Modifier
-                .fillMaxSize()
+            modifier = Modifier.fillMaxSize()
         ) {
             val (closeButton, content, buttonContainer) = createRefs()
 
@@ -239,36 +258,41 @@ fun PromotionalFullImageSheet(
                 )
             }
 
-            Button(
-                modifier = Modifier
-                    .size(32.dp)
-                    .constrainAs(closeButton) {
-                        top.linkTo(content.top, margin = spacing.x16)
-                        start.linkTo(content.start, margin = spacing.x16)
+            if (showCloseButton) {
+                Button(
+                    modifier = Modifier
+                        .size(32.dp)
+                        .constrainAs(closeButton) {
+                            top.linkTo(content.top, margin = spacing.x16)
+                            start.linkTo(content.start, margin = spacing.x16)
+                        },
+                    onClick = {
+                        coroutineScope.launch {
+                            sheetState.hide()
+                            onDismissRequest()
+                        }
                     },
-                onClick = {
-                    coroutineScope.launch {
-                        sheetState.hide()
-                        onDismissRequest()
-                    }
-                },
-                shape = CircleShape,
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = Color.Black.copy(alpha = 0.5f),
-                    contentColor = AppTheme.colors.icon.onColor
-                ),
-                contentPadding = PaddingValues(4.dp)
-            ) {
-                MegaIcon(
-                    painter = painterResource(id = R.drawable.ic_close),
-                    tint = IconColor.OnColor
-                )
+                    shape = CircleShape,
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Color.Black.copy(alpha = 0.5f),
+                        contentColor = AppTheme.colors.icon.onColor
+                    ),
+                    contentPadding = PaddingValues(4.dp)
+                ) {
+                    MegaIcon(
+                        painter = painterResource(id = R.drawable.ic_close),
+                        tint = IconColor.OnColor
+                    )
+                }
             }
+
+            val bottomPadding =
+                WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding()
 
             SheetActions(
                 modifier = Modifier
                     .constrainAs(buttonContainer) {
-                        bottom.linkTo(parent.bottom)
+                        bottom.linkTo(parent.bottom, margin = bottomPadding)
                         start.linkTo(parent.start)
                         end.linkTo(parent.end)
                         height = Dimension.fillToConstraints
@@ -290,6 +314,7 @@ fun PromotionalFullImageSheet(
 fun PromotionalIllustrationSheet(
     title: String,
     headline: String,
+    showCloseButton: Boolean = true,
     @DrawableRes illustration: Int? = null,
     primaryButton: SheetButtonAttribute? = null,
     secondaryButton: SheetButtonAttribute? = null,
@@ -301,7 +326,14 @@ fun PromotionalIllustrationSheet(
 ) {
     val coroutineScope = rememberCoroutineScope()
     val spacing = LocalSpacing.current
-    val sheetState: SheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+    val density = LocalDensity.current
+    val sheetState = remember {
+        SheetState(
+            skipPartiallyExpanded = true,
+            density = density,
+            initialValue = SheetValue.Expanded
+        )
+    }
     val scrollState = rememberScrollState()
     var isScrollable by rememberSaveable { mutableStateOf(false) }
 
@@ -315,8 +347,7 @@ fun PromotionalIllustrationSheet(
         isVisible = isVisible
     ) {
         ConstraintLayout(
-            modifier = Modifier
-                .fillMaxSize()
+            modifier = Modifier.fillMaxSize()
         ) {
             val (toolbar, content, buttonContainer) = createRefs()
 
@@ -328,7 +359,7 @@ fun PromotionalIllustrationSheet(
                         end.linkTo(parent.end, margin = spacing.x16)
                     },
                 title = "",
-                navigationIcon = painterResource(id = R.drawable.ic_close),
+                navigationIcon = if (showCloseButton) painterResource(id = R.drawable.ic_close) else null,
                 onNavigationIconClicked = {
                     coroutineScope.launch {
                         sheetState.hide()
@@ -374,10 +405,13 @@ fun PromotionalIllustrationSheet(
                 )
             }
 
+            val bottomPadding =
+                WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding()
+
             SheetActions(
                 modifier = Modifier
                     .constrainAs(buttonContainer) {
-                        bottom.linkTo(parent.bottom)
+                        bottom.linkTo(parent.bottom, margin = bottomPadding)
                         start.linkTo(parent.start)
                         end.linkTo(parent.end)
                         height = Dimension.fillToConstraints
@@ -398,6 +432,7 @@ fun PromotionalIllustrationSheet(
 fun PromotionalPlainSheet(
     title: String,
     headline: String,
+    showCloseButton: Boolean = true,
     primaryButton: SheetButtonAttribute? = null,
     secondaryButton: SheetButtonAttribute? = null,
     listItems: List<PromotionalListAttributes> = emptyList(),
@@ -409,6 +444,7 @@ fun PromotionalPlainSheet(
     PromotionalIllustrationSheet(
         title = title,
         headline = headline,
+        showCloseButton = showCloseButton,
         primaryButton = primaryButton,
         secondaryButton = secondaryButton,
         listItems = listItems,
@@ -428,12 +464,6 @@ private fun ModalBottomSheetScaffold(
     isVisible: Boolean = false,
     content: @Composable ColumnScope.() -> Unit,
 ) {
-    val activity = LocalView.current.context as Activity
-
-    SideEffect {
-        WindowCompat.setDecorFitsSystemWindows(activity.window, false)
-    }
-
     LaunchedEffect(isVisible) {
         if (isVisible) {
             sheetState.expand()
@@ -444,8 +474,8 @@ private fun ModalBottomSheetScaffold(
 
     ModalBottomSheet(
         modifier = Modifier
-            .fillMaxSize()
-            .navigationBarsPadding(),
+            .padding()
+            .statusBarsPadding(),
         onDismissRequest = onDismissRequest,
         sheetState = sheetState,
         containerColor = AppTheme.colors.background.pageBackground,
@@ -515,9 +545,11 @@ private fun PreviewPromotionalPlainSheet() {
             illustration = null,
             title = "Title",
             headline = "Headline",
+            showCloseButton = false,
             primaryButton = "Button" to {},
             secondaryButton = "Button 2" to {},
             listItems = listItemSamples,
+            isVisible = true,
             footer = "*terms and conditions. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip"
         )
     }
@@ -534,6 +566,7 @@ private fun PreviewPromotionalFullImageSheetWithList() {
             primaryButton = "Button" to {},
             secondaryButton = "Button 2" to {},
             listItems = listItemSamples,
+            isVisible = true,
             footer = "*terms and conditions. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip"
         )
     }
@@ -550,6 +583,7 @@ private fun PreviewPromotionalImageSheetWithList() {
             primaryButton = "Button" to {},
             secondaryButton = "Button 2" to {},
             listItems = listItemSamples,
+            isVisible = true,
             footer = "*terms and conditions. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip"
         )
     }
@@ -566,6 +600,7 @@ private fun PreviewPromotionalIllustrationSheetWithList() {
             primaryButton = "Button" to {},
             secondaryButton = "Button 2" to {},
             listItems = listItemSamples,
+            isVisible = true,
             footer = "*terms and conditions. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip"
         )
     }

@@ -4,15 +4,17 @@ import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -35,9 +37,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
-import androidx.constraintlayout.compose.ConstraintLayout
-import androidx.constraintlayout.compose.ConstraintLayoutScope
-import androidx.constraintlayout.compose.Dimension
 import mega.android.core.ui.R
 import mega.android.core.ui.components.button.PrimaryFilledButton
 import mega.android.core.ui.components.button.SecondaryFilledButton
@@ -65,6 +64,7 @@ fun PromotionalImageDialog(
     imageUrl: String,
     title: String,
     headline: String,
+    showCloseButton: Boolean = true,
     primaryButton: DialogButtonAttribute? = null,
     secondaryButton: DialogButtonAttribute? = null,
     listItems: List<PromotionalListAttributes> = emptyList(),
@@ -85,41 +85,21 @@ fun PromotionalImageDialog(
         }
 
         DialogContent {
-            val (toolbar, content, buttonContainer) = createRefs()
-
             MegaTopAppBar(
-                modifier = Modifier
-                    .constrainAs(toolbar) {
-                        top.linkTo(parent.top, margin = spacing.x8)
-                        linkTo(
-                            start = parent.start,
-                            end = parent.end,
-                            startMargin = spacing.x16,
-                            endMargin = spacing.x16
-                        )
-                    },
+                modifier = Modifier.wrapContentHeight(),
                 title = "",
-                navigationIcon = painterResource(id = R.drawable.ic_close),
+                navigationIcon = if (showCloseButton) painterResource(id = R.drawable.ic_close) else null,
                 onNavigationIconClicked = onDismissRequest
             )
 
             Column(
                 modifier = Modifier
-                    .constrainAs(content) {
-                        height = Dimension.preferredWrapContent
-                        linkTo(
-                            top = toolbar.bottom,
-                            bottom = buttonContainer.top,
-                            topMargin = spacing.x16,
-                            bias = 0f
-                        )
-                        start.linkTo(parent.start, margin = spacing.x16)
-                        end.linkTo(parent.end, margin = spacing.x16)
-                    }
+                    .weight(1f)
                     .verticalScroll(scrollState, enabled = true)
             ) {
                 PromotionalImage(
                     modifier = Modifier
+                        .padding(horizontal = spacing.x16)
                         .widthIn(max = 328.dp)
                         .align(alignment = Alignment.CenterHorizontally),
                     imageUrl = imageUrl,
@@ -138,13 +118,7 @@ fun PromotionalImageDialog(
 
             DialogActions(
                 modifier = Modifier
-                    .background(AppTheme.colors.background.pageBackground)
-                    .constrainAs(buttonContainer) {
-                        bottom.linkTo(parent.bottom)
-                        start.linkTo(parent.start)
-                        end.linkTo(parent.end)
-                        height = Dimension.fillToConstraints
-                    },
+                    .background(AppTheme.colors.background.pageBackground),
                 primaryButton = primaryButton,
                 secondaryButton = secondaryButton,
                 isDividerVisible = isScrollable
@@ -163,6 +137,7 @@ fun PromotionalFullImageDialog(
     imageUrl: String,
     title: String,
     headline: String,
+    showCloseButton: Boolean = true,
     primaryButton: DialogButtonAttribute? = null,
     secondaryButton: DialogButtonAttribute? = null,
     listItems: List<PromotionalListAttributes> = emptyList(),
@@ -183,72 +158,58 @@ fun PromotionalFullImageDialog(
         properties = DialogProperties(decorFitsSystemWindows = false)
     ) {
         DialogContent {
-            val (closeButton, content, buttonContainer) = createRefs()
-
-            Column(
+            Box(
                 modifier = Modifier
-                    .constrainAs(content) {
-                        height = Dimension.preferredWrapContent
-                        width = Dimension.fillToConstraints
-                        linkTo(
-                            top = parent.top,
-                            bottom = buttonContainer.top,
-                            bias = 0f
-                        )
-                        start.linkTo(parent.start)
-                        end.linkTo(parent.end)
-                    }
+                    .weight(1f)
                     .verticalScroll(scrollState, enabled = true)
             ) {
-                PromotionalFullImage(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .clip(RoundedCornerShape(topStart = 8.dp, topEnd = 8.dp)),
-                    imageUrl = imageUrl,
-                    description = title
-                )
+                Column(
+                    modifier = Modifier.fillMaxSize()
+                ) {
+                    PromotionalFullImage(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clip(RoundedCornerShape(topStart = 8.dp, topEnd = 8.dp)),
+                        imageUrl = imageUrl,
+                        description = title
+                    )
 
-                PromotionalContent(
-                    modifier = Modifier
-                        .padding(top = LocalSpacing.current.x32),
-                    title = title,
-                    headline = headline,
-                    listItems = listItems,
-                    contentText = contentText,
-                    footer = footer
-                )
-            }
+                    PromotionalContent(
+                        modifier = Modifier
+                            .padding(top = LocalSpacing.current.x32),
+                        title = title,
+                        headline = headline,
+                        listItems = listItems,
+                        contentText = contentText,
+                        footer = footer
+                    )
+                }
 
-            Button(
-                modifier = Modifier
-                    .size(32.dp)
-                    .constrainAs(closeButton) {
-                        top.linkTo(content.top, margin = spacing.x16)
-                        start.linkTo(content.start, margin = spacing.x16)
-                    },
-                onClick = onDismissRequest,
-                shape = CircleShape,
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = Color.Black.copy(alpha = 0.5f),
-                    contentColor = AppTheme.colors.icon.onColor
-                ),
-                contentPadding = PaddingValues(4.dp)
-            ) {
-                MegaIcon(
-                    painter = painterResource(id = R.drawable.ic_close),
-                    tint = IconColor.OnColor
-                )
+                if (showCloseButton) {
+                    Button(
+                        modifier = Modifier
+                            .padding(top = spacing.x16, start = spacing.x16)
+                            .size(32.dp),
+                        onClick = onDismissRequest,
+                        shape = CircleShape,
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = Color.Black.copy(alpha = 0.5f),
+                            contentColor = AppTheme.colors.icon.onColor
+                        ),
+                        contentPadding = PaddingValues(4.dp)
+                    ) {
+                        MegaIcon(
+                            painter = painterResource(id = R.drawable.ic_close),
+                            tint = IconColor.OnColor
+                        )
+                    }
+                }
             }
 
             DialogActions(
                 modifier = Modifier
                     .background(AppTheme.colors.background.pageBackground)
-                    .constrainAs(buttonContainer) {
-                        bottom.linkTo(parent.bottom)
-                        start.linkTo(parent.start)
-                        end.linkTo(parent.end)
-                        height = Dimension.fillToConstraints
-                    },
+                    .wrapContentHeight(),
                 primaryButton = primaryButton,
                 secondaryButton = secondaryButton,
                 isDividerVisible = isScrollable
@@ -266,6 +227,7 @@ fun PromotionalFullImageDialog(
 fun PromotionalIllustrationDialog(
     title: String,
     headline: String,
+    showCloseButton: Boolean = true,
     @DrawableRes illustration: Int? = null,
     primaryButton: DialogButtonAttribute? = null,
     secondaryButton: DialogButtonAttribute? = null,
@@ -274,7 +236,6 @@ fun PromotionalIllustrationDialog(
     footer: String? = null,
     onDismissRequest: () -> Unit = {}
 ) {
-    val spacing = LocalSpacing.current
     val scrollState = rememberScrollState()
     var isScrollable by rememberSaveable { mutableStateOf(false) }
 
@@ -287,37 +248,16 @@ fun PromotionalIllustrationDialog(
         properties = DialogProperties(decorFitsSystemWindows = false)
     ) {
         DialogContent {
-            val (toolbar, content, buttonContainer) = createRefs()
-
             MegaTopAppBar(
-                modifier = Modifier
-                    .constrainAs(toolbar) {
-                        top.linkTo(parent.top, margin = spacing.x8)
-                        linkTo(
-                            start = parent.start,
-                            end = parent.end,
-                            startMargin = spacing.x16,
-                            endMargin = spacing.x16
-                        )
-                    },
+                modifier = Modifier.wrapContentHeight(),
                 title = "",
-                navigationIcon = painterResource(id = R.drawable.ic_close),
+                navigationIcon = if (showCloseButton) painterResource(id = R.drawable.ic_close) else null,
                 onNavigationIconClicked = onDismissRequest
             )
 
             Column(
                 modifier = Modifier
-                    .constrainAs(content) {
-                        height = Dimension.preferredWrapContent
-                        linkTo(
-                            top = toolbar.bottom,
-                            bottom = buttonContainer.top,
-                            topMargin = spacing.x16,
-                            bias = 0f
-                        )
-                        start.linkTo(parent.start)
-                        end.linkTo(parent.end)
-                    }
+                    .weight(1f)
                     .verticalScroll(scrollState, enabled = true),
                 verticalArrangement = Arrangement.Center
             ) {
@@ -345,12 +285,7 @@ fun PromotionalIllustrationDialog(
             DialogActions(
                 modifier = Modifier
                     .background(AppTheme.colors.background.pageBackground)
-                    .constrainAs(buttonContainer) {
-                        bottom.linkTo(parent.bottom)
-                        start.linkTo(parent.start)
-                        end.linkTo(parent.end)
-                        height = Dimension.fillToConstraints
-                    },
+                    .wrapContentHeight(),
                 primaryButton = primaryButton,
                 secondaryButton = secondaryButton,
                 isDividerVisible = isScrollable
@@ -368,6 +303,7 @@ fun PromotionalIllustrationDialog(
 fun PromotionalPlainDialog(
     title: String,
     headline: String,
+    showCloseButton: Boolean = true,
     primaryButton: DialogButtonAttribute? = null,
     secondaryButton: DialogButtonAttribute? = null,
     listItems: List<PromotionalListAttributes> = emptyList(),
@@ -378,6 +314,7 @@ fun PromotionalPlainDialog(
     PromotionalIllustrationDialog(
         title = title,
         headline = headline,
+        showCloseButton = showCloseButton,
         primaryButton = primaryButton,
         secondaryButton = secondaryButton,
         listItems = listItems,
@@ -391,15 +328,14 @@ fun PromotionalPlainDialog(
 @Composable
 private fun DialogContent(
     modifier: Modifier = Modifier,
-    content: @Composable ConstraintLayoutScope.() -> Unit
+    content: @Composable ColumnScope.() -> Unit
 ) {
-    ConstraintLayout(
+    Column(
         modifier = modifier
             .fillMaxSize()
             .padding(vertical = LocalSpacing.current.x48)
             .clip(AppTheme.shapes.small)
-            .background(AppTheme.colors.background.pageBackground)
-            .navigationBarsPadding(),
+            .background(AppTheme.colors.background.pageBackground),
         content = content
     )
 }

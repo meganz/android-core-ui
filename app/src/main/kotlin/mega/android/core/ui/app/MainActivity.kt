@@ -6,8 +6,13 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
 import mega.android.core.ui.app.component.BottomSheetComponentCatalog
@@ -47,6 +52,7 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun MainComposeView() {
+    var showCloseButton by remember { mutableStateOf(true) }
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
@@ -83,10 +89,12 @@ fun MainComposeView() {
             PromptCatalog()
         }
         item {
-            PromotionalSheetsCatalog()
+            PromotionalSheetsCatalog(showCloseButton = showCloseButton) {
+                showCloseButton = it
+            }
         }
         item {
-            PromotionalDialogsCatalog()
+            PromotionalDialogsCatalog(showCloseButton = showCloseButton)
         }
         item {
             TextThumbnailComponentCatalog()

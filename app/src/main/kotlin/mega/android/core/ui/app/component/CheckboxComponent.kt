@@ -4,14 +4,15 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import mega.android.core.ui.app.util.Section
+import mega.android.core.ui.components.MegaText
 import mega.android.core.ui.components.checkbox.Checkbox
 import mega.android.core.ui.theme.spacing.LocalSpacing
+import mega.android.core.ui.theme.tokens.TextColor
 
 @Composable
 fun CheckboxCatalog() {
@@ -27,9 +28,10 @@ fun CheckboxCatalog() {
                 onCheckStateChanged = {}
             )
 
-            Text(
+            MegaText(
                 modifier = Modifier.padding(start = 12.dp),
-                text = "This is a checkbox example"
+                text = "This is a checkbox example",
+                textColor = TextColor.Primary
             )
         }
     }

@@ -26,7 +26,9 @@ import mega.android.core.ui.components.dialogs.PromotionalPlainDialog
 import mega.android.core.ui.theme.spacing.LocalSpacing
 
 @Composable
-fun PromotionalDialogsCatalog() {
+fun PromotionalDialogsCatalog(
+    showCloseButton: Boolean
+) {
     Spacer(modifier = Modifier.height(LocalSpacing.current.x16))
 
     Section(header = "Promotional Dialog") {
@@ -50,9 +52,12 @@ fun PromotionalDialogsCatalog() {
                 )
 
                 if (showPlainDialog) {
-                    PromotionalPlainDialogComponent {
-                        showPlainDialog = false
-                    }
+                    PromotionalPlainDialogComponent(
+                        showCloseButton = showCloseButton,
+                        onDismissRequest = {
+                            showPlainDialog = false
+                        }
+                    )
                 }
             }
 
@@ -68,7 +73,9 @@ fun PromotionalDialogsCatalog() {
                 )
 
                 if (showImageDialog) {
-                    PromotionalImageDialogComponent {
+                    PromotionalImageDialogComponent(
+                        showCloseButton = showCloseButton
+                    ) {
                         showImageDialog = false
                     }
                 }
@@ -86,7 +93,9 @@ fun PromotionalDialogsCatalog() {
                 )
 
                 if (showFullImageDialog) {
-                    PromotionalFullImageDialogComponent {
+                    PromotionalFullImageDialogComponent(
+                        showCloseButton = showCloseButton
+                    ) {
                         showFullImageDialog = false
                     }
                 }
@@ -104,7 +113,9 @@ fun PromotionalDialogsCatalog() {
                 )
 
                 if (showIllustrationDialog) {
-                    PromotionalIllustrationDialogComponent {
+                    PromotionalIllustrationDialogComponent(
+                        showCloseButton = showCloseButton
+                    ) {
                         showIllustrationDialog = false
                     }
                 }
@@ -115,12 +126,14 @@ fun PromotionalDialogsCatalog() {
 
 @Composable
 private fun PromotionalImageDialogComponent(
+    showCloseButton: Boolean,
     onDismissRequest: () -> Unit
 ) {
     PromotionalImageDialog(
         imageUrl = "https:images.unsplash.com/photo-1579353977828-2a4eab540b9a?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8c2FtcGxlfGVufDB8fDB8fHww",
         title = "Title",
         headline = "Headline",
+        showCloseButton = showCloseButton,
         primaryButton = "Button" to {},
         secondaryButton = "Button 2" to {},
         onDismissRequest = onDismissRequest,
@@ -131,12 +144,14 @@ private fun PromotionalImageDialogComponent(
 
 @Composable
 private fun PromotionalFullImageDialogComponent(
+    showCloseButton: Boolean,
     onDismissRequest: () -> Unit
 ) {
     PromotionalFullImageDialog(
         imageUrl = "https:images.unsplash.com/photo-1579353977828-2a4eab540b9a?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8c2FtcGxlfGVufDB8fDB8fHww",
         title = "Title",
         headline = "Headline",
+        showCloseButton = showCloseButton,
         primaryButton = "Button" to {},
         secondaryButton = "Button 2" to {},
         onDismissRequest = onDismissRequest,
@@ -147,12 +162,14 @@ private fun PromotionalFullImageDialogComponent(
 
 @Composable
 private fun PromotionalIllustrationDialogComponent(
+    showCloseButton: Boolean,
     onDismissRequest: () -> Unit
 ) {
     PromotionalIllustrationDialog(
         illustration = R.drawable.illustration_mega_anniversary,
         title = "Title",
         headline = "Headline",
+        showCloseButton = showCloseButton,
         primaryButton = "Button" to {},
         secondaryButton = "Button 2" to {},
         onDismissRequest = onDismissRequest,
@@ -163,11 +180,13 @@ private fun PromotionalIllustrationDialogComponent(
 
 @Composable
 private fun PromotionalPlainDialogComponent(
+    showCloseButton: Boolean,
     onDismissRequest: () -> Unit
 ) {
     PromotionalPlainDialog(
         title = "Title",
         headline = "Headline",
+        showCloseButton = showCloseButton,
         primaryButton = "Button" to {},
         secondaryButton = "Button 2" to {},
         onDismissRequest = onDismissRequest,
