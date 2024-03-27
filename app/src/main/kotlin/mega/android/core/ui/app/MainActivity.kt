@@ -27,6 +27,7 @@ import mega.android.core.ui.app.component.PromotionalDialogsCatalog
 import mega.android.core.ui.app.component.PromotionalSheetsCatalog
 import mega.android.core.ui.app.component.PromptCatalog
 import mega.android.core.ui.app.component.ShimmerListItem
+import mega.android.core.ui.app.component.SliderComponentCatalog
 import mega.android.core.ui.app.component.TextComponentCatalog
 import mega.android.core.ui.app.component.TextThumbnailComponentCatalog
 import mega.android.core.ui.components.inputfields.TextInputBox
@@ -113,6 +114,9 @@ fun MainComposeView() {
                 label = "Test InputBox",
                 keyboardType = KeyboardType.Text
             )
+        }
+        item {
+            SliderComponentCatalog()
         }
         item {
             BottomSheetComponentCatalog()
