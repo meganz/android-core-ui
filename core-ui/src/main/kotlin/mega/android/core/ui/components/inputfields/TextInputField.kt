@@ -210,24 +210,26 @@ private fun BaseTextField(
             textStyle = AppTheme.typography.bodyLarge,
             isError = successText.isNullOrBlank() && errorText != null,
             visualTransformation = if (!isPasswordMode || showPassword) VisualTransformation.None else PasswordVisualTransformation(),
-            trailingIcon = {
-                if (baseText.isNotEmpty()) {
-                    when {
-                        isPasswordMode.not() && isFocused -> Icon(
-                            modifier = Modifier
-                                .clickable {
-                                    baseText = ""
-                                    onValueChanged?.invoke("")
-                                },
-                            painter = painterResource(id = R.drawable.ic_close),
-                            tint = AppTheme.colors.icon.primary,
-                            contentDescription = "Clear Text"
-                        )
+            trailingIcon = if (baseText.isNotEmpty()) {
+                when {
+                    isPasswordMode.not() && isFocused -> {
+                        {
+                            Icon(
+                                modifier = Modifier
+                                    .clickable {
+                                        baseText = ""
+                                        onValueChanged?.invoke("")
+                                    },
+                                painter = painterResource(id = R.drawable.ic_close),
+                                tint = AppTheme.colors.icon.primary,
+                                contentDescription = "Clear Text"
+                            )
+                        }
+                    }
 
-                        isPasswordMode -> {
-                            val eyeIcon =
-                                if (showPassword) R.drawable.ic_eye_off else R.drawable.ic_eye
-
+                    isPasswordMode -> {
+                        val eyeIcon = if (showPassword) R.drawable.ic_eye_off else R.drawable.ic_eye
+                        {
                             Icon(
                                 modifier = Modifier
                                     .padding(horizontal = spacing.x8)
@@ -238,8 +240,14 @@ private fun BaseTextField(
                             )
                         }
                     }
+
+                    else -> {
+                        null
+                    }
                 }
-            },
+            } else {
+                null
+            }
         )
 
         val footerModifier = Modifier
@@ -297,7 +305,7 @@ private fun DefaultSuccessTextFieldPreview() {
 @Composable
 private fun PasswordTextFieldPreview() {
     AndroidThemeForPreviews {
-        PasswordTextInputField(Modifier, "Password", onValueChanged = {})
+        PasswordTextInputField(Modifier, "Password", text = "Password", onValueChanged = {})
     }
 }
 
