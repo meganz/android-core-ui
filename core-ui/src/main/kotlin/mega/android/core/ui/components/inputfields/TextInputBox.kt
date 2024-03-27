@@ -105,8 +105,7 @@ fun TextInputBox(
                 .onFocusChanged {
                     isFocused = it.isFocused
                     onFocusChanged?.invoke(it.isFocused)
-                }
-                .verticalScroll(rememberScrollState()),
+                },
             keyboardOptions = KeyboardOptions(
                 keyboardType = keyboardType,
                 autoCorrect = true,
