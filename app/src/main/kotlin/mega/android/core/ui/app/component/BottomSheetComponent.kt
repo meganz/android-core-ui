@@ -21,7 +21,8 @@ import mega.android.core.ui.app.util.Section
 import mega.android.core.ui.components.button.PrimaryFilledButton
 import mega.android.core.ui.components.image.MegaIcon
 import mega.android.core.ui.components.list.OneLineListItem
-import mega.android.core.ui.components.sheets.BottomSheetScaffold
+import mega.android.core.ui.components.sheets.MegaModalBottomSheet
+import mega.android.core.ui.components.sheets.MegaModalBottomSheetBackground
 import mega.android.core.ui.theme.spacing.LocalSpacing
 import mega.android.core.ui.theme.tokens.IconColor
 
@@ -43,11 +44,12 @@ fun BottomSheetComponentCatalog() {
         )
 
         if (showBottomSheet) {
-            BottomSheetScaffold(
+            MegaModalBottomSheet(
+                sheetState = modalBottomSheetState,
+                bottomSheetBackground = MegaModalBottomSheetBackground.Surface1,
                 onDismissRequest = {
                     showBottomSheet = false
                 },
-                sheetState = modalBottomSheetState,
                 dragHandle = {
                     MegaIcon(
                         modifier = Modifier.padding(vertical = 8.dp),

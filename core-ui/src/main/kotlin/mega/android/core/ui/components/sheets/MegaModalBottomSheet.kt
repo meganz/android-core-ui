@@ -15,11 +15,18 @@ import androidx.core.view.WindowCompat
 import mega.android.core.ui.theme.AppTheme
 import mega.android.core.ui.theme.spacing.LocalSpacing
 
+enum class MegaModalBottomSheetBackground {
+    PageBackground,
+    Surface1
+}
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun BottomSheetScaffold(
-    onDismissRequest: () -> Unit,
+fun MegaModalBottomSheet(
     sheetState: SheetState,
+    bottomSheetBackground: MegaModalBottomSheetBackground,
+    onDismissRequest: () -> Unit,
+    modifier: Modifier = Modifier,
     dragHandle: @Composable (() -> Unit)? = null,
     content: @Composable ColumnScope.() -> Unit,
 ) {
@@ -29,11 +36,16 @@ fun BottomSheetScaffold(
         WindowCompat.setDecorFitsSystemWindows(activity.window, false)
     }
 
+    val containerColor = when (bottomSheetBackground) {
+        MegaModalBottomSheetBackground.PageBackground -> AppTheme.colors.background.pageBackground
+        MegaModalBottomSheetBackground.Surface1 -> AppTheme.colors.background.surface1
+    }
+
     ModalBottomSheet(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = modifier.fillMaxWidth(),
         onDismissRequest = onDismissRequest,
         sheetState = sheetState,
-        containerColor = AppTheme.colors.background.surface1,
+        containerColor = containerColor,
         scrimColor = AppTheme.colors.background.blur,
         dragHandle = dragHandle,
         shape = RoundedCornerShape(
