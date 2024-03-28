@@ -9,6 +9,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import mega.android.core.ui.app.util.Section
 import mega.android.core.ui.components.button.AnchoredButtonGroup
+import mega.android.core.ui.components.button.MegaOutlinedButton
 import mega.android.core.ui.components.button.PrimaryFilledButton
 import mega.android.core.ui.components.button.SecondaryFilledButton
 import mega.android.core.ui.components.button.TextOnlyButton
@@ -44,6 +45,16 @@ fun ButtonComponentCatalog() {
                 .padding(all = 16.dp),
             text = "Text Only",
             onClick = {})
+    }
+
+    Section(header = "Outlined Button") {
+        MegaOutlinedButton(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(all = 16.dp),
+            text = "Outlined Button",
+            onClick = {}
+        )
     }
 
     Section(header = "Anchored Button Group") {
