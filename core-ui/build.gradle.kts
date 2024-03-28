@@ -48,6 +48,7 @@ dependencies {
     implementation(libs.core.ktx)
     implementation(libs.appcompat)
     implementation(libs.constraintlayout.compose)
+    implementation(libs.google.font)
     testImplementation(libs.junit)
     androidTestImplementation(libs.junit.test.ext)
     androidTestImplementation(libs.espresso.core)

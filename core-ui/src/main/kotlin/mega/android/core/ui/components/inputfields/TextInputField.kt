@@ -34,13 +34,12 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import mega.android.core.ui.R
+import mega.android.core.ui.components.inputFieldHeight
 import mega.android.core.ui.preview.CombinedThemePreviews
 import mega.android.core.ui.theme.AndroidThemeForPreviews
 import mega.android.core.ui.theme.AppTheme
 import mega.android.core.ui.theme.spacing.LocalSpacing
 import mega.android.core.ui.theme.tokens.TextColor
-
-private val inputFieldHeight = 56.dp
 
 /**
  * Text input field
