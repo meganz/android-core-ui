@@ -48,7 +48,7 @@ fun AnchoredButtonGroup(
                 .wrapContentHeight()
                 .fillMaxWidth()
                 .padding(all = spacing.x16),
-            verticalArrangement = Arrangement.spacedBy(spacing.x24),
+            verticalArrangement = Arrangement.spacedBy(spacing.x16),
         ) {
             title?.let {
                 MegaText(

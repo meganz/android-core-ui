@@ -50,11 +50,12 @@ import mega.android.core.ui.theme.tokens.TextColor
 @Composable
 fun TextInputField(
     modifier: Modifier,
-    label: String,
     keyboardType: KeyboardType,
     imeAction: ImeAction = ImeAction.Done,
     capitalization: KeyboardCapitalization = KeyboardCapitalization.Words,
     text: String = "",
+    label: String? = null,
+    showTrailingIcon: Boolean = true,
     successText: String? = null,
     errorText: String? = null,
     maxCharLimit: Int = Int.MAX_VALUE,
@@ -71,6 +72,7 @@ fun TextInputField(
     successText = successText,
     errorText = errorText,
     isPasswordMode = false,
+    showTrailingIcon = showTrailingIcon,
     maxCharLimit = maxCharLimit,
     optionalLabelText = optionalLabelText,
     onValueChanged = onValueChanged,
@@ -88,6 +90,7 @@ fun PasswordTextInputField(
     modifier: Modifier,
     label: String,
     text: String = "",
+    showTrailingIcon: Boolean = true,
     imeAction: ImeAction = ImeAction.Done,
     successText: String? = null,
     errorText: String? = null,
@@ -104,6 +107,7 @@ fun PasswordTextInputField(
     successText = successText,
     errorText = errorText,
     isPasswordMode = true,
+    showTrailingIcon = showTrailingIcon,
     maxCharLimit = maxCharLimit,
     onValueChanged = onValueChanged,
     onFocusChanged = onFocusChanged,
@@ -112,9 +116,10 @@ fun PasswordTextInputField(
 @Composable
 private fun BaseTextField(
     modifier: Modifier,
-    label: String,
+    label: String?,
     text: String,
     isPasswordMode: Boolean,
+    showTrailingIcon: Boolean,
     keyboardType: KeyboardType,
     imeAction: ImeAction,
     capitalization: KeyboardCapitalization,
@@ -164,25 +169,30 @@ private fun BaseTextField(
         modifier = modifier
             .fillMaxWidth()
     ) {
-        Row(modifier = Modifier.wrapContentWidth()) {
-            Text(
-                text = label,
-                style = AppTheme.typography.titleSmall,
-                color = AppTheme.colors.text.primary
-            )
-            optionalLabelText?.let {
+        label?.let {
+            Row(
+                modifier = Modifier
+                    .wrapContentWidth()
+                    .padding(bottom = spacing.x4)
+            ) {
                 Text(
-                    modifier = Modifier.padding(start = spacing.x8),
-                    text = optionalLabelText,
-                    style = AppTheme.typography.bodyMedium,
-                    color = AppTheme.colors.text.secondary
+                    text = label,
+                    style = AppTheme.typography.titleSmall,
+                    color = AppTheme.colors.text.primary
                 )
+                optionalLabelText?.let {
+                    Text(
+                        modifier = Modifier.padding(start = spacing.x8),
+                        text = optionalLabelText,
+                        style = AppTheme.typography.bodyMedium,
+                        color = AppTheme.colors.text.secondary
+                    )
+                }
             }
         }
 
         OutlinedTextField(
             modifier = Modifier
-                .padding(vertical = spacing.x4)
                 .fillMaxWidth()
                 .heightIn(min = inputFieldHeight)
                 .onFocusChanged {
@@ -209,7 +219,7 @@ private fun BaseTextField(
             textStyle = AppTheme.typography.bodyLarge,
             isError = successText.isNullOrBlank() && errorText != null,
             visualTransformation = if (!isPasswordMode || showPassword) VisualTransformation.None else PasswordVisualTransformation(),
-            trailingIcon = if (baseText.isNotEmpty()) {
+            trailingIcon = if (baseText.isNotEmpty() && showTrailingIcon) {
                 when {
                     isPasswordMode.not() && isFocused -> {
                         {
@@ -277,8 +287,8 @@ private fun BaseTextField(
 private fun DefaultErrorTextFieldPreview() {
     AndroidThemeForPreviews {
         TextInputField(
-            Modifier,
-            "Default Error",
+            modifier = Modifier,
+            label = "Default Error",
             onValueChanged = {},
             keyboardType = KeyboardType.Text,
             errorText = "Wrong password"
@@ -291,8 +301,8 @@ private fun DefaultErrorTextFieldPreview() {
 private fun DefaultSuccessTextFieldPreview() {
     AndroidThemeForPreviews {
         TextInputField(
-            Modifier,
-            "Default Success",
+            modifier = Modifier,
+            label = "Default Success",
             onValueChanged = {},
             keyboardType = KeyboardType.Text,
             successText = "Password correct!",
@@ -328,8 +338,8 @@ private fun PasswordTextFieldFocusedPreview() {
 private fun OptionalTextFieldPreview() {
     AndroidThemeForPreviews {
         TextInputField(
-            Modifier,
-            "Username",
+            modifier = Modifier,
+            label = "Username",
             optionalLabelText = "(Optional)",
             onValueChanged = {},
             keyboardType = KeyboardType.Text
