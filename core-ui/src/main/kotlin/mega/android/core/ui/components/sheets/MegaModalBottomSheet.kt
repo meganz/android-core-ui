@@ -2,8 +2,12 @@ package mega.android.core.ui.components.sheets
 
 import android.app.Activity
 import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.BottomSheetDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.SheetState
@@ -27,6 +31,7 @@ fun MegaModalBottomSheet(
     bottomSheetBackground: MegaModalBottomSheetBackground,
     onDismissRequest: () -> Unit,
     modifier: Modifier = Modifier,
+    windowInsets: WindowInsets? = null,
     dragHandle: @Composable (() -> Unit)? = null,
     content: @Composable ColumnScope.() -> Unit,
 ) {
@@ -52,6 +57,8 @@ fun MegaModalBottomSheet(
             topStart = LocalSpacing.current.x24,
             topEnd = LocalSpacing.current.x24,
         ),
+        windowInsets = windowInsets
+            ?: BottomSheetDefaults.windowInsets.only(WindowInsetsSides.Bottom),
         content = content
     )
 }

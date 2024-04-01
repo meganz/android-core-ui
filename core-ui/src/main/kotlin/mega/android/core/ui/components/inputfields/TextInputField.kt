@@ -32,6 +32,7 @@ import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import mega.android.core.ui.R
 import mega.android.core.ui.components.inputFieldHeight
@@ -55,6 +56,7 @@ fun TextInputField(
     capitalization: KeyboardCapitalization = KeyboardCapitalization.Words,
     text: String = "",
     label: String? = null,
+    inputTextAlign: TextAlign = TextAlign.Unspecified,
     showTrailingIcon: Boolean = true,
     successText: String? = null,
     errorText: String? = null,
@@ -71,6 +73,7 @@ fun TextInputField(
     text = text,
     successText = successText,
     errorText = errorText,
+    inputTextAlign = inputTextAlign,
     isPasswordMode = false,
     showTrailingIcon = showTrailingIcon,
     maxCharLimit = maxCharLimit,
@@ -90,6 +93,7 @@ fun PasswordTextInputField(
     modifier: Modifier,
     label: String,
     text: String = "",
+    inputTextAlign: TextAlign = TextAlign.Unspecified,
     showTrailingIcon: Boolean = true,
     imeAction: ImeAction = ImeAction.Done,
     successText: String? = null,
@@ -106,6 +110,7 @@ fun PasswordTextInputField(
     capitalization = KeyboardCapitalization.None,
     successText = successText,
     errorText = errorText,
+    inputTextAlign = inputTextAlign,
     isPasswordMode = true,
     showTrailingIcon = showTrailingIcon,
     maxCharLimit = maxCharLimit,
@@ -125,6 +130,7 @@ private fun BaseTextField(
     capitalization: KeyboardCapitalization,
     successText: String?,
     errorText: String?,
+    inputTextAlign: TextAlign,
     maxCharLimit: Int = Int.MAX_VALUE,
     optionalLabelText: String? = null,
     onValueChanged: ((String) -> Unit)? = null,
@@ -216,7 +222,7 @@ private fun BaseTextField(
             shape = RoundedCornerShape(8.dp),
             interactionSource = interactionSource,
             singleLine = true,
-            textStyle = AppTheme.typography.bodyLarge,
+            textStyle = AppTheme.typography.bodyLarge.copy(textAlign = inputTextAlign),
             isError = successText.isNullOrBlank() && errorText != null,
             visualTransformation = if (!isPasswordMode || showPassword) VisualTransformation.None else PasswordVisualTransformation(),
             trailingIcon = if (baseText.isNotEmpty() && showTrailingIcon) {
