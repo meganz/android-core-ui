@@ -14,6 +14,7 @@ import androidx.compose.ui.unit.dp
 import mega.android.core.ui.preview.CombinedThemePreviews
 import mega.android.core.ui.theme.AndroidThemeForPreviews
 import mega.android.core.ui.theme.AppTheme
+import mega.android.core.ui.theme.tokens.LinkColor
 import mega.android.core.ui.theme.tokens.TextColor
 
 /**
@@ -49,6 +50,27 @@ fun MegaText(
     textAlign = textAlign,
 )
 
+@Composable
+fun MegaText(
+    text: String,
+    linkColor: LinkColor,
+    modifier: Modifier = Modifier,
+    overflow: TextOverflow = TextOverflow.Clip,
+    maxLines: Int = Int.MAX_VALUE,
+    minLines: Int = 1,
+    style: TextStyle = LocalTextStyle.current,
+    textAlign: TextAlign? = null,
+) = Text(
+    text,
+    modifier = modifier,
+    color = AppTheme.linkColor(linkColor = linkColor),
+    overflow = overflow,
+    maxLines = maxLines,
+    minLines = minLines,
+    style = style,
+    textAlign = textAlign,
+)
+
 @CombinedThemePreviews
 @Composable
 private fun MegaTextPreview(
@@ -63,6 +85,24 @@ private fun MegaTextPreview(
     }
 }
 
+@CombinedThemePreviews
+@Composable
+private fun MegaTextPreview(
+    @PreviewParameter(LinkColorProvider::class) linkColor: LinkColor
+) {
+    AndroidThemeForPreviews {
+        MegaText(
+            text = linkColor.name,
+            linkColor = linkColor,
+            modifier = Modifier.padding(horizontal = 16.dp, vertical = 4.dp)
+        )
+    }
+}
+
 private class TextColorProvider : PreviewParameterProvider<TextColor> {
-    override val values = TextColor.values().asSequence()
+    override val values = TextColor.entries.asSequence()
+}
+
+private class LinkColorProvider : PreviewParameterProvider<LinkColor> {
+    override val values = LinkColor.entries.asSequence()
 }
