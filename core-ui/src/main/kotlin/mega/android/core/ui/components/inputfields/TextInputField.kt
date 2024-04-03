@@ -34,6 +34,7 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.core.text.isDigitsOnly
 import mega.android.core.ui.R
 import mega.android.core.ui.components.inputFieldHeight
 import mega.android.core.ui.preview.CombinedThemePreviews
@@ -214,8 +215,19 @@ private fun BaseTextField(
             value = baseText,
             onValueChange = {
                 if (it.length <= maxCharLimit) {
-                    baseText = it
-                    onValueChanged?.invoke(it)
+                    when {
+                        keyboardType == KeyboardType.Number -> {
+                            if (it.isDigitsOnly()) {
+                                baseText = it
+                                onValueChanged?.invoke(it)
+                            }
+                        }
+
+                        else -> {
+                            baseText = it
+                            onValueChanged?.invoke(it)
+                        }
+                    }
                 }
             },
             colors = colors,
