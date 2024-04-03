@@ -48,11 +48,13 @@ fun BasicDialog(
                 )
             },
             text = {
-                Text(
-                    text = description.orEmpty(),
-                    color = AppTheme.colors.text.secondary,
-                    style = AppTheme.typography.bodyMedium,
-                )
+                description?.let {
+                    Text(
+                        text = it,
+                        color = AppTheme.colors.text.secondary,
+                        style = AppTheme.typography.bodyMedium,
+                    )
+                }
             },
             confirmButton = {
                 DialogButton(
