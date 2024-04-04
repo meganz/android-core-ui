@@ -467,7 +467,7 @@ private fun MultiLineListItemPreviewWithElements() {
 
 @Composable
 @CombinedThemePreviews
-fun SecondaryHeaderListItemPreview() {
+private fun SecondaryHeaderListItemPreview() {
     AndroidThemeForPreviews {
         SecondaryHeaderListItem(text = "Header text")
     }
@@ -475,7 +475,7 @@ fun SecondaryHeaderListItemPreview() {
 
 @Composable
 @CombinedThemePreviews
-fun SecondaryHeaderListItemWithIconPreview() {
+private fun SecondaryHeaderListItemWithIconPreview() {
     AndroidThemeForPreviews {
         SecondaryHeaderListItem(text = "Header text", rightIconRes = R.drawable.ic_arrow_left)
     }
@@ -483,7 +483,7 @@ fun SecondaryHeaderListItemWithIconPreview() {
 
 @Composable
 @CombinedThemePreviews
-fun PrimaryHeaderListItemPreview() {
+private fun PrimaryHeaderListItemPreview() {
     AndroidThemeForPreviews {
         PrimaryHeaderListItem(text = "Header text")
     }
@@ -491,7 +491,7 @@ fun PrimaryHeaderListItemPreview() {
 
 @Composable
 @CombinedThemePreviews
-fun PrimaryHeaderListItemWithIconPreview() {
+private fun PrimaryHeaderListItemWithIconPreview() {
     AndroidThemeForPreviews {
         PrimaryHeaderListItem(text = "Header text", rightIconRes = R.drawable.ic_check_filled)
     }

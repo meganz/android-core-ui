@@ -167,7 +167,7 @@ private fun ProgressBarIndicatorPreview() {
 
 @CombinedThemePreviews
 @Composable
-fun SpinnerIndicatorSmallPreview() {
+private fun SpinnerIndicatorSmallPreview() {
     AndroidThemeForPreviews {
         SmallSpinnerIndicator(progressPercentage = 25f)
     }
@@ -175,7 +175,7 @@ fun SpinnerIndicatorSmallPreview() {
 
 @CombinedThemePreviews
 @Composable
-fun SpinnerIndicatorLargePreview() {
+private fun SpinnerIndicatorLargePreview() {
     AndroidThemeForPreviews {
         LargeSpinnerIndicator(progressPercentage = 25f)
     }
@@ -183,7 +183,7 @@ fun SpinnerIndicatorLargePreview() {
 
 @CombinedThemePreviews
 @Composable
-fun SpinnerIndicatorIndeterminateSmallPreview() {
+private fun SpinnerIndicatorIndeterminateSmallPreview() {
     AndroidThemeForPreviews {
         SmallSpinnerIndicator()
     }
@@ -191,7 +191,7 @@ fun SpinnerIndicatorIndeterminateSmallPreview() {
 
 @CombinedThemePreviews
 @Composable
-fun SpinnerIndicatorIndeterminateLargePreview() {
+private fun SpinnerIndicatorIndeterminateLargePreview() {
     AndroidThemeForPreviews {
         LargeSpinnerIndicator()
     }
@@ -199,7 +199,7 @@ fun SpinnerIndicatorIndeterminateLargePreview() {
 
 @CombinedThemePreviews
 @Composable
-fun HUDSmallPreview() {
+private fun HUDSmallPreview() {
     AndroidThemeForPreviews {
         Box(modifier = Modifier.padding(16.dp)) {
             SmallHUD()
@@ -209,7 +209,7 @@ fun HUDSmallPreview() {
 
 @CombinedThemePreviews
 @Composable
-fun HUDLargePreview() {
+private fun HUDLargePreview() {
     AndroidThemeForPreviews {
         Box(modifier = Modifier.padding(16.dp)) {
             LargeHUD()

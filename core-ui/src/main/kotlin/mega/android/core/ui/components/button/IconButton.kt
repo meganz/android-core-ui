@@ -159,7 +159,7 @@ fun BaseIconButton(
 
 @CombinedThemePreviews
 @Composable
-fun PrimaryLargeIconButtonPreview() {
+private fun PrimaryLargeIconButtonPreview() {
     AndroidThemeForPreviews {
         PrimaryLargeIconButton(
             icon = painterResource(id = R.drawable.ic_close),
@@ -170,7 +170,7 @@ fun PrimaryLargeIconButtonPreview() {
 
 @CombinedThemePreviews
 @Composable
-fun PrimarySmallIconButtonPreview() {
+private fun PrimarySmallIconButtonPreview() {
     AndroidThemeForPreviews {
         PrimarySmallIconButton(
             icon = painterResource(id = R.drawable.ic_close),
@@ -181,7 +181,7 @@ fun PrimarySmallIconButtonPreview() {
 
 @CombinedThemePreviews
 @Composable
-fun SecondaryLargeIconButtonPreview() {
+private fun SecondaryLargeIconButtonPreview() {
     AndroidThemeForPreviews {
         SecondaryLargeIconButton(
             icon = painterResource(id = R.drawable.ic_close),
@@ -192,7 +192,7 @@ fun SecondaryLargeIconButtonPreview() {
 
 @CombinedThemePreviews
 @Composable
-fun SecondarySmallIconButtonPreview() {
+private fun SecondarySmallIconButtonPreview() {
     AndroidThemeForPreviews {
         SecondarySmallIconButton(
             icon = painterResource(id = R.drawable.ic_close),

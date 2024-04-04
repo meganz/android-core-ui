@@ -93,7 +93,7 @@ fun MegaOutlinedButton(
 
 @CombinedThemePreviews
 @Composable
-fun MegaOutlinedButtonPreview() {
+private fun MegaOutlinedButtonPreview() {
     AndroidThemeForPreviews {
         MegaOutlinedButton(modifier = Modifier.wrapContentWidth(),
             text = "Outlined Button",
@@ -103,7 +103,7 @@ fun MegaOutlinedButtonPreview() {
 
 @CombinedThemePreviews
 @Composable
-fun MegaOutlinedButtonLoadingPreview() {
+private fun MegaOutlinedButtonLoadingPreview() {
     AndroidThemeForPreviews {
         MegaOutlinedButton(modifier = Modifier.wrapContentWidth(),
             text = "Outlined Button",
@@ -114,7 +114,7 @@ fun MegaOutlinedButtonLoadingPreview() {
 
 @CombinedThemePreviews
 @Composable
-fun MegaOutlinedButtonWithIconsPreview() {
+private fun MegaOutlinedButtonWithIconsPreview() {
     AndroidThemeForPreviews {
         MegaOutlinedButton(modifier = Modifier.wrapContentWidth(),
             text = "Add Item",

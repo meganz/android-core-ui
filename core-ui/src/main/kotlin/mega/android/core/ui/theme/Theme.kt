@@ -45,7 +45,7 @@ import mega.android.core.ui.theme.tokens.TextColor
  * @param content
  */
 @Composable
-fun AndroidThemeForPreviews(
+internal fun AndroidThemeForPreviews(
     content: @Composable () -> Unit,
 ) = AndroidTheme(
     isDark = isSystemInDarkTheme(),
@@ -55,7 +55,7 @@ fun AndroidThemeForPreviews(
 )
 
 @Composable
-fun AndroidTheme(
+internal fun AndroidTheme(
     isDark: Boolean,
     darkColorTokens: SemanticTokens,
     lightColorTokens: SemanticTokens,

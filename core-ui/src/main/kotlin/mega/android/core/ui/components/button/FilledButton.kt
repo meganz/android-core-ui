@@ -159,7 +159,7 @@ private fun FilledButton(
 
 @CombinedThemePreviews
 @Composable
-fun PrimaryFilledButtonPreview() {
+private fun PrimaryFilledButtonPreview() {
     AndroidThemeForPreviews {
         PrimaryFilledButton(modifier = Modifier.wrapContentWidth(),
             text = "Filled Button",
@@ -169,7 +169,7 @@ fun PrimaryFilledButtonPreview() {
 
 @CombinedThemePreviews
 @Composable
-fun PrimaryFilledButtonLoadingPreview() {
+private fun PrimaryFilledButtonLoadingPreview() {
     AndroidThemeForPreviews {
         PrimaryFilledButton(modifier = Modifier.wrapContentWidth(),
             text = "Filled Button",
@@ -180,7 +180,7 @@ fun PrimaryFilledButtonLoadingPreview() {
 
 @CombinedThemePreviews
 @Composable
-fun PrimaryFilledButtonWithIconsPreview() {
+private fun PrimaryFilledButtonWithIconsPreview() {
     AndroidThemeForPreviews {
         PrimaryFilledButton(modifier = Modifier.wrapContentWidth(),
             text = "Add Item",

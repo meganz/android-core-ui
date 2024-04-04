@@ -120,7 +120,7 @@ private fun HelpText(
 
 @CombinedThemePreviews
 @Composable
-fun HelpTextErrorPreview() {
+private fun HelpTextErrorPreview() {
     AndroidThemeForPreviews {
         HelpTextError(text = "Error footer text example")
     }
@@ -128,7 +128,7 @@ fun HelpTextErrorPreview() {
 
 @CombinedThemePreviews
 @Composable
-fun HelpTextSuccessPreview() {
+private fun HelpTextSuccessPreview() {
     AndroidThemeForPreviews {
         HelpTextSuccess(text = "Success footer text example")
     }
@@ -136,7 +136,7 @@ fun HelpTextSuccessPreview() {
 
 @CombinedThemePreviews
 @Composable
-fun HelpTextWarningPreview() {
+private fun HelpTextWarningPreview() {
     AndroidThemeForPreviews {
         HelpTextWarning(text = "Warning footer text example")
     }
@@ -144,7 +144,7 @@ fun HelpTextWarningPreview() {
 
 @CombinedThemePreviews
 @Composable
-fun HelpTextInfoPreview() {
+private fun HelpTextInfoPreview() {
     AndroidThemeForPreviews {
         HelpTextInfo(text = "Warning footer text example")
     }

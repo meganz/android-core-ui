@@ -38,7 +38,7 @@ fun LoadingView(modifier: Modifier) {
 
 @CombinedThemePreviews
 @Composable
-fun LoadingViewPreview() {
+private fun LoadingViewPreview() {
     AndroidThemeForPreviews {
         LoadingView(modifier = Modifier)
     }
