@@ -181,6 +181,10 @@ fun TwoLineListItem(
     subtitleMaxLines = TWO_LINE_LIST_SUBTITLE_MAX_LINES,
 )
 
+@Deprecated(
+    message = "Use FlexibleLineListItem instead",
+    replaceWith = ReplaceWith("FlexibleLineListItem", "mega.android.core.ui.components.list.FlexibleLineListItem"),
+)
 @Composable
 fun MultiLineListItem(
     title: String,
@@ -203,6 +207,34 @@ fun MultiLineListItem(
     onLongClickListener = onLongClickListener,
     subtitleMaxLines = Int.MAX_VALUE
 )
+
+@Composable
+fun FlexibleLineListItem(
+    title: String,
+    subtitle: String,
+    modifier: Modifier = Modifier,
+    titleMaxLines: Int = Int.MAX_VALUE,
+    subtitleMaxLines: Int = Int.MAX_VALUE,
+    leadingElement: (@Composable (BoxScope.() -> Unit))? = null,
+    trailingElement: (@Composable (() -> Unit))? = null,
+    enableClick: Boolean = true,
+    onClickListener: () -> Unit = {},
+    onLongClickListener: () -> Unit = {},
+) {
+    ListItem(
+        modifier = modifier
+            .defaultMinSize(minHeight = listItemMinHeight),
+        title = title,
+        subtitle = subtitle,
+        leadingElement = leadingElement,
+        trailingElement = trailingElement,
+        enableClick = enableClick,
+        onClickListener = onClickListener,
+        onLongClickListener = onLongClickListener,
+        titleMaxLines = titleMaxLines,
+        subtitleMaxLines = subtitleMaxLines
+    )
+}
 
 @Composable
 fun VpnSelectedCountryListItem(
@@ -273,6 +305,7 @@ private fun ListItem(
     enableClick: Boolean = true,
     onClickListener: () -> Unit = {},
     onLongClickListener: () -> Unit = {},
+    titleMaxLines: Int = TITLE_MAX_LINES,
     subtitleMaxLines: Int = MULTI_LINE_LIST_SUBTITLE_MAX_LINES,
     replaceNullSubtitleWithShimmer: Boolean = false
 ) {
@@ -314,7 +347,7 @@ private fun ListItem(
                 text = title,
                 textColor = TextColor.Primary,
                 style = AppTheme.typography.bodyLarge,
-                maxLines = TITLE_MAX_LINES,
+                maxLines = titleMaxLines,
                 overflow = TextOverflow.Ellipsis
             )
 
