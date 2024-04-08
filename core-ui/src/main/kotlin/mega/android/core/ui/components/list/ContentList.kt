@@ -5,6 +5,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
@@ -153,20 +154,24 @@ fun NumberContentListItem(
         subtitleAnnotations = subtitleAnnotations,
         onSubtitleAnnotationClick = onSubtitleAnnotationClick,
         leadingElement = {
-            MegaText(
+            Box(
                 modifier = Modifier
                     .size(24.dp)
-                    .align(Alignment.CenterVertically)
                     .border(
                         width = 1.dp,
                         color = AppTheme.colors.border.strong,
                         shape = CircleShape
-                    ),
-                text = "$number",
-                textAlign = TextAlign.Center,
-                textColor = TextColor.Primary,
-                style = AppTheme.typography.titleMedium
-            )
+                    )
+            ) {
+                MegaText(
+                    modifier = Modifier
+                        .align(Alignment.Center),
+                    text = "$number",
+                    textAlign = TextAlign.Center,
+                    textColor = TextColor.Primary,
+                    style = AppTheme.typography.titleMedium
+                )
+            }
         },
         onClickListener = onClickListener
     )
@@ -237,7 +242,8 @@ private fun ImageContentListItemPreview() {
                     MegaSpanStyle.LinkColorStyle(
                         SpanStyle(),
                         LinkColor.Primary
-                    ), "title",
+                    ),
+                    "title",
                 )
             ),
             subtitle = "This is a [A]subtitle[/A]",
@@ -246,7 +252,8 @@ private fun ImageContentListItemPreview() {
                     MegaSpanStyle.LinkColorStyle(
                         SpanStyle(),
                         LinkColor.Primary
-                    ), "subtitle",
+                    ),
+                    "subtitle",
                 )
             ),
         )
@@ -267,7 +274,8 @@ private fun IconContentListItemPreview() {
                     MegaSpanStyle.LinkColorStyle(
                         SpanStyle(),
                         LinkColor.Primary
-                    ), "title",
+                    ),
+                    "title",
                 )
             ),
             subtitle = "This is a [A]subtitle[/A]",
@@ -276,7 +284,8 @@ private fun IconContentListItemPreview() {
                     MegaSpanStyle.LinkColorStyle(
                         SpanStyle(),
                         LinkColor.Primary
-                    ), "subtitle",
+                    ),
+                    "subtitle",
                 )
             ),
         )
@@ -296,7 +305,8 @@ private fun PlainContentListItemPreview() {
                     MegaSpanStyle.LinkColorStyle(
                         SpanStyle(),
                         LinkColor.Primary
-                    ), "title",
+                    ),
+                    "title",
                 )
             ),
             subtitle = "This is a [A]subtitle[/A]",
@@ -305,7 +315,8 @@ private fun PlainContentListItemPreview() {
                     MegaSpanStyle.LinkColorStyle(
                         SpanStyle(),
                         LinkColor.Primary
-                    ), "subtitle",
+                    ),
+                    "subtitle",
                 )
             ),
         )
@@ -319,14 +330,15 @@ private fun NumberContentListItemPreview() {
         NumberContentListItem(
             modifier = Modifier
                 .padding(16.dp),
-            number = 10,
+            number = 1,
             title = "This is a [A]title[/A]",
             titleAnnotations = mapOf(
                 SpanIndicator('A') to SpanStyleWithAnnotation(
                     MegaSpanStyle.LinkColorStyle(
                         SpanStyle(),
                         LinkColor.Primary
-                    ), "title",
+                    ),
+                    "title",
                 )
             ),
             subtitle = "This is a [A]subtitle[/A]",
@@ -335,7 +347,8 @@ private fun NumberContentListItemPreview() {
                     MegaSpanStyle.LinkColorStyle(
                         SpanStyle(),
                         LinkColor.Primary
-                    ), "subtitle",
+                    ),
+                    "subtitle",
                 )
             ),
         )
