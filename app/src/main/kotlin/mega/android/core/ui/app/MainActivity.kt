@@ -6,7 +6,6 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.navigationBarsPadding
-import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -29,6 +28,7 @@ import mega.android.core.ui.app.component.PromotionalSheetsCatalog
 import mega.android.core.ui.app.component.PromptCatalog
 import mega.android.core.ui.app.component.ShimmerListItem
 import mega.android.core.ui.app.component.SliderComponentCatalog
+import mega.android.core.ui.app.component.StateViewCatalog
 import mega.android.core.ui.app.component.TextComponentCatalog
 import mega.android.core.ui.app.component.TextThumbnailComponentCatalog
 import mega.android.core.ui.components.inputfields.TextInputBox
@@ -124,6 +124,9 @@ fun MainComposeView() {
         }
         item {
             BottomSheetComponentCatalog()
+        }
+        item {
+            StateViewCatalog()
         }
     }
 }
