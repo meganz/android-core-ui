@@ -73,7 +73,7 @@ private fun BaseProfilePicture(
                     modifier = Modifier
                         .wrapContentSize(unbounded = true),
                     text = name?.take(1).orEmpty().uppercase(),
-                    textColor = TextColor.Primary,
+                    textColor = TextColor.OnColor,
                     style = baseStyle,
                     textAlign = TextAlign.Center
                 )
