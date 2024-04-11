@@ -21,7 +21,7 @@ import mega.android.core.ui.theme.spacing.LocalSpacing
 @Composable
 fun PasswordGeneratorInputComponentCatalog() {
     var password by remember { mutableStateOf("") }
-    val passwordInputBoxText = "Kyz7%905fgJ*RD@8"
+    val passwordInputBoxText = "uY3&y2O&nRIZ1@MLpl*kc$7RyaH^*glAwlMWk2nGPkM"
     val clipboardManager = LocalClipboardManager.current
 
     Spacer(modifier = Modifier.height(LocalSpacing.current.x16))
