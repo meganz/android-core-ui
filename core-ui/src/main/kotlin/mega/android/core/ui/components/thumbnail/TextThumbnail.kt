@@ -17,10 +17,7 @@ import mega.android.core.ui.theme.spacing.LocalSpacing
 import mega.android.core.ui.theme.tokens.TextColor
 
 
-@Composable
-fun getNumberOfTextThumbnailBackgrounds(): Int {
-    return getTextThumbnailBackgroundColors().size
-}
+val numberOfTextThumbnailBackgrounds = 3
 
 @Composable
 private fun getTextThumbnailBackgroundColors(): Map<Int, Color> {
