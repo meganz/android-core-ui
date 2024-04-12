@@ -24,10 +24,10 @@ fun TextThumbnail(
     shape: Shape = AppTheme.shapes.extraSmall
 ) {
     val backgroundColor = when (randomInt) {
-        1 -> AppTheme.colors.indicator.yellow
-        2 -> AppTheme.colors.indicator.green
-        3 -> AppTheme.colors.indicator.blue
-        else -> AppTheme.colors.indicator.blue
+        1 -> AppTheme.colors.indicator.green
+        2 -> AppTheme.colors.indicator.blue
+        3 -> AppTheme.colors.indicator.yellow
+        else -> AppTheme.colors.indicator.yellow
     }
     val chars = text.trim().take(numberOfCharacters)
     Box(
