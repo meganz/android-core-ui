@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import mega.android.core.ui.components.MegaText
 import mega.android.core.ui.preview.CombinedThemePreviews
@@ -14,6 +15,21 @@ import mega.android.core.ui.theme.AndroidThemeForPreviews
 import mega.android.core.ui.theme.AppTheme
 import mega.android.core.ui.theme.spacing.LocalSpacing
 import mega.android.core.ui.theme.tokens.TextColor
+
+
+@Composable
+fun getNumberOfTextThumbnailBackgrounds(): Int {
+    return getTextThumbnailBackgroundColors().size
+}
+
+@Composable
+private fun getTextThumbnailBackgroundColors(): Map<Int, Color> {
+    return mapOf(
+        1 to AppTheme.colors.indicator.green,
+        2 to AppTheme.colors.indicator.blue,
+        3 to AppTheme.colors.indicator.yellow
+    )
+}
 
 @Composable
 fun TextThumbnail(
@@ -23,12 +39,8 @@ fun TextThumbnail(
     randomInt: Int,
     shape: Shape = AppTheme.shapes.extraSmall
 ) {
-    val backgroundColor = when (randomInt) {
-        1 -> AppTheme.colors.indicator.green
-        2 -> AppTheme.colors.indicator.blue
-        3 -> AppTheme.colors.indicator.yellow
-        else -> AppTheme.colors.indicator.yellow
-    }
+    val backgroundColor =
+        getTextThumbnailBackgroundColors()[randomInt] ?: AppTheme.colors.indicator.yellow
     val chars = text.trim().take(numberOfCharacters)
     Box(
         modifier = modifier.background(
