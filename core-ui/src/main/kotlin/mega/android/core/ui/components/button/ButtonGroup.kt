@@ -4,6 +4,8 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
@@ -20,6 +22,41 @@ import mega.android.core.ui.theme.AndroidThemeForPreviews
 import mega.android.core.ui.theme.AppTheme
 import mega.android.core.ui.theme.spacing.LocalSpacing
 import mega.android.core.ui.theme.tokens.TextColor
+
+@Composable
+fun HorizontalAnchoredButtonGroup(
+    buttonGroup: List<@Composable RowScope.() -> Button>,
+    modifier: Modifier = Modifier,
+    withDivider: Boolean = false
+) {
+    val spacing = LocalSpacing.current
+
+    Box(
+        modifier = modifier
+            .fillMaxWidth()
+            .wrapContentHeight()
+    ) {
+        if (withDivider) {
+            StrongDivider(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .align(Alignment.TopCenter)
+            )
+        }
+
+        Row(
+            modifier = Modifier
+                .wrapContentHeight()
+                .fillMaxWidth()
+                .padding(all = spacing.x16),
+            horizontalArrangement = Arrangement.spacedBy(spacing.x16),
+        ) {
+            buttonGroup.forEach { button ->
+                button(this@Row).LocalButton()
+            }
+        }
+    }
+}
 
 @Composable
 fun AnchoredButtonGroup(
@@ -92,6 +129,30 @@ private fun AnchoredButtonGroupPreview() {
                         modifier = Modifier.fillMaxWidth()
                     )
                 }
+            ),
+            withDivider = true
+        )
+    }
+}
+
+@CombinedThemePreviews
+@Composable
+private fun HorizontalAnchoredButtonGroupPreview() {
+    AndroidThemeForPreviews {
+        HorizontalAnchoredButtonGroup(
+            buttonGroup = listOf(
+                {
+                    Button.PrimaryButton(
+                        text = "Primary",
+                        modifier = Modifier.weight(1f)
+                    )
+                },
+                {
+                    Button.SecondaryButton(
+                        text = "Secondary",
+                        modifier = Modifier.weight(1f)
+                    )
+                },
             ),
             withDivider = true
         )

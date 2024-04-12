@@ -21,6 +21,7 @@ import mega.android.core.ui.app.component.ContentListComponent
 import mega.android.core.ui.app.component.DividerComponentCatalog
 import mega.android.core.ui.app.component.DropDownMenuComponent
 import mega.android.core.ui.app.component.ListComponentCatalog
+import mega.android.core.ui.app.component.MegaDialogComponent
 import mega.android.core.ui.app.component.PasswordGeneratorInputComponentCatalog
 import mega.android.core.ui.app.component.ProgressIndicatorCatalog
 import mega.android.core.ui.app.component.PromotionalDialogsCatalog
@@ -121,6 +122,9 @@ fun MainComposeView() {
         }
         item {
             PasswordGeneratorInputComponentCatalog()
+        }
+        item {
+            MegaDialogComponent()
         }
         item {
             BottomSheetComponentCatalog()
