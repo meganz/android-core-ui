@@ -71,7 +71,7 @@ fun PasswordGeneratorInputBox(
                 .fillMaxWidth()
                 .weight(1f)
                 .padding(spacing.x16),
-            text = getAnnotatedString(text = text),
+            text = getAnnotatedString(text = text.toList().joinToString(" ")),
             fontFamily = GoogleFontFamily().workSans,
             fontWeight = FontWeight.Bold,
             fontSize = 20.sp,
@@ -220,13 +220,12 @@ fun PasswordGeneratorInputField(
 @Composable
 private fun getAnnotatedString(text: String) =
     buildAnnotatedString {
-        val spaceSeparatedText = text.toList().joinToString(" ")
         val letterStyle = SpanStyle(color = AppTheme.colors.text.primary)
         val digitStyle = SpanStyle(color = AppTheme.colors.indicator.magenta)
         val symbolStyle = SpanStyle(color = AppTheme.colors.indicator.indigo)
         val spaceStyle = SpanStyle(fontSize = 0.sp)
 
-        spaceSeparatedText.forEach {
+        text.forEach {
             when {
                 it.isLetter() -> withStyle(style = letterStyle) { append(it) }
                 it.isDigit() -> withStyle(style = digitStyle) { append(it) }
