@@ -28,6 +28,7 @@ import mega.android.core.ui.components.list.PrimaryHeaderListItem
 import mega.android.core.ui.components.list.SecondaryHeaderListItem
 import mega.android.core.ui.components.list.VpnSelectedCountryListItem
 import mega.android.core.ui.components.slider.MegaSlider
+import mega.android.core.ui.components.toggle.Toggle
 import mega.android.core.ui.theme.AppTheme
 import mega.android.core.ui.theme.spacing.LocalSpacing
 import mega.android.core.ui.theme.tokens.IconColor
@@ -57,11 +58,12 @@ fun ListComponentCatalog() {
             title = "List item with Switch",
             subtitle = "Supporting line text lorem ipsum lorem ipsum",
             trailingElement = {
-                Switch(
-                    checked = isSwitchChecked,
+                Toggle(
+                    isChecked = isSwitchChecked,
                     onCheckedChange = {
                         isSwitchChecked = it
                         Toast.makeText(context, "Switch is checked: $it", Toast.LENGTH_SHORT).show()
+
                     }
                 )
             }

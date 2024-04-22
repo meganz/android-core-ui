@@ -7,10 +7,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Switch
 import androidx.compose.material3.SwitchDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
@@ -34,35 +30,27 @@ fun Toggle(
     onCheckedChange: ((Boolean) -> Unit),
     isEnabled: Boolean = true,
 ) {
-    var checked by remember { mutableStateOf(isChecked) }
-    val icon: (@Composable () -> Unit) = if (checked) {
-        {
-            Icon(
-                painter = painterResource(id = R.drawable.ic_check_filled),
-                contentDescription = null,
-                modifier = Modifier.size(SwitchDefaults.IconSize),
-            )
-        }
-    } else {
-        {
-            Icon(
-                painter = painterResource(id = R.drawable.ic_remove_filled),
-                contentDescription = null,
-                modifier = Modifier.size(SwitchDefaults.IconSize),
-            )
-        }
-    }
-
     Switch(
-        checked = checked,
+        checked = isChecked,
         onCheckedChange = {
-            checked = !checked
-            onCheckedChange(checked)
+            onCheckedChange(it)
         },
         modifier = Modifier
             .width(defaultToggleWidth)
             .height(defaultToggleHeight),
-        thumbContent = icon,
+        thumbContent = {
+            Icon(
+                painter = painterResource(
+                    id = if (isChecked) {
+                        R.drawable.ic_check_filled
+                    } else {
+                        R.drawable.ic_remove_filled
+                    }
+                ),
+                contentDescription = null,
+                modifier = Modifier.size(SwitchDefaults.IconSize),
+            )
+        },
         enabled = isEnabled,
         colors = SwitchDefaults.colors(
             checkedThumbColor = AppTheme.colors.background.pageBackground,
