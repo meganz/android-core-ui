@@ -18,6 +18,7 @@ local.properties
 .idea/inspectionProfiles/Project_Default.xml
 .idea/caches
 .idea/.name
+.idea/migrations.xml
 
 ## User-specific stuff
 .idea/workspace.xml

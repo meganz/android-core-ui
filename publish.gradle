@@ -2,7 +2,9 @@
  * This file is to publish the library to Maven on Artifactory
  */
 
-def libVersion = '1.72'
+import mega.android.core.ui.gradle.UtilKt
+
+def libVersion = UtilKt.readLibVersion(project)
 def libGroupId = 'mega.android.core'
 
 project('core-ui') {
