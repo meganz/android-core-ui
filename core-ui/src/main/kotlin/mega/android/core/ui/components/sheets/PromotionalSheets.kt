@@ -473,13 +473,10 @@ private fun ModalBottomSheetScaffold(
     }
 
     ModalBottomSheet(
-        modifier = Modifier
-            .padding()
-            .statusBarsPadding(),
+        modifier = Modifier.statusBarsPadding(),
         onDismissRequest = onDismissRequest,
         sheetState = sheetState,
         containerColor = AppTheme.colors.background.pageBackground,
-        scrimColor = AppTheme.colors.background.surface1,
         dragHandle = null,
         shape = bottomSheetShape,
         content = content

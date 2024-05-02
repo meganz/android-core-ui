@@ -14,6 +14,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
@@ -24,7 +25,7 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import mega.android.core.ui.components.MegaText
-import mega.android.core.ui.components.list.MultiLineListItem
+import mega.android.core.ui.components.list.FlexibleLineListItem
 import mega.android.core.ui.theme.AppTheme
 import mega.android.core.ui.theme.spacing.LocalSpacing
 import mega.android.core.ui.theme.tokens.TextColor
@@ -110,7 +111,7 @@ internal fun PromotionalContent(
         )
 
         listItems.forEach { item ->
-            MultiLineListItem(
+            FlexibleLineListItem(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(top = LocalSpacing.current.x24),
@@ -134,7 +135,8 @@ internal fun PromotionalContent(
                         start = LocalSpacing.current.x16,
                         end = LocalSpacing.current.x16
                     )
-                    .fillMaxWidth(),
+                    .fillMaxWidth()
+                    .align(Alignment.CenterHorizontally),
                 text = contentText,
                 textColor = TextColor.Secondary,
                 style = AppTheme.typography.bodyMedium,
@@ -153,6 +155,7 @@ internal fun PromotionalContent(
                 text = footer,
                 textColor = TextColor.Secondary,
                 style = AppTheme.typography.bodySmall,
+                textAlign = TextAlign.Center
             )
         }
 
