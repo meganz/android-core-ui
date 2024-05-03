@@ -33,6 +33,7 @@ import mega.android.core.ui.app.component.SliderComponentCatalog
 import mega.android.core.ui.app.component.StateViewCatalog
 import mega.android.core.ui.app.component.TextComponentCatalog
 import mega.android.core.ui.app.component.TextThumbnailComponentCatalog
+import mega.android.core.ui.app.component.VerificationTextInputFieldCatalog
 import mega.android.core.ui.components.inputfields.TextInputBox
 import mega.android.core.ui.components.inputfields.TextInputField
 import mega.android.core.ui.components.surface.ThemedSurface
@@ -135,6 +136,9 @@ fun MainComposeView() {
         }
         item {
             StateViewCatalog()
+        }
+        item {
+            VerificationTextInputFieldCatalog()
         }
     }
 }
