@@ -31,7 +31,7 @@ fun HelpTextSuccess(
     HelpText(
         modifier = modifier,
         text = text,
-        iconColor = AppTheme.colors.support.success,
+        iconColor = AppTheme.colors.text.success,
         textColor = textColor,
         textStyle = textStyle,
         iconResId = R.drawable.ic_check_circle
@@ -65,7 +65,7 @@ fun HelpTextWarning(
     HelpText(
         modifier = modifier,
         text = text,
-        iconColor = AppTheme.colors.support.warning,
+        iconColor = AppTheme.colors.text.warning,
         textColor = textColor,
         textStyle = textStyle,
         iconResId = R.drawable.ic_alert_circle
