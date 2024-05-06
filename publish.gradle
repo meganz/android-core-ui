@@ -4,11 +4,11 @@
 
 import mega.android.core.ui.gradle.UtilKt
 
-def libVersion = UtilKt.readLibVersion(project)
+def libVersion = UtilKt.getLibVersion(project)
 def libGroupId = 'mega.android.core'
 
 project('core-ui') {
-    artifactoryPublish.dependsOn('build')
+    artifactoryPublish.dependsOn('assembleRelease')
     artifactoryPublish.dependsOn('releaseSourcesJar')
     publishing {
         publications {
@@ -48,9 +48,8 @@ artifactory {
             publishArtifacts = true
             // Properties to be attached to the published artifacts.
             properties = [
-                    'property1': "property 1",
-                    'property2': "property 2",
-                    'property3': "property 3",
+                    'lib-commit': "${System.getenv(UtilKt.LIB_COMMIT) ?: "N/A"}",
+                    'builder'   : "${System.getenv(UtilKt.GITLAB_USER_NAME) ?: "N/A"}",
             ]
             publishPom = true // Publish generated POM files to Artifactory (true by default)
         }

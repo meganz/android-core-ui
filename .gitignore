@@ -35,6 +35,9 @@ local.properties
 .idea/dynamic.xml
 .idea/uiDesigner.xml
 .idea/navEditor.xml
+.idea/appInsightsSettings.xml
+.idea/deploymentTargetSelector.xml
+
 
 ##  Gradle
 .idea/gradle.xml
