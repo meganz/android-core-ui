@@ -7,10 +7,12 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBars
+import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
@@ -18,6 +20,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.BottomSheetDefaults
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -77,6 +80,7 @@ fun PromotionalImageSheet(
     imageUrl: String,
     title: String,
     headline: String,
+    windowsInsets: WindowInsets? = null,
     showCloseButton: Boolean = true,
     primaryButton: SheetButtonAttribute? = null,
     secondaryButton: SheetButtonAttribute? = null,
@@ -104,9 +108,10 @@ fun PromotionalImageSheet(
     }
 
     ModalBottomSheetScaffold(
+        windowsInsets = windowsInsets,
         onDismissRequest = onDismissRequest,
         sheetState = sheetState,
-        isVisible = isVisible
+        isVisible = isVisible,
     ) {
         ConstraintLayout(
             modifier = Modifier.fillMaxSize()
@@ -188,6 +193,7 @@ fun PromotionalFullImageSheet(
     imageUrl: String,
     title: String,
     headline: String,
+    windowsInsets: WindowInsets? = null,
     showCloseButton: Boolean = true,
     primaryButton: SheetButtonAttribute? = null,
     secondaryButton: SheetButtonAttribute? = null,
@@ -215,6 +221,7 @@ fun PromotionalFullImageSheet(
     }
 
     ModalBottomSheetScaffold(
+        windowsInsets = windowsInsets,
         onDismissRequest = onDismissRequest,
         sheetState = sheetState,
         isVisible = isVisible
@@ -314,6 +321,7 @@ fun PromotionalFullImageSheet(
 fun PromotionalIllustrationSheet(
     title: String,
     headline: String,
+    windowsInsets: WindowInsets? = null,
     showCloseButton: Boolean = true,
     @DrawableRes illustration: Int? = null,
     primaryButton: SheetButtonAttribute? = null,
@@ -342,9 +350,10 @@ fun PromotionalIllustrationSheet(
     }
 
     ModalBottomSheetScaffold(
+        windowsInsets = windowsInsets,
         onDismissRequest = onDismissRequest,
         sheetState = sheetState,
-        isVisible = isVisible
+        isVisible = isVisible,
     ) {
         ConstraintLayout(
             modifier = Modifier.fillMaxSize()
@@ -432,6 +441,7 @@ fun PromotionalIllustrationSheet(
 fun PromotionalPlainSheet(
     title: String,
     headline: String,
+    windowsInsets: WindowInsets? = null,
     showCloseButton: Boolean = true,
     primaryButton: SheetButtonAttribute? = null,
     secondaryButton: SheetButtonAttribute? = null,
@@ -444,6 +454,7 @@ fun PromotionalPlainSheet(
     PromotionalIllustrationSheet(
         title = title,
         headline = headline,
+        windowsInsets = windowsInsets,
         showCloseButton = showCloseButton,
         primaryButton = primaryButton,
         secondaryButton = secondaryButton,
@@ -461,8 +472,9 @@ fun PromotionalPlainSheet(
 private fun ModalBottomSheetScaffold(
     onDismissRequest: () -> Unit,
     sheetState: SheetState,
+    windowsInsets: WindowInsets? = null,
     isVisible: Boolean = false,
-    content: @Composable ColumnScope.() -> Unit,
+    content: @Composable ColumnScope.() -> Unit = {},
 ) {
     LaunchedEffect(isVisible) {
         if (isVisible) {
@@ -474,12 +486,13 @@ private fun ModalBottomSheetScaffold(
 
     ModalBottomSheet(
         modifier = Modifier.statusBarsPadding(),
+        windowInsets = windowsInsets ?: BottomSheetDefaults.windowInsets.only(WindowInsetsSides.Bottom),
         onDismissRequest = onDismissRequest,
         sheetState = sheetState,
         containerColor = AppTheme.colors.background.pageBackground,
         dragHandle = null,
         shape = bottomSheetShape,
-        content = content
+        content = content,
     )
 }
 
