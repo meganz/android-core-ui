@@ -36,9 +36,9 @@ fun ProgressBarIndicator(
         modifier = modifier
             .wrapContentHeight()
             .fillMaxWidth(),
-        progress = progressPercentage / 100f,
+        progress = { progressPercentage / 100f },
+        color = AppTheme.iconColor(IconColor.Accent),
         trackColor = Color.Transparent,
-        color = AppTheme.iconColor(IconColor.Accent)
     )
 }
 
@@ -50,7 +50,7 @@ fun SmallSpinnerIndicator(
     SpinnerIndicator(
         spinnerVariant = SpinnerVariant.Small,
         modifier = modifier,
-        progressPercentage = progressPercentage
+        progressPercentage = progressPercentage,
     )
 }
 
@@ -62,7 +62,7 @@ fun LargeSpinnerIndicator(
     SpinnerIndicator(
         spinnerVariant = SpinnerVariant.Large,
         modifier = modifier,
-        progressPercentage = progressPercentage
+        progressPercentage = progressPercentage,
     )
 }
 
@@ -74,7 +74,7 @@ fun SmallInfiniteSpinnerIndicator(
     SpinnerIndicator(
         spinnerVariant = SpinnerVariant.Small,
         modifier = modifier,
-        iconColor = iconColor
+        iconColor = iconColor,
     )
 }
 
@@ -86,7 +86,7 @@ fun LargeInfiniteSpinnerIndicator(
     SpinnerIndicator(
         spinnerVariant = SpinnerVariant.Large,
         modifier = modifier,
-        iconColor = iconColor
+        iconColor = iconColor,
     )
 }
 
@@ -114,10 +114,11 @@ private fun SpinnerIndicator(
     iconColor: IconColor = IconColor.Accent
 ) {
     CircularProgressIndicator(
+        progress = { progressPercentage / 100f },
         modifier = modifier.size(spinnerVariant.size),
-        progress = progressPercentage / 100f,
+        color = AppTheme.iconColor(iconColor),
         trackColor = Color.Transparent,
-        color = AppTheme.iconColor(iconColor)
+        strokeWidth = spinnerVariant.spinnerThickness(),
     )
 }
 
@@ -130,7 +131,8 @@ private fun SpinnerIndicator(
     CircularProgressIndicator(
         modifier = modifier.size(spinnerVariant.size),
         trackColor = Color.Transparent,
-        color = AppTheme.iconColor(iconColor)
+        color = AppTheme.iconColor(iconColor),
+        strokeWidth = spinnerVariant.spinnerThickness()
     )
 }
 
@@ -153,6 +155,11 @@ private fun HUD(
     ) {
         SpinnerIndicator(spinnerVariant)
     }
+}
+
+private fun SpinnerVariant.spinnerThickness() = when (this) {
+    SpinnerVariant.Small -> 2.dp
+    SpinnerVariant.Large -> 4.dp
 }
 
 @CombinedThemePreviews
