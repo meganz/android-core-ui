@@ -61,6 +61,7 @@ typealias DialogButtonAttribute = Pair<String, () -> Unit>
  */
 @Composable
 fun PromotionalImageDialog(
+    modifier: Modifier = Modifier,
     imageUrl: String,
     title: String,
     headline: String,
@@ -84,7 +85,7 @@ fun PromotionalImageDialog(
             isScrollable = scrollState.canScrollForward
         }
 
-        DialogContent {
+        DialogContent(modifier = modifier) {
             MegaTopAppBar(
                 modifier = Modifier.wrapContentHeight(),
                 title = "",
@@ -134,6 +135,7 @@ fun PromotionalImageDialog(
  */
 @Composable
 fun PromotionalFullImageDialog(
+    modifier: Modifier = Modifier,
     imageUrl: String,
     title: String,
     headline: String,
@@ -157,7 +159,7 @@ fun PromotionalFullImageDialog(
         onDismissRequest = onDismissRequest,
         properties = DialogProperties(decorFitsSystemWindows = false)
     ) {
-        DialogContent {
+        DialogContent(modifier = modifier) {
             Box(
                 modifier = Modifier
                     .weight(1f)
@@ -225,6 +227,7 @@ fun PromotionalFullImageDialog(
  */
 @Composable
 fun PromotionalIllustrationDialog(
+    modifier: Modifier = Modifier,
     title: String,
     headline: String,
     showCloseButton: Boolean = true,
@@ -247,7 +250,7 @@ fun PromotionalIllustrationDialog(
         onDismissRequest = onDismissRequest,
         properties = DialogProperties(decorFitsSystemWindows = false)
     ) {
-        DialogContent {
+        DialogContent(modifier = modifier) {
             MegaTopAppBar(
                 modifier = Modifier.wrapContentHeight(),
                 title = "",
@@ -301,6 +304,7 @@ fun PromotionalIllustrationDialog(
  */
 @Composable
 fun PromotionalPlainDialog(
+    modifier: Modifier = Modifier,
     title: String,
     headline: String,
     showCloseButton: Boolean = true,
@@ -312,6 +316,7 @@ fun PromotionalPlainDialog(
     onDismissRequest: () -> Unit = {},
 ) {
     PromotionalIllustrationDialog(
+        modifier = modifier,
         title = title,
         headline = headline,
         showCloseButton = showCloseButton,

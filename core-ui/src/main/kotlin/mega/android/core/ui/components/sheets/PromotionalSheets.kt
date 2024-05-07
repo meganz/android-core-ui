@@ -77,6 +77,7 @@ private val bottomSheetShape = RoundedCornerShape(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PromotionalImageSheet(
+    modifier: Modifier = Modifier,
     imageUrl: String,
     title: String,
     headline: String,
@@ -108,6 +109,7 @@ fun PromotionalImageSheet(
     }
 
     ModalBottomSheetScaffold(
+        modifier = modifier,
         windowsInsets = windowsInsets,
         onDismissRequest = onDismissRequest,
         sheetState = sheetState,
@@ -190,6 +192,7 @@ fun PromotionalImageSheet(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PromotionalFullImageSheet(
+    modifier: Modifier = Modifier,
     imageUrl: String,
     title: String,
     headline: String,
@@ -221,6 +224,7 @@ fun PromotionalFullImageSheet(
     }
 
     ModalBottomSheetScaffold(
+        modifier = modifier,
         windowsInsets = windowsInsets,
         onDismissRequest = onDismissRequest,
         sheetState = sheetState,
@@ -319,6 +323,7 @@ fun PromotionalFullImageSheet(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PromotionalIllustrationSheet(
+    modifier: Modifier = Modifier,
     title: String,
     headline: String,
     windowsInsets: WindowInsets? = null,
@@ -350,6 +355,7 @@ fun PromotionalIllustrationSheet(
     }
 
     ModalBottomSheetScaffold(
+        modifier = modifier,
         windowsInsets = windowsInsets,
         onDismissRequest = onDismissRequest,
         sheetState = sheetState,
@@ -439,6 +445,7 @@ fun PromotionalIllustrationSheet(
  */
 @Composable
 fun PromotionalPlainSheet(
+    modifier: Modifier = Modifier,
     title: String,
     headline: String,
     windowsInsets: WindowInsets? = null,
@@ -452,6 +459,7 @@ fun PromotionalPlainSheet(
     isVisible: Boolean = false
 ) {
     PromotionalIllustrationSheet(
+        modifier = modifier,
         title = title,
         headline = headline,
         windowsInsets = windowsInsets,
@@ -470,6 +478,7 @@ fun PromotionalPlainSheet(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun ModalBottomSheetScaffold(
+    modifier: Modifier = Modifier,
     onDismissRequest: () -> Unit,
     sheetState: SheetState,
     windowsInsets: WindowInsets? = null,
@@ -485,7 +494,7 @@ private fun ModalBottomSheetScaffold(
     }
 
     ModalBottomSheet(
-        modifier = Modifier.statusBarsPadding(),
+        modifier = modifier.statusBarsPadding(),
         windowInsets = windowsInsets ?: BottomSheetDefaults.windowInsets.only(WindowInsetsSides.Bottom),
         onDismissRequest = onDismissRequest,
         sheetState = sheetState,
