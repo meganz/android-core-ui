@@ -8,22 +8,19 @@ import androidx.compose.ui.graphics.Color
 
 public data class Background(
     public val pageBackground: Color = Color.Magenta,
-    public val surface1: Color = Color.Magenta,
-    public val surface2: Color = Color.Magenta,
-    public val surface3: Color = Color.Magenta,
     public val inverse: Color = Color.Magenta,
+    public val surface1: Color = Color.Magenta,
+    public val surface3: Color = Color.Magenta,
+    public val surface2: Color = Color.Magenta,
     public val blur: Color = Color.Magenta,
 )
 
 public data class Button(
     public val primary: Color = Color.Magenta,
-    public val primaryHover: Color = Color.Magenta,
     public val primaryPressed: Color = Color.Magenta,
     public val brand: Color = Color.Magenta,
     public val brandHover: Color = Color.Magenta,
     public val brandPressed: Color = Color.Magenta,
-    public val secondary: Color = Color.Magenta,
-    public val secondaryHover: Color = Color.Magenta,
     public val secondaryPressed: Color = Color.Magenta,
     public val outline: Color = Color.Magenta,
     public val outlineHover: Color = Color.Magenta,
@@ -33,6 +30,9 @@ public data class Button(
     public val errorHover: Color = Color.Magenta,
     public val errorPressed: Color = Color.Magenta,
     public val disabled: Color = Color.Magenta,
+    public val secondary: Color = Color.Magenta,
+    public val primaryHover: Color = Color.Magenta,
+    public val secondaryHover: Color = Color.Magenta,
 )
 
 public data class Border(
@@ -56,8 +56,8 @@ public data class Text(
     public val success: Color = Color.Magenta,
     public val info: Color = Color.Magenta,
     public val warning: Color = Color.Magenta,
-    public val inverse: Color = Color.Magenta,
     public val disabled: Color = Color.Magenta,
+    public val inverse: Color = Color.Magenta,
 ) {
     public fun getTextColor(textColor: TextColor): Color = when (textColor) {
         TextColor.Primary -> primary
@@ -71,8 +71,8 @@ public data class Text(
         TextColor.Success -> success
         TextColor.Info -> info
         TextColor.Warning -> warning
-        TextColor.Inverse -> inverse
         TextColor.Disabled -> disabled
+        TextColor.Inverse -> inverse
     }
 }
 
@@ -88,8 +88,8 @@ public enum class TextColor {
     Success,
     Info,
     Warning,
-    Inverse,
     Disabled,
+    Inverse,
 }
 
 public data class Icon(

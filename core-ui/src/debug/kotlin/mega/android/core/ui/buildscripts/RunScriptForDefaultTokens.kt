@@ -6,9 +6,9 @@ import mega.android.core.ui.buildscripts.GenerateTokens.Companion.DEFAULT_PACKAG
  * Runs the Script to generate Kotlin files with the tokens from json files
  */
 fun main(args: Array<String>) {
-    //this can be set by arguments using Clikt in the future
+    //generate the tokens with NEW core tokens
     GenerateTokens().generate(
-        appPrefix = "Default",
+        appPrefix = "AndroidNew",
         packageName = DEFAULT_PACKAGE,
         destinationPath = "core-ui/src/main/kotlin",
         generateInterfaces = true,

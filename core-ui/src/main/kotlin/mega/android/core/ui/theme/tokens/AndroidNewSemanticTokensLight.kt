@@ -4,25 +4,22 @@
 //
 package mega.android.core.ui.theme.tokens
 
-internal object DefaultSemanticTokensLight : SemanticTokens {
+internal object AndroidNewSemanticTokensLight : SemanticTokens {
     override val background: Background = Background(
             pageBackground = Colors.Base.white,
-            surface1 = Colors.Neutral.n025,
-            surface2 = Colors.Neutral.n050,
-            surface3 = Colors.Neutral.n100,
             inverse = Colors.Neutral.n700,
+            surface1 = Colors.Neutral.n025,
+            surface3 = Colors.Neutral.n100,
+            surface2 = Colors.Neutral.n050,
             blur = Colors.BlackOpacity.n020,
             )
 
     override val button: Button = Button(
             primary = Colors.Accent.n900,
-            primaryHover = Colors.Accent.n700,
             primaryPressed = Colors.Accent.n600,
             brand = Colors.Primary.n600,
             brandHover = Colors.Primary.n700,
             brandPressed = Colors.Primary.n800,
-            secondary = Colors.Neutral.n050,
-            secondaryHover = Colors.Neutral.n100,
             secondaryPressed = Colors.Neutral.n200,
             outline = Colors.Accent.n900,
             outlineHover = Colors.Accent.n700,
@@ -32,6 +29,9 @@ internal object DefaultSemanticTokensLight : SemanticTokens {
             errorHover = Colors.Error.n700,
             errorPressed = Colors.Error.n800,
             disabled = Colors.BlackOpacity.n010,
+            secondary = Colors.Neutral.n050,
+            primaryHover = Colors.Accent.n700,
+            secondaryHover = Colors.Neutral.n100,
             )
 
     override val border: Border = Border(
@@ -55,8 +55,8 @@ internal object DefaultSemanticTokensLight : SemanticTokens {
             success = Colors.Success.n700,
             info = Colors.Secondary.Blue.n700,
             warning = Colors.Warning.n700,
-            inverse = Colors.Neutral.n025,
             disabled = Colors.Neutral.n200,
+            inverse = Colors.Neutral.n025,
             )
 
     override val icon: Icon = Icon(

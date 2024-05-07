@@ -276,54 +276,54 @@ internal object Colors {
     }
 
     public object BlackOpacity {
-        public val n005: Color = Color(0, 0, 0, 12)
+        public val n005: Color = Color(0, 0, 0, 13)
 
-        public val n010: Color = Color(0, 0, 0, 25)
+        public val n010: Color = Color(0, 0, 0, 26)
 
         public val n015: Color = Color(0, 0, 0, 38)
 
         public val n020: Color = Color(0, 0, 0, 51)
 
-        public val n025: Color = Color(0, 0, 0, 63)
+        public val n025: Color = Color(0, 0, 0, 64)
 
-        public val n030: Color = Color(0, 0, 0, 76)
+        public val n030: Color = Color(0, 0, 0, 77)
 
         public val n040: Color = Color(0, 0, 0, 102)
 
-        public val n050: Color = Color(0, 0, 0, 127)
+        public val n050: Color = Color(0, 0, 0, 128)
 
         public val n060: Color = Color(0, 0, 0, 153)
 
-        public val n070: Color = Color(0, 0, 0, 178)
+        public val n070: Color = Color(0, 0, 0, 179)
 
         public val n080: Color = Color(0, 0, 0, 204)
 
-        public val n090: Color = Color(0, 0, 0, 229)
+        public val n090: Color = Color(0, 0, 0, 230)
     }
 
     public object WhiteOpacity {
-        public val n005: Color = Color(255, 255, 255, 12)
+        public val n005: Color = Color(255, 255, 255, 13)
 
-        public val n010: Color = Color(255, 255, 255, 25)
+        public val n010: Color = Color(255, 255, 255, 26)
 
         public val n015: Color = Color(255, 255, 255, 38)
 
         public val n020: Color = Color(255, 255, 255, 51)
 
-        public val n025: Color = Color(255, 255, 255, 63)
+        public val n025: Color = Color(255, 255, 255, 64)
 
-        public val n030: Color = Color(255, 255, 255, 76)
+        public val n030: Color = Color(255, 255, 255, 77)
 
         public val n040: Color = Color(255, 255, 255, 102)
 
-        public val n050: Color = Color(255, 255, 255, 127)
+        public val n050: Color = Color(255, 255, 255, 128)
 
         public val n060: Color = Color(255, 255, 255, 153)
 
-        public val n070: Color = Color(255, 255, 255, 178)
+        public val n070: Color = Color(255, 255, 255, 179)
 
         public val n080: Color = Color(255, 255, 255, 204)
 
-        public val n090: Color = Color(255, 255, 255, 229)
+        public val n090: Color = Color(255, 255, 255, 230)
     }
 }

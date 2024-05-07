@@ -20,12 +20,12 @@ import mega.android.core.ui.theme.colors.AppColors
 import mega.android.core.ui.theme.shape.shapes
 import mega.android.core.ui.theme.spacing.Dimensions
 import mega.android.core.ui.theme.spacing.LocalSpacing
+import mega.android.core.ui.theme.tokens.AndroidNewSemanticTokensDark
+import mega.android.core.ui.theme.tokens.AndroidNewSemanticTokensLight
 import mega.android.core.ui.theme.tokens.Background
 import mega.android.core.ui.theme.tokens.Border
 import mega.android.core.ui.theme.tokens.Button
 import mega.android.core.ui.theme.tokens.Components
-import mega.android.core.ui.theme.tokens.DefaultSemanticTokensDark
-import mega.android.core.ui.theme.tokens.DefaultSemanticTokensLight
 import mega.android.core.ui.theme.tokens.Focus
 import mega.android.core.ui.theme.tokens.Icon
 import mega.android.core.ui.theme.tokens.IconColor
@@ -49,8 +49,8 @@ fun AndroidThemeForPreviews(
     content: @Composable () -> Unit,
 ) = AndroidTheme(
     isDark = isSystemInDarkTheme(),
-    darkColorTokens = DefaultSemanticTokensDark,
-    lightColorTokens = DefaultSemanticTokensLight,
+    darkColorTokens = AndroidNewSemanticTokensDark,
+    lightColorTokens = AndroidNewSemanticTokensLight,
     content = content,
 )
 

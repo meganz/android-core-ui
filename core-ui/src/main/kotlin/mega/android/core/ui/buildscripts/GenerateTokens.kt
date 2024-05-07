@@ -11,6 +11,7 @@ import mega.android.core.ui.buildscripts.kotlingenerator.TokenGenerationType
 import mega.android.core.ui.buildscripts.model.json.JsonColor
 import mega.android.core.ui.buildscripts.model.json.JsonColorRef
 import mega.android.core.ui.buildscripts.model.json.JsonCoreUiObject
+import mega.android.core.ui.buildscripts.model.json.JsonGroup
 import mega.android.core.ui.buildscripts.model.json.JsonTokenName
 import java.io.File
 import kotlin.reflect.KClass
@@ -51,6 +52,7 @@ class GenerateTokens {
         destinationPath: String,
         generateInterfaces: Boolean,
         assetsFolder: String = DEFAULT_ASSETS_FOLDER,
+        coreColorsTokensGroupName: String = "Core/Main"
     ) {
         //for now we only have color tokens
         generateColorsTokens(
@@ -59,6 +61,7 @@ class GenerateTokens {
             destinationPath = destinationPath,
             generateInterfaces = generateInterfaces,
             assetsFolder = assetsFolder,
+            coreColorsTokensGroupName = coreColorsTokensGroupName,
         )
     }
 
@@ -68,6 +71,7 @@ class GenerateTokens {
         destinationPath: String,
         generateInterfaces: Boolean,
         assetsFolder: String,
+        coreColorsTokensGroupName: String,
     ) = generateTokens(
         appPrefix = appPrefix,
         packageName = packageName,
@@ -77,6 +81,7 @@ class GenerateTokens {
         coreType = JsonColor::class,
         semanticType = JsonColorRef::class,
         exposeGroupsAsEnums = ExposeGroupsAsEnums(listOf("Text", "Icon", "Support", "Link"), enumSuffix = "Color"),
+        coreTokensGroupName = coreColorsTokensGroupName,
     )
 
     private fun <T : JsonCoreUiObject, E : JsonCoreUiObject> generateTokens(
@@ -88,14 +93,17 @@ class GenerateTokens {
         coreType: KClass<T>,
         semanticType: KClass<E>,
         exposeGroupsAsEnums: ExposeGroupsAsEnums?,
+        coreTokensGroupName: String,
     ) {
         //generate color core tokens
         generateTokensKotlinFile(
             type = coreType,
             assetsFolder = assetsFolder,
             jsonFileName = DEFAULT_JSON_CORE_FILE_NAME,
+            jsonChild = coreTokensGroupName,
             kotlinOutputName = "CoreColors",
             generationType = TokenGenerationType.NestedObjects,
+            rootGroupName = "", //we only want children
             packageName = packageName,
             destinationPath = destinationPath,
             appPrefix = "",
@@ -107,7 +115,8 @@ class GenerateTokens {
             generateTokensKotlinFile(
                 type = semanticType,
                 assetsFolder = assetsFolder,
-                jsonFileName = "Semantic tokens.Light.tokens",
+                jsonFileName = DEFAULT_JSON_CORE_FILE_NAME,
+                jsonChild = "Semantic tokens/Light",
                 kotlinOutputName = SEMANTIC_TOKENS_PREFIX,
                 generationType = TokenGenerationType.InterfaceDefinition(exposeGroupsAsEnums),
                 rootGroupName = SEMANTIC_TOKENS_PREFIX,
@@ -122,7 +131,8 @@ class GenerateTokens {
             generateTokensKotlinFile(
                 type = semanticType,
                 assetsFolder = assetsFolder,
-                jsonFileName = "Semantic tokens.$mode.tokens",
+                jsonFileName = DEFAULT_JSON_CORE_FILE_NAME,
+                jsonChild = "Semantic tokens/$mode",
                 appPrefix = appPrefix,
                 kotlinOutputName = "$SEMANTIC_TOKENS_PREFIX$mode",
                 generationType = TokenGenerationType.InterfaceImplementation(
@@ -140,16 +150,19 @@ class GenerateTokens {
         type: KClass<T>,
         assetsFolder: String,
         jsonFileName: String,
+        jsonChild: String,
         appPrefix: String,
         kotlinOutputName: String,
         generationType: TokenGenerationType,
         packageName: String,
         destinationPath: String,
-        rootGroupName: String? = null,
+        rootGroupName: String?,
     ) {
         val json =
             File("$assetsFolder/$jsonFileName.json").bufferedReader().readText()
-        val coreObject = gson.fromJson(json, JsonCoreUiObject::class.java)
+        val rootObject = gson.fromJson(json, JsonCoreUiObject::class.java)
+        val coreObject = (rootObject as? JsonGroup)?.children?.first { it.name == jsonChild }
+            ?: throw RuntimeException("Child $jsonChild not found")
         if (rootGroupName != null) {
             coreObject.name = rootGroupName
         }
@@ -163,14 +176,13 @@ class GenerateTokens {
             destinationPath = destinationPath,
         ).generateFile()
     }
-
     companion object {
         /**
          * package of default tokens and interfaces
          */
         const val DEFAULT_PACKAGE = "mega.android.core.ui.theme.tokens"
         const val DEFAULT_ASSETS_FOLDER = "designSystemAssets"
-        private const val DEFAULT_JSON_CORE_FILE_NAME = "core"
+        private const val DEFAULT_JSON_CORE_FILE_NAME = "tokens"
         private const val SEMANTIC_TOKENS_PREFIX = "SemanticTokens"
     }
 }

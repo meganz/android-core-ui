@@ -94,9 +94,12 @@ internal class KotlinTokensGenerator<T : JsonCoreUiObject>(
         }
     }
 
-    private fun addRootObject(file: FileSpec.Builder, rootObject: JsonCoreUiObject) {
+    private fun addRootObject(
+        file: FileSpec.Builder,
+        rootObject: JsonCoreUiObject
+    ) {
         if (rootObject is JsonGroup) {
-            if (rootObject.name == null) {
+            if (rootObject.name.isNullOrEmpty()) {
                 //unnamed root group is discarded, children objects (usually only one) will be created
                 rootObject.children.forEach { child ->
                     if (child is JsonGroup) {
@@ -114,7 +117,10 @@ internal class KotlinTokensGenerator<T : JsonCoreUiObject>(
         }
     }
 
-    private fun addObject(file: FileSpec.Builder, group: JsonGroup) {
+    private fun addObject(
+        file: FileSpec.Builder,
+        group: JsonGroup
+    ) {
         if (!group.hasChildOfType(type)) return
         val mainType = when (generationType) {
             is TokenGenerationType.InterfaceImplementation -> {
@@ -206,7 +212,10 @@ internal class KotlinTokensGenerator<T : JsonCoreUiObject>(
         }
     }
 
-    private fun addGroup(parentGroupObject: TypeSpec.Builder, group: JsonGroup) {
+    private fun addGroup(
+        parentGroupObject: TypeSpec.Builder,
+        group: JsonGroup
+    ) {
         createGroupObject(group)?.let {
             parentGroupObject.addType(it.build())
         }
