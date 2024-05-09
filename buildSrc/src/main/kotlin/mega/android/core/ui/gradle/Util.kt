@@ -22,16 +22,6 @@ private fun getVersionFromFile(project: Project): String =
         throw e
     }
 
-fun writeLibVersion(project: Project, version: String) {
-    runCatching {
-        require(version.isNotBlank()) { "[ERROR] Writing version failed. version cannot be blank!" }
-        File("${project.rootDir.absolutePath}/$VERSION_FILE").writeText(version)
-    }.onFailure {
-        println("[ERROR] Writing version $version to \"$VERSION_FILE\" failed!")
-        throw it
-    }
-}
-
 /**
  * get Patch of the version
  *
@@ -48,10 +38,13 @@ private fun getPatch(): String =
  * @return
  */
 fun getLibVersion(project: Project): String {
-    val version = getVersionFromFile(project)
+    val version = getVersionFromFile(project).split(".")
+    val major = version[0]
+    val minor = version[1]
     val patch = getPatch()
     val snapshot = System.getenv(SNAPSHOT).orEmpty()
-    return "${version}.${patch}$snapshot"
+    println("major: $major, minor: $minor, patch: $patch, snapshot: $snapshot, version: $version")
+    return "${major}.${minor}.${patch}$snapshot"
 }
 
 // environment variable keys
