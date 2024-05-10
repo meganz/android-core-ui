@@ -23,11 +23,13 @@ import mega.android.core.ui.components.dialogs.PromotionalFullImageDialog
 import mega.android.core.ui.components.dialogs.PromotionalIllustrationDialog
 import mega.android.core.ui.components.dialogs.PromotionalImageDialog
 import mega.android.core.ui.components.dialogs.PromotionalPlainDialog
+import mega.android.core.ui.model.IllustrationIconSizeMode
 import mega.android.core.ui.theme.spacing.LocalSpacing
 
 @Composable
 fun PromotionalDialogsCatalog(
-    showCloseButton: Boolean
+    showCloseButton: Boolean,
+    illustrationsMode: IllustrationIconSizeMode,
 ) {
     Spacer(modifier = Modifier.height(LocalSpacing.current.x16))
 
@@ -54,6 +56,7 @@ fun PromotionalDialogsCatalog(
                 if (showPlainDialog) {
                     PromotionalPlainDialogComponent(
                         showCloseButton = showCloseButton,
+                        illustrationMode = illustrationsMode,
                         onDismissRequest = {
                             showPlainDialog = false
                         }
@@ -114,7 +117,8 @@ fun PromotionalDialogsCatalog(
 
                 if (showIllustrationDialog) {
                     PromotionalIllustrationDialogComponent(
-                        showCloseButton = showCloseButton
+                        showCloseButton = showCloseButton,
+                        illustrationMode = illustrationsMode
                     ) {
                         showIllustrationDialog = false
                     }
@@ -163,6 +167,7 @@ private fun PromotionalFullImageDialogComponent(
 @Composable
 private fun PromotionalIllustrationDialogComponent(
     showCloseButton: Boolean,
+    illustrationMode: IllustrationIconSizeMode = IllustrationIconSizeMode.Small,
     onDismissRequest: () -> Unit
 ) {
     PromotionalIllustrationDialog(
@@ -170,6 +175,7 @@ private fun PromotionalIllustrationDialogComponent(
         title = "Title",
         headline = "Headline",
         showCloseButton = showCloseButton,
+        illustrationMode = illustrationMode,
         primaryButton = "Button" to {},
         secondaryButton = "Button 2" to {},
         onDismissRequest = onDismissRequest,
@@ -181,12 +187,14 @@ private fun PromotionalIllustrationDialogComponent(
 @Composable
 private fun PromotionalPlainDialogComponent(
     showCloseButton: Boolean,
+    illustrationMode: IllustrationIconSizeMode = IllustrationIconSizeMode.Small,
     onDismissRequest: () -> Unit
 ) {
     PromotionalPlainDialog(
         title = "Title",
         headline = "Headline",
         showCloseButton = showCloseButton,
+        illustrationMode = illustrationMode,
         primaryButton = "Button" to {},
         secondaryButton = "Button 2" to {},
         onDismissRequest = onDismissRequest,

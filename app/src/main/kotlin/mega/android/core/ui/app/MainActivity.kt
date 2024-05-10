@@ -37,6 +37,7 @@ import mega.android.core.ui.app.component.VerificationTextInputFieldCatalog
 import mega.android.core.ui.components.inputfields.TextInputBox
 import mega.android.core.ui.components.inputfields.TextInputField
 import mega.android.core.ui.components.surface.ThemedSurface
+import mega.android.core.ui.model.IllustrationIconSizeMode
 import mega.android.core.ui.preview.CombinedThemePreviews
 import mega.android.core.ui.shared.theme.CoreUITheme
 import mega.android.core.ui.theme.AndroidThemeForPreviews
@@ -58,6 +59,7 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun MainComposeView() {
     var showCloseButton by remember { mutableStateOf(true) }
+    var illustrationMode by remember { mutableStateOf(IllustrationIconSizeMode.Small) }
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
@@ -94,12 +96,18 @@ fun MainComposeView() {
             PromptCatalog()
         }
         item {
-            PromotionalSheetsCatalog(showCloseButton = showCloseButton) {
-                showCloseButton = it
-            }
+            PromotionalSheetsCatalog(
+                showCloseButton = showCloseButton,
+                illustrationMode = illustrationMode,
+                onShowCloseButtonChange = { showCloseButton = it },
+                onIllustrationModeChange = { illustrationMode = it }
+            )
         }
         item {
-            PromotionalDialogsCatalog(showCloseButton = showCloseButton)
+            PromotionalDialogsCatalog(
+                showCloseButton = showCloseButton,
+                illustrationsMode = illustrationMode
+            )
         }
         item {
             TextThumbnailComponentCatalog()

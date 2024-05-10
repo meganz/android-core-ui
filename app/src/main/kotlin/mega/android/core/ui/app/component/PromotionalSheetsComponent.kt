@@ -27,11 +27,17 @@ import mega.android.core.ui.components.sheets.PromotionalFullImageSheet
 import mega.android.core.ui.components.sheets.PromotionalIllustrationSheet
 import mega.android.core.ui.components.sheets.PromotionalImageSheet
 import mega.android.core.ui.components.sheets.PromotionalPlainSheet
+import mega.android.core.ui.model.IllustrationIconSizeMode
 import mega.android.core.ui.theme.spacing.LocalSpacing
 import mega.android.core.ui.theme.tokens.TextColor
 
 @Composable
-fun PromotionalSheetsCatalog(showCloseButton: Boolean, onShowCloseButtonChange: (Boolean) -> Unit) {
+fun PromotionalSheetsCatalog(
+    showCloseButton: Boolean,
+    illustrationMode: IllustrationIconSizeMode,
+    onShowCloseButtonChange: (Boolean) -> Unit,
+    onIllustrationModeChange: (IllustrationIconSizeMode) -> Unit
+) {
     Spacer(modifier = Modifier.height(LocalSpacing.current.x16))
 
     Section(header = "Promotional Sheets") {
@@ -44,8 +50,20 @@ fun PromotionalSheetsCatalog(showCloseButton: Boolean, onShowCloseButtonChange: 
             })
 
             MegaText(
-                modifier = Modifier.padding(start = LocalSpacing.current.x8),
+                modifier = Modifier.padding(horizontal = LocalSpacing.current.x8),
                 text = "Show Close Button",
+                textColor = TextColor.Primary
+            )
+
+            Checkbox(
+                checked = illustrationMode == IllustrationIconSizeMode.Large,
+                onCheckStateChanged = {
+                    onIllustrationModeChange(if (it) IllustrationIconSizeMode.Large else IllustrationIconSizeMode.Small)
+                })
+
+            MegaText(
+                modifier = Modifier.padding(start = LocalSpacing.current.x8),
+                text = "Illustration Mode: ${if (illustrationMode == IllustrationIconSizeMode.Large) "Large" else "Small"}",
                 textColor = TextColor.Primary
             )
         }
@@ -73,7 +91,8 @@ fun PromotionalSheetsCatalog(showCloseButton: Boolean, onShowCloseButtonChange: 
 
                 if (showPlainSheet) {
                     PromotionalPlainSheetComponent(
-                        showCloseButton = showCloseButton
+                        showCloseButton = showCloseButton,
+                        illustrationMode = illustrationMode
                     ) {
                         showPlainSheet = false
                     }
@@ -133,7 +152,8 @@ fun PromotionalSheetsCatalog(showCloseButton: Boolean, onShowCloseButtonChange: 
 
                 if (showIllustrationSheet) {
                     PromotionalIllustrationSheetComponent(
-                        showCloseButton = showCloseButton
+                        showCloseButton = showCloseButton,
+                        illustrationMode = illustrationMode
                     ) {
                         showIllustrationSheet = false
                     }
@@ -146,12 +166,14 @@ fun PromotionalSheetsCatalog(showCloseButton: Boolean, onShowCloseButtonChange: 
 @Composable
 private fun PromotionalPlainSheetComponent(
     showCloseButton: Boolean,
+    illustrationMode: IllustrationIconSizeMode,
     onDismissRequest: () -> Unit
 ) {
     PromotionalPlainSheet(
         title = "Title",
         headline = "Headline",
         showCloseButton = showCloseButton,
+        illustrationMode = illustrationMode,
         primaryButton = "Button" to {},
         secondaryButton = "Button 2" to {},
         onDismissRequest = onDismissRequest,
@@ -181,6 +203,7 @@ private fun PromotionalFullImageSheetComponent(
 @Composable
 private fun PromotionalIllustrationSheetComponent(
     showCloseButton: Boolean,
+    illustrationMode: IllustrationIconSizeMode,
     onDismissRequest: () -> Unit
 ) {
     PromotionalIllustrationSheet(
@@ -188,6 +211,7 @@ private fun PromotionalIllustrationSheetComponent(
         title = "Title",
         headline = "Headline",
         showCloseButton = showCloseButton,
+        illustrationMode = illustrationMode,
         primaryButton = "Button" to {},
         secondaryButton = "Button 2" to {},
         onDismissRequest = onDismissRequest,

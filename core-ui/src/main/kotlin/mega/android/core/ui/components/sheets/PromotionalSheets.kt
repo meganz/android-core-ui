@@ -9,13 +9,13 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.asPaddingValues
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -41,6 +41,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
@@ -56,6 +57,7 @@ import mega.android.core.ui.components.common.PromotionalImage
 import mega.android.core.ui.components.common.PromotionalListAttributes
 import mega.android.core.ui.components.image.MegaIcon
 import mega.android.core.ui.components.toolbar.MegaTopAppBar
+import mega.android.core.ui.model.IllustrationIconSizeMode
 import mega.android.core.ui.preview.CombinedThemePreviews
 import mega.android.core.ui.theme.AndroidThemeForPreviews
 import mega.android.core.ui.theme.AppTheme
@@ -69,6 +71,11 @@ private val bottomSheetShape = RoundedCornerShape(
     topStart = 24.dp,
     topEnd = 24.dp,
 )
+
+/**
+ * This value is from Figma design
+ */
+private val TOP_PADDING_OF_SHEET_CONTENT = 52.dp
 
 /**
  * Promotional sheet with image in the center below the toolbar.
@@ -103,6 +110,8 @@ fun PromotionalImageSheet(
     }
     val scrollState = rememberScrollState()
     var isScrollable by rememberSaveable { mutableStateOf(false) }
+    val configuration = LocalConfiguration.current
+    val screenHeightDp = configuration.screenHeightDp.dp
 
     LaunchedEffect(scrollState) {
         isScrollable = scrollState.canScrollForward
@@ -116,7 +125,10 @@ fun PromotionalImageSheet(
         isVisible = isVisible,
     ) {
         ConstraintLayout(
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier
+                .fillMaxWidth()
+                .heightIn(max = screenHeightDp - TOP_PADDING_OF_SHEET_CONTENT)
+                .wrapContentHeight()
         ) {
             val (toolbar, content, buttonContainer) = createRefs()
 
@@ -218,6 +230,8 @@ fun PromotionalFullImageSheet(
     }
     val scrollState = rememberScrollState()
     var isScrollable by rememberSaveable { mutableStateOf(false) }
+    val configuration = LocalConfiguration.current
+    val screenHeightDp = configuration.screenHeightDp.dp
 
     LaunchedEffect(scrollState) {
         isScrollable = scrollState.canScrollForward
@@ -231,7 +245,10 @@ fun PromotionalFullImageSheet(
         isVisible = isVisible
     ) {
         ConstraintLayout(
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier
+                .fillMaxWidth()
+                .heightIn(max = screenHeightDp - TOP_PADDING_OF_SHEET_CONTENT)
+                .wrapContentHeight()
         ) {
             val (closeButton, content, buttonContainer) = createRefs()
 
@@ -329,6 +346,7 @@ fun PromotionalIllustrationSheet(
     windowsInsets: WindowInsets? = null,
     showCloseButton: Boolean = true,
     @DrawableRes illustration: Int? = null,
+    illustrationMode: IllustrationIconSizeMode = IllustrationIconSizeMode.Small,
     primaryButton: SheetButtonAttribute? = null,
     secondaryButton: SheetButtonAttribute? = null,
     listItems: List<PromotionalListAttributes> = emptyList(),
@@ -349,6 +367,8 @@ fun PromotionalIllustrationSheet(
     }
     val scrollState = rememberScrollState()
     var isScrollable by rememberSaveable { mutableStateOf(false) }
+    val configuration = LocalConfiguration.current
+    val screenHeightDp = configuration.screenHeightDp.dp
 
     LaunchedEffect(scrollState) {
         isScrollable = scrollState.canScrollForward
@@ -362,7 +382,10 @@ fun PromotionalIllustrationSheet(
         isVisible = isVisible,
     ) {
         ConstraintLayout(
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier
+                .fillMaxWidth()
+                .heightIn(max = screenHeightDp - TOP_PADDING_OF_SHEET_CONTENT)
+                .wrapContentHeight()
         ) {
             val (toolbar, content, buttonContainer) = createRefs()
 
@@ -403,7 +426,7 @@ fun PromotionalIllustrationSheet(
                     Image(
                         modifier = Modifier
                             .padding(bottom = LocalSpacing.current.x32)
-                            .size(120.dp)
+                            .size(illustrationMode.size)
                             .align(Alignment.CenterHorizontally),
                         painter = painterResource(id = illustration),
                         contentDescription = title
@@ -450,6 +473,7 @@ fun PromotionalPlainSheet(
     headline: String,
     windowsInsets: WindowInsets? = null,
     showCloseButton: Boolean = true,
+    illustrationMode: IllustrationIconSizeMode = IllustrationIconSizeMode.Small,
     primaryButton: SheetButtonAttribute? = null,
     secondaryButton: SheetButtonAttribute? = null,
     listItems: List<PromotionalListAttributes> = emptyList(),
@@ -464,6 +488,7 @@ fun PromotionalPlainSheet(
         headline = headline,
         windowsInsets = windowsInsets,
         showCloseButton = showCloseButton,
+        illustrationMode = illustrationMode,
         primaryButton = primaryButton,
         secondaryButton = secondaryButton,
         listItems = listItems,
@@ -494,8 +519,9 @@ private fun ModalBottomSheetScaffold(
     }
 
     ModalBottomSheet(
-        modifier = modifier.statusBarsPadding(),
-        windowInsets = windowsInsets ?: BottomSheetDefaults.windowInsets.only(WindowInsetsSides.Bottom),
+        modifier = modifier,
+        windowInsets = windowsInsets
+            ?: BottomSheetDefaults.windowInsets.only(WindowInsetsSides.Bottom),
         onDismissRequest = onDismissRequest,
         sheetState = sheetState,
         containerColor = AppTheme.colors.background.pageBackground,
@@ -614,6 +640,7 @@ private fun PreviewPromotionalIllustrationSheetWithList() {
     AndroidThemeForPreviews {
         PromotionalIllustrationSheet(
             illustration = R.drawable.illustration_mega_anniversary,
+            illustrationMode = IllustrationIconSizeMode.Large,
             title = "Title",
             headline = "Headline",
             primaryButton = "Button" to {},

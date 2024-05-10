@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.widthIn
@@ -25,6 +26,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -33,6 +35,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
@@ -46,6 +49,7 @@ import mega.android.core.ui.components.common.PromotionalImage
 import mega.android.core.ui.components.common.PromotionalListAttributes
 import mega.android.core.ui.components.image.MegaIcon
 import mega.android.core.ui.components.toolbar.MegaTopAppBar
+import mega.android.core.ui.model.IllustrationIconSizeMode
 import mega.android.core.ui.preview.CombinedThemePreviewsTablet
 import mega.android.core.ui.theme.AndroidThemeForPreviews
 import mega.android.core.ui.theme.AppTheme
@@ -53,6 +57,9 @@ import mega.android.core.ui.theme.spacing.LocalSpacing
 import mega.android.core.ui.theme.tokens.IconColor
 
 typealias DialogButtonAttribute = Pair<String, () -> Unit>
+
+private val DIALOG_MAXIMUM_WIDTH = 543.dp
+private val DIALOG_MAXIMUM_HEIGHT = 600.dp
 
 /**
  * Promo dialog with image in the center below the toolbar.
@@ -232,6 +239,7 @@ fun PromotionalIllustrationDialog(
     headline: String,
     showCloseButton: Boolean = true,
     @DrawableRes illustration: Int? = null,
+    illustrationMode: IllustrationIconSizeMode = IllustrationIconSizeMode.Small,
     primaryButton: DialogButtonAttribute? = null,
     secondaryButton: DialogButtonAttribute? = null,
     listItems: List<PromotionalListAttributes> = emptyList(),
@@ -268,7 +276,7 @@ fun PromotionalIllustrationDialog(
                     Image(
                         modifier = Modifier
                             .padding(bottom = LocalSpacing.current.x32)
-                            .size(120.dp)
+                            .size(illustrationMode.size)
                             .align(Alignment.CenterHorizontally),
                         painter = painterResource(id = illustration),
                         contentDescription = title
@@ -308,6 +316,7 @@ fun PromotionalPlainDialog(
     title: String,
     headline: String,
     showCloseButton: Boolean = true,
+    illustrationMode: IllustrationIconSizeMode = IllustrationIconSizeMode.Small,
     primaryButton: DialogButtonAttribute? = null,
     secondaryButton: DialogButtonAttribute? = null,
     listItems: List<PromotionalListAttributes> = emptyList(),
@@ -320,6 +329,7 @@ fun PromotionalPlainDialog(
         title = title,
         headline = headline,
         showCloseButton = showCloseButton,
+        illustrationMode = illustrationMode,
         primaryButton = primaryButton,
         secondaryButton = secondaryButton,
         listItems = listItems,
@@ -335,10 +345,18 @@ private fun DialogContent(
     modifier: Modifier = Modifier,
     content: @Composable ColumnScope.() -> Unit
 ) {
+
+    val configuration = LocalConfiguration.current
+    val isLandscapeDevice by remember {
+        mutableStateOf(configuration.screenWidthDp >= configuration.screenHeightDp)
+    }
+
     Column(
         modifier = modifier
             .fillMaxSize()
-            .padding(vertical = LocalSpacing.current.x48)
+            .padding(vertical = if (isLandscapeDevice) LocalSpacing.current.x48 else LocalSpacing.current.x80)
+            .widthIn(max = DIALOG_MAXIMUM_WIDTH)
+            .heightIn(max = DIALOG_MAXIMUM_HEIGHT)
             .clip(AppTheme.shapes.small)
             .background(AppTheme.colors.background.pageBackground),
         content = content
