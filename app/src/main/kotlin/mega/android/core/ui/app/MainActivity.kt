@@ -31,6 +31,7 @@ import mega.android.core.ui.app.component.ReadOnlyInputFieldComponent
 import mega.android.core.ui.app.component.ShimmerListItem
 import mega.android.core.ui.app.component.SliderComponentCatalog
 import mega.android.core.ui.app.component.StateViewCatalog
+import mega.android.core.ui.app.component.TabsComponentCatalog
 import mega.android.core.ui.app.component.TextComponentCatalog
 import mega.android.core.ui.app.component.TextThumbnailComponentCatalog
 import mega.android.core.ui.app.component.VerificationTextInputFieldCatalog
@@ -79,6 +80,9 @@ fun MainComposeView() {
         }
         item {
             TextComponentCatalog()
+        }
+        item {
+            TabsComponentCatalog()
         }
         item {
             CheckboxCatalog()
