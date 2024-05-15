@@ -5,6 +5,7 @@ import androidx.compose.material3.FabPosition
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import mega.android.core.ui.theme.AppTheme
 
 @Composable
@@ -16,6 +17,7 @@ fun MegaScaffold(
     topBar: @Composable () -> Unit = {},
     floatingActionButton: @Composable () -> Unit = {},
     floatingActionButtonPosition: FabPosition = FabPosition.End,
+    fromAutofill: Boolean = false
 ) {
     Scaffold(
         modifier = modifier,
@@ -25,6 +27,6 @@ fun MegaScaffold(
         floatingActionButton = floatingActionButton,
         floatingActionButtonPosition = floatingActionButtonPosition,
         content = content,
-        containerColor = AppTheme.colors.background.pageBackground
+        containerColor = if (fromAutofill) Color.Transparent else AppTheme.colors.background.pageBackground
     )
 }

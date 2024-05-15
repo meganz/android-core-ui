@@ -12,6 +12,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.staticCompositionLocalOf
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
@@ -60,6 +61,7 @@ fun AndroidTheme(
     darkColorTokens: SemanticTokens,
     lightColorTokens: SemanticTokens,
     content: @Composable () -> Unit,
+    fromAutofill: Boolean = false,
 ) {
 
     val semanticTokens = if (isDark) {
@@ -76,7 +78,8 @@ fun AndroidTheme(
     if (!view.isInEditMode) {
         SideEffect {
             val window = (view.context as Activity).window
-            window.statusBarColor = colors.background.pageBackground.toArgb()
+            window.statusBarColor =
+                (if (fromAutofill) Color.Transparent else colors.background.pageBackground).toArgb()
             window.navigationBarColor = colors.background.pageBackground.toArgb()
             WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = !isDark
             WindowCompat.getInsetsController(window, view).isAppearanceLightNavigationBars = !isDark
@@ -146,6 +149,6 @@ private val testColorPalette = AppColors(
         override val notifications = Notifications()
         override val border = Border()
     },
-    false,
+    isLight = false,
 )
 
