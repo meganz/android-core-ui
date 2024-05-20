@@ -221,7 +221,7 @@ fun PasswordGeneratorInputField(
 }
 
 @Composable
-private fun getAnnotatedString(text: String, changeSpaceStyle: Boolean = false) =
+internal fun getAnnotatedString(text: String, changeSpaceStyle: Boolean = false) =
     buildAnnotatedString {
         val letterStyle = SpanStyle(color = AppTheme.colors.text.primary)
         val digitStyle = SpanStyle(color = AppTheme.colors.indicator.magenta)
