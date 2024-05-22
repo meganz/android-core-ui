@@ -8,7 +8,8 @@ pluginManagement {
 rootProject.name = "Core UI"
 include(":app")
 include(":core-ui")
-include(":shared:theme")
+include(":core-ui-tokens")
+include(":example:temp-theme")
 
 dependencyResolutionManagement {
     versionCatalogs {
@@ -20,3 +21,4 @@ dependencyResolutionManagement {
         }
     }
 }
+

@@ -23,7 +23,7 @@ import mega.android.core.ui.components.MegaText
 import mega.android.core.ui.preview.CombinedThemePreviews
 import mega.android.core.ui.theme.AndroidThemeForPreviews
 import mega.android.core.ui.theme.AppTheme
-import mega.android.core.ui.theme.tokens.TextColor
+import mega.android.core.ui.theme.values.TextColor
 import java.io.File
 
 private val LARGE_PROFILE_PICTURE_SIZE = 58.dp

@@ -4,8 +4,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.SpanStyle
 import mega.android.core.ui.theme.AppTheme
-import mega.android.core.ui.theme.tokens.LinkColor
-import mega.android.core.ui.theme.tokens.TextColor
+import mega.android.core.ui.theme.values.LinkColor
+import mega.android.core.ui.theme.values.TextColor
 
 sealed class MegaSpanStyle {
     abstract val spanStyle: SpanStyle

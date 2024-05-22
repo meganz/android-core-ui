@@ -12,7 +12,7 @@ import mega.android.core.ui.app.util.Section
 import mega.android.core.ui.components.MegaText
 import mega.android.core.ui.components.checkbox.Checkbox
 import mega.android.core.ui.theme.spacing.LocalSpacing
-import mega.android.core.ui.theme.tokens.TextColor
+import mega.android.core.ui.theme.values.TextColor
 
 @Composable
 fun CheckboxCatalog() {

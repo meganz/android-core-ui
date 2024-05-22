@@ -24,7 +24,7 @@ import mega.android.core.ui.components.list.OneLineListItem
 import mega.android.core.ui.components.sheets.MegaModalBottomSheet
 import mega.android.core.ui.components.sheets.MegaModalBottomSheetBackground
 import mega.android.core.ui.theme.spacing.LocalSpacing
-import mega.android.core.ui.theme.tokens.IconColor
+import mega.android.core.ui.theme.values.IconColor
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

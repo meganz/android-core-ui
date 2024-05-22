@@ -39,10 +39,9 @@ android {
 }
 
 dependencies {
+    implementation(project(":core-ui-tokens"))
     implementation(platform(libs.compose.bom))
     implementation(libs.bundles.compose.bom)
-    implementation(libs.google.gson)
-    implementation(libs.kotlinpoet)
     implementation(libs.coil.compose)
     implementation(libs.core.ktx)
     implementation(libs.appcompat)

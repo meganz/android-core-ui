@@ -20,7 +20,7 @@ import mega.android.core.ui.preview.CombinedThemePreviews
 import mega.android.core.ui.theme.AndroidThemeForPreviews
 import mega.android.core.ui.theme.AppTheme
 import mega.android.core.ui.theme.spacing.LocalSpacing
-import mega.android.core.ui.theme.tokens.IconColor
+import mega.android.core.ui.theme.values.IconColor
 
 private enum class SpinnerVariant(val size: Dp) {
     Small(24.dp),

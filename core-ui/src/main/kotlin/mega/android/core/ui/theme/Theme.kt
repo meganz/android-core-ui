@@ -21,24 +21,24 @@ import mega.android.core.ui.theme.colors.AppColors
 import mega.android.core.ui.theme.shape.shapes
 import mega.android.core.ui.theme.spacing.Dimensions
 import mega.android.core.ui.theme.spacing.LocalSpacing
-import mega.android.core.ui.theme.tokens.AndroidNewSemanticTokensDark
-import mega.android.core.ui.theme.tokens.AndroidNewSemanticTokensLight
-import mega.android.core.ui.theme.tokens.Background
-import mega.android.core.ui.theme.tokens.Border
-import mega.android.core.ui.theme.tokens.Button
-import mega.android.core.ui.theme.tokens.Components
-import mega.android.core.ui.theme.tokens.Focus
-import mega.android.core.ui.theme.tokens.Icon
-import mega.android.core.ui.theme.tokens.IconColor
-import mega.android.core.ui.theme.tokens.Indicator
-import mega.android.core.ui.theme.tokens.Link
-import mega.android.core.ui.theme.tokens.LinkColor
-import mega.android.core.ui.theme.tokens.Notifications
-import mega.android.core.ui.theme.tokens.SemanticTokens
-import mega.android.core.ui.theme.tokens.Support
-import mega.android.core.ui.theme.tokens.SupportColor
-import mega.android.core.ui.theme.tokens.Text
-import mega.android.core.ui.theme.tokens.TextColor
+import mega.android.core.ui.theme.values.IconColor
+import mega.android.core.ui.theme.values.LinkColor
+import mega.android.core.ui.theme.values.SupportColor
+import mega.android.core.ui.theme.values.TextColor
+import mega.android.core.ui.tokens.theme.tokens.AndroidNewSemanticTokensDark
+import mega.android.core.ui.tokens.theme.tokens.AndroidNewSemanticTokensLight
+import mega.android.core.ui.tokens.theme.tokens.Background
+import mega.android.core.ui.tokens.theme.tokens.Border
+import mega.android.core.ui.tokens.theme.tokens.Button
+import mega.android.core.ui.tokens.theme.tokens.Components
+import mega.android.core.ui.tokens.theme.tokens.Focus
+import mega.android.core.ui.tokens.theme.tokens.Icon
+import mega.android.core.ui.tokens.theme.tokens.Indicator
+import mega.android.core.ui.tokens.theme.tokens.Link
+import mega.android.core.ui.tokens.theme.tokens.Notifications
+import mega.android.core.ui.tokens.theme.tokens.SemanticTokens
+import mega.android.core.ui.tokens.theme.tokens.Support
+import mega.android.core.ui.tokens.theme.tokens.Text
 
 /**
  * Only to be used for Previews within core-ui and any library module that depends on core-ui
@@ -55,13 +55,33 @@ fun AndroidThemeForPreviews(
     content = content,
 )
 
+/**
+ * Default theme to be used in fragments or activities using components in this library
+ */
+@Composable
+fun AndroidTheme(
+    isDark: Boolean,
+    fromAutofill: Boolean = false,
+    content: @Composable () -> Unit,
+) = AndroidTheme(
+    isDark = isDark,
+    darkColorTokens = AndroidNewSemanticTokensDark,
+    lightColorTokens = AndroidNewSemanticTokensLight,
+    fromAutofill = fromAutofill,
+    content = content,
+)
+
+/**
+ * This theme is just to add some flexibility, the version with default tokens should be preferred.
+ * This can be used to inject other semantic tokens, for instance to use the components in this library with TEMP-tokens.
+ */
 @Composable
 fun AndroidTheme(
     isDark: Boolean,
     darkColorTokens: SemanticTokens,
     lightColorTokens: SemanticTokens,
-    content: @Composable () -> Unit,
     fromAutofill: Boolean = false,
+    content: @Composable () -> Unit,
 ) {
 
     val semanticTokens = if (isDark) {
@@ -109,19 +129,19 @@ object AppTheme {
 
     @Composable
     internal fun textColor(textColor: TextColor) =
-        LocalColorPalette.current.text.getTextColor(textColor)
+        textColor.getTextColor(LocalColorPalette.current.text)
 
     @Composable
     internal fun iconColor(iconColor: IconColor) =
-        LocalColorPalette.current.icon.getIconColor(iconColor)
+        iconColor.getIconColor(LocalColorPalette.current.icon)
 
     @Composable
     internal fun supportColor(supportColor: SupportColor) =
-        LocalColorPalette.current.support.getSupportColor(supportColor)
+        supportColor.getSupportColor(LocalColorPalette.current.support)
 
     @Composable
     internal fun linkColor(linkColor: LinkColor) =
-        LocalColorPalette.current.link.getLinkColor(linkColor)
+        linkColor.getLinkColor(LocalColorPalette.current.link)
 
     val typography: Typography
         @Composable

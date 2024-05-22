@@ -22,7 +22,7 @@ import mega.android.core.ui.components.MegaClickableText
 import mega.android.core.ui.components.MegaText
 import mega.android.core.ui.theme.AppTheme
 import mega.android.core.ui.theme.spacing.LocalSpacing
-import mega.android.core.ui.theme.tokens.TextColor
+import mega.android.core.ui.theme.values.TextColor
 
 @Composable
 internal fun BaseBanner(

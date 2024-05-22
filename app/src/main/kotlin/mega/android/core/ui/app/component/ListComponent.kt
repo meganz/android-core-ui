@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.material3.Switch
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
@@ -31,8 +30,8 @@ import mega.android.core.ui.components.slider.MegaSlider
 import mega.android.core.ui.components.toggle.Toggle
 import mega.android.core.ui.theme.AppTheme
 import mega.android.core.ui.theme.spacing.LocalSpacing
-import mega.android.core.ui.theme.tokens.IconColor
-import mega.android.core.ui.theme.tokens.TextColor
+import mega.android.core.ui.theme.values.IconColor
+import mega.android.core.ui.theme.values.TextColor
 
 private const val DUMMY_TEXT =
     "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Laoreet sit amet cursus sit amet dictum. Massa tincidunt dui ut ornare. Arcu non sodales neque sodales ut etiam sit amet nisl. Malesuada fames ac turpis egestas maecenas pharetra. Mauris nunc congue nisi vitae suscipit tellus mauris. Sed sed risus pretium quam vulputate. Semper risus in hendrerit gravida rutrum. Lectus urna duis convallis convallis. Nunc consequat interdum varius sit amet mattis vulputate enim nulla. Tellus in metus vulputate eu. Vitae tortor condimentum lacinia quis vel eros. Consectetur adipiscing elit ut aliquam purus. Amet nisl suscipit adipiscing bibendum est. Et leo duis ut diam quam. Faucibus interdum posuere lorem ipsum. Non nisi est sit amet facilisis. Facilisis volutpat est velit egestas dui id ornare arcu. Id consectetur purus ut faucibus pulvinar elementum integer. Ligula ullamcorper malesuada proin libero nunc consequat interdum varius. Pellentesque dignissim enim sit amet venenatis urna cursus. Donec pretium vulputate sapien nec sagittis. Velit ut tortor pretium viverra suspendisse potenti nullam. Enim facilisis gravida neque convallis. Tristique magna sit amet purus gravida quis blandit turpis cursus. Turpis nunc eget lorem dolor sed viverra ipsum. Ultrices eros in cursus turpis massa tincidunt dui ut. Senectus et netus et malesuada. Amet aliquam id diam maecenas ultricies mi eget mauris. Porta nibh venenatis cras sed felis eget velit aliquet sagittis. Orci dapibus ultrices in iaculis nunc. Sit amet facilisis magna etiam. Nunc pulvinar sapien et ligula ullamcorper."

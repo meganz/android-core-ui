@@ -40,7 +40,7 @@ import mega.android.core.ui.components.inputfields.TextInputField
 import mega.android.core.ui.components.surface.ThemedSurface
 import mega.android.core.ui.model.IllustrationIconSizeMode
 import mega.android.core.ui.preview.CombinedThemePreviews
-import mega.android.core.ui.shared.theme.CoreUITheme
+import mega.android.core.ui.theme.AndroidTheme
 import mega.android.core.ui.theme.AndroidThemeForPreviews
 
 class MainActivity : ComponentActivity() {
@@ -48,7 +48,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             // A surface container using the 'background' color from the theme
-            CoreUITheme(isDark = isSystemInDarkTheme()) {
+            AndroidTheme(isDark = isSystemInDarkTheme()) {
                 ThemedSurface {
                     MainComposeView()
                 }

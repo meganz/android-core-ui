@@ -2,7 +2,6 @@ package mega.android.core.ui.app.component
 
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -12,19 +11,16 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.unit.dp
 import mega.android.core.ui.app.util.Section
 import mega.android.core.ui.components.MegaText
 import mega.android.core.ui.components.button.PrimaryFilledButton
 import mega.android.core.ui.components.dialogs.MegaDialog
 import mega.android.core.ui.components.dialogs.MegaDialogBackground
-import mega.android.core.ui.components.image.MegaIcon
 import mega.android.core.ui.components.inputfields.PasswordGeneratorInputBox
 import mega.android.core.ui.theme.AppTheme
 import mega.android.core.ui.theme.spacing.LocalSpacing
-import mega.android.core.ui.theme.tokens.TextColor
+import mega.android.core.ui.theme.values.TextColor
 
 @Composable
 fun MegaDialogComponent() {

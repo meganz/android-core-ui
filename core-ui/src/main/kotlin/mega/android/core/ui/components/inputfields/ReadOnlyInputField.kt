@@ -35,8 +35,8 @@ import mega.android.core.ui.theme.AndroidThemeForPreviews
 import mega.android.core.ui.theme.AppTheme
 import mega.android.core.ui.theme.font.GoogleFontFamily
 import mega.android.core.ui.theme.spacing.LocalSpacing
-import mega.android.core.ui.theme.tokens.IconColor
-import mega.android.core.ui.theme.tokens.TextColor
+import mega.android.core.ui.theme.values.IconColor
+import mega.android.core.ui.theme.values.TextColor
 
 sealed interface InputFieldType {
     data object Text : InputFieldType

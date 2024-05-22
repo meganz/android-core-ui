@@ -28,7 +28,7 @@ import mega.android.core.ui.components.MegaText
 import mega.android.core.ui.components.list.FlexibleLineListItem
 import mega.android.core.ui.theme.AppTheme
 import mega.android.core.ui.theme.spacing.LocalSpacing
-import mega.android.core.ui.theme.tokens.TextColor
+import mega.android.core.ui.theme.values.TextColor
 
 @Immutable
 data class PromotionalListAttributes(

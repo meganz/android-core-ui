@@ -54,7 +54,7 @@ import mega.android.core.ui.preview.CombinedThemePreviewsTablet
 import mega.android.core.ui.theme.AndroidThemeForPreviews
 import mega.android.core.ui.theme.AppTheme
 import mega.android.core.ui.theme.spacing.LocalSpacing
-import mega.android.core.ui.theme.tokens.IconColor
+import mega.android.core.ui.theme.values.IconColor
 
 typealias DialogButtonAttribute = Pair<String, () -> Unit>
 

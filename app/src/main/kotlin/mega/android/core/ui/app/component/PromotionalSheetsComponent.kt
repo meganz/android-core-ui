@@ -29,7 +29,7 @@ import mega.android.core.ui.components.sheets.PromotionalImageSheet
 import mega.android.core.ui.components.sheets.PromotionalPlainSheet
 import mega.android.core.ui.model.IllustrationIconSizeMode
 import mega.android.core.ui.theme.spacing.LocalSpacing
-import mega.android.core.ui.theme.tokens.TextColor
+import mega.android.core.ui.theme.values.TextColor
 
 @Composable
 fun PromotionalSheetsCatalog(

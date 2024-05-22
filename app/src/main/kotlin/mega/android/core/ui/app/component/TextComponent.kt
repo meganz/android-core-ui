@@ -18,8 +18,8 @@ import mega.android.core.ui.model.SpanIndicator
 import mega.android.core.ui.model.SpanStyleWithAnnotation
 import mega.android.core.ui.theme.AppTheme
 import mega.android.core.ui.theme.spacing.LocalSpacing
-import mega.android.core.ui.theme.tokens.LinkColor
-import mega.android.core.ui.theme.tokens.TextColor
+import mega.android.core.ui.theme.values.LinkColor
+import mega.android.core.ui.theme.values.TextColor
 
 @Composable
 fun TextComponentCatalog() {

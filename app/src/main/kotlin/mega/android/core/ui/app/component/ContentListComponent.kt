@@ -19,7 +19,7 @@ import mega.android.core.ui.model.MegaSpanStyle
 import mega.android.core.ui.model.SpanIndicator
 import mega.android.core.ui.model.SpanStyleWithAnnotation
 import mega.android.core.ui.theme.spacing.LocalSpacing
-import mega.android.core.ui.theme.tokens.LinkColor
+import mega.android.core.ui.theme.values.LinkColor
 
 @Composable
 fun ContentListComponent() {

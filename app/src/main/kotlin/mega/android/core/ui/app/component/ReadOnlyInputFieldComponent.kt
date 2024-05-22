@@ -16,7 +16,7 @@ import mega.android.core.ui.components.inputfields.ReadOnlyInputField
 import mega.android.core.ui.components.inputfields.ReadOnlyInputFieldItem
 import mega.android.core.ui.components.inputfields.ReadOnlyPasswordInputFieldItem
 import mega.android.core.ui.theme.spacing.LocalSpacing
-import mega.android.core.ui.theme.tokens.IconColor
+import mega.android.core.ui.theme.values.IconColor
 
 @Composable
 fun ReadOnlyInputFieldComponent() {
