@@ -12,5 +12,6 @@ fun main(args: Array<String>) {
         packageName = "mega.android.core.ui.example.temp.theme.tokens",
         themePrefix = "Temp",
         groupsToExpose = listOf("Text", "Icon"),
+        jsonGroupNameForCoreColorTokens = "Core/Android-temp",
     )
 }

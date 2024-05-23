@@ -23,6 +23,7 @@ class GenerateColorTokens {
         packageNameForSemanticTokensInterfaces = DEFAULT_PACKAGE_FOR_TOKENS,
         packageNameForEnumValues = DEFAULT_PACKAGE_FOR_TOKENS_ENUM_VALUES,
         themePrefix = "AndroidNew",
+        jsonGroupNameForCoreColorTokens = "Core/Main",
         groupsToExpose = listOf("Text", "Icon", "Support", "Link"),
         includeSemanticTokensInterface = true,
         internalSemanticTokens = false,
@@ -36,12 +37,14 @@ class GenerateColorTokens {
      * @param moduleName of the module where this kotlin classes will be generated
      * @param packageName where the kotlin classes will be generated inside the module [moduleName]
      * @param themePrefix a prefix that will be added to semantic tokens classes names to distinguish these tokens from others
+     * @param jsonGroupNameForCoreColorTokens the name of the group that will generate the core colors
      * @param groupsToExpose a list of the JSON groups that will be exposed through enums
      */
     fun generateThemeForAndroidTemp(
         moduleName: String,
         packageName: String,
         themePrefix: String,
+        jsonGroupNameForCoreColorTokens: String,
         groupsToExpose: List<String>,
     ) = generate(
         moduleNameForTokens = moduleName,
@@ -49,6 +52,7 @@ class GenerateColorTokens {
         packageNameForTokensImplementation = packageName,
         packageNameForSemanticTokensInterfaces = DEFAULT_PACKAGE_FOR_TOKENS,
         packageNameForEnumValues = packageName,
+        jsonGroupNameForCoreColorTokens= jsonGroupNameForCoreColorTokens,
         themePrefix = themePrefix,
         groupsToExpose = groupsToExpose,
         includeSemanticTokensInterface = false,
@@ -61,6 +65,7 @@ class GenerateColorTokens {
         packageNameForTokensImplementation: String,
         packageNameForSemanticTokensInterfaces: String,
         packageNameForEnumValues: String,
+        jsonGroupNameForCoreColorTokens: String,
         themePrefix: String,
         groupsToExpose: List<String>,
         includeSemanticTokensInterface: Boolean,
@@ -76,7 +81,7 @@ class GenerateColorTokens {
 
         generator.generateCoreColorsTokens(
             moduleName = moduleNameForTokens,
-            jsonGroupName = "Core/Main",
+            jsonGroupName = jsonGroupNameForCoreColorTokens,
             packageName = packageNameForTokensImplementation,
         )
 

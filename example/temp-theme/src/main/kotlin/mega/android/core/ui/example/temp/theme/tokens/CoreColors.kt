@@ -40,29 +40,29 @@ internal object Colors {
     }
 
     public object Accent {
-        public val n100: Color = Color(229, 230, 232, 255)
+        public val n100: Color = Color(109, 210, 191, 255)
 
-        public val n200: Color = Color(189, 192, 196, 255)
+        public val n200: Color = Color(109, 210, 191, 255)
 
         public val n300: Color = Color(163, 166, 173, 255)
 
-        public val n400: Color = Color(136, 141, 149, 255)
+        public val n400: Color = Color(109, 210, 191, 255)
 
         public val n500: Color = Color(110, 116, 125, 255)
 
-        public val n600: Color = Color(83, 91, 101, 255)
+        public val n600: Color = Color(0, 191, 165, 255)
 
         public val n700: Color = Color(57, 66, 78, 255)
 
         public val n800: Color = Color(30, 41, 54, 255)
 
-        public val n900: Color = Color(4, 16, 30, 255)
+        public val n900: Color = Color(0, 191, 165, 255)
 
         public val n1000: Color = Color(0, 0, 0, 255)
 
-        public val n025: Color = Color(250, 250, 251, 255)
+        public val n025: Color = Color(109, 210, 191, 255)
 
-        public val n050: Color = Color(244, 244, 245, 255)
+        public val n050: Color = Color(109, 210, 191, 255)
     }
 
     public object Error {
@@ -197,23 +197,23 @@ internal object Colors {
         }
 
         public object Indigo {
-            public val n100: Color = Color(217, 232, 255, 255)
+            public val n100: Color = Color(109, 210, 191, 255)
 
             public val n200: Color = Color(189, 217, 255, 255)
 
             public val n300: Color = Color(148, 193, 254, 255)
 
-            public val n400: Color = Color(105, 163, 251, 255)
+            public val n400: Color = Color(109, 210, 191, 255)
 
             public val n500: Color = Color(71, 126, 247, 255)
 
-            public val n600: Color = Color(44, 91, 235, 255)
+            public val n600: Color = Color(0, 191, 165, 255)
 
             public val n700: Color = Color(38, 71, 208, 255)
 
             public val n800: Color = Color(34, 59, 167, 255)
 
-            public val n900: Color = Color(35, 55, 131, 255)
+            public val n900: Color = Color(0, 191, 165, 255)
 
             public val n1000: Color = Color(14, 25, 87, 255)
 
