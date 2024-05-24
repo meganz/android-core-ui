@@ -14,7 +14,7 @@ const val VERSION_FILE = "version.txt"
  * @param project
  * @return
  */
-fun getVersionFromFile(project: Project): String =
+private fun getVersionFromFile(project: Project): String =
     try {
         File("${project.rootDir.absolutePath}/$VERSION_FILE").readText()
     } catch (e: Exception) {
