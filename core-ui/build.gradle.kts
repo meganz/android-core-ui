@@ -1,3 +1,5 @@
+import mega.android.core.ui.gradle.getVersionFromFile
+
 plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
@@ -39,7 +41,8 @@ android {
 }
 
 dependencies {
-    implementation(project(":core-ui-tokens"))
+    val uiTokenLibVersion = getVersionFromFile(project)
+    implementation("mega.android.core:ui-tokens:${uiTokenLibVersion}")
     implementation(platform(libs.compose.bom))
     implementation(libs.bundles.compose.bom)
     implementation(libs.coil.compose)

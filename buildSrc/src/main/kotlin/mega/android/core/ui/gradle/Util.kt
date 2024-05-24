@@ -9,12 +9,12 @@ import java.time.format.DateTimeFormatter
 const val VERSION_FILE = "version.txt"
 
 /**
- * Read version from version.txt file
+ * Read version from version.txt file in the project root
  *
  * @param project
  * @return
  */
-private fun getVersionFromFile(project: Project): String =
+fun getVersionFromFile(project: Project): String =
     try {
         File("${project.rootDir.absolutePath}/$VERSION_FILE").readText()
     } catch (e: Exception) {
@@ -37,7 +37,7 @@ private fun getPatch(): String =
  * @param project
  * @return
  */
-fun getLibVersion(project: Project): String {
+fun generateLibVersion(project: Project): String {
     val version = getVersionFromFile(project).split(".")
     val major = version[0]
     val minor = version[1]
