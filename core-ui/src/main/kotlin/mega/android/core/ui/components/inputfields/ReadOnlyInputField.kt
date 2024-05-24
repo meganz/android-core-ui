@@ -192,6 +192,7 @@ fun ReadOnlyPasswordInputFieldItem(
                     fontSize = 16.sp,
                     letterSpacing = 0.sp
                 ) else AppTheme.typography.bodyLarge.copy(color = AppTheme.colors.text.primary),
+                maxLines = if (showPassword) Int.MAX_VALUE else 1,
             )
 
             Box(modifier = Modifier.size(spacing.x20)) {
