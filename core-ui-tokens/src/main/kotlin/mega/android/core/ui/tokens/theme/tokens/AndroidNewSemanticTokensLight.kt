@@ -12,6 +12,7 @@ public object AndroidNewSemanticTokensLight : SemanticTokens {
             surface3 = Colors.Neutral.n100,
             surface2 = Colors.Neutral.n050,
             blur = Colors.BlackOpacity.n020,
+            surfaceInverseAccent = Colors.Accent.n700,
             )
 
     override val button: Button = Button(

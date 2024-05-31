@@ -13,6 +13,7 @@ public data class Background(
     public val surface3: Color = Color.Magenta,
     public val surface2: Color = Color.Magenta,
     public val blur: Color = Color.Magenta,
+    public val surfaceInverseAccent: Color = Color.Magenta,
 )
 
 public data class Button(
