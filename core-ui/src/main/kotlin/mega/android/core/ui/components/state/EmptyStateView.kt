@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.style.TextAlign
@@ -31,7 +32,7 @@ import mega.android.core.ui.theme.values.TextColor
 fun EmptyStateView(
     modifier: Modifier = Modifier,
     @DrawableRes illustration: Int? = null,
-    title: String,
+    title: String? = null,
     description: String? = null,
     descriptionSpanStyles: Map<SpanIndicator, SpanStyleWithAnnotation> = emptyMap(),
     buttonText: String? = null,
@@ -43,25 +44,39 @@ fun EmptyStateView(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        if (illustration != null) {
+        illustration?.let {
             Image(
-                modifier = Modifier.size(120.dp),
+                modifier = Modifier
+                    .size(120.dp)
+                    .clip(shape = AppTheme.shapes.medium),
                 painter = painterResource(id = illustration),
                 contentDescription = "Empty icon"
             )
         }
 
-        MegaText(
-            modifier = Modifier.padding(top = LocalSpacing.current.x24),
-            text = title,
-            textColor = TextColor.Primary,
-            style = AppTheme.typography.titleLarge,
-            textAlign = TextAlign.Center
-        )
+        title?.let {
+            val titleModifier = if (illustration != null) {
+                Modifier.padding(top = LocalSpacing.current.x24)
+            } else {
+                Modifier
+            }
+            MegaText(
+                modifier = titleModifier,
+                text = title,
+                textColor = TextColor.Primary,
+                style = AppTheme.typography.titleLarge,
+                textAlign = TextAlign.Center
+            )
+        }
 
-        if (description != null) {
+        description?.let {
+            val descriptionModifier = if (title != null || illustration != null) {
+                Modifier.padding(top = LocalSpacing.current.x16)
+            } else {
+                Modifier
+            }
             LinkSpannedText(
-                modifier = Modifier.padding(top = LocalSpacing.current.x16),
+                modifier = descriptionModifier,
                 value = description,
                 spanStyles = descriptionSpanStyles,
                 baseTextColor = TextColor.Secondary,
@@ -72,10 +87,14 @@ fun EmptyStateView(
             )
         }
 
-        if (buttonText != null) {
+        buttonText?.let {
+            val buttonModifier = if (description != null || illustration != null || title != null) {
+                Modifier.padding(top = LocalSpacing.current.x24)
+            } else {
+                Modifier
+            }
             PrimaryFilledButton(
-                modifier = Modifier
-                    .padding(top = LocalSpacing.current.x24)
+                modifier = buttonModifier
                     .wrapContentSize()
                     .padding(horizontal = LocalSpacing.current.x24),
                 text = buttonText,

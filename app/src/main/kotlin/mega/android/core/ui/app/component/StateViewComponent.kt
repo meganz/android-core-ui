@@ -18,7 +18,7 @@ import mega.android.core.ui.theme.values.LinkColor
 @Composable
 fun StateViewCatalog() {
     Spacer(modifier = Modifier.height(LocalSpacing.current.x16))
-    Section(header = "StateView") {
+    Section(header = "EmptyStateView") {
         EmptyStateView(
             modifier = Modifier
                 .fillMaxWidth()
