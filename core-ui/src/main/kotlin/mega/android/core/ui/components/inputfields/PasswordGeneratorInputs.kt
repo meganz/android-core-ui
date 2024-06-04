@@ -56,6 +56,7 @@ fun PasswordGeneratorInputBox(
     text: String,
     onCopyClick: () -> Unit,
     modifier: Modifier = Modifier,
+    showCopyIcon: Boolean = true,
 ) {
     val spacing = LocalSpacing.current
     Column(
@@ -80,15 +81,17 @@ fun PasswordGeneratorInputBox(
             fontSize = 20.sp,
             letterSpacing = 2.sp,
         )
-        Icon(
-            modifier = Modifier
-                .padding(bottom = spacing.x16, end = spacing.x16)
-                .align(Alignment.End)
-                .clickable(onClick = onCopyClick),
-            painter = painterResource(id = R.drawable.ic_copy),
-            tint = AppTheme.colors.icon.secondary,
-            contentDescription = "Copy Password"
-        )
+        if (showCopyIcon) {
+            Icon(
+                modifier = Modifier
+                    .padding(bottom = spacing.x16, end = spacing.x16)
+                    .align(Alignment.End)
+                    .clickable(onClick = onCopyClick),
+                painter = painterResource(id = R.drawable.ic_copy),
+                tint = AppTheme.colors.icon.secondary,
+                contentDescription = "Copy Password"
+            )
+        }
     }
 }
 
