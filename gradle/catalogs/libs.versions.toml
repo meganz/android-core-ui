@@ -13,7 +13,7 @@ junit-test-ext = "1.1.5"
 kotlinpoet = "1.14.2"
 lifecycle-runtime-ktx = "2.7.0"
 google-font = "1.6.4"
-mega-core-ui-tokens = "2.6.20240527115645"
+mega-core-ui-tokens = "2.11.20240605025840"
 
 [libraries]
 activity-compose = { module = "androidx.activity:activity-compose", version.ref = "activity-compose" }
