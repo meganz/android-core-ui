@@ -27,6 +27,7 @@ import mega.android.core.ui.app.component.ProgressIndicatorCatalog
 import mega.android.core.ui.app.component.PromotionalDialogsCatalog
 import mega.android.core.ui.app.component.PromotionalSheetsCatalog
 import mega.android.core.ui.app.component.PromptCatalog
+import mega.android.core.ui.app.component.RadioButtonCatalog
 import mega.android.core.ui.app.component.ReadOnlyInputFieldComponent
 import mega.android.core.ui.app.component.ShimmerListItem
 import mega.android.core.ui.app.component.SliderComponentCatalog
@@ -151,6 +152,9 @@ fun MainComposeView() {
         }
         item {
             VerificationTextInputFieldCatalog()
+        }
+        item {
+            RadioButtonCatalog()
         }
     }
 }
