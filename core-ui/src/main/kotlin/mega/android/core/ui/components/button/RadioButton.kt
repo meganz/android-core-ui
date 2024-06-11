@@ -42,7 +42,7 @@ fun MegaRadioButton(
             }
     ) {
         Box(
-            modifier = modifier
+            modifier = Modifier
                 // button size is 20.dp based on Material Design guidelines
                 .requiredSize(buttonSize)
                 .clip(CircleShape)
@@ -64,16 +64,18 @@ fun MegaRadioButton(
 
 @Composable
 @CombinedThemePreviews
-fun MegaRadioButtonPreview() {
-    MegaRadioButton(
-        identifier = 1,
-        onOptionSelected = {}
-    )
+private fun MegaRadioButtonPreview() {
+    AndroidThemeForPreviews {
+        MegaRadioButton(
+            identifier = 1,
+            onOptionSelected = {}
+        )
+    }
 }
 
 @Composable
 @CombinedThemePreviews
-fun MegaRadioButtonPreviewSelected() {
+private fun MegaRadioButtonPreviewSelected() {
     AndroidThemeForPreviews {
         MegaRadioButton(
             identifier = 1,
