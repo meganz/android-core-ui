@@ -26,14 +26,12 @@ fun MegaRadioButton(
 ) {
     val buttonSize = 20.dp
     val containerSize = 48.dp
-    val baseColor = AppTheme.colors.background.pageBackground
     val buttonColor = if (enabled) AppTheme.colors.button.primary else AppTheme.colors.border.disabled
 
     Box(
         modifier = modifier
             // container size is 48.dp based on Material Design guidelines
             .requiredSize(containerSize)
-            .background(baseColor)
             // ripple size is 40.dp based on Material Design guidelines
             .padding(4.dp)
             .clip(CircleShape)
