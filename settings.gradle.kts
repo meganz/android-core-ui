@@ -3,6 +3,20 @@ pluginManagement {
         google()
         mavenCentral()
         gradlePluginPortal()
+        maven {
+            url =
+                uri("${System.getenv("ARTIFACTORY_BASE_URL")}/artifactory/mega-gradle/megagradle")
+        }
+    }
+    resolutionStrategy {
+        eachPlugin {
+            when (requested.id.id) {
+                "mega.android.library.jacoco.convention",
+                "mega.artifactory.publish.convention" -> useModule("mega.privacy:megagradle:${requested.version}")
+
+                else -> {}
+            }
+        }
     }
 }
 rootProject.name = "Core UI"

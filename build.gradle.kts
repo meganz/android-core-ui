@@ -1,8 +1,15 @@
+import mega.android.core.ui.gradle.GITLAB_USER_NAME
+import mega.android.core.ui.gradle.LIB_COMMIT
+import mega.android.core.ui.gradle.generateLibVersion
+
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 plugins {
     id("com.android.application") version "8.1.1" apply false
     id("org.jetbrains.kotlin.android") version "1.9.22" apply false
     id("com.android.library") version "8.1.1" apply false
+    alias(libs.plugins.jfrog.artifactory) apply false
+    alias(libs.plugins.mega.artifactory.publish.convention) apply false
+    alias(libs.plugins.mega.android.library.jacoco.convention) apply false
 }
 
 buildscript {
@@ -12,7 +19,7 @@ buildscript {
         maven(url = "https://jitpack.io")
     }
     dependencies {
-        classpath("org.jfrog.buildinfo:build-info-extractor-gradle:4.32.0")
+        classpath("org.jfrog.buildinfo:build-info-extractor-gradle:${libs.versions.jfrog.artifactory.get()}")
     }
 }
 
@@ -29,4 +36,11 @@ allprojects {
     }
 }
 
-apply(from = "${project.rootDir}/publish.gradle")
+// Library version and properties
+extra["libVersion"] = generateLibVersion(project)
+extra["mavenRepoKey"] = "core-ui"
+extra["mavenGroupId"] = "mega.android.core"
+extra["commit"] = System.getenv(LIB_COMMIT)?.takeIf { it.isNotBlank() } ?: "N/A"
+extra["builder"] = System.getenv(GITLAB_USER_NAME)?.takeIf { it.isNotBlank() } ?: "N/A"
+
+//apply(from = "${project.rootDir}/publish.gradle")

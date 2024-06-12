@@ -1,6 +1,10 @@
+import mega.privacy.megagradle.plugin.extension.Dependency
+
 plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
+    alias(libs.plugins.mega.artifactory.publish.convention)
+    alias(libs.plugins.mega.android.library.jacoco.convention)
 }
 
 android {
@@ -36,6 +40,35 @@ android {
     kotlinOptions {
         jvmTarget = "17"
     }
+}
+
+
+val libVersion: String by rootProject.extra
+val commit: String by rootProject.extra
+val mavenRepoKey: String by rootProject.extra
+val mavenGroupId: String by rootProject.extra
+val builder: String by rootProject.extra
+
+megaPublish {
+    repoKey = mavenRepoKey
+    groupId = mavenGroupId
+    artifactId = "ui"
+    version = libVersion
+    libPath = "${layout.buildDirectory.get()}/outputs/aar/${project.name}-release.aar"
+    sourcePath = "${layout.buildDirectory.get()}/libs/${project.name}-sources.jar"
+    properties = mapOf(
+        "commit" to commit,
+        "builder" to builder,
+    )
+    dependentTasks = listOf("assembleRelease", "releaseSourcesJar")
+    dependencies = listOf(
+        Dependency(
+            groupId = mavenGroupId,
+            artifactId = "ui-tokens",
+            version = libs.versions.mega.core.ui.tokens.get(),
+            scope = "runtime"
+        )
+    )
 }
 
 dependencies {
