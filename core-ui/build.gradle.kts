@@ -17,6 +17,12 @@ android {
         consumerProguardFiles("consumer-rules.pro")
     }
 
+    testOptions {
+        unitTests {
+            isIncludeAndroidResources = true
+        }
+    }
+
     buildFeatures {
         compose = true
     }
@@ -80,6 +86,9 @@ dependencies {
     implementation(libs.appcompat)
     implementation(libs.constraintlayout.compose)
     implementation(libs.google.font)
+    testImplementation(libs.compose.junit)
+    debugImplementation(libs.compose.manifest)
+    debugImplementation(libs.roboelectric)
     testImplementation(libs.junit)
     androidTestImplementation(libs.junit.test.ext)
     androidTestImplementation(libs.espresso.core)

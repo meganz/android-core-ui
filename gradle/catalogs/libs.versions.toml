@@ -16,6 +16,7 @@ google-font = "1.6.4"
 mega-core-ui-tokens = "2.16.20240612050422"
 megagradle = "0.26.20240612013634"
 jfrog-artifactory = "5.2.0"
+robolectric = "4.11.1"
 
 [libraries]
 activity-compose = { module = "androidx.activity:activity-compose", version.ref = "activity-compose" }
@@ -23,6 +24,8 @@ appcompat = { module = "androidx.appcompat:appcompat", version.ref = "appcompat"
 coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coil-compose" }
 compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "compose-bom" }
 compose-compiler = { module = "androidx.compose.compiler:compiler", version.ref = "compose-compiler" }
+compose-junit = { group = "androidx.compose.ui", name = "ui-test-junit4" }
+compose-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
 constraintlayout-compose = { module = "androidx.constraintlayout:constraintlayout-compose", version.ref = "constraintlayout-compose" }
 core-ktx = { module = "androidx.core:core-ktx", version.ref = "core-ktx" }
 espresso-core = { module = "androidx.test.espresso:espresso-core", version.ref = "espresso-core" }
@@ -40,6 +43,7 @@ ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview
 ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
 ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
 mega-core-ui-tokens = { group = "mega.android.core", name  = "ui-tokens", version.ref = "mega-core-ui-tokens"}
+roboelectric = { module = "org.robolectric:robolectric", version.ref = "robolectric" }
 
 [bundles]
 compose-bom = ["ui", "ui-tooling", "ui-tooling-preview", "material3", "ui-foundation", "ui-graphics"]

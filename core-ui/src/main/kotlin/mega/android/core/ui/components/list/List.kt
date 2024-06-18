@@ -31,6 +31,7 @@ import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import mega.android.core.ui.R
 import mega.android.core.ui.components.MegaText
@@ -210,9 +211,9 @@ fun MultiLineListItem(
 
 @Composable
 fun FlexibleLineListItem(
-    title: String,
-    subtitle: String,
     modifier: Modifier = Modifier,
+    title: String? = null,
+    subtitle: String? = null,
     titleMaxLines: Int = Int.MAX_VALUE,
     subtitleMaxLines: Int = Int.MAX_VALUE,
     leadingElement: (@Composable (BoxScope.() -> Unit))? = null,
@@ -220,10 +221,11 @@ fun FlexibleLineListItem(
     enableClick: Boolean = true,
     onClickListener: () -> Unit = {},
     onLongClickListener: () -> Unit = {},
+    minHeight: Dp = listItemMinHeight
 ) {
     ListItem(
         modifier = modifier
-            .defaultMinSize(minHeight = listItemMinHeight),
+            .defaultMinSize(minHeight = minHeight),
         title = title,
         subtitle = subtitle,
         leadingElement = leadingElement,
@@ -298,7 +300,7 @@ fun VpnSelectedCountryListItem(
 @Composable
 private fun ListItem(
     modifier: Modifier,
-    title: String,
+    title: String? = null,
     subtitle: String? = null,
     leadingElement: (@Composable (BoxScope.() -> Unit))? = null,
     trailingElement: (@Composable (() -> Unit))? = null,
@@ -316,10 +318,6 @@ private fun ListItem(
                 enabled = enableClick,
                 onClick = onClickListener,
                 onLongClick = onLongClickListener
-            )
-            .padding(
-                vertical = LocalSpacing.current.x12,
-                horizontal = LocalSpacing.current.x16
             ),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(LocalSpacing.current.x16)
@@ -343,13 +341,15 @@ private fun ListItem(
                 .wrapContentHeight()
                 .weight(1f),
         ) {
-            MegaText(
-                text = title,
-                textColor = TextColor.Primary,
-                style = AppTheme.typography.bodyLarge,
-                maxLines = titleMaxLines,
-                overflow = TextOverflow.Ellipsis
-            )
+            if (title != null) {
+                MegaText(
+                    text = title,
+                    textColor = TextColor.Primary,
+                    style = AppTheme.typography.bodyLarge,
+                    maxLines = titleMaxLines,
+                    overflow = TextOverflow.Ellipsis
+                )
+            }
 
             if (subtitle != null) {
                 MegaText(

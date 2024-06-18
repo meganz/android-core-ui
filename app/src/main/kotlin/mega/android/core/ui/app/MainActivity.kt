@@ -16,6 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
 import mega.android.core.ui.app.component.BottomSheetComponentCatalog
 import mega.android.core.ui.app.component.ButtonComponentCatalog
+import mega.android.core.ui.app.component.CardComponentCatalog
 import mega.android.core.ui.app.component.CheckboxCatalog
 import mega.android.core.ui.app.component.ContentListComponent
 import mega.android.core.ui.app.component.DividerComponentCatalog
@@ -67,40 +68,40 @@ fun MainComposeView() {
             .fillMaxSize()
             .navigationBarsPadding()
     ) {
-        item {
+        item(key = 0) {
             DropDownMenuComponent()
         }
-        item {
+        item(key = 1) {
             ListComponentCatalog()
         }
-        item {
+        item(key = 2) {
             ButtonComponentCatalog()
         }
-        item {
+        item(key = 3) {
             ContentListComponent()
         }
-        item {
+        item(key = 4) {
             TextComponentCatalog()
         }
-        item {
+        item(key = 5) {
             TabsComponentCatalog()
         }
-        item {
+        item(key = 6) {
             CheckboxCatalog()
         }
-        item {
+        item(key = 7) {
             DividerComponentCatalog()
         }
-        item {
+        item(key = 8) {
             ProgressIndicatorCatalog()
         }
-        item {
+        item(key = 9) {
             ShimmerListItem()
         }
-        item {
+        item(key = 10) {
             PromptCatalog()
         }
-        item {
+        item(key = 11) {
             PromotionalSheetsCatalog(
                 showCloseButton = showCloseButton,
                 illustrationMode = illustrationMode,
@@ -108,16 +109,16 @@ fun MainComposeView() {
                 onIllustrationModeChange = { illustrationMode = it }
             )
         }
-        item {
+        item(key = 12) {
             PromotionalDialogsCatalog(
                 showCloseButton = showCloseButton,
                 illustrationsMode = illustrationMode
             )
         }
-        item {
+        item(key = 13) {
             TextThumbnailComponentCatalog()
         }
-        item {
+        item(key = 14) {
             TextInputField(
                 modifier = Modifier,
                 label = "Test InputField",
@@ -125,36 +126,39 @@ fun MainComposeView() {
                 maxCharLimit = 190
             )
         }
-        item {
+        item(key = 15) {
             TextInputBox(
                 modifier = Modifier,
                 label = "Test InputBox",
                 keyboardType = KeyboardType.Text
             )
         }
-        item {
+        item(key = 16) {
             ReadOnlyInputFieldComponent()
         }
-        item {
+        item(key = 17) {
             SliderComponentCatalog()
         }
-        item {
+        item(key = 18) {
             PasswordGeneratorInputComponentCatalog()
         }
-        item {
+        item(key = 19) {
             MegaDialogComponent()
         }
-        item {
+        item(key = 20) {
             BottomSheetComponentCatalog()
         }
-        item {
+        item(key = 21) {
             StateViewCatalog()
         }
-        item {
+        item(key = 22) {
             VerificationTextInputFieldCatalog()
         }
-        item {
+        item(key = 23) {
             RadioButtonCatalog()
+        }
+        item(key = 24 ) {
+            CardComponentCatalog()
         }
     }
 }
