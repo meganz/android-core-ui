@@ -129,7 +129,8 @@ fun PlansCard(
                                 tint = IconColor.Primary
                             )
                         },
-                        minHeight = 0.dp
+                        minHeight = 0.dp,
+                        enableClick = false
                     )
                 }
             }
