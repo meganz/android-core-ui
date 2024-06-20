@@ -103,6 +103,7 @@ fun AndroidTheme(
             window.navigationBarColor = colors.background.pageBackground.toArgb()
             WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = !isDark
             WindowCompat.getInsetsController(window, view).isAppearanceLightNavigationBars = !isDark
+            window.decorView.setBackgroundColor(colors.background.pageBackground.toArgb()) //Added to fix keyboard backdrop issue in screen
         }
     }
 
