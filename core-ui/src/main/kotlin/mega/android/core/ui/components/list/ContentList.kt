@@ -137,7 +137,7 @@ fun PlainContentListItem(
 fun NumberContentListItem(
     modifier: Modifier,
     number: Int,
-    title: String,
+    title: String?,
     subtitle: String? = null,
     titleAnnotations: Map<SpanIndicator, SpanStyleWithAnnotation>? = null,
     onTitleAnnotationClick: ((annotation: String) -> Unit)? = null,
@@ -180,7 +180,7 @@ fun NumberContentListItem(
 @Composable
 private fun ContentListItem(
     modifier: Modifier,
-    title: String,
+    title: String? = null,
     subtitle: String? = null,
     titleAnnotations: Map<SpanIndicator, SpanStyleWithAnnotation>? = null,
     onTitleAnnotationClick: ((annotation: String) -> Unit)? = null,
@@ -207,13 +207,15 @@ private fun ContentListItem(
                 .fillMaxWidth()
                 .wrapContentHeight(),
         ) {
-            LinkSpannedText(
-                value = title,
-                spanStyles = titleAnnotations ?: emptyMap(),
-                onAnnotationClick = onTitleAnnotationClick ?: {},
-                baseStyle = AppTheme.typography.titleSmall,
-                baseTextColor = TextColor.Primary,
-            )
+            if (!title.isNullOrBlank()) {
+                LinkSpannedText(
+                    value = title,
+                    spanStyles = titleAnnotations ?: emptyMap(),
+                    onAnnotationClick = onTitleAnnotationClick ?: {},
+                    baseStyle = AppTheme.typography.titleSmall,
+                    baseTextColor = TextColor.Primary,
+                )
+            }
 
             if (subtitle != null) {
                 LinkSpannedText(
@@ -332,6 +334,38 @@ private fun NumberContentListItemPreview() {
                 .padding(16.dp),
             number = 1,
             title = "This is a [A]title[/A]",
+            titleAnnotations = mapOf(
+                SpanIndicator('A') to SpanStyleWithAnnotation(
+                    MegaSpanStyle.LinkColorStyle(
+                        SpanStyle(),
+                        LinkColor.Primary
+                    ),
+                    "title",
+                )
+            ),
+            subtitle = "This is a [A]subtitle[/A]",
+            subtitleAnnotations = mapOf(
+                SpanIndicator('A') to SpanStyleWithAnnotation(
+                    MegaSpanStyle.LinkColorStyle(
+                        SpanStyle(),
+                        LinkColor.Primary
+                    ),
+                    "subtitle",
+                )
+            ),
+        )
+    }
+}
+
+@CombinedThemePreviews
+@Composable
+private fun NumberContentListItemNoTitlePreview() {
+    AndroidThemeForPreviews {
+        NumberContentListItem(
+            modifier = Modifier
+                .padding(16.dp),
+            number = 1,
+            title = null,
             titleAnnotations = mapOf(
                 SpanIndicator('A') to SpanStyleWithAnnotation(
                     MegaSpanStyle.LinkColorStyle(
