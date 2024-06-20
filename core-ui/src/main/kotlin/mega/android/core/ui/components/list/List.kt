@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.defaultMinSize
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -48,6 +49,7 @@ private val listItemMinHeight = 60.dp
 private val headerListItemMinHeight = 36.dp
 private val leadingElementContainerSize = 32.dp
 private val vpnCountrySelectedListItemMaxWidth = 382.dp
+private val vpnCountrySelectedListItemHeight = 60.dp
 private const val TITLE_MAX_LINES = 1
 private const val VPN_SUBTITLE_MAX_LINES = 1
 private const val TWO_LINE_LIST_SUBTITLE_MAX_LINES = 1
@@ -184,7 +186,10 @@ fun TwoLineListItem(
 
 @Deprecated(
     message = "Use FlexibleLineListItem instead",
-    replaceWith = ReplaceWith("FlexibleLineListItem", "mega.android.core.ui.components.list.FlexibleLineListItem"),
+    replaceWith = ReplaceWith(
+        "FlexibleLineListItem",
+        "mega.android.core.ui.components.list.FlexibleLineListItem"
+    ),
 )
 @Composable
 fun MultiLineListItem(
@@ -238,6 +243,7 @@ fun FlexibleLineListItem(
     )
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun VpnSelectedCountryListItem(
     title: String,
@@ -248,54 +254,71 @@ fun VpnSelectedCountryListItem(
     colorFilter: ColorFilter? = null,
     onClickListener: () -> Unit = {},
     onLongClickListener: () -> Unit = {},
-) = ListItem(
-    modifier = modifier
-        .clip(AppTheme.shapes.small)
-        .widthIn(max = vpnCountrySelectedListItemMaxWidth)
-        .background(AppTheme.colors.background.surface1)
-        .padding(horizontal = LocalSpacing.current.x16, vertical = LocalSpacing.current.x12),
-    title = title,
-    subtitle = subtitle,
-    subtitleMaxLines = VPN_SUBTITLE_MAX_LINES,
-    leadingElement = {
-        Box(
-            modifier = Modifier
-                .size(32.dp)
-                .align(Alignment.Center)
-        ) {
-            if (countryFlag != null) {
-                Image(
-                    painter = countryFlag,
-                    contentDescription = subtitle,
-                    modifier = Modifier
-                        .size(32.dp)
-                        .align(Alignment.Center),
-                    contentScale = ContentScale.Inside,
-                    colorFilter = colorFilter
-                )
-            } else {
-                Spacer(
+) {
+    Box(
+        modifier = modifier
+            .clip(AppTheme.shapes.small)
+            .widthIn(max = vpnCountrySelectedListItemMaxWidth)
+            .height(vpnCountrySelectedListItemHeight)
+            .background(AppTheme.colors.background.surface1)
+    ) {
+        ListItem(
+            modifier = modifier
+                .padding(horizontal = LocalSpacing.current.x16)
+                .align(Alignment.Center),
+            title = title,
+            subtitle = subtitle,
+            subtitleMaxLines = VPN_SUBTITLE_MAX_LINES,
+            leadingElement = {
+                Box(
                     modifier = Modifier
                         .size(32.dp)
                         .align(Alignment.Center)
-                        .shimmerEffect()
+                ) {
+                    if (countryFlag != null) {
+                        Image(
+                            painter = countryFlag,
+                            contentDescription = subtitle,
+                            modifier = Modifier
+                                .size(32.dp)
+                                .align(Alignment.Center),
+                            contentScale = ContentScale.Inside,
+                            colorFilter = colorFilter
+                        )
+                    } else {
+                        Spacer(
+                            modifier = Modifier
+                                .size(32.dp)
+                                .align(Alignment.Center)
+                                .shimmerEffect()
+                        )
+                    }
+                }
+            },
+            trailingElement = {
+                Icon(
+                    painter = rightIcon,
+                    contentDescription = null,
+                    modifier = Modifier.size(24.dp),
+                    tint = AppTheme.colors.icon.primary
                 )
-            }
-        }
-    },
-    trailingElement = {
-        Icon(
-            painter = rightIcon,
-            contentDescription = null,
-            modifier = Modifier.size(24.dp),
-            tint = AppTheme.colors.icon.primary
+            },
+            enableClick = false,
+            replaceNullSubtitleWithShimmer = true
         )
-    },
-    enableClick = true,
-    onClickListener = onClickListener,
-    onLongClickListener = onLongClickListener,
-    replaceNullSubtitleWithShimmer = true
-)
+
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .clip(AppTheme.shapes.small)
+                .combinedClickable(
+                    enabled = true,
+                    onClick = onClickListener,
+                    onLongClick = onLongClickListener
+                )
+        )
+    }
+}
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
