@@ -1,5 +1,7 @@
 package mega.android.core.ui.components.tabs
 
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.ScrollableTabRow
 import androidx.compose.material3.TabRow
@@ -51,11 +53,12 @@ fun MegaScrollableTabRow(
     items: List<TabItems>,
     onClick: (Int) -> Unit,
     modifier: Modifier = Modifier,
+    withDivider: Boolean = true
 ) {
     ScrollableTabRow(
         modifier = modifier.fillMaxWidth(),
         selectedTabIndex = tabIndex,
-        divider = { StrongDivider() },
+        divider = { if (withDivider) { StrongDivider() } },
         containerColor = Color.Transparent,
         edgePadding = LocalSpacing.current.x16,
         indicator = { tabPositions ->
@@ -96,16 +99,16 @@ private fun MegaTabRowPreview() {
 @Composable
 private fun MegaScrollableTabRowPreview() {
     AndroidThemeForPreviews {
-        MegaScrollableTabRow(
-            tabIndex = 0,
-            items = listOf(
-                TabItems(title = "Tab 1"),
-                TabItems(title = "Tab 2", showBadge = true),
-                TabItems(title = "Tab 3"),
-                TabItems(title = "Tab 4"),
-                TabItems(title = "Tab 5"),
-            ),
-            onClick = {},
-        )
+        Column(modifier = Modifier.fillMaxSize()) {
+            MegaScrollableTabRow(
+                tabIndex = 0,
+                items = listOf(
+                    TabItems(title = "Tab 1"),
+                    TabItems(title = "Tab 2", showBadge = true),
+                    TabItems(title = "Tab 3")
+                ),
+                onClick = {},
+            )
+        }
     }
 }
