@@ -252,7 +252,8 @@ fun VpnSelectedCountryListItem(
     modifier = modifier
         .clip(AppTheme.shapes.small)
         .widthIn(max = vpnCountrySelectedListItemMaxWidth)
-        .background(AppTheme.colors.background.surface1),
+        .background(AppTheme.colors.background.surface1)
+        .padding(horizontal = LocalSpacing.current.x16, vertical = LocalSpacing.current.x12),
     title = title,
     subtitle = subtitle,
     subtitleMaxLines = VPN_SUBTITLE_MAX_LINES,
