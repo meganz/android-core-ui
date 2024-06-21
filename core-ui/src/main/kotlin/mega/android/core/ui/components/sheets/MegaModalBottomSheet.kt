@@ -1,6 +1,5 @@
 package mega.android.core.ui.components.sheets
 
-import android.app.Activity
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.WindowInsetsSides
@@ -14,10 +13,7 @@ import androidx.compose.material3.ModalBottomSheetDefaults
 import androidx.compose.material3.ModalBottomSheetProperties
 import androidx.compose.material3.SheetState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalView
-import androidx.core.view.WindowCompat
 import mega.android.core.ui.theme.AppTheme
 import mega.android.core.ui.theme.spacing.LocalSpacing
 
@@ -38,12 +34,6 @@ fun MegaModalBottomSheet(
     properties: ModalBottomSheetProperties = ModalBottomSheetDefaults.properties(),
     content: @Composable ColumnScope.() -> Unit,
 ) {
-    val activity = LocalView.current.context as Activity
-
-    SideEffect {
-        WindowCompat.setDecorFitsSystemWindows(activity.window, false)
-    }
-
     val containerColor = when (bottomSheetBackground) {
         MegaModalBottomSheetBackground.PageBackground -> AppTheme.colors.background.pageBackground
         MegaModalBottomSheetBackground.Surface1 -> AppTheme.colors.background.surface1
