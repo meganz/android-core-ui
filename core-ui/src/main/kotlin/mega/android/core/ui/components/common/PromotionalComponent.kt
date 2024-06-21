@@ -82,6 +82,7 @@ internal fun PromotionalContent(
     modifier: Modifier,
     title: String,
     headline: String,
+    description: String? = null,
     listItems: List<PromotionalListAttributes> = emptyList(),
     contentText: String? = null,
     footer: String? = null,
@@ -102,7 +103,11 @@ internal fun PromotionalContent(
 
         MegaText(
             modifier = Modifier
-                .padding(top = LocalSpacing.current.x8)
+                .padding(
+                    top = LocalSpacing.current.x8,
+                    start = LocalSpacing.current.x16,
+                    end = LocalSpacing.current.x16
+                )
                 .fillMaxWidth(),
             text = headline,
             textColor = TextColor.Primary,
@@ -110,11 +115,31 @@ internal fun PromotionalContent(
             textAlign = TextAlign.Center
         )
 
+        if (description != null) {
+            MegaText(
+                modifier = Modifier
+                    .padding(
+                        top = LocalSpacing.current.x16,
+                        start = LocalSpacing.current.x16,
+                        end = LocalSpacing.current.x16
+                    )
+                    .fillMaxWidth(),
+                text = description,
+                textColor = TextColor.Secondary,
+                style = AppTheme.typography.bodyMedium,
+                textAlign = TextAlign.Center
+            )
+        }
+
         listItems.forEach { item ->
             FlexibleLineListItem(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(top = LocalSpacing.current.x24),
+                    .padding(
+                        top = LocalSpacing.current.x24,
+                        start = LocalSpacing.current.x16,
+                        end = LocalSpacing.current.x16
+                    ),
                 title = item.title,
                 subtitle = item.subtitle,
                 leadingElement = {
