@@ -292,7 +292,7 @@ fun PromotionalIllustrationDialog(
                     modifier = Modifier,
                     title = title,
                     headline = headline,
-                    isIllustration = true,
+                    isIllustration = illustration != null,
                     description = description,
                     listItems = listItems,
                     contentText = contentText,
