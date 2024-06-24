@@ -369,7 +369,7 @@ private fun ListItem(
                 MegaText(
                     text = title,
                     textColor = TextColor.Primary,
-                    style = AppTheme.typography.bodyLarge,
+                    style = AppTheme.typography.titleSmall,
                     maxLines = titleMaxLines,
                     overflow = TextOverflow.Ellipsis
                 )
@@ -426,7 +426,7 @@ private fun TwoLineListItemPreview() {
 @CombinedThemePreviews
 private fun ThreeLineListItemPreview() {
     AndroidThemeForPreviews {
-        MultiLineListItem(
+        FlexibleLineListItem(
             modifier = Modifier,
             title = "List item",
             subtitle = "Supporting line text lorem ipsum lorem ipsum lorem ipsum lorem ipsum"
@@ -496,7 +496,7 @@ private fun OneLineListItemPreviewWithLargeElements() {
 @CombinedThemePreviews
 private fun MultiLineListItemPreviewWithElements() {
     AndroidThemeForPreviews {
-        MultiLineListItem(
+        FlexibleLineListItem(
             modifier = Modifier,
             title = "List item",
             subtitle = "Supporting line text lorem ipsum lorem ipsum",

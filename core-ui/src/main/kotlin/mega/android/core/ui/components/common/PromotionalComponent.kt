@@ -83,6 +83,7 @@ internal fun PromotionalContent(
     title: String,
     headline: String,
     description: String? = null,
+    isIllustration : Boolean = false,
     listItems: List<PromotionalListAttributes> = emptyList(),
     contentText: String? = null,
     footer: String? = null,
@@ -144,7 +145,7 @@ internal fun PromotionalContent(
                 subtitle = item.subtitle,
                 leadingElement = {
                     Icon(
-                        modifier = Modifier.size(48.dp),
+                        modifier = Modifier.size(if(isIllustration) 40.dp else 24.dp),
                         painter = painterResource(id = item.icon),
                         contentDescription = item.title,
                     )

@@ -442,6 +442,7 @@ fun PromotionalIllustrationSheet(
                     modifier = Modifier,
                     title = title,
                     headline = headline,
+                    isIllustration = true,
                     description = description,
                     listItems = listItems,
                     contentText = contentText,
