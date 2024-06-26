@@ -9,8 +9,6 @@ import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
@@ -19,13 +17,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import mega.android.core.ui.components.MegaText
-import mega.android.core.ui.components.list.FlexibleLineListItem
+import mega.android.core.ui.components.list.IconContentListItem
+import mega.android.core.ui.components.list.ImageContentListItem
 import mega.android.core.ui.theme.AppTheme
 import mega.android.core.ui.theme.spacing.LocalSpacing
 import mega.android.core.ui.theme.values.TextColor
@@ -35,6 +32,7 @@ data class PromotionalListAttributes(
     val title: String,
     val subtitle: String,
     @DrawableRes val icon: Int,
+    val imageUrl: String? = null
 )
 
 @Composable
@@ -83,7 +81,7 @@ internal fun PromotionalContent(
     title: String,
     headline: String,
     description: String? = null,
-    isIllustration : Boolean = false,
+    isIllustration: Boolean = false,
     listItems: List<PromotionalListAttributes> = emptyList(),
     contentText: String? = null,
     footer: String? = null,
@@ -132,25 +130,31 @@ internal fun PromotionalContent(
             )
         }
 
-        listItems.forEach { item ->
-            FlexibleLineListItem(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(
-                        top = LocalSpacing.current.x24,
-                        start = LocalSpacing.current.x16,
-                        end = LocalSpacing.current.x16
-                    ),
-                title = item.title,
-                subtitle = item.subtitle,
-                leadingElement = {
-                    Icon(
-                        modifier = Modifier.size(if(isIllustration) 40.dp else 24.dp),
-                        painter = painterResource(id = item.icon),
-                        contentDescription = item.title,
-                    )
-                }
+        val listItemModifier = Modifier
+            .fillMaxWidth()
+            .padding(
+                top = LocalSpacing.current.x24,
+                start = LocalSpacing.current.x16,
+                end = LocalSpacing.current.x16
             )
+
+        listItems.forEach { item ->
+
+            if (isIllustration) {
+                ImageContentListItem(
+                    modifier = listItemModifier,
+                    title = item.title,
+                    subtitle = item.subtitle,
+                    imageUrl = item.imageUrl.orEmpty()
+                )
+            } else {
+                IconContentListItem(
+                    modifier = listItemModifier,
+                    iconResId = item.icon,
+                    title = item.title,
+                    subtitle = item.subtitle
+                )
+            }
         }
 
         if (!contentText.isNullOrBlank()) {

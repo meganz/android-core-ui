@@ -369,7 +369,7 @@ private fun ListItem(
                 MegaText(
                     text = title,
                     textColor = TextColor.Primary,
-                    style = AppTheme.typography.titleSmall,
+                    style = AppTheme.typography.bodyLarge,
                     maxLines = titleMaxLines,
                     overflow = TextOverflow.Ellipsis
                 )

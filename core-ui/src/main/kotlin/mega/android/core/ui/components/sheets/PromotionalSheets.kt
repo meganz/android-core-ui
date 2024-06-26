@@ -156,15 +156,16 @@ fun PromotionalImageSheet(
                         height = Dimension.preferredWrapContent
                         width = Dimension.fillToConstraints
                         top.linkTo(toolbar.bottom, margin = spacing.x16)
-                        start.linkTo(parent.start, margin = spacing.x16)
-                        end.linkTo(parent.end, margin = spacing.x16)
+                        start.linkTo(parent.start)
+                        end.linkTo(parent.end)
                         bottom.linkTo(buttonContainer.top)
                     }
                     .verticalScroll(scrollState, enabled = true)
             ) {
                 PromotionalImage(
                     modifier = Modifier
-                        .fillMaxWidth(),
+                        .fillMaxWidth()
+                        .padding(horizontal = spacing.x16),
                     imageUrl = imageUrl,
                     description = title
                 )
