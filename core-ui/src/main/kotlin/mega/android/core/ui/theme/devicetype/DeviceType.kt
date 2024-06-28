@@ -1,4 +1,4 @@
-package mega.android.core.ui.theme.values
+package mega.android.core.ui.theme.devicetype
 
 import androidx.compose.runtime.staticCompositionLocalOf
 

@@ -11,8 +11,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import mega.android.core.ui.theme.AppTheme
 import mega.android.core.ui.theme.spacing.LocalSpacing
-import mega.android.core.ui.theme.values.DeviceType
-import mega.android.core.ui.theme.values.LocalDeviceType
+import mega.android.core.ui.theme.devicetype.DeviceType
+import mega.android.core.ui.theme.devicetype.LocalDeviceType
 
 private val snackBarWidthTablet = 344.dp
 
