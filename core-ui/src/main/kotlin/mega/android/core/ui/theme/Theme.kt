@@ -5,6 +5,9 @@ import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Shapes
 import androidx.compose.material3.Typography
+import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
+import androidx.compose.material3.windowsizeclass.WindowSizeClass
+import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.SideEffect
@@ -14,15 +17,20 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalView
+import androidx.compose.ui.unit.DpSize
+import androidx.compose.ui.unit.dp
 import androidx.core.view.WindowCompat
 import mega.android.core.ui.theme.AppTheme.typography
 import mega.android.core.ui.theme.colors.AppColors
 import mega.android.core.ui.theme.shape.shapes
 import mega.android.core.ui.theme.spacing.Dimensions
 import mega.android.core.ui.theme.spacing.LocalSpacing
+import mega.android.core.ui.theme.values.DeviceType
 import mega.android.core.ui.theme.values.IconColor
 import mega.android.core.ui.theme.values.LinkColor
+import mega.android.core.ui.theme.values.LocalDeviceType
 import mega.android.core.ui.theme.values.SupportColor
 import mega.android.core.ui.theme.values.TextColor
 import mega.android.core.ui.tokens.theme.tokens.AndroidNewSemanticTokensDark
@@ -107,9 +115,13 @@ fun AndroidTheme(
         }
     }
 
+    val deviceType = if (getWindowSize().widthSizeClass != WindowWidthSizeClass.Compact) {
+        DeviceType.Tablet
+    } else DeviceType.Phone
     CompositionLocalProvider(
         LocalColorPalette provides colorPalette,
-        LocalSpacing provides Dimensions()
+        LocalSpacing provides Dimensions(),
+        LocalDeviceType provides deviceType
     ) {
         MaterialTheme(
             shapes = shapes,
@@ -117,6 +129,14 @@ fun AndroidTheme(
             content = content
         )
     }
+}
+
+@OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
+@Composable
+private fun getWindowSize(): WindowSizeClass {
+    val configuration = LocalConfiguration.current
+    val size = DpSize(configuration.screenWidthDp.dp, configuration.screenHeightDp.dp)
+    return WindowSizeClass.calculateFromSize(size)
 }
 
 object AppTheme {
@@ -172,4 +192,3 @@ private val testColorPalette = AppColors(
     },
     isLight = false,
 )
-

@@ -11,15 +11,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import mega.android.core.ui.theme.AppTheme
 import mega.android.core.ui.theme.spacing.LocalSpacing
+import mega.android.core.ui.theme.values.DeviceType
+import mega.android.core.ui.theme.values.LocalDeviceType
 
 private val snackBarWidthTablet = 344.dp
 
 @Composable
 fun MegaSnackbar(
     snackBarHostState: SnackbarHostState,
-    isTablet: Boolean = false,
     safeAreaPadding: PaddingValues? = null,
 ) {
+    val isTablet = LocalDeviceType.current == DeviceType.Tablet
     SnackbarHost(snackBarHostState) { data ->
         val horizontalSpace = if (isTablet) 0.dp else LocalSpacing.current.x8
         val snackbarModifier = Modifier
