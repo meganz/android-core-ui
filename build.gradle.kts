@@ -4,9 +4,9 @@ import mega.android.core.ui.gradle.generateLibVersion
 
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 plugins {
-    id("com.android.application") version "8.1.1" apply false
+    alias(libs.plugins.com.android.application) apply false
     id("org.jetbrains.kotlin.android") version "1.9.24" apply false
-    id("com.android.library") version "8.1.1" apply false
+    alias(libs.plugins.com.android.library) apply false
     alias(libs.plugins.jfrog.artifactory) apply false
     alias(libs.plugins.mega.artifactory.publish.convention) apply false
     alias(libs.plugins.mega.android.library.jacoco.convention) apply false
