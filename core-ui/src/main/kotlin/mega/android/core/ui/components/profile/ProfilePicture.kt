@@ -26,7 +26,7 @@ import mega.android.core.ui.theme.AppTheme
 import mega.android.core.ui.theme.values.TextColor
 import java.io.File
 
-private val LARGE_PROFILE_PICTURE_SIZE = 58.dp
+private val LARGE_PROFILE_PICTURE_SIZE = 56.dp
 private val MEDIUM_PROFILE_PICTURE_SIZE = 32.dp
 private val SMALL_PROFILE_PICTURE_SIZE = 24.dp
 
