@@ -24,13 +24,13 @@ import androidx.compose.ui.unit.dp
 import androidx.core.view.WindowCompat
 import mega.android.core.ui.theme.AppTheme.typography
 import mega.android.core.ui.theme.colors.AppColors
+import mega.android.core.ui.theme.devicetype.DeviceType
+import mega.android.core.ui.theme.devicetype.LocalDeviceType
 import mega.android.core.ui.theme.shape.shapes
 import mega.android.core.ui.theme.spacing.Dimensions
 import mega.android.core.ui.theme.spacing.LocalSpacing
-import mega.android.core.ui.theme.devicetype.DeviceType
 import mega.android.core.ui.theme.values.IconColor
 import mega.android.core.ui.theme.values.LinkColor
-import mega.android.core.ui.theme.devicetype.LocalDeviceType
 import mega.android.core.ui.theme.values.SupportColor
 import mega.android.core.ui.theme.values.TextColor
 import mega.android.core.ui.tokens.theme.tokens.AndroidNewSemanticTokensDark
@@ -111,7 +111,7 @@ fun AndroidTheme(
             window.navigationBarColor = colors.background.pageBackground.toArgb()
             WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = !isDark
             WindowCompat.getInsetsController(window, view).isAppearanceLightNavigationBars = !isDark
-            window.decorView.setBackgroundColor(colors.background.pageBackground.toArgb()) //Added to fix keyboard backdrop issue in screen
+            window.decorView.setBackgroundColor(if (fromAutofill) Color.Transparent.toArgb() else colors.background.pageBackground.toArgb()) //Added to fix keyboard backdrop issue in screen
         }
     }
 
