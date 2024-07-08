@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.defaultMinSize
@@ -147,6 +148,7 @@ fun OneLineListItem(
     leadingElement: (@Composable (BoxScope.() -> Unit))? = null,
     trailingElement: (@Composable (() -> Unit))? = null,
     enableClick: Boolean = true,
+    contentPadding: PaddingValues = PaddingValues(0.dp),
     onClickListener: () -> Unit = {},
     onLongClickListener: () -> Unit = {},
 ) = ListItem(
@@ -156,6 +158,7 @@ fun OneLineListItem(
     subtitle = null,
     leadingElement = leadingElement,
     trailingElement = trailingElement,
+    contentPadding = contentPadding,
     enableClick = enableClick,
     onClickListener = onClickListener,
     onLongClickListener = onLongClickListener,
@@ -168,6 +171,7 @@ fun TwoLineListItem(
     modifier: Modifier = Modifier,
     leadingElement: (@Composable (BoxScope.() -> Unit))? = null,
     trailingElement: (@Composable (() -> Unit))? = null,
+    contentPadding: PaddingValues = PaddingValues(0.dp),
     enableClick: Boolean = true,
     onClickListener: () -> Unit = {},
     onLongClickListener: () -> Unit = {},
@@ -178,6 +182,7 @@ fun TwoLineListItem(
     subtitle = subtitle,
     leadingElement = leadingElement,
     trailingElement = trailingElement,
+    contentPadding = contentPadding,
     enableClick = enableClick,
     onClickListener = onClickListener,
     onLongClickListener = onLongClickListener,
@@ -198,6 +203,7 @@ fun MultiLineListItem(
     modifier: Modifier = Modifier,
     leadingElement: (@Composable (BoxScope.() -> Unit))? = null,
     trailingElement: (@Composable (() -> Unit))? = null,
+    contentPadding: PaddingValues = PaddingValues(0.dp),
     enableClick: Boolean = true,
     onClickListener: () -> Unit = {},
     onLongClickListener: () -> Unit = {},
@@ -208,6 +214,7 @@ fun MultiLineListItem(
     subtitle = subtitle,
     leadingElement = leadingElement,
     trailingElement = trailingElement,
+    contentPadding = contentPadding,
     enableClick = enableClick,
     onClickListener = onClickListener,
     onLongClickListener = onLongClickListener,
@@ -223,6 +230,7 @@ fun FlexibleLineListItem(
     subtitleMaxLines: Int = Int.MAX_VALUE,
     leadingElement: (@Composable (BoxScope.() -> Unit))? = null,
     trailingElement: (@Composable (() -> Unit))? = null,
+    contentPadding: PaddingValues = PaddingValues(0.dp),
     enableClick: Boolean = true,
     onClickListener: () -> Unit = {},
     onLongClickListener: () -> Unit = {},
@@ -235,11 +243,12 @@ fun FlexibleLineListItem(
         subtitle = subtitle,
         leadingElement = leadingElement,
         trailingElement = trailingElement,
+        contentPadding = contentPadding,
         enableClick = enableClick,
         onClickListener = onClickListener,
         onLongClickListener = onLongClickListener,
         titleMaxLines = titleMaxLines,
-        subtitleMaxLines = subtitleMaxLines
+        subtitleMaxLines = subtitleMaxLines,
     )
 }
 
@@ -328,6 +337,7 @@ private fun ListItem(
     subtitle: String? = null,
     leadingElement: (@Composable (BoxScope.() -> Unit))? = null,
     trailingElement: (@Composable (() -> Unit))? = null,
+    contentPadding: PaddingValues = PaddingValues(0.dp),
     enableClick: Boolean = true,
     onClickListener: () -> Unit = {},
     onLongClickListener: () -> Unit = {},
@@ -342,7 +352,8 @@ private fun ListItem(
                 enabled = enableClick,
                 onClick = onClickListener,
                 onLongClick = onLongClickListener
-            ),
+            )
+            .padding(contentPadding),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(LocalSpacing.current.x16)
     ) {

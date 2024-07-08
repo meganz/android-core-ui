@@ -1,6 +1,6 @@
 package mega.android.core.ui.app.component
 
-import android.widget.Toast
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -21,13 +21,11 @@ import mega.android.core.ui.app.util.Section
 import mega.android.core.ui.components.MegaText
 import mega.android.core.ui.components.image.MegaIcon
 import mega.android.core.ui.components.list.FlexibleLineListItem
-import mega.android.core.ui.components.list.MultiLineListItem
 import mega.android.core.ui.components.list.OneLineListItem
 import mega.android.core.ui.components.list.PrimaryHeaderListItem
 import mega.android.core.ui.components.list.SecondaryHeaderListItem
 import mega.android.core.ui.components.list.VpnSelectedCountryListItem
 import mega.android.core.ui.components.slider.MegaSlider
-import mega.android.core.ui.components.toggle.Toggle
 import mega.android.core.ui.theme.AppTheme
 import mega.android.core.ui.theme.spacing.LocalSpacing
 import mega.android.core.ui.theme.values.IconColor
@@ -46,32 +44,7 @@ fun ListComponentCatalog() {
     Section(header = "One Line List Item") {
         OneLineListItem(
             text = "List item",
-        )
-    }
-    Section(header = "Two Line List Item") {
-        MultiLineListItem(
-            title = "List item",
-            subtitle = "Supporting line text lorem ipsum lorem ipsum"
-        )
-        MultiLineListItem(
-            title = "List item with Switch",
-            subtitle = "Supporting line text lorem ipsum lorem ipsum",
-            trailingElement = {
-                Toggle(
-                    isChecked = isSwitchChecked,
-                    onCheckedChange = {
-                        isSwitchChecked = it
-                        Toast.makeText(context, "Switch is checked: $it", Toast.LENGTH_SHORT).show()
-
-                    }
-                )
-            }
-        )
-    }
-    Section(header = "Three Line List Item") {
-        MultiLineListItem(
-            title = "List item",
-            subtitle = "Supporting line text lorem ipsum lorem ipsum lorem ipsum lorem ipsum"
+            contentPadding = PaddingValues(8.dp)
         )
     }
     Section(header = "One Line List Item with Elements") {
@@ -95,34 +68,12 @@ fun ListComponentCatalog() {
                     modifier = Modifier.size(32.dp)
                 )
             },
+            contentPadding = PaddingValues(8.dp)
         )
-    }
-    Section(header = "Multi Line List Item with Elements") {
-        MultiLineListItem(
-            title = "List item",
-            subtitle = "Supporting line text lorem ipsum lorem ipsum",
-            leadingElement = {
-                MegaIcon(
-                    painter = painterResource(id = R.drawable.ic_launcher_foreground),
-                    contentDescription = null,
-                    tint = IconColor.Primary,
-                    modifier = Modifier
-                        .size(32.dp)
-                        .align(Alignment.Center),
-                )
-            },
-            trailingElement = {
-                MegaIcon(
-                    painter = painterResource(id = R.drawable.ic_launcher_foreground),
-                    contentDescription = null,
-                    tint = IconColor.Primary,
-                    modifier = Modifier
-                        .size(32.dp),
-                )
-            })
     }
     Section(header = "Flexible Line List Item") {
         var sliderValue by remember { mutableFloatStateOf(1f) }
+
         MegaText(
             modifier = Modifier.padding(
                 horizontal = LocalSpacing.current.x16,
@@ -167,7 +118,8 @@ fun ListComponentCatalog() {
                     modifier = Modifier
                         .size(32.dp),
                 )
-            }
+            },
+            contentPadding = PaddingValues(8.dp)
         )
     }
     Section(header = "Primary Header") {
