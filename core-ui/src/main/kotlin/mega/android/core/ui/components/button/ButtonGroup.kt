@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -27,7 +28,8 @@ import mega.android.core.ui.theme.values.TextColor
 fun HorizontalAnchoredButtonGroup(
     buttonGroup: List<@Composable RowScope.() -> Button>,
     modifier: Modifier = Modifier,
-    withDivider: Boolean = false
+    withDivider: Boolean = false,
+    innerPadding: PaddingValues = PaddingValues(all = LocalSpacing.current.x16)
 ) {
     val spacing = LocalSpacing.current
 
@@ -48,7 +50,7 @@ fun HorizontalAnchoredButtonGroup(
             modifier = Modifier
                 .wrapContentHeight()
                 .fillMaxWidth()
-                .padding(all = spacing.x16),
+                .padding(innerPadding),
             horizontalArrangement = Arrangement.spacedBy(spacing.x16),
         ) {
             buttonGroup.forEach { button ->
@@ -63,7 +65,8 @@ fun AnchoredButtonGroup(
     buttonGroup: List<@Composable ColumnScope.() -> Button>,
     modifier: Modifier = Modifier,
     title: String? = null,
-    withDivider: Boolean = false
+    withDivider: Boolean = false,
+    innerPadding: PaddingValues = PaddingValues(all = LocalSpacing.current.x16)
 ) {
     val spacing = LocalSpacing.current
 
@@ -84,7 +87,7 @@ fun AnchoredButtonGroup(
             modifier = Modifier
                 .wrapContentHeight()
                 .fillMaxWidth()
-                .padding(all = spacing.x16),
+                .padding(innerPadding),
             verticalArrangement = Arrangement.spacedBy(spacing.x16),
         ) {
             title?.let {

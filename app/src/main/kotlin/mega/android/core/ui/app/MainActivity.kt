@@ -3,6 +3,7 @@ package mega.android.core.ui.app
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.navigationBarsPadding
@@ -14,6 +15,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.core.view.WindowCompat
 import mega.android.core.ui.app.component.BottomSheetComponentCatalog
 import mega.android.core.ui.app.component.ButtonComponentCatalog
 import mega.android.core.ui.app.component.CardComponentCatalog
@@ -37,6 +39,7 @@ import mega.android.core.ui.app.component.StateViewCatalog
 import mega.android.core.ui.app.component.TabsComponentCatalog
 import mega.android.core.ui.app.component.TextComponentCatalog
 import mega.android.core.ui.app.component.TextThumbnailComponentCatalog
+import mega.android.core.ui.app.component.TransparentNavigationComponentCatalog
 import mega.android.core.ui.app.component.VerificationTextInputFieldCatalog
 import mega.android.core.ui.components.inputfields.TextInputBox
 import mega.android.core.ui.components.inputfields.TextInputField
@@ -48,10 +51,12 @@ import mega.android.core.ui.theme.AndroidThemeForPreviews
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
+        enableEdgeToEdge()
         super.onCreate(savedInstanceState)
+        WindowCompat.setDecorFitsSystemWindows(window, false)
         setContent {
             // A surface container using the 'background' color from the theme
-            AndroidTheme(isDark = isSystemInDarkTheme()) {
+            AndroidTheme(isDark = isSystemInDarkTheme(), fromAutofill = true) {
                 ThemedSurface {
                     MainComposeView()
                 }
@@ -69,6 +74,9 @@ fun MainComposeView() {
             .fillMaxSize()
             .navigationBarsPadding()
     ) {
+        item(key = -1) {
+            TransparentNavigationComponentCatalog()
+        }
         item(key = 0) {
             DropDownMenuComponent()
         }
@@ -158,7 +166,7 @@ fun MainComposeView() {
         item(key = 23) {
             RadioButtonCatalog()
         }
-        item(key = 24 ) {
+        item(key = 24) {
             CardComponentCatalog()
         }
         item(key = 25) {

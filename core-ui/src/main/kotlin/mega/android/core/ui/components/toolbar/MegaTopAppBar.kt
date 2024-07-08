@@ -1,27 +1,35 @@
 package mega.android.core.ui.components.toolbar
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarColors
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import mega.android.core.ui.R
+import mega.android.core.ui.components.button.SecondarySmallIconButton
 import mega.android.core.ui.preview.CombinedThemePreviews
 import mega.android.core.ui.theme.AndroidThemeForPreviews
 import mega.android.core.ui.theme.AppTheme
-
-val TOOLBAR_DEFAULT_HEIGHT = 64.dp
+import mega.android.core.ui.theme.spacing.LocalSpacing
 
 @Composable
+@OptIn(ExperimentalMaterial3Api::class)
 fun MegaTopAppBar(
     title: String,
     modifier: Modifier = Modifier,
@@ -52,11 +60,45 @@ fun MegaTopAppBar(
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
+fun TransparentNavigationBar(
+    modifier: Modifier = Modifier,
+    navigationIcon: Painter? = null,
+    trailingIcons: @Composable RowScope.() -> Unit = {},
+    onNavigationIconClicked: () -> Unit = {},
+) {
+    DefaultTopAppBar(
+        modifier = modifier.statusBarsPadding(),
+        title = "",
+        navigationIcon = {
+            navigationIcon?.let {
+                SecondarySmallIconButton(
+                    modifier = Modifier
+                        .padding(start = LocalSpacing.current.x12)
+                        .size(32.dp),
+                    icon = navigationIcon,
+                    onClick = onNavigationIconClicked
+                )
+            }
+        },
+        actions = trailingIcons,
+        colors = TopAppBarDefaults.topAppBarColors(
+            containerColor = Color.Transparent,
+            scrolledContainerColor = Color.Transparent,
+            navigationIconContentColor = AppTheme.colors.icon.primary,
+            titleContentColor = AppTheme.colors.text.primary,
+            actionIconContentColor = AppTheme.colors.icon.primary
+        )
+    )
+}
+
+@Composable
+@OptIn(ExperimentalMaterial3Api::class)
 private fun DefaultTopAppBar(
     modifier: Modifier,
     title: String,
     navigationIcon: @Composable () -> Unit = {},
     actions: @Composable RowScope.() -> Unit = {},
+    colors: TopAppBarColors? = null
 ) {
     TopAppBar(
         modifier = modifier,
@@ -69,7 +111,7 @@ private fun DefaultTopAppBar(
         },
         navigationIcon = navigationIcon,
         actions = actions,
-        colors = TopAppBarDefaults.topAppBarColors(
+        colors = colors ?: TopAppBarDefaults.topAppBarColors(
             containerColor = AppTheme.colors.background.pageBackground,
             scrolledContainerColor = AppTheme.colors.background.pageBackground,
             navigationIconContentColor = AppTheme.colors.icon.primary,
@@ -96,5 +138,26 @@ private fun MegaTopAppBarPreview() {
             },
             onNavigationIconClicked = {}
         )
+    }
+}
+
+@CombinedThemePreviews
+@Composable
+private fun MegaTransparentTopAppBarPreview() {
+    AndroidThemeForPreviews {
+        Box(modifier = Modifier.background(color = Color.Red)) {
+            TransparentNavigationBar(
+                navigationIcon = painterResource(id = R.drawable.ic_arrow_left),
+                trailingIcons = {
+                    SecondarySmallIconButton(
+                        modifier = Modifier
+                            .padding(end = LocalSpacing.current.x12)
+                            .size(32.dp),
+                        icon = painterResource(id = R.drawable.ic_close),
+                        onClick = { })
+                },
+                onNavigationIconClicked = {}
+            )
+        }
     }
 }
