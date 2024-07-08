@@ -46,13 +46,11 @@ fun ProfileListItem(
                 text = fullName,
                 textColor = TextColor.Primary,
                 style = AppTheme.typography.titleMedium,
-                maxLines = 1
             )
             MegaText(
                 text = email,
                 textColor = TextColor.Secondary,
                 style = AppTheme.typography.bodyMedium,
-                maxLines = 1
             )
         }
     }
@@ -65,6 +63,18 @@ fun ProfileListItemPreview() {
         ProfileListItem(
             fullName = "FirstName LastName",
             email = "example@example.com",
+            avatarFile = null
+        )
+    }
+}
+
+@CombinedThemePreviews
+@Composable
+fun ProfileListItemLongTextPreview() {
+    AndroidThemeForPreviews {
+        ProfileListItem(
+            fullName = "Very very very long FirstName Very very very long LastName",
+            email = "Very very very long Very very very long Very very very long example@example.com",
             avatarFile = null
         )
     }
