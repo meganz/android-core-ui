@@ -1,6 +1,5 @@
 package mega.android.core.ui.app.component
 
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -42,10 +41,7 @@ fun ListComponentCatalog() {
     Spacer(modifier = Modifier.height(LocalSpacing.current.x16))
 
     Section(header = "One Line List Item") {
-        OneLineListItem(
-            text = "List item",
-            contentPadding = PaddingValues(8.dp)
-        )
+        OneLineListItem(text = "List item")
     }
     Section(header = "One Line List Item with Elements") {
         OneLineListItem(
@@ -68,7 +64,6 @@ fun ListComponentCatalog() {
                     modifier = Modifier.size(32.dp)
                 )
             },
-            contentPadding = PaddingValues(8.dp)
         )
     }
     Section(header = "Flexible Line List Item") {
@@ -119,7 +114,6 @@ fun ListComponentCatalog() {
                         .size(32.dp),
                 )
             },
-            contentPadding = PaddingValues(8.dp)
         )
     }
     Section(header = "Primary Header") {
@@ -138,7 +132,7 @@ fun ListComponentCatalog() {
     }
     Section(header = "VPN Country List Item") {
         VpnSelectedCountryListItem(
-            modifier = Modifier.padding(all = LocalSpacing.current.x16),
+            modifier = Modifier,
             title = "Selected Country",
             subtitle = "Australia",
             countryFlag = painterResource(id = R.drawable.australia),
@@ -148,7 +142,7 @@ fun ListComponentCatalog() {
 
     Section(header = "VPN Country List Item - Shimmer") {
         VpnSelectedCountryListItem(
-            modifier = Modifier.padding(all = LocalSpacing.current.x16),
+            modifier = Modifier,
             title = "Selected Country",
             subtitle = null,
             countryFlag = null,

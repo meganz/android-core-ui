@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.defaultMinSize
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -55,6 +54,10 @@ private const val TITLE_MAX_LINES = 1
 private const val VPN_SUBTITLE_MAX_LINES = 1
 private const val TWO_LINE_LIST_SUBTITLE_MAX_LINES = 1
 private const val MULTI_LINE_LIST_SUBTITLE_MAX_LINES = 2
+
+internal object ListItemToken {
+    val defaultContentPadding = PaddingValues(horizontal = 16.dp, vertical = 12.dp)
+}
 
 @Composable
 fun PrimaryHeaderListItem(
@@ -148,7 +151,7 @@ fun OneLineListItem(
     leadingElement: (@Composable (BoxScope.() -> Unit))? = null,
     trailingElement: (@Composable (() -> Unit))? = null,
     enableClick: Boolean = true,
-    contentPadding: PaddingValues = PaddingValues(0.dp),
+    contentPadding: PaddingValues = ListItemToken.defaultContentPadding,
     onClickListener: () -> Unit = {},
     onLongClickListener: () -> Unit = {},
 ) = ListItem(
@@ -171,7 +174,7 @@ fun TwoLineListItem(
     modifier: Modifier = Modifier,
     leadingElement: (@Composable (BoxScope.() -> Unit))? = null,
     trailingElement: (@Composable (() -> Unit))? = null,
-    contentPadding: PaddingValues = PaddingValues(0.dp),
+    contentPadding: PaddingValues = ListItemToken.defaultContentPadding,
     enableClick: Boolean = true,
     onClickListener: () -> Unit = {},
     onLongClickListener: () -> Unit = {},
@@ -203,7 +206,7 @@ fun MultiLineListItem(
     modifier: Modifier = Modifier,
     leadingElement: (@Composable (BoxScope.() -> Unit))? = null,
     trailingElement: (@Composable (() -> Unit))? = null,
-    contentPadding: PaddingValues = PaddingValues(0.dp),
+    contentPadding: PaddingValues = ListItemToken.defaultContentPadding,
     enableClick: Boolean = true,
     onClickListener: () -> Unit = {},
     onLongClickListener: () -> Unit = {},
@@ -230,7 +233,7 @@ fun FlexibleLineListItem(
     subtitleMaxLines: Int = Int.MAX_VALUE,
     leadingElement: (@Composable (BoxScope.() -> Unit))? = null,
     trailingElement: (@Composable (() -> Unit))? = null,
-    contentPadding: PaddingValues = PaddingValues(0.dp),
+    contentPadding: PaddingValues = ListItemToken.defaultContentPadding,
     enableClick: Boolean = true,
     onClickListener: () -> Unit = {},
     onLongClickListener: () -> Unit = {},
@@ -264,80 +267,66 @@ fun VpnSelectedCountryListItem(
     onClickListener: () -> Unit = {},
     onLongClickListener: () -> Unit = {},
 ) {
-    Box(
+    ListItem(
         modifier = modifier
             .clip(AppTheme.shapes.small)
             .widthIn(max = vpnCountrySelectedListItemMaxWidth)
             .height(vpnCountrySelectedListItemHeight)
-            .background(AppTheme.colors.background.surface1)
-    ) {
-        ListItem(
-            modifier = modifier
-                .padding(horizontal = LocalSpacing.current.x16)
-                .align(Alignment.Center),
-            title = title,
-            subtitle = subtitle,
-            subtitleMaxLines = VPN_SUBTITLE_MAX_LINES,
-            leadingElement = {
-                Box(
-                    modifier = Modifier
-                        .size(32.dp)
-                        .align(Alignment.Center)
-                ) {
-                    if (countryFlag != null) {
-                        Image(
-                            painter = countryFlag,
-                            contentDescription = subtitle,
-                            modifier = Modifier
-                                .size(32.dp)
-                                .align(Alignment.Center),
-                            contentScale = ContentScale.Inside,
-                            colorFilter = colorFilter
-                        )
-                    } else {
-                        Spacer(
-                            modifier = Modifier
-                                .size(32.dp)
-                                .align(Alignment.Center)
-                                .shimmerEffect()
-                        )
-                    }
+            .background(AppTheme.colors.background.surface1),
+        title = title,
+        subtitle = subtitle,
+        subtitleMaxLines = VPN_SUBTITLE_MAX_LINES,
+        leadingElement = {
+            Box(
+                modifier = Modifier
+                    .size(32.dp)
+                    .align(Alignment.Center)
+            ) {
+                if (countryFlag != null) {
+                    Image(
+                        painter = countryFlag,
+                        contentDescription = subtitle,
+                        modifier = Modifier
+                            .size(32.dp)
+                            .align(Alignment.Center),
+                        contentScale = ContentScale.Inside,
+                        colorFilter = colorFilter
+                    )
+                } else {
+                    Spacer(
+                        modifier = Modifier
+                            .size(32.dp)
+                            .align(Alignment.Center)
+                            .shimmerEffect()
+                    )
                 }
-            },
-            trailingElement = {
-                Icon(
-                    painter = rightIcon,
-                    contentDescription = null,
-                    modifier = Modifier.size(24.dp),
-                    tint = AppTheme.colors.icon.primary
-                )
-            },
-            enableClick = false,
-            replaceNullSubtitleWithShimmer = true
-        )
-
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .clip(AppTheme.shapes.small)
-                .combinedClickable(
-                    enabled = true,
-                    onClick = onClickListener,
-                    onLongClick = onLongClickListener
-                )
-        )
-    }
+            }
+        },
+        trailingElement = {
+            Icon(
+                painter = rightIcon,
+                contentDescription = null,
+                modifier = Modifier.size(24.dp),
+                tint = AppTheme.colors.icon.primary
+            )
+        },
+        enableClick = true,
+        replaceNullSubtitleWithShimmer = true,
+        contentPadding = PaddingValues(horizontal = 16.dp),
+        onClickListener = onClickListener,
+        onLongClickListener = onLongClickListener
+    )
 }
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun ListItem(
     modifier: Modifier,
+    contentPadding: PaddingValues,
     title: String? = null,
     subtitle: String? = null,
     leadingElement: (@Composable (BoxScope.() -> Unit))? = null,
     trailingElement: (@Composable (() -> Unit))? = null,
-    contentPadding: PaddingValues = PaddingValues(0.dp),
     enableClick: Boolean = true,
     onClickListener: () -> Unit = {},
     onLongClickListener: () -> Unit = {},
