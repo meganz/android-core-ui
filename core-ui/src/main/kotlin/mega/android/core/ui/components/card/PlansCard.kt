@@ -5,6 +5,7 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -119,6 +120,7 @@ fun PlansCard(
                             .fillMaxWidth()
                             .wrapContentHeight()
                             .testTag("${PlansCardTestTags.FEATURE_ITEM}_$index"),
+                        contentPadding = PaddingValues(0.dp),
                         subtitle = feature.title,
                         leadingElement = {
                             MegaIcon(
