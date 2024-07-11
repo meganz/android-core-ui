@@ -13,6 +13,7 @@ import androidx.compose.foundation.text.selection.TextSelectionColors
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextFieldDefaults
+import androidx.compose.material3.OutlinedTextFieldDefaults.Container
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -92,13 +93,16 @@ fun SearchInputField(
         },
         cursorBrush = SolidColor(AppTheme.colors.text.primary),
         enabled = enabled,
-        textStyle = AppTheme.typography.bodyLarge,
+        textStyle = AppTheme.typography.bodyLarge.copy(
+            // Basic text field requires a color to be set on the text style
+            color = AppTheme.colors.text.primary
+        ),
         interactionSource = interactionSource,
         keyboardOptions = KeyboardOptions(
-            keyboardType = KeyboardType.Text,
-            autoCorrect = autoCorrect,
-            imeAction = imeAction,
             capitalization = capitalization,
+            autoCorrectEnabled = autoCorrect,
+            keyboardType = KeyboardType.Text,
+            imeAction = imeAction
         ),
         keyboardActions = KeyboardActions {
             onKeyboardAction?.invoke()
@@ -144,7 +148,7 @@ fun SearchInputField(
                 )
             },
             container = {
-                OutlinedTextFieldDefaults.ContainerBox(
+                Container(
                     enabled = enabled,
                     isError = isError,
                     interactionSource = interactionSource,
