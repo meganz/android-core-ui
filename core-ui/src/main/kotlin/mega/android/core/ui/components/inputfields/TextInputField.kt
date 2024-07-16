@@ -4,17 +4,22 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.text.selection.TextSelectionColors
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextFieldColors
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -26,7 +31,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
@@ -42,6 +50,53 @@ import mega.android.core.ui.theme.AndroidThemeForPreviews
 import mega.android.core.ui.theme.AppTheme
 import mega.android.core.ui.theme.spacing.LocalSpacing
 import mega.android.core.ui.theme.values.TextColor
+
+/**
+ * A read only text input field with an optional custom trailing icon
+ *
+ * @param text the input text to be shown in the text field
+ * @param modifier the [Modifier] to be applied to this text field
+ * @param isPasswordMode whether in password mode
+ * @param label the optional label to be displayed inside the text field container
+ * @param inputTextAlign the alignment of the text within the lines of the paragraph
+ * @param showDefaultTrailingIcon whether the component needs to display the default icons. Available default icons:
+ *  - Close icon when the text is not empty.
+ *  - Eye icon for password mode.
+ * @param trailingIcon the optional trailing icon to be displayed at the end of the text field container
+ * @param successText the optional supporting text to be displayed below the text field
+ * @param errorText the optional error text to be displayed below the text field
+ * @param optionalLabelText the optional label to be displayed above the text field
+ * @param onValueChanged the callback that is triggered when the text is changed. In this component,
+ *   this callback will be called when the user clear all the text by clicking the close icon.
+ */
+@Composable
+fun ReadOnlyTextInputField(
+    text: String,
+    modifier: Modifier = Modifier,
+    isPasswordMode: Boolean = false,
+    label: String? = null,
+    inputTextAlign: TextAlign = TextAlign.Unspecified,
+    showDefaultTrailingIcon: Boolean = false,
+    trailingIcon: @Composable (() -> Unit)? = null,
+    successText: String? = null,
+    errorText: String? = null,
+    optionalLabelText: String? = null,
+    onValueChanged: ((String) -> Unit)? = null,
+) {
+    BaseReadOnlyTextField(
+        modifier = modifier,
+        label = label,
+        text = text,
+        successText = successText,
+        errorText = errorText,
+        inputTextAlign = inputTextAlign,
+        isPasswordMode = isPasswordMode,
+        optionalLabelText = optionalLabelText,
+        onValueChanged = onValueChanged,
+        showDefaultTrailingIcon = showDefaultTrailingIcon,
+        trailingIcon = trailingIcon
+    )
+}
 
 /**
  * Text input field
@@ -300,6 +355,227 @@ private fun BaseTextField(
     }
 }
 
+@Composable
+private fun BaseReadOnlyTextField(
+    text: String,
+    isPasswordMode: Boolean,
+    label: String?,
+    successText: String?,
+    errorText: String?,
+    inputTextAlign: TextAlign,
+    modifier: Modifier = Modifier,
+    showDefaultTrailingIcon: Boolean = false,
+    optionalLabelText: String? = null,
+    onValueChanged: ((String) -> Unit)? = null,
+    trailingIcon: @Composable (() -> Unit)? = null,
+) {
+    val spacing = LocalSpacing.current
+    val interactionSource: MutableInteractionSource = remember { MutableInteractionSource() }
+    var baseText by rememberSaveable(text) { mutableStateOf(text) }
+    var showPassword by rememberSaveable { mutableStateOf(false) }
+    val focusedColor = when {
+        successText.isNullOrBlank().not() -> AppTheme.colors.support.success
+        errorText != null -> AppTheme.colors.support.error
+        else -> AppTheme.colors.border.strong
+    }
+    val colors = OutlinedTextFieldDefaults.colors(
+        focusedTextColor = AppTheme.colors.text.primary,
+        unfocusedTextColor = AppTheme.colors.text.primary,
+        cursorColor = AppTheme.colors.text.primary,
+        errorCursorColor = AppTheme.colors.text.primary,
+        selectionColors = TextSelectionColors(
+            handleColor = AppTheme.colors.text.primary,
+            backgroundColor = AppTheme.colors.text.primary.copy(alpha = 0.4f),
+        ),
+        focusedBorderColor = focusedColor,
+        unfocusedBorderColor = focusedColor,
+        errorBorderColor = AppTheme.colors.support.error,
+        errorTextColor = AppTheme.colors.text.primary,
+        focusedPlaceholderColor = AppTheme.colors.text.primary,
+        unfocusedPlaceholderColor = AppTheme.colors.text.placeholder,
+        disabledTextColor = AppTheme.colors.text.disabled,
+        disabledContainerColor = AppTheme.colors.button.disabled,
+        disabledBorderColor = AppTheme.colors.border.disabled,
+    )
+
+    Column(modifier = modifier.fillMaxWidth()) {
+        label?.let {
+            Row(
+                modifier = Modifier
+                    .wrapContentWidth()
+                    .padding(bottom = spacing.x4)
+            ) {
+                Text(
+                    text = label,
+                    style = AppTheme.typography.titleSmall,
+                    color = AppTheme.colors.text.primary
+                )
+                optionalLabelText?.let {
+                    Text(
+                        modifier = Modifier.padding(start = spacing.x8),
+                        text = optionalLabelText,
+                        style = AppTheme.typography.bodyMedium,
+                        color = AppTheme.colors.text.secondary
+                    )
+                }
+            }
+        }
+
+        ReadOnlyOutlinedTextField(
+            modifier = Modifier
+                .fillMaxWidth()
+                .heightIn(min = inputFieldHeight),
+            value = baseText,
+            colors = colors,
+            shape = RoundedCornerShape(8.dp),
+            interactionSource = interactionSource,
+            singleLine = true,
+            textStyle = AppTheme.typography.bodyLarge.copy(textAlign = inputTextAlign),
+            isError = successText.isNullOrBlank() && errorText != null,
+            visualTransformation = if (!isPasswordMode || showPassword) VisualTransformation.None else PasswordVisualTransformation(),
+            trailingIcon = if (trailingIcon != null) {
+                {
+                    trailingIcon()
+                }
+            } else if (baseText.isNotEmpty() && showDefaultTrailingIcon) {
+                when {
+                    isPasswordMode.not() -> {
+                        {
+                            Icon(
+                                modifier = Modifier
+                                    .clickable {
+                                        baseText = ""
+                                        onValueChanged?.invoke("")
+                                    },
+                                painter = painterResource(id = R.drawable.ic_close),
+                                tint = AppTheme.colors.icon.primary,
+                                contentDescription = "Clear Text"
+                            )
+                        }
+                    }
+
+                    isPasswordMode -> {
+                        val eyeIcon = if (showPassword) R.drawable.ic_eye_off else R.drawable.ic_eye
+                        {
+                            Icon(
+                                modifier = Modifier
+                                    .padding(horizontal = spacing.x8)
+                                    .clickable { showPassword = !showPassword },
+                                painter = painterResource(id = eyeIcon),
+                                tint = AppTheme.colors.icon.secondary,
+                                contentDescription = "Show Password"
+                            )
+                        }
+                    }
+
+                    else -> {
+                        null
+                    }
+                }
+            } else {
+                null
+            }
+        )
+
+        val footerModifier = Modifier
+            .padding(top = spacing.x4)
+            .fillMaxWidth()
+
+        when {
+            !successText.isNullOrBlank() -> {
+                HelpTextSuccess(
+                    modifier = footerModifier,
+                    text = successText,
+                    textColor = TextColor.Primary
+                )
+            }
+
+            !errorText.isNullOrBlank() -> {
+                HelpTextError(
+                    modifier = footerModifier,
+                    text = errorText
+                )
+            }
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun ReadOnlyOutlinedTextField(
+    value: String,
+    modifier: Modifier = Modifier,
+    textStyle: TextStyle = LocalTextStyle.current,
+    label: @Composable (() -> Unit)? = null,
+    placeholder: @Composable (() -> Unit)? = null,
+    leadingIcon: @Composable (() -> Unit)? = null,
+    trailingIcon: @Composable (() -> Unit)? = null,
+    prefix: @Composable (() -> Unit)? = null,
+    suffix: @Composable (() -> Unit)? = null,
+    supportingText: @Composable (() -> Unit)? = null,
+    isError: Boolean = false,
+    visualTransformation: VisualTransformation = VisualTransformation.None,
+    singleLine: Boolean = false,
+    maxLines: Int = if (singleLine) 1 else Int.MAX_VALUE,
+    minLines: Int = 1,
+    interactionSource: MutableInteractionSource? = null,
+    shape: Shape = OutlinedTextFieldDefaults.shape,
+    colors: TextFieldColors = OutlinedTextFieldDefaults.colors()
+) {
+    val internalInteractionSource = interactionSource ?: remember { MutableInteractionSource() }
+    val mergedTextStyle = textStyle.merge(TextStyle(color = getTextColor(colors, isError)))
+
+    BasicTextField(
+        value = value,
+        modifier = modifier.defaultMinSize(
+            minWidth = OutlinedTextFieldDefaults.MinWidth,
+            minHeight = OutlinedTextFieldDefaults.MinHeight
+        ),
+        onValueChange = {},
+        readOnly = true,
+        textStyle = mergedTextStyle,
+        visualTransformation = visualTransformation,
+        interactionSource = interactionSource,
+        singleLine = singleLine,
+        maxLines = maxLines,
+        minLines = minLines,
+        decorationBox = @Composable { innerTextField ->
+            OutlinedTextFieldDefaults.DecorationBox(
+                value = value,
+                visualTransformation = visualTransformation,
+                innerTextField = innerTextField,
+                placeholder = placeholder,
+                label = label,
+                leadingIcon = leadingIcon,
+                trailingIcon = trailingIcon,
+                prefix = prefix,
+                suffix = suffix,
+                supportingText = supportingText,
+                singleLine = singleLine,
+                enabled = true,
+                isError = isError,
+                interactionSource = internalInteractionSource,
+                colors = colors,
+                container = {
+                    OutlinedTextFieldDefaults.Container(
+                        enabled = true,
+                        isError = isError,
+                        interactionSource = internalInteractionSource,
+                        colors = colors,
+                        shape = shape,
+                        focusedBorderThickness = 1.dp
+                    )
+                }
+            )
+        }
+    )
+}
+
+private fun getTextColor(colors: TextFieldColors, isError: Boolean): Color = when {
+    isError -> colors.errorTextColor
+    else -> colors.unfocusedTextColor
+}
+
 @CombinedThemePreviews
 @Composable
 private fun DefaultErrorTextFieldPreview() {
@@ -361,6 +637,73 @@ private fun OptionalTextFieldPreview() {
             optionalLabelText = "(Optional)",
             onValueChanged = {},
             keyboardType = KeyboardType.Text
+        )
+    }
+}
+
+@CombinedThemePreviews
+@Composable
+private fun ReadOnlyTextFieldWithCustomTrailingIconPreview() {
+    AndroidThemeForPreviews {
+        ReadOnlyTextInputField(
+            text = "kjnsadASDasjdasDASNDSAd",
+            label = "Recovery Key",
+            trailingIcon = {
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_copy),
+                    tint = AppTheme.colors.icon.primary,
+                    contentDescription = "Clear Text"
+                )
+            }
+        )
+    }
+}
+
+@CombinedThemePreviews
+@Composable
+private fun ReadOnlyTextFieldWithCustomTrailingIconAndPasswordModePreview() {
+    AndroidThemeForPreviews {
+        ReadOnlyTextInputField(
+            text = "kjnsadASDasjdasDASNDSAd",
+            label = "Recovery Key",
+            isPasswordMode = true,
+            showDefaultTrailingIcon = true
+        )
+    }
+}
+
+@CombinedThemePreviews
+@Composable
+private fun ReadOnlyTextFieldWithCloseIconPreview() {
+    AndroidThemeForPreviews {
+        ReadOnlyTextInputField(
+            text = "kjnsadASDasjdasDASNDSAd",
+            label = "Recovery Key",
+            showDefaultTrailingIcon = true
+        )
+    }
+}
+
+@CombinedThemePreviews
+@Composable
+private fun ReadOnlyTextFieldWithAnErrorTextPreview() {
+    AndroidThemeForPreviews {
+        ReadOnlyTextInputField(
+            text = "kjnsadASDasjdasDASNDSAd",
+            label = "Recovery Key",
+            errorText = "error"
+        )
+    }
+}
+
+@CombinedThemePreviews
+@Composable
+private fun ReadOnlyTextFieldWithASuccessTextPreview() {
+    AndroidThemeForPreviews {
+        ReadOnlyTextInputField(
+            text = "kjnsadASDasjdasDASNDSAd",
+            label = "Recovery Key",
+            successText = "success"
         )
     }
 }
