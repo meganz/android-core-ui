@@ -36,6 +36,7 @@ import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.ImeOptions
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -45,6 +46,11 @@ import androidx.compose.ui.unit.dp
 import androidx.core.text.isDigitsOnly
 import mega.android.core.ui.R
 import mega.android.core.ui.components.inputFieldHeight
+import mega.android.core.ui.components.spannedTextWithAnnotation
+import mega.android.core.ui.model.InputFieldLabelSpanStyle
+import mega.android.core.ui.model.MegaSpanStyle
+import mega.android.core.ui.model.SpanIndicator
+import mega.android.core.ui.model.SpanStyleWithAnnotation
 import mega.android.core.ui.preview.CombinedThemePreviews
 import mega.android.core.ui.theme.AndroidThemeForPreviews
 import mega.android.core.ui.theme.AppTheme
@@ -120,23 +126,47 @@ fun TextInputField(
     optionalLabelText: String? = null,
     onValueChanged: ((String) -> Unit)? = null,
     onFocusChanged: ((Boolean) -> Unit)? = null,
-) = BaseTextField(
-    modifier = modifier,
-    label = label,
-    keyboardType = keyboardType,
-    imeAction = imeAction,
-    capitalization = capitalization,
-    text = text,
-    successText = successText,
-    errorText = errorText,
-    inputTextAlign = inputTextAlign,
-    isPasswordMode = false,
-    showTrailingIcon = showTrailingIcon,
-    maxCharLimit = maxCharLimit,
-    optionalLabelText = optionalLabelText,
-    onValueChanged = onValueChanged,
-    onFocusChanged = onFocusChanged
-)
+) {
+    val spacing = LocalSpacing.current
+    BaseTextField(
+        modifier = modifier,
+        label = {
+            label?.let {
+                Row(
+                    modifier = Modifier
+                        .wrapContentWidth()
+                        .padding(bottom = spacing.x4)
+                ) {
+                    Text(
+                        text = label,
+                        style = AppTheme.typography.titleSmall,
+                        color = AppTheme.colors.text.primary
+                    )
+                    optionalLabelText?.let {
+                        Text(
+                            modifier = Modifier.padding(start = spacing.x8),
+                            text = optionalLabelText,
+                            style = AppTheme.typography.bodyMedium,
+                            color = AppTheme.colors.text.secondary
+                        )
+                    }
+                }
+            }
+        },
+        keyboardType = keyboardType,
+        imeAction = imeAction,
+        capitalization = capitalization,
+        text = text,
+        successText = successText,
+        errorText = errorText,
+        inputTextAlign = inputTextAlign,
+        isPasswordMode = false,
+        showTrailingIcon = showTrailingIcon,
+        maxCharLimit = maxCharLimit,
+        onValueChanged = onValueChanged,
+        onFocusChanged = onFocusChanged
+    )
+}
 
 /**
  * Password text input field with
@@ -159,7 +189,16 @@ fun PasswordTextInputField(
     onFocusChanged: ((Boolean) -> Unit)? = null,
 ) = BaseTextField(
     modifier = modifier,
-    label = label,
+    label = {
+        Text(
+            modifier = Modifier
+                .wrapContentWidth()
+                .padding(bottom = LocalSpacing.current.x4),
+            text = label,
+            style = AppTheme.typography.titleSmall,
+            color = AppTheme.colors.text.primary
+        )
+    },
     text = text,
     keyboardType = KeyboardType.Password,
     imeAction = imeAction,
@@ -174,10 +213,85 @@ fun PasswordTextInputField(
     onFocusChanged = onFocusChanged,
 )
 
+/**
+ * Text input field with annotated label.
+ *
+ * @param text The input text to be shown in the text field
+ * @param keyboardType The keyboard type to be used in this text field. Note that this input type
+ * is honored by keyboard and shows corresponding keyboard but this is not guaranteed. For example,
+ * some keyboards may send non-ASCII character even if you set [KeyboardType.Ascii].
+ * @param modifier The [Modifier] to be applied to this text field
+ * @param imeAction The IME action. This IME action is honored by keyboard and may show specific
+ * icons on the keyboard. For example, search icon may be shown if [ImeAction.Search] is specified.
+ * When [ImeOptions.singleLine] is false, the keyboard might show return key rather than the action
+ * requested here.
+ * @param capitalization informs the keyboard whether to automatically capitalize characters,
+ * words or sentences. Only applicable to only text based [KeyboardType]s such as
+ * [KeyboardType.Text], [KeyboardType.Ascii]. It will not be applied to [KeyboardType]s such as
+ * [KeyboardType.Number].
+ * @param spannedLabel The optional spanned label to be displayed inside the text field container.
+ * @param inputTextAlign The alignment of the text within the lines of the paragraph
+ * @param showTrailingIcon whether the component needs to display the default icons. Available default icons:
+ *  - Close icon when the text is not empty.
+ *  - Eye icon for password mode.
+ * @param successText The optional supporting text to be displayed below the text field
+ * @param errorText The optional error text to be displayed below the text field
+ * @param maxCharLimit The maximum character to be displayed in the text field.
+ * @param onValueChanged The callback that is triggered when the text is changed. In this component,
+ *   this callback will be called when the user clear all the text by clicking the close icon.
+ * @param onFocusChanged The callback that is triggered when the focus state of this text field changes.
+ */
+@Composable
+fun AnnotatedLabelTextInputField(
+    text: String,
+    keyboardType: KeyboardType,
+    modifier: Modifier = Modifier,
+    imeAction: ImeAction = ImeAction.Done,
+    capitalization: KeyboardCapitalization = KeyboardCapitalization.Words,
+    spannedLabel: InputFieldLabelSpanStyle? = null,
+    inputTextAlign: TextAlign = TextAlign.Unspecified,
+    showTrailingIcon: Boolean = true,
+    successText: String? = null,
+    errorText: String? = null,
+    maxCharLimit: Int = Int.MAX_VALUE,
+    onValueChanged: ((String) -> Unit)? = null,
+    onFocusChanged: ((Boolean) -> Unit)? = null,
+) {
+    BaseTextField(
+        modifier = modifier,
+        label = {
+            spannedLabel?.let {
+                val annotatedLabelString = spannedTextWithAnnotation(
+                    it.value,
+                    it.spanStyles
+                )
+                Text(
+                    modifier = Modifier.padding(bottom = LocalSpacing.current.x4),
+                    text = annotatedLabelString,
+                    style = it.baseStyle.copy(
+                        color = AppTheme.textColor(textColor = it.baseTextColor)
+                    )
+                )
+            }
+        },
+        keyboardType = keyboardType,
+        imeAction = imeAction,
+        capitalization = capitalization,
+        text = text,
+        successText = successText,
+        errorText = errorText,
+        inputTextAlign = inputTextAlign,
+        isPasswordMode = false,
+        showTrailingIcon = showTrailingIcon,
+        maxCharLimit = maxCharLimit,
+        onValueChanged = onValueChanged,
+        onFocusChanged = onFocusChanged
+    )
+}
+
 @Composable
 private fun BaseTextField(
     modifier: Modifier,
-    label: String?,
     text: String,
     isPasswordMode: Boolean,
     showTrailingIcon: Boolean,
@@ -188,7 +302,7 @@ private fun BaseTextField(
     errorText: String?,
     inputTextAlign: TextAlign,
     maxCharLimit: Int = Int.MAX_VALUE,
-    optionalLabelText: String? = null,
+    label: @Composable (() -> Unit)? = null,
     onValueChanged: ((String) -> Unit)? = null,
     onFocusChanged: ((Boolean) -> Unit)? = null,
 ) {
@@ -231,27 +345,7 @@ private fun BaseTextField(
         modifier = modifier
             .fillMaxWidth()
     ) {
-        label?.let {
-            Row(
-                modifier = Modifier
-                    .wrapContentWidth()
-                    .padding(bottom = spacing.x4)
-            ) {
-                Text(
-                    text = label,
-                    style = AppTheme.typography.titleSmall,
-                    color = AppTheme.colors.text.primary
-                )
-                optionalLabelText?.let {
-                    Text(
-                        modifier = Modifier.padding(start = spacing.x8),
-                        text = optionalLabelText,
-                        style = AppTheme.typography.bodyMedium,
-                        color = AppTheme.colors.text.secondary
-                    )
-                }
-            }
-        }
+        label?.invoke()
 
         OutlinedTextField(
             modifier = Modifier
@@ -703,6 +797,84 @@ private fun ReadOnlyTextFieldWithASuccessTextPreview() {
         ReadOnlyTextInputField(
             text = "kjnsadASDasjdasDASNDSAd",
             label = "Recovery Key",
+            successText = "success"
+        )
+    }
+}
+
+@CombinedThemePreviews
+@Composable
+private fun AnnotatedLabelTextInputFieldPreview() {
+    AndroidThemeForPreviews {
+        AnnotatedLabelTextInputField(
+            text = "Annotated label",
+            keyboardType = KeyboardType.Text,
+            spannedLabel = InputFieldLabelSpanStyle(
+                value = "Annotated [A](Optional)[/A]",
+                spanStyles = mapOf(
+                    SpanIndicator('A') to SpanStyleWithAnnotation(
+                        megaSpanStyle = MegaSpanStyle.TextColorStyle(
+                            spanStyle = AppTheme.typography.bodyMedium.toSpanStyle(),
+                            textColor = TextColor.Secondary
+                        ),
+                        annotation = null
+                    )
+                ),
+                baseStyle = AppTheme.typography.titleSmall,
+                baseTextColor = TextColor.Primary
+            ),
+            showTrailingIcon = true
+        )
+    }
+}
+
+@CombinedThemePreviews
+@Composable
+private fun AnnotatedLabelTextInputFieldWithAnErrorTextPreview() {
+    AndroidThemeForPreviews {
+        AnnotatedLabelTextInputField(
+            text = "Annotated label",
+            keyboardType = KeyboardType.Text,
+            spannedLabel = InputFieldLabelSpanStyle(
+                value = "Annotated [A](Optional)[/A]",
+                spanStyles = mapOf(
+                    SpanIndicator('A') to SpanStyleWithAnnotation(
+                        megaSpanStyle = MegaSpanStyle.TextColorStyle(
+                            spanStyle = AppTheme.typography.bodyMedium.toSpanStyle(),
+                            textColor = TextColor.Secondary
+                        ),
+                        annotation = null
+                    )
+                ),
+                baseStyle = AppTheme.typography.titleSmall,
+                baseTextColor = TextColor.Primary
+            ),
+            errorText = "error"
+        )
+    }
+}
+
+@CombinedThemePreviews
+@Composable
+private fun AnnotatedLabelTextInputFieldWithASuccessTextPreview() {
+    AndroidThemeForPreviews {
+        AnnotatedLabelTextInputField(
+            text = "Annotated label",
+            keyboardType = KeyboardType.Text,
+            spannedLabel = InputFieldLabelSpanStyle(
+                value = "Annotated [A](Optional)[/A]",
+                spanStyles = mapOf(
+                    SpanIndicator('A') to SpanStyleWithAnnotation(
+                        megaSpanStyle = MegaSpanStyle.TextColorStyle(
+                            spanStyle = AppTheme.typography.bodyMedium.toSpanStyle(),
+                            textColor = TextColor.Secondary
+                        ),
+                        annotation = null
+                    )
+                ),
+                baseStyle = AppTheme.typography.titleSmall,
+                baseTextColor = TextColor.Primary
+            ),
             successText = "success"
         )
     }

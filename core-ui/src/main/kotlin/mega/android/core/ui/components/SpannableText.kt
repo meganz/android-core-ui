@@ -59,7 +59,7 @@ fun LinkSpannedText(
 
 @OptIn(ExperimentalTextApi::class)
 @Composable
-private fun spannedTextWithAnnotation(
+internal fun spannedTextWithAnnotation(
     value: String,
     styles: Map<SpanIndicator, SpanStyleWithAnnotation>,
 ) =

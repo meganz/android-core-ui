@@ -21,14 +21,21 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.ImeOptions
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
+import mega.android.core.ui.components.spannedTextWithAnnotation
+import mega.android.core.ui.model.InputFieldLabelSpanStyle
+import mega.android.core.ui.model.MegaSpanStyle
+import mega.android.core.ui.model.SpanIndicator
+import mega.android.core.ui.model.SpanStyleWithAnnotation
 import mega.android.core.ui.preview.CombinedThemePreviews
 import mega.android.core.ui.theme.AndroidThemeForPreviews
 import mega.android.core.ui.theme.AppTheme
 import mega.android.core.ui.theme.spacing.LocalSpacing
+import mega.android.core.ui.theme.values.TextColor
 
 private val inputBoxHeight = 142.dp
 
@@ -45,6 +52,110 @@ fun TextInputBox(
     text: String = "",
     maxCharLimit: Int = Int.MAX_VALUE,
     optionalLabelText: String? = null,
+    onValueChanged: ((String) -> Unit)? = null,
+    onFocusChanged: ((Boolean) -> Unit)? = null,
+) {
+    BaseTextInputBox(
+        modifier = modifier,
+        label = {
+            Row(modifier = Modifier.wrapContentWidth()) {
+                Text(
+                    text = label,
+                    style = AppTheme.typography.titleSmall,
+                    color = AppTheme.colors.text.primary
+                )
+                optionalLabelText?.let {
+                    Text(
+                        modifier = Modifier.padding(start = LocalSpacing.current.x8),
+                        text = optionalLabelText,
+                        style = AppTheme.typography.bodyMedium,
+                        color = AppTheme.colors.text.secondary
+                    )
+                }
+            }
+        },
+        keyboardType = keyboardType,
+        imeAction = imeAction,
+        capitalization = capitalization,
+        text = text,
+        maxCharLimit = maxCharLimit,
+        onValueChanged = onValueChanged,
+        onFocusChanged = onFocusChanged
+    )
+}
+
+/**
+ * Text input box with annotated label.
+ *
+ * @param text The input text to be shown in the text box
+ * @param keyboardType The keyboard type to be used in this text box. Note that this input type
+ * is honored by keyboard and shows corresponding keyboard but this is not guaranteed. For example,
+ * some keyboards may send non-ASCII character even if you set [KeyboardType.Ascii].
+ * @param modifier The [Modifier] to be applied to this text box
+ * @param imeAction The IME action. This IME action is honored by keyboard and may show specific
+ * icons on the keyboard. For example, search icon may be shown if [ImeAction.Search] is specified.
+ * When [ImeOptions.singleLine] is false, the keyboard might show return key rather than the action
+ * requested here.
+ * @param capitalization informs the keyboard whether to automatically capitalize characters,
+ * words or sentences. Only applicable to only text based [KeyboardType]s such as
+ * [KeyboardType.Text], [KeyboardType.Ascii]. It will not be applied to [KeyboardType]s such as
+ * [KeyboardType.Number].
+ * @param maxCharLimit The maximum character to be displayed in the text box.
+ * @param spannedLabel The optional spanned label to be displayed inside the text box container.
+ * @param onValueChanged The callback that is triggered when the text is changed. In this component,
+ *   this callback will be called when the user clear all the text by clicking the close icon.
+ * @param onFocusChanged The callback that is triggered when the focus state of this text field changes.
+ */
+@Composable
+fun AnnotatedLabelTextInputBox(
+    text: String,
+    keyboardType: KeyboardType,
+    modifier: Modifier = Modifier,
+    imeAction: ImeAction = ImeAction.Done,
+    capitalization: KeyboardCapitalization = KeyboardCapitalization.Words,
+    maxCharLimit: Int = Int.MAX_VALUE,
+    spannedLabel: InputFieldLabelSpanStyle? = null,
+    onValueChanged: ((String) -> Unit)? = null,
+    onFocusChanged: ((Boolean) -> Unit)? = null,
+) {
+    BaseTextInputBox(
+        modifier = modifier,
+        text = text,
+        label = {
+            spannedLabel?.let {
+                val annotatedLabelString = spannedTextWithAnnotation(
+                    it.value,
+                    it.spanStyles
+                )
+                Text(
+                    text = annotatedLabelString,
+                    style = it.baseStyle.copy(
+                        color = AppTheme.textColor(textColor = it.baseTextColor)
+                    )
+                )
+            }
+        },
+        keyboardType = keyboardType,
+        imeAction = imeAction,
+        capitalization = capitalization,
+        maxCharLimit = maxCharLimit,
+        onValueChanged = onValueChanged,
+        onFocusChanged = onFocusChanged
+    )
+}
+
+/**
+ * Text input box
+ */
+@Composable
+private fun BaseTextInputBox(
+    modifier: Modifier = Modifier,
+    keyboardType: KeyboardType,
+    imeAction: ImeAction = ImeAction.Done,
+    capitalization: KeyboardCapitalization = KeyboardCapitalization.Words,
+    text: String = "",
+    maxCharLimit: Int = Int.MAX_VALUE,
+    label: @Composable (() -> Unit)? = null,
     onValueChanged: ((String) -> Unit)? = null,
     onFocusChanged: ((Boolean) -> Unit)? = null,
 ) {
@@ -79,21 +190,7 @@ fun TextInputBox(
         modifier = modifier
             .fillMaxWidth()
     ) {
-        Row(modifier = Modifier.wrapContentWidth()){
-            Text(
-                text = label,
-                style = AppTheme.typography.titleSmall,
-                color = AppTheme.colors.text.primary
-            )
-            optionalLabelText?.let {
-                Text(
-                    modifier = Modifier.padding(start = spacing.x8),
-                    text = optionalLabelText,
-                    style = AppTheme.typography.bodyMedium,
-                    color = AppTheme.colors.text.secondary
-                )
-            }
-        }
+        label?.invoke()
 
         OutlinedTextField(
             modifier = Modifier
@@ -127,7 +224,6 @@ fun TextInputBox(
     }
 }
 
-
 @CombinedThemePreviews
 @Composable
 private fun TextInputBoxPreview() {
@@ -159,6 +255,51 @@ private fun OptionalTextInputBoxPreview() {
     }
 }
 
+@CombinedThemePreviews
+@Composable
+private fun AnnotatedLabelTextInputBoxPreview() {
+    AndroidThemeForPreviews {
+        AnnotatedLabelTextInputBox(
+            text = "Annotated label",
+            keyboardType = KeyboardType.Text,
+            imeAction = ImeAction.Done,
+            capitalization = KeyboardCapitalization.None,
+            spannedLabel = InputFieldLabelSpanStyle(
+                value = "Annotated",
+                spanStyles = mapOf(),
+                baseStyle = AppTheme.typography.titleSmall,
+                baseTextColor = TextColor.Primary
+            ),
+            onValueChanged = {}
+        )
+    }
+}
 
-
-
+@CombinedThemePreviews
+@Composable
+private fun OptionalAnnotatedLabelTextInputBoxPreview() {
+    AndroidThemeForPreviews {
+        AnnotatedLabelTextInputBox(
+            text = "Annotated label",
+            keyboardType = KeyboardType.Text,
+            modifier = Modifier,
+            imeAction = ImeAction.Done,
+            capitalization = KeyboardCapitalization.None,
+            spannedLabel = InputFieldLabelSpanStyle(
+                value = "Annotated [A](Optional)[/A]",
+                spanStyles = mapOf(
+                    SpanIndicator('A') to SpanStyleWithAnnotation(
+                        megaSpanStyle = MegaSpanStyle.TextColorStyle(
+                            spanStyle = AppTheme.typography.bodyMedium.toSpanStyle(),
+                            textColor = TextColor.Secondary
+                        ),
+                        annotation = null
+                    )
+                ),
+                baseStyle = AppTheme.typography.titleSmall,
+                baseTextColor = TextColor.Primary
+            ),
+            onValueChanged = {}
+        )
+    }
+}
