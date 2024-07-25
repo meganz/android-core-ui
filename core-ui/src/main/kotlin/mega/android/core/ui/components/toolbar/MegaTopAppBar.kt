@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
@@ -65,6 +66,7 @@ fun TransparentNavigationBar(
     navigationIcon: Painter? = null,
     trailingIcons: @Composable RowScope.() -> Unit = {},
     onNavigationIconClicked: () -> Unit = {},
+    backgroundAlpha: Float = 0f
 ) {
     DefaultTopAppBar(
         modifier = modifier.statusBarsPadding(),
@@ -82,8 +84,8 @@ fun TransparentNavigationBar(
         },
         actions = trailingIcons,
         colors = TopAppBarDefaults.topAppBarColors(
-            containerColor = Color.Transparent,
-            scrolledContainerColor = Color.Transparent,
+            containerColor = AppTheme.colors.background.pageBackground.copy(alpha = backgroundAlpha),
+            scrolledContainerColor = AppTheme.colors.background.pageBackground.copy(alpha = backgroundAlpha),
             navigationIconContentColor = AppTheme.colors.icon.primary,
             titleContentColor = AppTheme.colors.text.primary,
             actionIconContentColor = AppTheme.colors.icon.primary
@@ -101,7 +103,7 @@ private fun DefaultTopAppBar(
     colors: TopAppBarColors? = null
 ) {
     TopAppBar(
-        modifier = modifier,
+        modifier = modifier.navigationBarsPadding(),
         windowInsets = WindowInsets(top = 0.dp, bottom = 0.dp),
         title = {
             Text(
