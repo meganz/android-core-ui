@@ -4,7 +4,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
@@ -61,7 +60,7 @@ fun MegaTopAppBar(
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
-fun TransparentNavigationBar(
+fun TransparentTopBar(
     modifier: Modifier = Modifier,
     navigationIcon: Painter? = null,
     trailingIcons: @Composable RowScope.() -> Unit = {},
@@ -69,7 +68,9 @@ fun TransparentNavigationBar(
     backgroundAlpha: Float = 0f
 ) {
     DefaultTopAppBar(
-        modifier = modifier.statusBarsPadding(),
+        modifier = modifier
+            .background(AppTheme.colors.background.pageBackground.copy(alpha = backgroundAlpha))
+            .statusBarsPadding(),
         title = "",
         navigationIcon = {
             navigationIcon?.let {
@@ -84,8 +85,8 @@ fun TransparentNavigationBar(
         },
         actions = trailingIcons,
         colors = TopAppBarDefaults.topAppBarColors(
-            containerColor = AppTheme.colors.background.pageBackground.copy(alpha = backgroundAlpha),
-            scrolledContainerColor = AppTheme.colors.background.pageBackground.copy(alpha = backgroundAlpha),
+            containerColor = Color.Transparent,
+            scrolledContainerColor = Color.Transparent,
             navigationIconContentColor = AppTheme.colors.icon.primary,
             titleContentColor = AppTheme.colors.text.primary,
             actionIconContentColor = AppTheme.colors.icon.primary
@@ -103,7 +104,7 @@ private fun DefaultTopAppBar(
     colors: TopAppBarColors? = null
 ) {
     TopAppBar(
-        modifier = modifier.navigationBarsPadding(),
+        modifier = modifier,
         windowInsets = WindowInsets(top = 0.dp, bottom = 0.dp),
         title = {
             Text(
@@ -148,7 +149,7 @@ private fun MegaTopAppBarPreview() {
 private fun MegaTransparentTopAppBarPreview() {
     AndroidThemeForPreviews {
         Box(modifier = Modifier.background(color = Color.Red)) {
-            TransparentNavigationBar(
+            TransparentTopBar(
                 navigationIcon = painterResource(id = R.drawable.ic_arrow_left),
                 trailingIcons = {
                     SecondarySmallIconButton(

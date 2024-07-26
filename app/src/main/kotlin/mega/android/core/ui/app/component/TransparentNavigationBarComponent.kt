@@ -16,7 +16,7 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import mega.android.core.ui.components.button.SecondarySmallIconButton
 import mega.android.core.ui.components.text.SecondaryTopNavigationButton
-import mega.android.core.ui.components.toolbar.TransparentNavigationBar
+import mega.android.core.ui.components.toolbar.TransparentTopBar
 import mega.android.core.ui.theme.spacing.LocalSpacing
 
 @Composable
@@ -33,7 +33,7 @@ fun TransparentNavigationComponentCatalog() {
             contentDescription = "Transparent Navigation Bar Background Image",
             contentScale = ContentScale.Crop,
         )
-        TransparentNavigationBar(
+        TransparentTopBar(
             navigationIcon = painterResource(id = mega.android.core.ui.R.drawable.ic_action_back),
             trailingIcons = {
                 SecondaryTopNavigationButton(
