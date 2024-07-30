@@ -434,8 +434,7 @@ private fun BaseTextField(
             !successText.isNullOrBlank() -> {
                 HelpTextSuccess(
                     modifier = footerModifier,
-                    text = successText,
-                    textColor = TextColor.Primary
+                    text = successText
                 )
             }
 
