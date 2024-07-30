@@ -530,8 +530,9 @@ private fun ModalBottomSheetScaffold(
 
     ModalBottomSheet(
         modifier = modifier,
-        windowInsets = windowsInsets
-            ?: BottomSheetDefaults.windowInsets.only(WindowInsetsSides.Bottom),
+        contentWindowInsets = {
+            windowsInsets ?: BottomSheetDefaults.windowInsets.only(WindowInsetsSides.Bottom)
+        },
         onDismissRequest = onDismissRequest,
         sheetState = sheetState,
         containerColor = AppTheme.colors.background.pageBackground,

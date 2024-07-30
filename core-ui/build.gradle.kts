@@ -79,6 +79,7 @@ megaPublish {
 
 dependencies {
     implementation(libs.androidx.material3.window)
+    implementation(libs.material3)
     implementation(libs.mega.core.ui.tokens)
     implementation(platform(libs.compose.bom))
     implementation(libs.bundles.compose.bom)
