@@ -7,9 +7,9 @@ import androidx.compose.foundation.interaction.collectIsFocusedAsState
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.ripple
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -49,7 +49,7 @@ fun DialogButton(
                 if (enabled) {
                     Modifier.clickable(
                         interactionSource = mutableInteractionSource,
-                        indication = ripple(
+                        indication = rememberRipple(
                             bounded = false,
                             radius = componentWidth / 2,
                             color = pressedBackgroundColor
