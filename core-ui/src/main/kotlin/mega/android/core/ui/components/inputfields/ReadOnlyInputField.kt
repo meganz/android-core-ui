@@ -147,7 +147,10 @@ fun ReadOnlyPasswordInputFieldItem(
 ) {
     val spacing = LocalSpacing.current
     var showPassword by rememberSaveable { mutableStateOf(false) }
-    val annotatedString = getAnnotatedString(text = text)
+    val annotatedString = getAnnotatedString(
+        text = text.toList().joinToString(" "),
+        changeSpaceStyle = true
+    )
     val visualTransformation =
         if (showPassword) ColorsTransformation(annotatedString) else PasswordVisualTransformation()
     val transformedText = remember(text, visualTransformation) {
