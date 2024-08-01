@@ -29,6 +29,7 @@ import mega.android.core.ui.theme.devicetype.LocalDeviceType
 import mega.android.core.ui.theme.shape.shapes
 import mega.android.core.ui.theme.spacing.Dimensions
 import mega.android.core.ui.theme.spacing.LocalSpacing
+import mega.android.core.ui.theme.values.ComponentsColor
 import mega.android.core.ui.theme.values.IconColor
 import mega.android.core.ui.theme.values.LinkColor
 import mega.android.core.ui.theme.values.SupportColor
@@ -163,6 +164,10 @@ object AppTheme {
     @Composable
     internal fun linkColor(linkColor: LinkColor) =
         linkColor.getLinkColor(LocalColorPalette.current.link)
+
+    @Composable
+    internal fun componentsColor(componentsColor: ComponentsColor) =
+        componentsColor.getComponentsColor(LocalColorPalette.current.components)
 
     val typography: Typography
         @Composable

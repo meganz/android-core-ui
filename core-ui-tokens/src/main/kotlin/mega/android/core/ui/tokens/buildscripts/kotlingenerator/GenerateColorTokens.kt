@@ -24,7 +24,7 @@ class GenerateColorTokens {
         packageNameForEnumValues = DEFAULT_PACKAGE_FOR_TOKENS_ENUM_VALUES,
         themePrefix = "AndroidNew",
         jsonGroupNameForCoreColorTokens = "Core/Main",
-        groupsToExpose = listOf("Text", "Icon", "Support", "Link"),
+        groupsToExpose = listOf("Text", "Icon", "Support", "Link", "Components"),
         includeSemanticTokensInterface = true,
         internalSemanticTokens = false,
     )
