@@ -9,12 +9,14 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.text.selection.LocalTextSelectionColors
 import androidx.compose.foundation.text.selection.TextSelectionColors
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.OutlinedTextFieldDefaults.Container
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -24,7 +26,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
-import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
@@ -58,15 +59,15 @@ fun SearchInputField(
     val interactionSource: MutableInteractionSource = remember { MutableInteractionSource() }
     var baseText by remember(text) { mutableStateOf(text) }
     var isFocused by remember { mutableStateOf(false) }
-
+    val primaryTextSelectionColors = TextSelectionColors(
+        handleColor = AppTheme.colors.text.primary,
+        backgroundColor = AppTheme.colors.text.primary.copy(alpha = 0.4f),
+    )
     val colors = OutlinedTextFieldDefaults.colors(
         focusedTextColor = AppTheme.colors.text.primary,
         unfocusedTextColor = AppTheme.colors.text.primary,
         cursorColor = AppTheme.colors.text.primary,
-        selectionColors = TextSelectionColors(
-            handleColor = AppTheme.colors.text.primary,
-            backgroundColor = AppTheme.colors.text.primary.copy(alpha = 0.4f),
-        ),
+        errorCursorColor = AppTheme.colors.text.primary,
         focusedBorderColor = AppTheme.colors.border.strongSelected,
         unfocusedBorderColor = AppTheme.colors.border.strong,
         errorBorderColor = AppTheme.colors.support.error,
@@ -78,85 +79,88 @@ fun SearchInputField(
         disabledBorderColor = AppTheme.colors.border.disabled,
     )
 
-    BasicTextField(
-        modifier = modifier
-            .fillMaxWidth()
-            .height(40.dp)
-            .onFocusChanged {
-                isFocused = it.isFocused
-                onFocusChanged?.invoke(it.isFocused)
-            },
-        value = baseText,
-        onValueChange = {
-            baseText = it
-            onValueChanged?.invoke(it)
-        },
-        cursorBrush = SolidColor(AppTheme.colors.text.primary),
-        enabled = enabled,
-        textStyle = AppTheme.typography.bodyLarge.copy(
-            // Basic text field requires a color to be set on the text style
-            color = AppTheme.colors.text.primary
-        ),
-        interactionSource = interactionSource,
-        keyboardOptions = KeyboardOptions(
-            capitalization = capitalization,
-            autoCorrectEnabled = autoCorrect,
-            keyboardType = KeyboardType.Text,
-            imeAction = imeAction
-        ),
-        keyboardActions = KeyboardActions {
-            onKeyboardAction?.invoke()
-        },
-    ) { innerTextField ->
-        OutlinedTextFieldDefaults.DecorationBox(
+    CompositionLocalProvider(
+        LocalTextSelectionColors provides primaryTextSelectionColors
+    ) {
+        BasicTextField(
+            modifier = modifier
+                .fillMaxWidth()
+                .height(40.dp)
+                .onFocusChanged {
+                    isFocused = it.isFocused
+                    onFocusChanged?.invoke(it.isFocused)
+                },
             value = baseText,
-            innerTextField = innerTextField,
-            enabled = enabled,
-            singleLine = true,
-            visualTransformation = VisualTransformation.None,
-            placeholder = {
-                MegaText(
-                    text = placeHolderText,
-                    style = AppTheme.typography.bodyLarge,
-                    textColor = TextColor.Placeholder
-                )
+            onValueChange = {
+                baseText = it
+                onValueChanged?.invoke(it)
             },
-            colors = colors,
+            enabled = enabled,
+            textStyle = AppTheme.typography.bodyLarge.copy(
+                // Basic text field requires a color to be set on the text style
+                color = AppTheme.colors.text.primary
+            ),
             interactionSource = interactionSource,
-            contentPadding = PaddingValues(8.dp),
-            trailingIcon = {
-                if (baseText.isNotEmpty()) {
+            keyboardOptions = KeyboardOptions(
+                capitalization = capitalization,
+                autoCorrectEnabled = autoCorrect,
+                keyboardType = KeyboardType.Text,
+                imeAction = imeAction
+            ),
+            keyboardActions = KeyboardActions {
+                onKeyboardAction?.invoke()
+            },
+        ) { innerTextField ->
+            OutlinedTextFieldDefaults.DecorationBox(
+                value = baseText,
+                innerTextField = innerTextField,
+                enabled = enabled,
+                singleLine = true,
+                visualTransformation = VisualTransformation.None,
+                placeholder = {
+                    MegaText(
+                        text = placeHolderText,
+                        style = AppTheme.typography.bodyLarge,
+                        textColor = TextColor.Placeholder
+                    )
+                },
+                colors = colors,
+                interactionSource = interactionSource,
+                contentPadding = PaddingValues(8.dp),
+                trailingIcon = {
+                    if (baseText.isNotEmpty()) {
+                        Icon(
+                            modifier = Modifier
+                                .clickable {
+                                    baseText = ""
+                                    onValueChanged?.invoke(baseText)
+                                }
+                                .padding(end = spacing.x12),
+                            painter = painterResource(id = R.drawable.ic_x_thin),
+                            tint = AppTheme.colors.icon.primary,
+                            contentDescription = "Clear Text")
+                    }
+                },
+                leadingIcon = {
                     Icon(
                         modifier = Modifier
-                            .clickable {
-                                baseText = ""
-                                onValueChanged?.invoke(baseText)
-                            }
-                            .padding(end = spacing.x12),
-                        painter = painterResource(id = R.drawable.ic_x_thin),
-                        tint = AppTheme.colors.icon.primary,
-                        contentDescription = "Clear Text")
+                            .padding(start = spacing.x12, end = spacing.x16),
+                        painter = painterResource(id = R.drawable.ic_search_large),
+                        tint = AppTheme.colors.icon.secondary,
+                        contentDescription = "Search"
+                    )
+                },
+                container = {
+                    Container(
+                        enabled = enabled,
+                        isError = isError,
+                        interactionSource = interactionSource,
+                        colors = colors,
+                        shape = AppTheme.shapes.small,
+                    )
                 }
-            },
-            leadingIcon = {
-                Icon(
-                    modifier = Modifier
-                        .padding(start = spacing.x12, end = spacing.x16),
-                    painter = painterResource(id = R.drawable.ic_search_large),
-                    tint = AppTheme.colors.icon.secondary,
-                    contentDescription = "Search"
-                )
-            },
-            container = {
-                Container(
-                    enabled = enabled,
-                    isError = isError,
-                    interactionSource = interactionSource,
-                    colors = colors,
-                    shape = AppTheme.shapes.small,
-                )
-            }
-        )
+            )
+        }
     }
 }
 
