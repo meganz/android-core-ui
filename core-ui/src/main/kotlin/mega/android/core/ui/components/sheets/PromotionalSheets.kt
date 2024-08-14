@@ -9,13 +9,13 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.asPaddingValues
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.navigationBars
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -29,19 +29,16 @@ import androidx.compose.material3.SheetState
 import androidx.compose.material3.SheetValue
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
@@ -110,12 +107,8 @@ fun PromotionalImageSheet(
         )
     }
     val scrollState = rememberScrollState()
-    var isScrollable by rememberSaveable { mutableStateOf(false) }
-    val configuration = LocalConfiguration.current
-    val screenHeightDp = configuration.screenHeightDp.dp
-
-    LaunchedEffect(scrollState) {
-        isScrollable = scrollState.canScrollForward
+    val isScrollable by remember {
+        derivedStateOf { scrollState.canScrollForward || scrollState.canScrollBackward }
     }
 
     ModalBottomSheetScaffold(
@@ -127,9 +120,7 @@ fun PromotionalImageSheet(
     ) {
         ConstraintLayout(
             modifier = Modifier
-                .fillMaxWidth()
-                .heightIn(max = screenHeightDp - TOP_PADDING_OF_SHEET_CONTENT)
-                .wrapContentHeight()
+                .fillMaxSize()
         ) {
             val (toolbar, content, buttonContainer) = createRefs()
 
@@ -155,12 +146,16 @@ fun PromotionalImageSheet(
                     .constrainAs(content) {
                         height = Dimension.preferredWrapContent
                         width = Dimension.fillToConstraints
-                        top.linkTo(toolbar.bottom, margin = spacing.x16)
+                        linkTo(
+                            top = toolbar.bottom,
+                            bottom = buttonContainer.top,
+                            topMargin = spacing.x16,
+                            bias = 0f
+                        )
                         start.linkTo(parent.start)
                         end.linkTo(parent.end)
-                        bottom.linkTo(buttonContainer.top)
                     }
-                    .verticalScroll(scrollState, enabled = true)
+                    .verticalScroll(scrollState)
             ) {
                 PromotionalImage(
                     modifier = Modifier
@@ -233,12 +228,8 @@ fun PromotionalFullImageSheet(
         )
     }
     val scrollState = rememberScrollState()
-    var isScrollable by rememberSaveable { mutableStateOf(false) }
-    val configuration = LocalConfiguration.current
-    val screenHeightDp = configuration.screenHeightDp.dp
-
-    LaunchedEffect(scrollState) {
-        isScrollable = scrollState.canScrollForward
+    val isScrollable by remember {
+        derivedStateOf { scrollState.canScrollForward || scrollState.canScrollBackward }
     }
 
     ModalBottomSheetScaffold(
@@ -250,9 +241,7 @@ fun PromotionalFullImageSheet(
     ) {
         ConstraintLayout(
             modifier = Modifier
-                .fillMaxWidth()
-                .heightIn(max = screenHeightDp - TOP_PADDING_OF_SHEET_CONTENT)
-                .wrapContentHeight()
+                .fillMaxSize()
         ) {
             val (closeButton, content, buttonContainer) = createRefs()
 
@@ -372,12 +361,8 @@ fun PromotionalIllustrationSheet(
         )
     }
     val scrollState = rememberScrollState()
-    var isScrollable by rememberSaveable { mutableStateOf(false) }
-    val configuration = LocalConfiguration.current
-    val screenHeightDp = configuration.screenHeightDp.dp
-
-    LaunchedEffect(scrollState) {
-        isScrollable = scrollState.canScrollForward
+    val isScrollable by remember {
+        derivedStateOf { scrollState.canScrollForward || scrollState.canScrollBackward }
     }
 
     ModalBottomSheetScaffold(
@@ -389,9 +374,7 @@ fun PromotionalIllustrationSheet(
     ) {
         ConstraintLayout(
             modifier = Modifier
-                .fillMaxWidth()
-                .heightIn(max = screenHeightDp - TOP_PADDING_OF_SHEET_CONTENT)
-                .wrapContentHeight()
+                .fillMaxSize()
         ) {
             val (toolbar, content, buttonContainer) = createRefs()
 
@@ -553,6 +536,7 @@ private fun SheetActions(
 
     Column(
         modifier = modifier
+            .navigationBarsPadding()
             .then(
                 if (isDividerVisible) {
                     modifier.drawBehind {
@@ -568,8 +552,9 @@ private fun SheetActions(
                 }
             )
             .padding(
-                vertical = LocalSpacing.current.x24,
-                horizontal = LocalSpacing.current.x16,
+                top = LocalSpacing.current.x24,
+                start = LocalSpacing.current.x16,
+                end = LocalSpacing.current.x16,
             )
     ) {
         if (primaryButton != null) {
