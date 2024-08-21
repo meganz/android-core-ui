@@ -134,7 +134,7 @@ private fun PromotionalImageDialogComponent(
     onDismissRequest: () -> Unit
 ) {
     PromotionalImageDialog(
-        imageUrl = "https:images.unsplash.com/photo-1579353977828-2a4eab540b9a?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8c2FtcGxlfGVufDB8fDB8fHww",
+        image = "https:images.unsplash.com/photo-1579353977828-2a4eab540b9a?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8c2FtcGxlfGVufDB8fDB8fHww",
         title = "Title",
         headline = "Headline",
         description = "Description",
@@ -153,7 +153,7 @@ private fun PromotionalFullImageDialogComponent(
     onDismissRequest: () -> Unit
 ) {
     PromotionalFullImageDialog(
-        imageUrl = "https:images.unsplash.com/photo-1579353977828-2a4eab540b9a?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8c2FtcGxlfGVufDB8fDB8fHww",
+        image = "https:images.unsplash.com/photo-1579353977828-2a4eab540b9a?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8c2FtcGxlfGVufDB8fDB8fHww",
         title = "Title",
         headline = "Headline",
         description = "I’m just an intro title, I don’t have any meaningful content at the moment. I’ll get there",

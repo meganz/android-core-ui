@@ -37,7 +37,7 @@ data class PromotionalListAttributes(
 
 @Composable
 internal fun PromotionalImage(
-    imageUrl: String,
+    image: Any?,
     description: String,
     modifier: Modifier = Modifier
 ) {
@@ -47,7 +47,7 @@ internal fun PromotionalImage(
             .clip(AppTheme.shapes.small)
             .background(AppTheme.colors.background.surface1),
         model = ImageRequest.Builder(LocalContext.current)
-            .data(imageUrl)
+            .data(image)
             .crossfade(true)
             .build(),
         contentDescription = description,
@@ -55,10 +55,9 @@ internal fun PromotionalImage(
     )
 }
 
-
 @Composable
 internal fun PromotionalFullImage(
-    imageUrl: String,
+    image: Any?,
     description: String,
     modifier: Modifier = Modifier
 ) {
@@ -67,7 +66,7 @@ internal fun PromotionalFullImage(
             .aspectRatio(1.5f)
             .background(AppTheme.colors.background.surface1),
         model = ImageRequest.Builder(LocalContext.current)
-            .data(imageUrl)
+            .data(image)
             .crossfade(true)
             .build(),
         contentDescription = description,

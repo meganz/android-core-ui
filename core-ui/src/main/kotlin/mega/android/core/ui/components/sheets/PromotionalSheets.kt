@@ -82,7 +82,7 @@ private val TOP_PADDING_OF_SHEET_CONTENT = 52.dp
 @Composable
 fun PromotionalImageSheet(
     modifier: Modifier = Modifier,
-    imageUrl: String,
+    image: Any?,
     title: String,
     headline: String,
     description: String? = null,
@@ -161,7 +161,7 @@ fun PromotionalImageSheet(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(horizontal = spacing.x16),
-                    imageUrl = imageUrl,
+                    image = image,
                     description = title
                 )
 
@@ -203,7 +203,7 @@ fun PromotionalImageSheet(
 @Composable
 fun PromotionalFullImageSheet(
     modifier: Modifier = Modifier,
-    imageUrl: String,
+    image: Any?,
     title: String,
     headline: String,
     description: String? = null,
@@ -264,7 +264,7 @@ fun PromotionalFullImageSheet(
                     modifier = Modifier
                         .fillMaxWidth()
                         .clip(RoundedCornerShape(topStart = 24.dp, topEnd = 24.dp)),
-                    imageUrl = imageUrl,
+                    image = image,
                     description = title
                 )
 
@@ -601,7 +601,7 @@ private fun PreviewPromotionalPlainSheet() {
 private fun PreviewPromotionalFullImageSheetWithList() {
     AndroidThemeForPreviews {
         PromotionalFullImageSheet(
-            imageUrl = "",
+            image = "",
             title = "Title",
             headline = "Headline",
             primaryButton = "Button" to {},
@@ -618,7 +618,7 @@ private fun PreviewPromotionalFullImageSheetWithList() {
 private fun PreviewPromotionalImageSheetWithList() {
     AndroidThemeForPreviews {
         PromotionalImageSheet(
-            imageUrl = "",
+            image = "",
             title = "Title",
             headline = "Headline",
             primaryButton = "Button" to {},

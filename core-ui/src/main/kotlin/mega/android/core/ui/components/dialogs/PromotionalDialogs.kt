@@ -69,7 +69,7 @@ private val DIALOG_MAXIMUM_HEIGHT = 600.dp
 @Composable
 fun PromotionalImageDialog(
     modifier: Modifier = Modifier,
-    imageUrl: String,
+    image: Any?,
     title: String,
     headline: String,
     description: String? = null,
@@ -111,7 +111,7 @@ fun PromotionalImageDialog(
                         .padding(horizontal = spacing.x16)
                         .widthIn(max = 328.dp)
                         .align(alignment = Alignment.CenterHorizontally),
-                    imageUrl = imageUrl,
+                    image = image,
                     description = title
                 )
 
@@ -145,7 +145,7 @@ fun PromotionalImageDialog(
 @Composable
 fun PromotionalFullImageDialog(
     modifier: Modifier = Modifier,
-    imageUrl: String,
+    image: Any?,
     title: String,
     headline: String,
     description: String? = null,
@@ -182,7 +182,7 @@ fun PromotionalFullImageDialog(
                         modifier = Modifier
                             .fillMaxWidth()
                             .clip(RoundedCornerShape(topStart = 8.dp, topEnd = 8.dp)),
-                        imageUrl = imageUrl,
+                        image = image,
                         description = title
                     )
 
@@ -430,7 +430,7 @@ private fun DialogActions(
 private fun PromotionalImageDialogComponent() {
     AndroidThemeForPreviews {
         PromotionalImageDialog(
-            imageUrl = "https:images.unsplash.com/photo-1579353977828-2a4eab540b9a?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8c2FtcGxlfGVufDB8fDB8fHww",
+            image = "https:images.unsplash.com/photo-1579353977828-2a4eab540b9a?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8c2FtcGxlfGVufDB8fDB8fHww",
             title = "Title",
             headline = "Headline",
             primaryButton = "Button" to {},
@@ -447,7 +447,7 @@ private fun PromotionalImageDialogComponent() {
 private fun PromotionalFullImageDialogComponent() {
     AndroidThemeForPreviews {
         PromotionalFullImageDialog(
-            imageUrl = "https:images.unsplash.com/photo-1579353977828-2a4eab540b9a?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8c2FtcGxlfGVufDB8fDB8fHww",
+            image = "https:images.unsplash.com/photo-1579353977828-2a4eab540b9a?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8c2FtcGxlfGVufDB8fDB8fHww",
             title = "Title",
             headline = "Headline",
             primaryButton = "Button" to {},
