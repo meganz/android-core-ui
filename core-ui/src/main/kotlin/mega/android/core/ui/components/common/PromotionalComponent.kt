@@ -1,7 +1,6 @@
 package mega.android.core.ui.components.common
 
 import androidx.annotation.DrawableRes
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -44,8 +43,7 @@ internal fun PromotionalImage(
     AsyncImage(
         modifier = modifier
             .aspectRatio(16f / 9f)
-            .clip(AppTheme.shapes.small)
-            .background(AppTheme.colors.background.surface1),
+            .clip(AppTheme.shapes.small),
         model = ImageRequest.Builder(LocalContext.current)
             .data(image)
             .crossfade(true)
@@ -63,8 +61,7 @@ internal fun PromotionalFullImage(
 ) {
     AsyncImage(
         modifier = modifier
-            .aspectRatio(1.5f)
-            .background(AppTheme.colors.background.surface1),
+            .aspectRatio(1.5f),
         model = ImageRequest.Builder(LocalContext.current)
             .data(image)
             .crossfade(true)
