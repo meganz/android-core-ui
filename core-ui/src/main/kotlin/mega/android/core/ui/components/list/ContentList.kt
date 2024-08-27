@@ -35,6 +35,7 @@ import mega.android.core.ui.preview.CombinedThemePreviews
 import mega.android.core.ui.theme.AndroidThemeForPreviews
 import mega.android.core.ui.theme.AppTheme
 import mega.android.core.ui.theme.spacing.LocalSpacing
+import mega.android.core.ui.theme.values.ComponentsColor
 import mega.android.core.ui.theme.values.IconColor
 import mega.android.core.ui.theme.values.LinkColor
 import mega.android.core.ui.theme.values.TextColor
@@ -104,6 +105,40 @@ fun IconContentListItem(
                     .align(Alignment.CenterVertically),
                 painter = painterResource(id = iconResId),
                 tint = iconTint
+            )
+        },
+        onClickListener = onClickListener
+    )
+}
+
+@Composable
+fun IconContentListItem(
+    @DrawableRes iconResId: Int,
+    title: String,
+    iconTint: ComponentsColor,
+    modifier: Modifier = Modifier,
+    subtitle: String? = null,
+    titleAnnotations: Map<SpanIndicator, SpanStyleWithAnnotation>? = null,
+    onTitleAnnotationClick: ((annotation: String) -> Unit)? = null,
+    subtitleAnnotations: Map<SpanIndicator, SpanStyleWithAnnotation>? = null,
+    onSubtitleAnnotationClick: ((annotation: String) -> Unit)? = null,
+    onClickListener: () -> Unit = {},
+) {
+    ContentListItem(
+        modifier = modifier,
+        title = title,
+        subtitle = subtitle,
+        titleAnnotations = titleAnnotations,
+        onTitleAnnotationClick = onTitleAnnotationClick,
+        subtitleAnnotations = subtitleAnnotations,
+        onSubtitleAnnotationClick = onSubtitleAnnotationClick,
+        leadingElement = {
+            MegaIcon(
+                modifier = Modifier
+                    .size(24.dp)
+                    .align(Alignment.CenterVertically),
+                painter = painterResource(id = iconResId),
+                componentsColorTint = iconTint
             )
         },
         onClickListener = onClickListener
@@ -271,6 +306,39 @@ private fun IconContentListItemPreview() {
                 .padding(16.dp),
             iconResId = android.R.drawable.ic_dialog_info,
             title = "This is a [A]title[/A]",
+            titleAnnotations = mapOf(
+                SpanIndicator('A') to SpanStyleWithAnnotation(
+                    MegaSpanStyle.LinkColorStyle(
+                        SpanStyle(),
+                        LinkColor.Primary
+                    ),
+                    "title",
+                )
+            ),
+            subtitle = "This is a [A]subtitle[/A]",
+            subtitleAnnotations = mapOf(
+                SpanIndicator('A') to SpanStyleWithAnnotation(
+                    MegaSpanStyle.LinkColorStyle(
+                        SpanStyle(),
+                        LinkColor.Primary
+                    ),
+                    "subtitle",
+                )
+            ),
+        )
+    }
+}
+
+@CombinedThemePreviews
+@Composable
+private fun ComponentColorIconContentListItemPreview() {
+    AndroidThemeForPreviews {
+        IconContentListItem(
+            modifier = Modifier
+                .padding(16.dp),
+            iconResId = android.R.drawable.ic_dialog_info,
+            title = "This is a [A]title[/A]",
+            iconTint = ComponentsColor.Interactive,
             titleAnnotations = mapOf(
                 SpanIndicator('A') to SpanStyleWithAnnotation(
                     MegaSpanStyle.LinkColorStyle(
