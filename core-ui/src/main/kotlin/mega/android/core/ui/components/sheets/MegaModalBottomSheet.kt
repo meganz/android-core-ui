@@ -31,7 +31,7 @@ fun MegaModalBottomSheet(
     modifier: Modifier = Modifier,
     windowInsets: WindowInsets? = null,
     dragHandle: @Composable (() -> Unit)? = null,
-    properties: ModalBottomSheetProperties = ModalBottomSheetDefaults.properties,
+    properties: ModalBottomSheetProperties = ModalBottomSheetDefaults.properties(),
     content: @Composable ColumnScope.() -> Unit,
 ) {
     val containerColor = when (bottomSheetBackground) {
@@ -50,9 +50,8 @@ fun MegaModalBottomSheet(
             topStart = LocalSpacing.current.x24,
             topEnd = LocalSpacing.current.x24,
         ),
-        contentWindowInsets = {
-            windowInsets ?: BottomSheetDefaults.windowInsets.only(WindowInsetsSides.Bottom)
-        },
+        windowInsets = windowInsets
+            ?: BottomSheetDefaults.windowInsets.only(WindowInsetsSides.Bottom),
         properties = properties,
         content = content
     )

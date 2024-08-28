@@ -14,8 +14,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.material3.Icon
-import androidx.compose.material3.ripple
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -112,7 +112,7 @@ fun Checkbox(
                     modifier
                         .clickable(
                             interactionSource = mutableInteractionSource,
-                            indication = ripple(
+                            indication = rememberRipple(
                                 bounded = true,
                                 radius = checkboxContainerSize / 2f,
                                 color = AppTheme.colors.icon.primary
