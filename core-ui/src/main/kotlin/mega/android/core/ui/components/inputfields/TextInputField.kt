@@ -18,7 +18,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
-import androidx.compose.material3.OutlinedTextFieldDefaults.ContainerBox
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldColors
 import androidx.compose.runtime.Composable
@@ -37,6 +36,7 @@ import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.ImeOptions
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -628,7 +628,7 @@ private fun ReadOnlyOutlinedTextField(
         readOnly = true,
         textStyle = mergedTextStyle,
         visualTransformation = visualTransformation,
-        interactionSource = internalInteractionSource,
+        interactionSource = interactionSource,
         singleLine = singleLine,
         maxLines = maxLines,
         minLines = minLines,
@@ -650,7 +650,7 @@ private fun ReadOnlyOutlinedTextField(
                 interactionSource = internalInteractionSource,
                 colors = colors,
                 container = {
-                    ContainerBox(
+                    OutlinedTextFieldDefaults.Container(
                         enabled = true,
                         isError = isError,
                         interactionSource = internalInteractionSource,

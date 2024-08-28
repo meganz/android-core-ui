@@ -13,11 +13,12 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.SliderColors
+import androidx.compose.material3.SliderDefaults.TickSize
 import androidx.compose.material3.SliderDefaults.colors
 import androidx.compose.material3.SliderState
+import androidx.compose.material3.ripple
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateListOf
@@ -67,7 +68,7 @@ internal object MegaSliderDefaults {
                 .size(thumbSize)
                 .indication(
                     interactionSource = interactionSource,
-                    indication = rememberRipple(
+                    indication = ripple(
                         bounded = false,
                         radius = 20.dp
                     )
@@ -145,7 +146,7 @@ internal object MegaSliderDefaults {
         val sliderRight = Offset(size.width, center.y)
         val sliderStart = if (isRtl) sliderRight else sliderLeft
         val sliderEnd = if (isRtl) sliderLeft else sliderRight
-        val tickSize = 4.dp.toPx()
+        val tickSize = TickSize.toPx()
         val trackStrokeWidth = 4.dp.toPx()
         drawLine(
             inactiveTrackColor,
