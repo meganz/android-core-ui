@@ -8,10 +8,8 @@ import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.WindowInsetsSides
-import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
@@ -70,29 +68,24 @@ private val bottomSheetShape = RoundedCornerShape(
 )
 
 /**
- * This value is from Figma design
- */
-private val TOP_PADDING_OF_SHEET_CONTENT = 52.dp
-
-/**
  * Promotional sheet with image in the center below the toolbar.
  * Figma: https://www.figma.com/file/5ShSh0nuHWlYYjamj1dz4m/%5BDSN-1630%5D-What%E2%80%99s-new-dialog?node-id=823%3A8511
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PromotionalImageSheet(
-    modifier: Modifier = Modifier,
     image: Any?,
     title: String,
     headline: String,
+    modifier: Modifier = Modifier,
     description: String? = null,
     windowsInsets: WindowInsets? = null,
     showCloseButton: Boolean = true,
     primaryButton: SheetButtonAttribute? = null,
     secondaryButton: SheetButtonAttribute? = null,
-    listItems: List<PromotionalListAttributes> = emptyList(),
     contentText: String? = null,
     footer: String? = null,
+    listItems: List<PromotionalListAttributes> = emptyList(),
     onDismissRequest: () -> Unit = {},
     isVisible: Boolean = false
 ) {
@@ -121,6 +114,8 @@ fun PromotionalImageSheet(
         ConstraintLayout(
             modifier = Modifier
                 .fillMaxSize()
+                .navigationBarsPadding()
+                .padding(bottom = LocalSpacing.current.x16)
         ) {
             val (toolbar, content, buttonContainer) = createRefs()
 
@@ -176,13 +171,10 @@ fun PromotionalImageSheet(
                 )
             }
 
-            val bottomPadding =
-                WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding()
-
             SheetActions(
                 modifier = Modifier
                     .constrainAs(buttonContainer) {
-                        bottom.linkTo(parent.bottom, margin = bottomPadding)
+                        bottom.linkTo(parent.bottom)
                         start.linkTo(parent.start)
                         end.linkTo(parent.end)
                         height = Dimension.wrapContent
@@ -202,10 +194,10 @@ fun PromotionalImageSheet(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PromotionalFullImageSheet(
-    modifier: Modifier = Modifier,
     image: Any?,
     title: String,
     headline: String,
+    modifier: Modifier = Modifier,
     description: String? = null,
     windowsInsets: WindowInsets? = null,
     showCloseButton: Boolean = true,
@@ -242,6 +234,8 @@ fun PromotionalFullImageSheet(
         ConstraintLayout(
             modifier = Modifier
                 .fillMaxSize()
+                .navigationBarsPadding()
+                .padding(bottom = LocalSpacing.current.x16)
         ) {
             val (closeButton, content, buttonContainer) = createRefs()
 
@@ -308,13 +302,10 @@ fun PromotionalFullImageSheet(
                 }
             }
 
-            val bottomPadding =
-                WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding()
-
             SheetActions(
                 modifier = Modifier
                     .constrainAs(buttonContainer) {
-                        bottom.linkTo(parent.bottom, margin = bottomPadding)
+                        bottom.linkTo(parent.bottom)
                         start.linkTo(parent.start)
                         end.linkTo(parent.end)
                         height = Dimension.fillToConstraints
@@ -334,9 +325,9 @@ fun PromotionalFullImageSheet(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PromotionalIllustrationSheet(
-    modifier: Modifier = Modifier,
     title: String,
     headline: String,
+    modifier: Modifier = Modifier,
     description: String? = null,
     windowsInsets: WindowInsets? = null,
     showCloseButton: Boolean = true,
@@ -375,6 +366,8 @@ fun PromotionalIllustrationSheet(
         ConstraintLayout(
             modifier = Modifier
                 .fillMaxSize()
+                .navigationBarsPadding()
+                .padding(bottom = LocalSpacing.current.x16)
         ) {
             val (toolbar, content, buttonContainer) = createRefs()
 
@@ -434,13 +427,10 @@ fun PromotionalIllustrationSheet(
                 )
             }
 
-            val bottomPadding =
-                WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding()
-
             SheetActions(
                 modifier = Modifier
                     .constrainAs(buttonContainer) {
-                        bottom.linkTo(parent.bottom, margin = bottomPadding)
+                        bottom.linkTo(parent.bottom)
                         start.linkTo(parent.start)
                         end.linkTo(parent.end)
                         height = Dimension.fillToConstraints
@@ -459,9 +449,9 @@ fun PromotionalIllustrationSheet(
  */
 @Composable
 fun PromotionalPlainSheet(
-    modifier: Modifier = Modifier,
     title: String,
     headline: String,
+    modifier: Modifier = Modifier,
     description: String? = null,
     windowsInsets: WindowInsets? = null,
     showCloseButton: Boolean = true,

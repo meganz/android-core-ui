@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -170,6 +171,7 @@ private fun PromotionalPlainSheetComponent(
     onDismissRequest: () -> Unit
 ) {
     PromotionalPlainSheet(
+        modifier = Modifier.statusBarsPadding(),
         title = "Title",
         headline = "Headline",
         description = "I’m just an intro title, I don’t have any meaningful content at the moment. I’ll get there",
@@ -189,6 +191,7 @@ private fun PromotionalFullImageSheetComponent(
     onDismissRequest: () -> Unit
 ) {
     PromotionalFullImageSheet(
+        modifier = Modifier.statusBarsPadding(),
         image = "https:images.unsplash.com/photo-1579353977828-2a4eab540b9a?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8c2FtcGxlfGVufDB8fDB8fHww",
         title = "Title",
         headline = "Headline",
@@ -209,6 +212,7 @@ private fun PromotionalIllustrationSheetComponent(
     onDismissRequest: () -> Unit
 ) {
     PromotionalIllustrationSheet(
+        modifier = Modifier.statusBarsPadding(),
         illustration = R.drawable.illustration_mega_anniversary,
         title = "Title",
         headline = "Headline",
@@ -229,6 +233,7 @@ private fun PromotionalImageSheetComponent(
     onDismissRequest: () -> Unit
 ) {
     PromotionalImageSheet(
+        modifier = Modifier.statusBarsPadding(),
         image = "https:images.unsplash.com/photo-1579353977828-2a4eab540b9a?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8c2FtcGxlfGVufDB8fDB8fHww",
         title = "Title",
         headline = "Headline",
