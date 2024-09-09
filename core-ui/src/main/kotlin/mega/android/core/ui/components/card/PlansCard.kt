@@ -81,7 +81,7 @@ fun PlansCard(
                     .testTag(PlansCardTestTags.SUBTITLE),
                 text = it,
                 textColor = TextColor.Primary,
-                style = AppTheme.typography.titleSmall
+                style = AppTheme.typography.bodyMedium
             )
         }
 
