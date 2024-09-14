@@ -12,11 +12,14 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.dp
 import mega.android.core.ui.R
 import mega.android.core.ui.components.MegaClickableText
 import mega.android.core.ui.components.MegaText
@@ -39,7 +42,8 @@ internal fun BaseBanner(
     onCancelButtonClick: () -> Unit = {},
 ) {
     Box(
-        modifier = modifier.fillMaxWidth()
+        modifier = modifier
+            .fillMaxWidth()
             .background(color = backgroundColor, shape = backgroundShape)
             .padding(LocalSpacing.current.x24),
     ) {
@@ -95,4 +99,8 @@ internal fun BaseBanner(
             }
         }
     }
+}
+
+val BannerPaddingProvider = compositionLocalOf<Dp> {
+    0.dp
 }
