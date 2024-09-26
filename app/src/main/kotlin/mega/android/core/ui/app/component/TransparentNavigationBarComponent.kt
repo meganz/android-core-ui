@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -34,6 +35,7 @@ fun TransparentNavigationComponentCatalog() {
             contentScale = ContentScale.Crop,
         )
         TransparentTopBar(
+            modifier = Modifier.statusBarsPadding(),
             navigationIcon = painterResource(id = mega.android.core.ui.R.drawable.ic_action_back),
             trailingIcons = {
                 SecondaryTopNavigationButton(

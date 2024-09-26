@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -68,9 +67,9 @@ fun TransparentTopBar(
     backgroundAlpha: Float = 0f
 ) {
     DefaultTopAppBar(
-        modifier = modifier
+        modifier = Modifier
             .background(AppTheme.colors.background.pageBackground.copy(alpha = backgroundAlpha))
-            .statusBarsPadding(),
+            .then(modifier),
         title = "",
         navigationIcon = {
             navigationIcon?.let {
