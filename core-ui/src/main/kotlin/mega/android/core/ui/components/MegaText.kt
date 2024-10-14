@@ -5,6 +5,7 @@ import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.TextLayoutResult
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -28,6 +29,13 @@ import mega.android.core.ui.theme.values.TextColor
  * @param minLines
  * @param style
  * @param textAlign
+ * @param softWrap whether the text should break at soft line breaks. If false, the glyphs in the
+ *   text will be positioned as if there was unlimited horizontal space. If [softWrap] is false,
+ *   [overflow] and TextAlign may have unexpected effects.
+ * @param onTextLayout callback that is executed when a new text layout is calculated. A
+ *   [TextLayoutResult] object that callback provides contains paragraph information, size of the
+ *   text, baselines and other details. The callback can be used to add additional decoration or
+ *   functionality to the text. For example, to draw selection around the text.
  */
 @Composable
 fun MegaText(
@@ -39,6 +47,8 @@ fun MegaText(
     minLines: Int = 1,
     style: TextStyle = LocalTextStyle.current,
     textAlign: TextAlign? = null,
+    softWrap: Boolean = true,
+    onTextLayout: ((TextLayoutResult) -> Unit)? = null,
 ) = Text(
     text,
     modifier = modifier,
@@ -48,6 +58,8 @@ fun MegaText(
     minLines = minLines,
     style = style,
     textAlign = textAlign,
+    softWrap = softWrap,
+    onTextLayout = onTextLayout
 )
 
 @Composable
