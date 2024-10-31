@@ -19,6 +19,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalView
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import androidx.core.view.WindowCompat
@@ -171,8 +172,16 @@ object AppTheme {
 
     val typography: Typography
         @Composable
-        get() = MaterialTheme.typography
+        get() = megaTypographyToken(MaterialTheme.typography)
 }
+
+@Composable
+internal fun megaTypographyToken(typography: Typography = MaterialTheme.typography) = typography.copy(
+    headlineLarge = typography.headlineLarge.copy(fontWeight = FontWeight.SemiBold),
+    headlineMedium = typography.headlineMedium.copy(fontWeight = FontWeight.SemiBold),
+    headlineSmall = typography.headlineSmall.copy(fontWeight = FontWeight.SemiBold),
+    titleLarge = typography.titleLarge.copy(fontWeight = FontWeight.Medium),
+)
 
 internal val LocalColorPalette = staticCompositionLocalOf {
     testColorPalette
