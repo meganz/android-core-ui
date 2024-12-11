@@ -1,6 +1,8 @@
 package mega.android.core.ui.theme
 
 import android.app.Activity
+import android.content.Context
+import android.content.ContextWrapper
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Shapes
@@ -107,13 +109,15 @@ fun AndroidTheme(
     val view = LocalView.current
     if (!view.isInEditMode) {
         SideEffect {
-            val window = (view.context as Activity).window
-            window.statusBarColor =
-                (if (fromAutofill) Color.Transparent else colors.background.pageBackground).toArgb()
-            window.navigationBarColor = colors.background.pageBackground.toArgb()
-            WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = !isDark
-            WindowCompat.getInsetsController(window, view).isAppearanceLightNavigationBars = !isDark
-            window.decorView.setBackgroundColor(if (fromAutofill) Color.Transparent.toArgb() else colors.background.pageBackground.toArgb()) //Added to fix keyboard backdrop issue in screen
+            view.context.findActivity()?.window?.let { window ->
+                window.statusBarColor =
+                    (if (fromAutofill) Color.Transparent else colors.background.pageBackground).toArgb()
+                window.navigationBarColor = colors.background.pageBackground.toArgb()
+                WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = !isDark
+                WindowCompat.getInsetsController(window, view).isAppearanceLightNavigationBars =
+                    !isDark
+                window.decorView.setBackgroundColor(if (fromAutofill) Color.Transparent.toArgb() else colors.background.pageBackground.toArgb()) //Added to fix keyboard backdrop issue in screen
+            }
         }
     }
 
@@ -131,6 +135,12 @@ fun AndroidTheme(
             content = content
         )
     }
+}
+
+private fun Context.findActivity(): Activity? = when (this) {
+    is Activity -> this
+    is ContextWrapper -> baseContext.findActivity()
+    else -> null
 }
 
 @OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
@@ -176,12 +186,13 @@ object AppTheme {
 }
 
 @Composable
-internal fun megaTypographyToken(typography: Typography = MaterialTheme.typography) = typography.copy(
-    headlineLarge = typography.headlineLarge.copy(fontWeight = FontWeight.SemiBold),
-    headlineMedium = typography.headlineMedium.copy(fontWeight = FontWeight.SemiBold),
-    headlineSmall = typography.headlineSmall.copy(fontWeight = FontWeight.SemiBold),
-    titleLarge = typography.titleLarge.copy(fontWeight = FontWeight.Medium),
-)
+internal fun megaTypographyToken(typography: Typography = MaterialTheme.typography) =
+    typography.copy(
+        headlineLarge = typography.headlineLarge.copy(fontWeight = FontWeight.SemiBold),
+        headlineMedium = typography.headlineMedium.copy(fontWeight = FontWeight.SemiBold),
+        headlineSmall = typography.headlineSmall.copy(fontWeight = FontWeight.SemiBold),
+        titleLarge = typography.titleLarge.copy(fontWeight = FontWeight.Medium),
+    )
 
 internal val LocalColorPalette = staticCompositionLocalOf {
     testColorPalette
