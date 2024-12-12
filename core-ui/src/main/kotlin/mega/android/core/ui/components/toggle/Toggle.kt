@@ -28,6 +28,7 @@ private val defaultToggleHeight = 32.dp
 fun Toggle(
     isChecked: Boolean,
     onCheckedChange: ((Boolean) -> Unit),
+    modifier: Modifier = Modifier,
     isEnabled: Boolean = true,
 ) {
     Switch(
@@ -35,7 +36,7 @@ fun Toggle(
         onCheckedChange = {
             onCheckedChange(it)
         },
-        modifier = Modifier
+        modifier = modifier
             .width(defaultToggleWidth)
             .height(defaultToggleHeight),
         thumbContent = {

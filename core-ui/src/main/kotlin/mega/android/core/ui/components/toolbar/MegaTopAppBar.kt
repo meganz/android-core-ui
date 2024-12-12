@@ -19,6 +19,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.tooling.preview.PreviewParameter
+import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
 import mega.android.core.ui.R
 import mega.android.core.ui.components.button.SecondarySmallIconButton
@@ -27,6 +29,23 @@ import mega.android.core.ui.theme.AndroidThemeForPreviews
 import mega.android.core.ui.theme.AppTheme
 import mega.android.core.ui.theme.spacing.LocalSpacing
 
+@Composable
+@OptIn(ExperimentalMaterial3Api::class)
+fun MegaTopAppBar(
+    title: String,
+    navigationType: AppBarNavigationType,
+    modifier: Modifier = Modifier,
+    trailingIcons: @Composable RowScope.() -> Unit = {},
+) {
+    DefaultTopAppBar(
+        modifier = modifier,
+        title = title,
+        navigationIcon = navigationType.navigationIcon(),
+        actions = trailingIcons
+    )
+}
+
+@Deprecated(message = "Please use the version of MegaTopAppBar with AppBarNavigationType instead of injecting the navigation painter.")
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
 fun MegaTopAppBar(
@@ -162,4 +181,35 @@ private fun MegaTransparentTopAppBarPreview() {
             )
         }
     }
+}
+
+@CombinedThemePreviews
+@Composable
+private fun MegaTopAppBarTypePreview(
+    @PreviewParameter(NavigationTypeProvider::class) navigationType: AppBarNavigationType
+) {
+    AndroidThemeForPreviews {
+        MegaTopAppBar(
+            title = "Title",
+            navigationType = navigationType,
+            trailingIcons = {
+                IconButton(modifier = Modifier.wrapContentHeight(), onClick = {}) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_close),
+                        contentDescription = "Cancel Icon"
+                    )
+                }
+            },
+        )
+    }
+}
+
+private class NavigationTypeProvider : PreviewParameterProvider<AppBarNavigationType> {
+    override val values: Sequence<AppBarNavigationType>
+        get() = sequenceOf(
+            AppBarNavigationType.None,
+            AppBarNavigationType.Back {},
+            AppBarNavigationType.Close {},
+        )
+
 }
