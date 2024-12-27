@@ -10,14 +10,14 @@ import mega.android.core.ui.theme.AppTheme
 
 @Composable
 fun MegaScaffold(
-    modifier: Modifier,
-    snackbarHost: @Composable () -> Unit,
-    bottomBar: @Composable () -> Unit,
-    content: @Composable (PaddingValues) -> Unit,
+    modifier: Modifier = Modifier,
+    snackbarHost: @Composable () -> Unit = {},
+    bottomBar: @Composable () -> Unit = {},
     topBar: @Composable () -> Unit = {},
     floatingActionButton: @Composable () -> Unit = {},
     floatingActionButtonPosition: FabPosition = FabPosition.End,
-    fromAutofill: Boolean = false
+    fromAutofill: Boolean = false,
+    content: @Composable (PaddingValues) -> Unit,
 ) {
     Scaffold(
         modifier = modifier,
