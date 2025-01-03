@@ -23,7 +23,6 @@ import mega.android.core.ui.components.list.FlexibleLineListItem
 import mega.android.core.ui.components.list.OneLineListItem
 import mega.android.core.ui.components.list.PrimaryHeaderListItem
 import mega.android.core.ui.components.list.SecondaryHeaderListItem
-import mega.android.core.ui.components.list.VpnSelectedCountryListItem
 import mega.android.core.ui.components.slider.MegaSlider
 import mega.android.core.ui.theme.AppTheme
 import mega.android.core.ui.theme.spacing.LocalSpacing
@@ -128,25 +127,6 @@ fun ListComponentCatalog() {
     Section(header = "Secondary Header With Icon") {
         SecondaryHeaderListItem(
             text = "Header Text", rightIconRes = R.drawable.ic_chevron_down
-        )
-    }
-    Section(header = "VPN Country List Item") {
-        VpnSelectedCountryListItem(
-            modifier = Modifier,
-            title = "Selected Country",
-            subtitle = "Australia",
-            countryFlag = painterResource(id = R.drawable.australia),
-            rightIcon = painterResource(id = R.drawable.ic_chevron_right)
-        )
-    }
-
-    Section(header = "VPN Country List Item - Shimmer") {
-        VpnSelectedCountryListItem(
-            modifier = Modifier,
-            title = "Selected Country",
-            subtitle = null,
-            countryFlag = null,
-            rightIcon = painterResource(id = R.drawable.ic_chevron_right)
         )
     }
 }

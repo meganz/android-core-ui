@@ -2,8 +2,6 @@ package mega.android.core.ui.components.list
 
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -18,7 +16,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LocalContentColor
@@ -26,10 +23,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.ColorFilter
-import androidx.compose.ui.graphics.painter.Painter
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
@@ -178,6 +171,7 @@ fun TwoLineListItem(
     enableClick: Boolean = true,
     onClickListener: () -> Unit = {},
     onLongClickListener: () -> Unit = {},
+    replaceNullSubtitleWithShimmer: Boolean = false
 ) = ListItem(
     modifier = modifier
         .defaultMinSize(minHeight = listItemMinHeight),
@@ -190,6 +184,7 @@ fun TwoLineListItem(
     onClickListener = onClickListener,
     onLongClickListener = onLongClickListener,
     subtitleMaxLines = TWO_LINE_LIST_SUBTITLE_MAX_LINES,
+    replaceNullSubtitleWithShimmer = replaceNullSubtitleWithShimmer
 )
 
 @Deprecated(
@@ -237,7 +232,8 @@ fun FlexibleLineListItem(
     enableClick: Boolean = true,
     onClickListener: () -> Unit = {},
     onLongClickListener: () -> Unit = {},
-    minHeight: Dp = listItemMinHeight
+    minHeight: Dp = listItemMinHeight,
+    replaceNullSubtitleWithShimmer: Boolean = false
 ) {
     ListItem(
         modifier = modifier
@@ -252,69 +248,7 @@ fun FlexibleLineListItem(
         onLongClickListener = onLongClickListener,
         titleMaxLines = titleMaxLines,
         subtitleMaxLines = subtitleMaxLines,
-    )
-}
-
-@OptIn(ExperimentalFoundationApi::class)
-@Composable
-fun VpnSelectedCountryListItem(
-    title: String,
-    subtitle: String?,
-    countryFlag: Painter?,
-    rightIcon: Painter,
-    modifier: Modifier = Modifier,
-    colorFilter: ColorFilter? = null,
-    onClickListener: () -> Unit = {},
-    onLongClickListener: () -> Unit = {},
-) {
-    ListItem(
-        modifier = modifier
-            .clip(AppTheme.shapes.small)
-            .widthIn(max = vpnCountrySelectedListItemMaxWidth)
-            .height(vpnCountrySelectedListItemHeight)
-            .background(AppTheme.colors.background.surface1),
-        title = title,
-        subtitle = subtitle,
-        subtitleMaxLines = VPN_SUBTITLE_MAX_LINES,
-        leadingElement = {
-            Box(
-                modifier = Modifier
-                    .size(32.dp)
-                    .align(Alignment.Center)
-            ) {
-                if (countryFlag != null) {
-                    Image(
-                        painter = countryFlag,
-                        contentDescription = subtitle,
-                        modifier = Modifier
-                            .size(32.dp)
-                            .align(Alignment.Center),
-                        contentScale = ContentScale.Inside,
-                        colorFilter = colorFilter
-                    )
-                } else {
-                    Spacer(
-                        modifier = Modifier
-                            .size(32.dp)
-                            .align(Alignment.Center)
-                            .shimmerEffect()
-                    )
-                }
-            }
-        },
-        trailingElement = {
-            Icon(
-                painter = rightIcon,
-                contentDescription = null,
-                modifier = Modifier.size(24.dp),
-                tint = AppTheme.colors.icon.primary
-            )
-        },
-        enableClick = true,
-        replaceNullSubtitleWithShimmer = true,
-        contentPadding = PaddingValues(horizontal = 16.dp),
-        onClickListener = onClickListener,
-        onLongClickListener = onLongClickListener
+        replaceNullSubtitleWithShimmer = replaceNullSubtitleWithShimmer
     )
 }
 
@@ -551,33 +485,5 @@ private fun PrimaryHeaderListItemPreview() {
 private fun PrimaryHeaderListItemWithIconPreview() {
     AndroidThemeForPreviews {
         PrimaryHeaderListItem(text = "Header text", rightIconRes = R.drawable.ic_check_filled)
-    }
-}
-
-@Composable
-@CombinedThemePreviews
-private fun VpnSelectedCountryListItemPreview() {
-    AndroidThemeForPreviews {
-        VpnSelectedCountryListItem(
-            modifier = Modifier,
-            title = "Selected server",
-            subtitle = "Country name",
-            countryFlag = painterResource(id = R.drawable.ic_alert_triangle),
-            rightIcon = painterResource(id = R.drawable.ic_check_circle),
-        )
-    }
-}
-
-@Composable
-@CombinedThemePreviews
-private fun VpnSelectedCountryListItemShimmerPreview() {
-    AndroidThemeForPreviews {
-        VpnSelectedCountryListItem(
-            modifier = Modifier,
-            title = "Selected server",
-            subtitle = null,
-            countryFlag = null,
-            rightIcon = painterResource(id = R.drawable.ic_check_circle),
-        )
     }
 }
