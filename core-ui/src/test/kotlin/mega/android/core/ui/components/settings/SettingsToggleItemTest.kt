@@ -58,7 +58,7 @@ class SettingsToggleItemTest {
         initComposeRuleContent(
             enabled = false,
         )
-        composeRule.onNodeWithTag(SettingsToggleItem.toggleTag(defaultKey))
+        composeRule.onNodeWithTag(SettingsItemConst.toggleTag(defaultKey))
             .assertIsNotEnabled()
             .assertIsOn()
     }
@@ -69,7 +69,7 @@ class SettingsToggleItemTest {
             enabled = false,
             checked = false,
         )
-        composeRule.onNodeWithTag(SettingsToggleItem.toggleTag(defaultKey))
+        composeRule.onNodeWithTag(SettingsItemConst.toggleTag(defaultKey))
             .assertIsNotEnabled()
             .assertIsOff()
     }
@@ -80,7 +80,7 @@ class SettingsToggleItemTest {
             enabled = true,
             checked = true,
         )
-        composeRule.onNodeWithTag(SettingsToggleItem.toggleTag(defaultKey))
+        composeRule.onNodeWithTag(SettingsItemConst.toggleTag(defaultKey))
             .assertIsEnabled()
             .assertIsOn()
     }
@@ -91,7 +91,7 @@ class SettingsToggleItemTest {
             enabled = true,
             checked = false,
         )
-        composeRule.onNodeWithTag(SettingsToggleItem.toggleTag(defaultKey))
+        composeRule.onNodeWithTag(SettingsItemConst.toggleTag(defaultKey))
             .assertIsEnabled()
             .assertIsOff()
     }
@@ -102,7 +102,7 @@ class SettingsToggleItemTest {
         initComposeRuleContent(
             onSettingsChanged = onSettingsChanged,
         )
-        val tag = SettingsToggleItem.listItemTag(defaultKey)
+        val tag = SettingsItemConst.listItemTag(defaultKey)
         composeRule.onNodeWithTag(tag).performClick()
         verify(onSettingsChanged).invoke(defaultKey, false)
     }
@@ -114,7 +114,7 @@ class SettingsToggleItemTest {
             onSettingsChanged = onSettingsChanged,
             checked = false,
         )
-        val tag = SettingsToggleItem.listItemTag(defaultKey)
+        val tag = SettingsItemConst.listItemTag(defaultKey)
         composeRule.onNodeWithTag(tag).performClick()
         verify(onSettingsChanged).invoke(defaultKey, true)
     }
@@ -125,7 +125,7 @@ class SettingsToggleItemTest {
         initComposeRuleContent(
             onSettingsChanged = onSettingsChanged,
         )
-        val tag = SettingsToggleItem.toggleTag(defaultKey)
+        val tag = SettingsItemConst.toggleTag(defaultKey)
         composeRule.onNodeWithTag(tag).performClick()
         verify(onSettingsChanged).invoke(defaultKey, false)
     }
@@ -137,7 +137,7 @@ class SettingsToggleItemTest {
             onSettingsChanged = onSettingsChanged,
             checked = false,
         )
-        val tag = SettingsToggleItem.toggleTag(defaultKey)
+        val tag = SettingsItemConst.toggleTag(defaultKey)
         composeRule.onNodeWithTag(tag).performClick()
         verify(onSettingsChanged).invoke(defaultKey, true)
     }
@@ -149,7 +149,7 @@ class SettingsToggleItemTest {
         checked: Boolean = true,
         enabled: Boolean = true,
         footerText: String? = null,
-        onSettingsChanged: (key: String, newValue: Boolean) -> Unit = { key, newValue -> },
+        onSettingsChanged: (key: String, newValue: Boolean) -> Unit = { _, _ -> },
     ) {
         composeRule.setContent {
             SettingsToggleItem(

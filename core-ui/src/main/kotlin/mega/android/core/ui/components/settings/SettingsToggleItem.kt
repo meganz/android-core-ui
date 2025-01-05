@@ -17,12 +17,12 @@ import mega.android.core.ui.theme.AndroidThemeForPreviews
 /**
  * Settings toggle item. Component to show and change boolean settings.
  *
- * @param key the key of this setting
+ * @param key the key of this setting. It will be also used for action callbacks and for test tags
  * @param title title of this setting
  * @param subtitle optional subtitle of this setting
  * @param checked
- * @param enabled
  * @param modifier
+ * @param enabled
  * @param footerText optional footer text for this setting
  * @param onSettingsChanged callback for clicks on this component, either the toggle or the main component, but not the footer if exists
  */
@@ -32,8 +32,8 @@ fun SettingsToggleItem(
     title: String,
     subtitle: String?,
     checked: Boolean,
-    enabled: Boolean,
     modifier: Modifier = Modifier,
+    enabled: Boolean = true,
     footerText: String? = null,
     onSettingsChanged: (key: String, newValue: Boolean) -> Unit,
 ) {
@@ -42,7 +42,8 @@ fun SettingsToggleItem(
         modifier = modifier
     ) {
         FlexibleLineListItem(
-            modifier = Modifier.testTag(SettingsToggleItem.listItemTag(key)),
+            modifier = Modifier.testTag(SettingsItemConst.listItemTag(key)),
+            minHeight = SettingsItemConst.minHeight,
             enableClick = enabled,
             onClickListener = {
                 onSettingsChanged(key, !checked)
@@ -51,7 +52,7 @@ fun SettingsToggleItem(
             subtitle = subtitle,
             trailingElement = {
                 Toggle(
-                    modifier = Modifier.testTag(SettingsToggleItem.toggleTag(key)),
+                    modifier = Modifier.testTag(SettingsItemConst.toggleTag(key)),
                     isChecked = checked,
                     onCheckedChange = {
                         onSettingsChanged(key, it)
@@ -63,16 +64,11 @@ fun SettingsToggleItem(
     }
 }
 
-object SettingsToggleItem {
-    internal fun listItemTag(key: String) = "settings_$key:list_item"
-    internal fun toggleTag(key: String) = "settings_$key:toggle"
-}
-
 
 @CombinedThemePreviews
 @Composable
 private fun SettingToggleItemPreview(
-    @PreviewParameter(SettingToggleItemPreviewProvider::class) parameters: SettingToggleItemPreviewParameters
+    @PreviewParameter(SettingsToggleItemPreviewProvider::class) parameters: SettingsToggleItemPreviewParameters
 ) {
     AndroidThemeForPreviews {
         var checked by remember { mutableStateOf(parameters.checked) }
@@ -89,7 +85,7 @@ private fun SettingToggleItemPreview(
     }
 }
 
-private data class SettingToggleItemPreviewParameters(
+private data class SettingsToggleItemPreviewParameters(
     val title: String,
     val subtitle: String? = null,
     val checked: Boolean = true,
@@ -97,22 +93,22 @@ private data class SettingToggleItemPreviewParameters(
     val footerText: String? = null,
 )
 
-private class SettingToggleItemPreviewProvider :
-    PreviewParameterProvider<SettingToggleItemPreviewParameters> {
-    override val values: Sequence<SettingToggleItemPreviewParameters> = sequenceOf(
-        SettingToggleItemPreviewParameters(
+private class SettingsToggleItemPreviewProvider :
+    PreviewParameterProvider<SettingsToggleItemPreviewParameters> {
+    override val values: Sequence<SettingsToggleItemPreviewParameters> = sequenceOf(
+        SettingsToggleItemPreviewParameters(
             "Simple title",
         ),
-        SettingToggleItemPreviewParameters(
+        SettingsToggleItemPreviewParameters(
             "Sound notifications",
             subtitle = "Hear a sound when someone joins or leaves a call",
         ),
-        SettingToggleItemPreviewParameters(
+        SettingsToggleItemPreviewParameters(
             "Use mobile data to load high resolution images",
             subtitle = "If disabled, the high resolution image will only be loaded when you zoom in.",
             checked = false,
         ),
-        SettingToggleItemPreviewParameters(
+        SettingsToggleItemPreviewParameters(
             "File versioning",
             subtitle = "Create multiple versions of your files. Disabling this setting does not stop your contacts from creating new versions.",
             footerText = "15 File versions. Total size taken by file versions: 107 kB",

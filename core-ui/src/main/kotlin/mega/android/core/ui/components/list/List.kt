@@ -41,10 +41,7 @@ import mega.android.core.ui.theme.values.TextColor
 private val listItemMinHeight = 60.dp
 private val headerListItemMinHeight = 36.dp
 private val leadingElementContainerSize = 32.dp
-private val vpnCountrySelectedListItemMaxWidth = 382.dp
-private val vpnCountrySelectedListItemHeight = 60.dp
 private const val TITLE_MAX_LINES = 1
-private const val VPN_SUBTITLE_MAX_LINES = 1
 private const val TWO_LINE_LIST_SUBTITLE_MAX_LINES = 1
 private const val MULTI_LINE_LIST_SUBTITLE_MAX_LINES = 2
 
@@ -233,7 +230,8 @@ fun FlexibleLineListItem(
     onClickListener: () -> Unit = {},
     onLongClickListener: () -> Unit = {},
     minHeight: Dp = listItemMinHeight,
-    replaceNullSubtitleWithShimmer: Boolean = false
+    replaceNullSubtitleWithShimmer: Boolean = false,
+    titleTextColor: TextColor = TextColor.Primary,
 ) {
     ListItem(
         modifier = modifier
@@ -248,7 +246,8 @@ fun FlexibleLineListItem(
         onLongClickListener = onLongClickListener,
         titleMaxLines = titleMaxLines,
         subtitleMaxLines = subtitleMaxLines,
-        replaceNullSubtitleWithShimmer = replaceNullSubtitleWithShimmer
+        replaceNullSubtitleWithShimmer = replaceNullSubtitleWithShimmer,
+        titleTextColor = titleTextColor,
     )
 }
 
@@ -266,7 +265,8 @@ private fun ListItem(
     onLongClickListener: () -> Unit = {},
     titleMaxLines: Int = TITLE_MAX_LINES,
     subtitleMaxLines: Int = MULTI_LINE_LIST_SUBTITLE_MAX_LINES,
-    replaceNullSubtitleWithShimmer: Boolean = false
+    replaceNullSubtitleWithShimmer: Boolean = false,
+    titleTextColor: TextColor = TextColor.Primary,
 ) {
     Row(
         modifier = modifier
@@ -302,7 +302,7 @@ private fun ListItem(
             if (title != null) {
                 MegaText(
                     text = title,
-                    textColor = TextColor.Primary,
+                    textColor = titleTextColor,
                     style = AppTheme.typography.bodyLarge,
                     maxLines = titleMaxLines,
                     overflow = TextOverflow.Ellipsis
