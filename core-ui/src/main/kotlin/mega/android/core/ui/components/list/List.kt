@@ -49,10 +49,15 @@ internal object ListItemToken {
     val defaultContentPadding = PaddingValues(horizontal = 16.dp, vertical = 12.dp)
 }
 
+enum class HeaderTextStyle {
+    Small, Medium,
+}
+
 @Composable
 fun PrimaryHeaderListItem(
     text: String,
     modifier: Modifier = Modifier,
+    headerTextStyle: HeaderTextStyle = HeaderTextStyle.Small,
     @DrawableRes rightIconRes: Int? = null,
     enableClick: Boolean = true,
     onClickListener: () -> Unit = {},
@@ -67,6 +72,7 @@ fun PrimaryHeaderListItem(
         enableClick = enableClick,
         onClickListener = onClickListener,
         onLongClickListener = onLongClickListener,
+        headerTextStyle = headerTextStyle,
     )
 }
 
@@ -74,6 +80,7 @@ fun PrimaryHeaderListItem(
 fun SecondaryHeaderListItem(
     text: String,
     modifier: Modifier = Modifier,
+    headerTextStyle: HeaderTextStyle = HeaderTextStyle.Small,
     @DrawableRes rightIconRes: Int? = null,
     enableClick: Boolean = true,
     onClickListener: () -> Unit = {},
@@ -88,6 +95,7 @@ fun SecondaryHeaderListItem(
         enableClick = enableClick,
         onClickListener = onClickListener,
         onLongClickListener = onLongClickListener,
+        headerTextStyle = headerTextStyle,
     )
 }
 
@@ -96,6 +104,7 @@ fun SecondaryHeaderListItem(
 private fun HeaderListItem(
     text: String,
     textColor: TextColor,
+    headerTextStyle: HeaderTextStyle = HeaderTextStyle.Small,
     modifier: Modifier = Modifier,
     @DrawableRes rightIconRes: Int?,
     iconColor: IconColor,
@@ -111,12 +120,16 @@ private fun HeaderListItem(
                 enabled = enableClick,
                 onClick = onClickListener,
                 onLongClick = onLongClickListener
-            )
+            ),
+        verticalAlignment = Alignment.CenterVertically,
     ) {
         MegaText(
             text = text,
             textColor = textColor,
-            style = AppTheme.typography.titleSmall,
+            style = when (headerTextStyle) {
+                HeaderTextStyle.Small -> AppTheme.typography.titleSmall
+                HeaderTextStyle.Medium -> AppTheme.typography.titleMedium
+            },
             maxLines = TITLE_MAX_LINES,
             overflow = TextOverflow.Ellipsis
         )

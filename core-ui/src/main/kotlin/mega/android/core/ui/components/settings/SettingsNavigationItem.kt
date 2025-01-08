@@ -13,6 +13,16 @@ import mega.android.core.ui.theme.AndroidThemeForPreviews
 import mega.android.core.ui.theme.values.IconColor
 import mega.android.core.ui.R
 
+/**
+ * Settings Navigation Item. Item to allow to navigate trough Settings screens hierarchy
+ *
+ * @param key the key of the section or screen to navigate to. It will be also used for action callbacks and for test tags
+ * @param title the title of the section or screen to navigate to
+ * @param modifier
+ * @param enabled
+ * @param subtitle optional subtitle
+ * @param onClicked callback for option selected
+ */
 @Composable
 fun SettingsNavigationItem(
     key: String,

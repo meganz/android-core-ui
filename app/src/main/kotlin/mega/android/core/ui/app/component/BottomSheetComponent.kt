@@ -25,6 +25,7 @@ import mega.android.core.ui.components.sheets.MegaModalBottomSheet
 import mega.android.core.ui.components.sheets.MegaModalBottomSheetBackground
 import mega.android.core.ui.theme.spacing.LocalSpacing
 import mega.android.core.ui.theme.values.IconColor
+import mega.android.core.ui.R as coreR
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -53,7 +54,7 @@ fun BottomSheetComponentCatalog() {
                 dragHandle = {
                     MegaIcon(
                         modifier = Modifier.padding(vertical = 8.dp),
-                        painter = painterResource(id = R.drawable.ic_handlebar),
+                        painter = painterResource(id = coreR.drawable.ic_handlebar),
                         tint = IconColor.Secondary
                     )
                 }
@@ -63,7 +64,7 @@ fun BottomSheetComponentCatalog() {
                     text = "Item 2",
                     trailingElement = {
                         MegaIcon(
-                            painter = painterResource(id = mega.android.core.ui.R.drawable.ic_check_filled),
+                            painter = painterResource(id = coreR.drawable.ic_check_filled),
                             contentDescription = null,
                             tint = IconColor.Secondary,
                             modifier = Modifier.size(24.dp)
