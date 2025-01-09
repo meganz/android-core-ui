@@ -28,7 +28,7 @@ import mega.android.core.ui.theme.values.IconColor
 
 
 /**
- * Settings Options Item. Item to allow to choose and option from a small set of option
+ * Settings Options Item. Item to allow choosing an option from a list of options using a bottom sheet selector.
  *
  * @param T type of selectable values
  * @param key the key of this setting. It will be also used for action callbacks and for test tags

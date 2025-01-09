@@ -11,6 +11,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.role
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.toggleableState
+import androidx.compose.ui.state.ToggleableState
 import androidx.compose.ui.unit.dp
 import mega.android.core.ui.preview.CombinedThemePreviews
 import mega.android.core.ui.theme.AndroidThemeForPreviews
@@ -30,6 +35,10 @@ fun MegaRadioButton(
 
     Box(
         modifier = modifier
+            .semantics {
+                this.role = Role.RadioButton
+                this.toggleableState = if (selected) ToggleableState.On else ToggleableState.Off
+            }
             // container size is 48.dp based on Material Design guidelines
             .requiredSize(containerSize)
             // ripple size is 40.dp based on Material Design guidelines
