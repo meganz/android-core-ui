@@ -12,6 +12,7 @@ import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import mega.android.core.ui.components.dialogs.BasicDialog
 import mega.android.core.ui.components.indicators.SmallInfiniteSpinnerIndicator
 import mega.android.core.ui.components.list.FlexibleLineListItem
 import mega.android.core.ui.preview.CombinedThemePreviews
@@ -25,10 +26,11 @@ import kotlin.time.Duration.Companion.seconds
  * @param key the key for this action, it will be used for action callbacks and for test tags
  * @param title title for this action
  * @param modifier
+ * @param subtitle optional subtitle of this action
  * @param enabled
  * @param destructive destructive color will be used if this parameter is true to emphasize destructive actions
  * @param loading if it's true a indeterminate progress indicator will be shown
- * @param footerText optional footer text for this setting
+ * @param footerText optional footer text for this action
  * @param onClicked callback for clicks on this component, either the toggle or the main component, but not the footer if exists
  */
 @Composable
@@ -36,24 +38,32 @@ fun SettingsActionItem(
     key: String,
     title: String,
     modifier: Modifier = Modifier,
+    subtitle: String? = null,
     enabled: Boolean = true,
     destructive: Boolean = false,
     loading: Boolean = false,
     footerText: String? = null,
+    confirmAction: ConfirmActionParameters? = null,
     onClicked: (key: String) -> Unit,
 ) {
     SettingsWithFooter(
         footerText = footerText,
         modifier = modifier
     ) {
+        var showConfirmation by remember { mutableStateOf(false) }
         FlexibleLineListItem(
             modifier = Modifier.testTag(SettingsItemConst.listItemTag(key)),
             minHeight = SettingsItemConst.minHeight,
             enableClick = enabled,
             onClickListener = {
-                onClicked(key)
+                confirmAction?.let {
+                    showConfirmation = true
+                }?:run {
+                    onClicked(key)
+                }
             },
             title = title,
+            subtitle = subtitle,
             titleTextColor = when {
                 !enabled -> TextColor.Disabled
                 destructive -> TextColor.Error
@@ -68,8 +78,48 @@ fun SettingsActionItem(
                 }
             }
         )
+        if (showConfirmation) {
+            SettingsActionConfirmationDialog(
+                confirmAction = confirmAction,
+                onConfirmed = {
+                    showConfirmation = false
+                    onClicked(key)
+                },
+                onDismiss = {
+                    showConfirmation = false
+                }
+            )
+        }
     }
 }
+
+@Composable
+internal fun SettingsActionConfirmationDialog(
+    confirmAction: ConfirmActionParameters?,
+    onConfirmed: () -> Unit,
+    onDismiss: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    confirmAction?.apply {
+        BasicDialog(
+            modifier = modifier,
+            title = title,
+            description = description,
+            positiveButtonText = confirmTitle,
+            negativeButtonText = cancelTitle,
+            onNegativeButtonClicked = onDismiss,
+            onPositiveButtonClicked = onConfirmed,
+            onDismiss = onDismiss,
+        )
+    }
+}
+
+data class ConfirmActionParameters(
+    val title: String,
+    val description: String?,
+    val confirmTitle: String,
+    val cancelTitle: String,
+)
 
 
 @CombinedThemePreviews
@@ -84,10 +134,12 @@ private fun SettingActionItemPreview(
         SettingsActionItem(
             key = "key",
             title = parameters.title,
+            subtitle = parameters.subtitle,
             destructive = parameters.destructive,
             loading = loading,
             enabled = enabled,
             footerText = parameters.footerText,
+            confirmAction = parameters.confirmAction
         ) { key ->
             loading = true
             enabled = false
@@ -103,7 +155,9 @@ private fun SettingActionItemPreview(
 private data class SettingsActionItemPreviewParameters(
     val title: String,
     val destructive: Boolean = false,
+    val subtitle: String? = null,
     val footerText: String? = null,
+    val confirmAction: ConfirmActionParameters? = null,
 )
 
 private class SettingsActionItemPreviewProvider :
@@ -115,6 +169,16 @@ private class SettingsActionItemPreviewProvider :
         SettingsActionItemPreviewParameters(
             "Empty Rubbish Bin",
             destructive = true,
+            confirmAction = ConfirmActionParameters(
+                title = "Empty Rubbish bin?",
+                description = "All items in the rubbish bin will be deleted.",
+                confirmTitle = "Empty",
+                cancelTitle = "Cancel"
+            )
+        ),
+        SettingsActionItemPreviewParameters(
+            "Clear cache",
+            subtitle = "193.8MB",
         ),
         SettingsActionItemPreviewParameters(
             "Delete all older version of files",
