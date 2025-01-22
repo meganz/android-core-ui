@@ -21,8 +21,9 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import mega.android.core.ui.R
+import mega.android.core.ui.components.LinkSpannedText
 import mega.android.core.ui.components.MegaClickableText
-import mega.android.core.ui.components.MegaText
+import mega.android.core.ui.components.text.SpannableText
 import mega.android.core.ui.theme.AppTheme
 import mega.android.core.ui.theme.spacing.LocalSpacing
 import mega.android.core.ui.theme.values.TextColor
@@ -34,9 +35,9 @@ internal fun BaseBanner(
     backgroundShape: Shape,
     @DrawableRes iconResId: Int,
     iconColor: Color,
-    body: String,
+    body: SpannableText,
     showCancelButton: Boolean,
-    title: String? = null,
+    title: SpannableText? = null,
     buttonText: String? = null,
     onButtonClick: () -> Unit = {},
     onCancelButtonClick: () -> Unit = {},
@@ -65,17 +66,21 @@ internal fun BaseBanner(
                 verticalArrangement = Arrangement.spacedBy(LocalSpacing.current.x8)
             ) {
                 title?.let {
-                    MegaText(
-                        text = it,
-                        textColor = TextColor.Primary,
-                        style = AppTheme.typography.titleMedium
+                    LinkSpannedText(
+                        value = title.text.orEmpty(),
+                        spanStyles = title.annotations ?: emptyMap(),
+                        onAnnotationClick = title.onAnnotationClick ?: {},
+                        baseStyle = AppTheme.typography.titleMedium,
+                        baseTextColor = TextColor.Primary,
                     )
                 }
 
-                MegaText(
-                    text = body,
-                    textColor = TextColor.Primary,
-                    style = AppTheme.typography.bodyMedium
+                LinkSpannedText(
+                    value = body.text.orEmpty(),
+                    spanStyles = body.annotations ?: emptyMap(),
+                    onAnnotationClick = body.onAnnotationClick ?: {},
+                    baseStyle = AppTheme.typography.bodyMedium,
+                    baseTextColor = TextColor.Primary,
                 )
 
                 buttonText?.let {

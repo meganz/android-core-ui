@@ -15,6 +15,7 @@ import kotlinx.coroutines.launch
 import mega.android.core.ui.components.dialogs.BasicDialog
 import mega.android.core.ui.components.indicators.SmallInfiniteSpinnerIndicator
 import mega.android.core.ui.components.list.FlexibleLineListItem
+import mega.android.core.ui.components.text.SpannableText
 import mega.android.core.ui.preview.CombinedThemePreviews
 import mega.android.core.ui.theme.AndroidThemeForPreviews
 import mega.android.core.ui.theme.values.TextColor
@@ -103,8 +104,8 @@ internal fun SettingsActionConfirmationDialog(
     confirmAction?.apply {
         BasicDialog(
             modifier = modifier,
-            title = title,
-            description = description,
+            title = SpannableText(title),
+            description = SpannableText(description),
             positiveButtonText = confirmTitle,
             negativeButtonText = cancelTitle,
             onNegativeButtonClicked = onDismiss,

@@ -5,6 +5,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.Shape
 import mega.android.core.ui.R
+import mega.android.core.ui.components.text.SpannableText
 import mega.android.core.ui.preview.CombinedThemePreviews
 import mega.android.core.ui.theme.AndroidThemeForPreviews
 import mega.android.core.ui.theme.AppTheme
@@ -70,8 +71,8 @@ private fun InfoBanner(
         backgroundShape = backgroundShape,
         iconResId = R.drawable.ic_info,
         iconColor = AppTheme.colors.support.info,
-        body = body,
-        title = title,
+        body = SpannableText(body),
+        title = SpannableText(title),
         buttonText = actionButtonText,
         onButtonClick = onActionButtonClick,
         showCancelButton = showCancelButton,
