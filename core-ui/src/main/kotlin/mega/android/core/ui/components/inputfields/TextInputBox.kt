@@ -1,11 +1,15 @@
 package mega.android.core.ui.components.inputfields
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
@@ -18,14 +22,19 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.onFocusChanged
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.ImeOptions
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
+import mega.android.core.ui.R
+import mega.android.core.ui.components.MegaText
+import mega.android.core.ui.components.image.MegaIcon
 import mega.android.core.ui.components.spannedTextWithAnnotation
 import mega.android.core.ui.model.InputFieldLabelSpanStyle
 import mega.android.core.ui.model.MegaSpanStyle
@@ -35,6 +44,7 @@ import mega.android.core.ui.preview.CombinedThemePreviews
 import mega.android.core.ui.theme.AndroidThemeForPreviews
 import mega.android.core.ui.theme.AppTheme
 import mega.android.core.ui.theme.spacing.LocalSpacing
+import mega.android.core.ui.theme.values.IconColor
 import mega.android.core.ui.theme.values.TextColor
 
 private val inputBoxHeight = 142.dp
@@ -45,12 +55,14 @@ private val inputBoxHeight = 142.dp
 @Composable
 fun TextInputBox(
     modifier: Modifier,
-    label: String,
     keyboardType: KeyboardType,
     imeAction: ImeAction = ImeAction.Done,
     capitalization: KeyboardCapitalization = KeyboardCapitalization.Words,
     text: String = "",
+    label: String = "",
     maxCharLimit: Int = Int.MAX_VALUE,
+    showCharCount: Boolean = false,
+    enableClear: Boolean = false,
     optionalLabelText: String? = null,
     onValueChanged: ((String) -> Unit)? = null,
     onFocusChanged: ((Boolean) -> Unit)? = null,
@@ -58,19 +70,21 @@ fun TextInputBox(
     BaseTextInputBox(
         modifier = modifier,
         label = {
-            Row(modifier = Modifier.wrapContentWidth()) {
-                Text(
-                    text = label,
-                    style = AppTheme.typography.titleSmall,
-                    color = AppTheme.colors.text.primary
-                )
-                optionalLabelText?.let {
+            if (label.isNotBlank()) {
+                Row(modifier = Modifier.wrapContentWidth()) {
                     Text(
-                        modifier = Modifier.padding(start = LocalSpacing.current.x8),
-                        text = optionalLabelText,
-                        style = AppTheme.typography.bodyMedium,
-                        color = AppTheme.colors.text.secondary
+                        text = label,
+                        style = AppTheme.typography.titleSmall,
+                        color = AppTheme.colors.text.primary
                     )
+                    optionalLabelText?.let {
+                        Text(
+                            modifier = Modifier.padding(start = LocalSpacing.current.x8),
+                            text = optionalLabelText,
+                            style = AppTheme.typography.bodyMedium,
+                            color = AppTheme.colors.text.secondary
+                        )
+                    }
                 }
             }
         },
@@ -79,6 +93,8 @@ fun TextInputBox(
         capitalization = capitalization,
         text = text,
         maxCharLimit = maxCharLimit,
+        showCharCount = showCharCount,
+        enableClear = enableClear,
         onValueChanged = onValueChanged,
         onFocusChanged = onFocusChanged
     )
@@ -114,6 +130,8 @@ fun AnnotatedLabelTextInputBox(
     imeAction: ImeAction = ImeAction.Done,
     capitalization: KeyboardCapitalization = KeyboardCapitalization.Words,
     maxCharLimit: Int = Int.MAX_VALUE,
+    showCharCount: Boolean = false,
+    enableClear: Boolean = false,
     spannedLabel: InputFieldLabelSpanStyle? = null,
     onValueChanged: ((String) -> Unit)? = null,
     onFocusChanged: ((Boolean) -> Unit)? = null,
@@ -139,6 +157,8 @@ fun AnnotatedLabelTextInputBox(
         imeAction = imeAction,
         capitalization = capitalization,
         maxCharLimit = maxCharLimit,
+        showCharCount = showCharCount,
+        enableClear = enableClear,
         onValueChanged = onValueChanged,
         onFocusChanged = onFocusChanged
     )
@@ -151,6 +171,8 @@ fun AnnotatedLabelTextInputBox(
 private fun BaseTextInputBox(
     modifier: Modifier = Modifier,
     keyboardType: KeyboardType,
+    showCharCount: Boolean,
+    enableClear: Boolean,
     imeAction: ImeAction = ImeAction.Done,
     capitalization: KeyboardCapitalization = KeyboardCapitalization.Words,
     text: String = "",
@@ -220,7 +242,37 @@ private fun BaseTextInputBox(
             singleLine = false,
             textStyle = AppTheme.typography.bodyLarge,
             visualTransformation = VisualTransformation.None,
+            trailingIcon = {
+                if (enableClear && baseText.isNotEmpty()) {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxHeight()
+                            .clickable {
+                                baseText = ""
+                                onValueChanged?.invoke("")
+                            }
+                    ) {
+                        MegaIcon(
+                            modifier = Modifier
+                                .align(Alignment.TopCenter)
+                                .padding(spacing.x16)
+                                .size(16.dp),
+                            painter = painterResource(id = R.drawable.ic_close),
+                            tint = IconColor.Primary
+                        )
+                    }
+                }
+            }
         )
+
+        if (showCharCount) {
+            MegaText(
+                modifier = Modifier.align(Alignment.End),
+                text = "${baseText.count()} / $maxCharLimit",
+                style = AppTheme.typography.bodySmall,
+                textColor = TextColor.Secondary
+            )
+        }
     }
 }
 
@@ -228,14 +280,18 @@ private fun BaseTextInputBox(
 @Composable
 private fun TextInputBoxPreview() {
     AndroidThemeForPreviews {
-        TextInputBox(modifier = Modifier,
+        TextInputBox(
+            modifier = Modifier,
             keyboardType = KeyboardType.Text,
             imeAction = ImeAction.Done,
             capitalization = KeyboardCapitalization.None,
             label = "Notes",
             text = "This is a note",
             onValueChanged = {
-            })
+            },
+            showCharCount = true,
+            enableClear = true
+        )
     }
 }
 
