@@ -11,6 +11,7 @@ public enum class TextColor {
     Primary,
     Secondary,
     Accent,
+    Brand,
     Placeholder,
     InverseAccent,
     OnColor,
@@ -27,6 +28,7 @@ public enum class TextColor {
         Primary -> text.primary
         Secondary -> text.secondary
         Accent -> text.accent
+        Brand -> text.brand
         Placeholder -> text.placeholder
         InverseAccent -> text.inverseAccent
         OnColor -> text.onColor

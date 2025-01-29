@@ -32,7 +32,7 @@ fun MegaFixedTabRow(
         indicator = { tabPositions ->
             TabRowDefaults.SecondaryIndicator(
                 Modifier.tabIndicatorOffset(tabPositions[tabIndex]),
-                color = AppTheme.colors.border.interactive
+                color = AppTheme.colors.border.brand
             )
         }
     ) {
@@ -64,7 +64,7 @@ fun MegaScrollableTabRow(
         indicator = { tabPositions ->
             TabRowDefaults.SecondaryIndicator(
                 Modifier.tabIndicatorOffset(tabPositions[tabIndex]),
-                color = AppTheme.colors.border.interactive
+                color = AppTheme.colors.border.brand
             )
         }
     ) {

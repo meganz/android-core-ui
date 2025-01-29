@@ -6,11 +6,11 @@ package mega.android.core.ui.tokens.theme.tokens
 
 public object AndroidNewSemanticTokensDark : SemanticTokens {
     override val background: Background = Background(
-            pageBackground = Colors.Neutral.n900,
-            inverse = Colors.Neutral.n050,
-            surface1 = Colors.Neutral.n800,
-            surface3 = Colors.Neutral.n600,
-            surface2 = Colors.Neutral.n700,
+            pageBackground = Colors.Grey.n975,
+            inverse = Colors.Grey.n50,
+            surface1 = Colors.Grey.n950,
+            surface3 = Colors.Grey.n800,
+            surface2 = Colors.Grey.n925,
             blur = Colors.BlackOpacity.n050,
             surfaceInverseAccent = Colors.Accent.n200,
             )
@@ -36,7 +36,7 @@ public object AndroidNewSemanticTokensDark : SemanticTokens {
             )
 
     override val border: Border = Border(
-            interactive = Colors.Primary.n400,
+            brand = Colors.Primary.n400,
             strong = Colors.Neutral.n600,
             strongSelected = Colors.Accent.n050,
             subtle = Colors.Neutral.n800,
@@ -48,6 +48,7 @@ public object AndroidNewSemanticTokensDark : SemanticTokens {
             primary = Colors.Neutral.n050,
             secondary = Colors.Neutral.n300,
             accent = Colors.Accent.n025,
+            brand = Colors.Primary.n500,
             placeholder = Colors.Neutral.n200,
             inverseAccent = Colors.Accent.n900,
             onColor = Colors.Neutral.n025,
@@ -64,6 +65,7 @@ public object AndroidNewSemanticTokensDark : SemanticTokens {
             primary = Colors.Neutral.n050,
             secondary = Colors.Neutral.n300,
             accent = Colors.Accent.n025,
+            brand = Colors.Primary.n500,
             inverseAccent = Colors.Accent.n900,
             onColor = Colors.Neutral.n025,
             onColorDisabled = Colors.Neutral.n400,

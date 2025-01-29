@@ -37,7 +37,7 @@ public data class Button(
 )
 
 public data class Border(
-    public val interactive: Color = Color.Magenta,
+    public val brand: Color = Color.Magenta,
     public val strong: Color = Color.Magenta,
     public val strongSelected: Color = Color.Magenta,
     public val subtle: Color = Color.Magenta,
@@ -49,6 +49,7 @@ public data class Text(
     public val primary: Color = Color.Magenta,
     public val secondary: Color = Color.Magenta,
     public val accent: Color = Color.Magenta,
+    public val brand: Color = Color.Magenta,
     public val placeholder: Color = Color.Magenta,
     public val inverseAccent: Color = Color.Magenta,
     public val onColor: Color = Color.Magenta,
@@ -65,6 +66,7 @@ public data class Icon(
     public val primary: Color = Color.Magenta,
     public val secondary: Color = Color.Magenta,
     public val accent: Color = Color.Magenta,
+    public val brand: Color = Color.Magenta,
     public val inverseAccent: Color = Color.Magenta,
     public val onColor: Color = Color.Magenta,
     public val onColorDisabled: Color = Color.Magenta,

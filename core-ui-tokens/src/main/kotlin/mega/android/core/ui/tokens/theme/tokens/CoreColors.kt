@@ -11,6 +11,8 @@ internal object Colors {
         public val white: Color = Color(255, 255, 255, 255)
 
         public val black: Color = Color(0, 0, 0, 255)
+
+        public val grey: Color = Color(97, 99, 102, 255)
     }
 
     public object Primary {
@@ -325,5 +327,41 @@ internal object Colors {
         public val n080: Color = Color(255, 255, 255, 204)
 
         public val n090: Color = Color(255, 255, 255, 230)
+    }
+
+    public object Grey {
+        public val n0: Color = Color(255, 255, 255, 255)
+
+        public val n25: Color = Color(247, 247, 247, 255)
+
+        public val n50: Color = Color(239, 239, 240, 255)
+
+        public val n75: Color = Color(228, 228, 229, 255)
+
+        public val n100: Color = Color(215, 216, 217, 255)
+
+        public val n200: Color = Color(176, 177, 179, 255)
+
+        public val n300: Color = Color(152, 154, 156, 255)
+
+        public val n400: Color = Color(129, 130, 133, 255)
+
+        public val n500: Color = Color(97, 99, 102, 255)
+
+        public val n600: Color = Color(82, 84, 87, 255)
+
+        public val n700: Color = Color(68, 69, 71, 255)
+
+        public val n800: Color = Color(58, 59, 61, 255)
+
+        public val n900: Color = Color(48, 49, 51, 255)
+
+        public val n925: Color = Color(42, 43, 44, 255)
+
+        public val n950: Color = Color(34, 35, 36, 255)
+
+        public val n975: Color = Color(21, 22, 22, 255)
+
+        public val n1000: Color = Color(0, 0, 0, 255)
     }
 }

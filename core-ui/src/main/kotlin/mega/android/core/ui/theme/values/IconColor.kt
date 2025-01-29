@@ -11,6 +11,7 @@ public enum class IconColor {
     Primary,
     Secondary,
     Accent,
+    Brand,
     InverseAccent,
     OnColor,
     OnColorDisabled,
@@ -22,6 +23,7 @@ public enum class IconColor {
         Primary -> icon.primary
         Secondary -> icon.secondary
         Accent -> icon.accent
+        Brand -> icon.brand
         InverseAccent -> icon.inverseAccent
         OnColor -> icon.onColor
         OnColorDisabled -> icon.onColorDisabled
