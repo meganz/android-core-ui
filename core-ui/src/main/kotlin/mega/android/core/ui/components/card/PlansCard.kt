@@ -22,7 +22,7 @@ import androidx.compose.ui.unit.dp
 import mega.android.core.ui.R
 import mega.android.core.ui.components.MegaText
 import mega.android.core.ui.components.button.PrimaryFilledButton
-import mega.android.core.ui.components.button.TextOnlyButton
+import mega.android.core.ui.components.button.SecondaryFilledButton
 import mega.android.core.ui.components.image.MegaIcon
 import mega.android.core.ui.components.list.FlexibleLineListItem
 import mega.android.core.ui.preview.CombinedThemePreviews
@@ -165,7 +165,7 @@ fun PlansCard(
         }
 
         secondaryButtonText?.let {
-            TextOnlyButton(
+            SecondaryFilledButton(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(top = spacing.x8)
