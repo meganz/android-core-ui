@@ -26,6 +26,7 @@ import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import androidx.core.view.WindowCompat
 import mega.android.core.ui.theme.AppTheme.typography
+import mega.android.core.ui.theme.activity.LocalActivity
 import mega.android.core.ui.theme.colors.AppColors
 import mega.android.core.ui.theme.devicetype.DeviceType
 import mega.android.core.ui.theme.devicetype.LocalDeviceType
@@ -107,9 +108,10 @@ fun AndroidTheme(
     }
 
     val view = LocalView.current
+    val activity = view.context.findActivity()
     if (!view.isInEditMode) {
         SideEffect {
-            view.context.findActivity()?.window?.let { window ->
+            activity?.window?.let { window ->
                 window.statusBarColor =
                     (if (fromAutofill) Color.Transparent else colors.background.pageBackground).toArgb()
                 window.navigationBarColor = colors.background.pageBackground.toArgb()
@@ -127,7 +129,8 @@ fun AndroidTheme(
     CompositionLocalProvider(
         LocalColorPalette provides colorPalette,
         LocalSpacing provides Dimensions(),
-        LocalDeviceType provides deviceType
+        LocalDeviceType provides deviceType,
+        LocalActivity provides activity
     ) {
         MaterialTheme(
             shapes = shapes,
