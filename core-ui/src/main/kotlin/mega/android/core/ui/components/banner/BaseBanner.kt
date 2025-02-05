@@ -65,9 +65,9 @@ internal fun BaseBanner(
                     .weight(1f),
                 verticalArrangement = Arrangement.spacedBy(LocalSpacing.current.x8)
             ) {
-                title?.let {
+                title?.text?.let { text ->
                     LinkSpannedText(
-                        value = title.text.orEmpty(),
+                        value = text,
                         spanStyles = title.annotations ?: emptyMap(),
                         onAnnotationClick = title.onAnnotationClick ?: {},
                         baseStyle = AppTheme.typography.titleMedium,

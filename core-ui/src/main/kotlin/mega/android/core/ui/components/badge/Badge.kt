@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -58,7 +59,7 @@ fun Badge(
 
     Row(
         modifier = modifier
-            .wrapContentSize()
+            .wrapContentHeight()
             .background(
                 color = attributes.backgroundColor,
                 shape = AppTheme.shapes.extraSmall
