@@ -14,6 +14,7 @@ import mega.android.core.ui.theme.values.ComponentsColor
 import mega.android.core.ui.theme.values.IconColor
 import mega.android.core.ui.theme.values.LinkColor
 import mega.android.core.ui.theme.values.SupportColor
+import mega.android.core.ui.theme.values.TextColor
 
 @Composable
 fun MegaIcon(
@@ -25,6 +26,21 @@ fun MegaIcon(
     Icon(
         painter = painter,
         tint = if (tint != null) AppTheme.iconColor(iconColor = tint) else Color.Unspecified,
+        contentDescription = contentDescription,
+        modifier = modifier
+    )
+}
+
+@Composable
+fun MegaIcon(
+    painter: Painter,
+    modifier: Modifier = Modifier,
+    textColorTint: TextColor? = null,
+    contentDescription: String? = null,
+) {
+    Icon(
+        painter = painter,
+        tint = if (textColorTint != null) AppTheme.textColor(textColor = textColorTint) else Color.Unspecified,
         contentDescription = contentDescription,
         modifier = modifier
     )
