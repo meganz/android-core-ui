@@ -29,6 +29,7 @@ enum class BadgeType {
     Success,
     Warning,
     Info,
+    Error,
     Mega
 }
 
@@ -101,6 +102,10 @@ private fun getBadgeAttributes(badgeType: BadgeType): Badge {
         BadgeType.Info -> Badge(
             textColor = TextColor.Info,
             backgroundColor = AppTheme.colors.notifications.notificationInfo
+        )
+        BadgeType.Error -> Badge(
+            textColor = TextColor.Error,
+            backgroundColor = AppTheme.colors.notifications.notificationError
         )
         BadgeType.Mega -> Badge(
             textColor = TextColor.OnColor,
