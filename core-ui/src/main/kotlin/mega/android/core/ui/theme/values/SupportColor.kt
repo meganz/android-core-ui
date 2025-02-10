@@ -14,7 +14,7 @@ public enum class SupportColor {
     Info,
     ;
 
-    internal fun getSupportColor(support: Support): Color = when (this) {
+    public fun getSupportColor(support: Support): Color = when (this) {
         Success -> support.success
         Warning -> support.warning
         Error -> support.error

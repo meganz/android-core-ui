@@ -13,7 +13,7 @@ public enum class ComponentsColor {
     ToastBackground,
     ;
 
-    internal fun getComponentsColor(components: Components): Color = when (this) {
+    public fun getComponentsColor(components: Components): Color = when (this) {
         SelectionControl -> components.selectionControl
         Interactive -> components.interactive
         ToastBackground -> components.toastBackground

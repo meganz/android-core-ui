@@ -24,7 +24,7 @@ public enum class TextColor {
     Inverse,
     ;
 
-    internal fun getTextColor(text: Text): Color = when (this) {
+    public fun getTextColor(text: Text): Color = when (this) {
         Primary -> text.primary
         Secondary -> text.secondary
         Accent -> text.accent

@@ -19,7 +19,7 @@ public enum class IconColor {
     Disabled,
     ;
 
-    internal fun getIconColor(icon: Icon): Color = when (this) {
+    public fun getIconColor(icon: Icon): Color = when (this) {
         Primary -> icon.primary
         Secondary -> icon.secondary
         Accent -> icon.accent

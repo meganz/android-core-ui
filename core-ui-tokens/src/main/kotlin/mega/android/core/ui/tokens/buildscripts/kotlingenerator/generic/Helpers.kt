@@ -53,7 +53,7 @@ internal fun addEnumMapper(
         typeSpecBuilder.addFunction(
             FunSpec
                 .builder("get$enumName")
-                .addModifiers(KModifier.INTERNAL)
+                //.addModifiers(KModifier.INTERNAL) this should be back to Internal once `MegaOriginalTheme` is not needed anymore
                 .returns(properties.first().second)
                 .addParameter(
                     ParameterSpec.builder(

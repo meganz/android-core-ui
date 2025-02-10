@@ -13,7 +13,7 @@ public enum class LinkColor {
     Visited,
     ;
 
-    internal fun getLinkColor(link: Link): Color = when (this) {
+    public fun getLinkColor(link: Link): Color = when (this) {
         Primary -> link.primary
         Inverse -> link.inverse
         Visited -> link.visited
