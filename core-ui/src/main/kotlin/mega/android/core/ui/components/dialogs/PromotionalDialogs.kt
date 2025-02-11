@@ -44,6 +44,8 @@ import mega.android.core.ui.R
 import mega.android.core.ui.components.button.PrimaryFilledButton
 import mega.android.core.ui.components.button.SecondaryFilledButton
 import mega.android.core.ui.components.common.PromotionalContent
+import mega.android.core.ui.components.common.PromotionalContentFooter
+import mega.android.core.ui.components.common.PromotionalContentFooterDefaults
 import mega.android.core.ui.components.common.PromotionalFullImage
 import mega.android.core.ui.components.common.PromotionalImage
 import mega.android.core.ui.components.common.PromotionalListAttributes
@@ -68,18 +70,18 @@ private val DIALOG_MAXIMUM_HEIGHT = 600.dp
  */
 @Composable
 fun PromotionalImageDialog(
-    modifier: Modifier = Modifier,
     image: Any?,
     title: String,
     headline: String,
+    modifier: Modifier = Modifier,
     description: String? = null,
     showCloseButton: Boolean = true,
     primaryButton: DialogButtonAttribute? = null,
     secondaryButton: DialogButtonAttribute? = null,
     listItems: List<PromotionalListAttributes> = emptyList(),
     contentText: String? = null,
-    footer: String? = null,
-    onDismissRequest: () -> Unit = {}
+    footer: PromotionalContentFooter? = null,
+    onDismissRequest: () -> Unit = {},
 ) {
     Dialog(
         onDismissRequest = onDismissRequest,
@@ -122,7 +124,7 @@ fun PromotionalImageDialog(
                     description = description,
                     contentText = contentText,
                     footer = footer,
-                    listItems = listItems
+                    listItems = listItems,
                 )
             }
 
@@ -144,17 +146,17 @@ fun PromotionalImageDialog(
  */
 @Composable
 fun PromotionalFullImageDialog(
-    modifier: Modifier = Modifier,
     image: Any?,
     title: String,
     headline: String,
+    modifier: Modifier = Modifier,
     description: String? = null,
     showCloseButton: Boolean = true,
     primaryButton: DialogButtonAttribute? = null,
     secondaryButton: DialogButtonAttribute? = null,
     listItems: List<PromotionalListAttributes> = emptyList(),
     contentText: String? = null,
-    footer: String? = null,
+    footer: PromotionalContentFooter? = null,
     onDismissRequest: () -> Unit = {},
 ) {
     val spacing = LocalSpacing.current
@@ -194,7 +196,7 @@ fun PromotionalFullImageDialog(
                         description = description,
                         listItems = listItems,
                         contentText = contentText,
-                        footer = footer
+                        footer = footer,
                     )
                 }
 
@@ -238,9 +240,9 @@ fun PromotionalFullImageDialog(
  */
 @Composable
 fun PromotionalIllustrationDialog(
-    modifier: Modifier = Modifier,
     title: String,
     headline: String,
+    modifier: Modifier = Modifier,
     description: String? = null,
     showCloseButton: Boolean = true,
     @DrawableRes illustration: Int? = null,
@@ -249,8 +251,8 @@ fun PromotionalIllustrationDialog(
     secondaryButton: DialogButtonAttribute? = null,
     listItems: List<PromotionalListAttributes> = emptyList(),
     contentText: String? = null,
-    footer: String? = null,
-    onDismissRequest: () -> Unit = {}
+    footer: PromotionalContentFooter? = null,
+    onDismissRequest: () -> Unit = {},
 ) {
     val scrollState = rememberScrollState()
     var isScrollable by rememberSaveable { mutableStateOf(false) }
@@ -296,7 +298,7 @@ fun PromotionalIllustrationDialog(
                     description = description,
                     listItems = listItems,
                     contentText = contentText,
-                    footer = footer
+                    footer = footer,
                 )
             }
 
@@ -329,7 +331,7 @@ fun PromotionalPlainDialog(
     secondaryButton: DialogButtonAttribute? = null,
     listItems: List<PromotionalListAttributes> = emptyList(),
     contentText: String? = null,
-    footer: String? = null,
+    footer: PromotionalContentFooter? = null,
     onDismissRequest: () -> Unit = {},
 ) {
     PromotionalIllustrationDialog(
@@ -345,7 +347,7 @@ fun PromotionalPlainDialog(
         contentText = contentText,
         footer = footer,
         onDismissRequest = onDismissRequest,
-        illustration = null
+        illustration = null,
     )
 }
 
@@ -437,7 +439,7 @@ private fun PromotionalImageDialogComponent() {
             secondaryButton = "Button 2" to {},
             onDismissRequest = {},
             listItems = listItemSamples,
-            footer = "*terms and conditions. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip"
+            footer = PromotionalContentFooterDefaults.footer("*terms and conditions. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip")
         )
     }
 }
@@ -454,7 +456,7 @@ private fun PromotionalFullImageDialogComponent() {
             secondaryButton = "Button 2" to {},
             onDismissRequest = {},
             listItems = listItemSamples,
-            footer = "*terms and conditions. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip"
+            footer = PromotionalContentFooterDefaults.footer("*terms and conditions. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip")
         )
     }
 }
@@ -471,7 +473,7 @@ private fun PromotionalIllustrationDialogComponent() {
             secondaryButton = "Button 2" to {},
             onDismissRequest = {},
             listItems = listItemSamples,
-            footer = "*terms and conditions. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip"
+            footer = PromotionalContentFooterDefaults.footer("*terms and conditions. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip")
         )
     }
 }
@@ -487,7 +489,7 @@ private fun PromotionalPlainDialogComponent() {
             secondaryButton = "Button 2" to {},
             onDismissRequest = {},
             listItems = listItemSamples,
-            footer = "*terms and conditions. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip"
+            footer = PromotionalContentFooterDefaults.footer("*terms and conditions. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip")
         )
     }
 }

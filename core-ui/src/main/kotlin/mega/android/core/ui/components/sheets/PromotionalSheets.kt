@@ -47,6 +47,8 @@ import mega.android.core.ui.R
 import mega.android.core.ui.components.button.PrimaryFilledButton
 import mega.android.core.ui.components.button.SecondaryFilledButton
 import mega.android.core.ui.components.common.PromotionalContent
+import mega.android.core.ui.components.common.PromotionalContentFooter
+import mega.android.core.ui.components.common.PromotionalContentFooterDefaults
 import mega.android.core.ui.components.common.PromotionalFullImage
 import mega.android.core.ui.components.common.PromotionalImage
 import mega.android.core.ui.components.common.PromotionalListAttributes
@@ -84,10 +86,10 @@ fun PromotionalImageSheet(
     primaryButton: SheetButtonAttribute? = null,
     secondaryButton: SheetButtonAttribute? = null,
     contentText: String? = null,
-    footer: String? = null,
+    footer: PromotionalContentFooter? = null,
     listItems: List<PromotionalListAttributes> = emptyList(),
     onDismissRequest: () -> Unit = {},
-    isVisible: Boolean = false
+    isVisible: Boolean = false,
 ) {
     val coroutineScope = rememberCoroutineScope()
     val spacing = LocalSpacing.current
@@ -167,7 +169,7 @@ fun PromotionalImageSheet(
                     description = description,
                     listItems = listItems,
                     contentText = contentText,
-                    footer = footer
+                    footer = footer,
                 )
             }
 
@@ -205,9 +207,9 @@ fun PromotionalFullImageSheet(
     secondaryButton: SheetButtonAttribute? = null,
     listItems: List<PromotionalListAttributes> = emptyList(),
     contentText: String? = null,
-    footer: String? = null,
+    footer: PromotionalContentFooter? = null,
     onDismissRequest: () -> Unit = {},
-    isVisible: Boolean = false
+    isVisible: Boolean = false,
 ) {
     val spacing = LocalSpacing.current
     val density = LocalDensity.current
@@ -270,7 +272,7 @@ fun PromotionalFullImageSheet(
                     description = description,
                     listItems = listItems,
                     contentText = contentText,
-                    footer = footer
+                    footer = footer,
                 )
             }
 
@@ -337,9 +339,9 @@ fun PromotionalIllustrationSheet(
     secondaryButton: SheetButtonAttribute? = null,
     listItems: List<PromotionalListAttributes> = emptyList(),
     contentText: String? = null,
-    footer: String? = null,
+    footer: PromotionalContentFooter? = null,
     onDismissRequest: () -> Unit = {},
-    isVisible: Boolean = false
+    isVisible: Boolean = false,
 ) {
     val coroutineScope = rememberCoroutineScope()
     val spacing = LocalSpacing.current
@@ -423,7 +425,7 @@ fun PromotionalIllustrationSheet(
                     description = description,
                     listItems = listItems,
                     contentText = contentText,
-                    footer = footer
+                    footer = footer,
                 )
             }
 
@@ -460,9 +462,9 @@ fun PromotionalPlainSheet(
     secondaryButton: SheetButtonAttribute? = null,
     listItems: List<PromotionalListAttributes> = emptyList(),
     contentText: String? = null,
-    footer: String? = null,
+    footer: PromotionalContentFooter? = null,
     onDismissRequest: () -> Unit = {},
-    isVisible: Boolean = false
+    isVisible: Boolean = false,
 ) {
     PromotionalIllustrationSheet(
         modifier = modifier,
@@ -479,7 +481,7 @@ fun PromotionalPlainSheet(
         footer = footer,
         onDismissRequest = onDismissRequest,
         isVisible = isVisible,
-        illustration = null
+        illustration = null,
     )
 }
 
@@ -581,7 +583,7 @@ private fun PreviewPromotionalPlainSheet() {
             secondaryButton = "Button 2" to {},
             listItems = listItemSamples,
             isVisible = true,
-            footer = "*terms and conditions. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip"
+            footer = PromotionalContentFooterDefaults.footer("*terms and conditions. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip")
         )
     }
 }
@@ -598,7 +600,7 @@ private fun PreviewPromotionalFullImageSheetWithList() {
             secondaryButton = "Button 2" to {},
             listItems = listItemSamples,
             isVisible = true,
-            footer = "*terms and conditions. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip"
+            footer = PromotionalContentFooterDefaults.footer("*terms and conditions. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip")
         )
     }
 }
@@ -615,7 +617,7 @@ private fun PreviewPromotionalImageSheetWithList() {
             secondaryButton = "Button 2" to {},
             listItems = listItemSamples,
             isVisible = true,
-            footer = "*terms and conditions. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip"
+            footer = PromotionalContentFooterDefaults.footer("*terms and conditions. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip")
         )
     }
 }
@@ -633,7 +635,7 @@ private fun PreviewPromotionalIllustrationSheetWithList() {
             secondaryButton = "Button 2" to {},
             listItems = listItemSamples,
             isVisible = true,
-            footer = "*terms and conditions. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip"
+            footer = PromotionalContentFooterDefaults.footer("*terms and conditions. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip")
         )
     }
 }

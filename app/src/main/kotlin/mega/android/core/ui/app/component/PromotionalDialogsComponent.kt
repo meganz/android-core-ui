@@ -14,21 +14,29 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import mega.android.core.ui.R
 import mega.android.core.ui.app.util.Section
 import mega.android.core.ui.components.button.PrimaryFilledButton
+import mega.android.core.ui.components.common.PromotionalContentFooter
 import mega.android.core.ui.components.common.PromotionalListAttributes
 import mega.android.core.ui.components.dialogs.PromotionalFullImageDialog
 import mega.android.core.ui.components.dialogs.PromotionalIllustrationDialog
 import mega.android.core.ui.components.dialogs.PromotionalImageDialog
 import mega.android.core.ui.components.dialogs.PromotionalPlainDialog
 import mega.android.core.ui.model.IllustrationIconSizeMode
+import mega.android.core.ui.model.MegaSpanStyle
+import mega.android.core.ui.model.SpanIndicator
+import mega.android.core.ui.model.SpanStyleWithAnnotation
 import mega.android.core.ui.theme.spacing.LocalSpacing
+import mega.android.core.ui.theme.values.LinkColor
 
 @Composable
 fun PromotionalDialogsCatalog(
     showCloseButton: Boolean,
+    showClickableFooter: Boolean,
     illustrationsMode: IllustrationIconSizeMode,
 ) {
     Spacer(modifier = Modifier.height(LocalSpacing.current.x16))
@@ -57,6 +65,7 @@ fun PromotionalDialogsCatalog(
                     PromotionalPlainDialogComponent(
                         showCloseButton = showCloseButton,
                         illustrationMode = illustrationsMode,
+                        showClickableFooter = showClickableFooter,
                         onDismissRequest = {
                             showPlainDialog = false
                         }
@@ -77,7 +86,8 @@ fun PromotionalDialogsCatalog(
 
                 if (showImageDialog) {
                     PromotionalImageDialogComponent(
-                        showCloseButton = showCloseButton
+                        showCloseButton = showCloseButton,
+                        showClickableFooter = showClickableFooter
                     ) {
                         showImageDialog = false
                     }
@@ -97,7 +107,8 @@ fun PromotionalDialogsCatalog(
 
                 if (showFullImageDialog) {
                     PromotionalFullImageDialogComponent(
-                        showCloseButton = showCloseButton
+                        showCloseButton = showCloseButton,
+                        showClickableFooter = showClickableFooter
                     ) {
                         showFullImageDialog = false
                     }
@@ -118,7 +129,8 @@ fun PromotionalDialogsCatalog(
                 if (showIllustrationDialog) {
                     PromotionalIllustrationDialogComponent(
                         showCloseButton = showCloseButton,
-                        illustrationMode = illustrationsMode
+                        illustrationMode = illustrationsMode,
+                        showClickableFooter = showClickableFooter
                     ) {
                         showIllustrationDialog = false
                     }
@@ -131,8 +143,10 @@ fun PromotionalDialogsCatalog(
 @Composable
 private fun PromotionalImageDialogComponent(
     showCloseButton: Boolean,
+    showClickableFooter: Boolean,
     onDismissRequest: () -> Unit
 ) {
+
     PromotionalImageDialog(
         image = "https:images.unsplash.com/photo-1579353977828-2a4eab540b9a?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8c2FtcGxlfGVufDB8fDB8fHww",
         title = "Title",
@@ -143,13 +157,14 @@ private fun PromotionalImageDialogComponent(
         secondaryButton = "Button 2" to {},
         onDismissRequest = onDismissRequest,
         listItems = listItemSamples,
-        footer = "*terms and conditions. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip"
+        footer = getPromotionalContentFooter(showClickableFooter)
     )
 }
 
 @Composable
 private fun PromotionalFullImageDialogComponent(
     showCloseButton: Boolean,
+    showClickableFooter: Boolean,
     onDismissRequest: () -> Unit
 ) {
     PromotionalFullImageDialog(
@@ -162,13 +177,14 @@ private fun PromotionalFullImageDialogComponent(
         secondaryButton = "Button 2" to {},
         onDismissRequest = onDismissRequest,
         listItems = listItemSamples,
-        footer = "*terms and conditions. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip"
+        footer = getPromotionalContentFooter(showClickableFooter)
     )
 }
 
 @Composable
 private fun PromotionalIllustrationDialogComponent(
     showCloseButton: Boolean,
+    showClickableFooter: Boolean,
     illustrationMode: IllustrationIconSizeMode = IllustrationIconSizeMode.Small,
     onDismissRequest: () -> Unit
 ) {
@@ -183,13 +199,14 @@ private fun PromotionalIllustrationDialogComponent(
         secondaryButton = "Button 2" to {},
         onDismissRequest = onDismissRequest,
         listItems = listItemSamples,
-        footer = "*terms and conditions. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip"
+        footer = getPromotionalContentFooter(showClickableFooter)
     )
 }
 
 @Composable
 private fun PromotionalPlainDialogComponent(
     showCloseButton: Boolean,
+    showClickableFooter: Boolean,
     illustrationMode: IllustrationIconSizeMode = IllustrationIconSizeMode.Small,
     onDismissRequest: () -> Unit
 ) {
@@ -203,7 +220,37 @@ private fun PromotionalPlainDialogComponent(
         secondaryButton = "Button 2" to {},
         onDismissRequest = onDismissRequest,
         listItems = listItemSamples,
-        footer = "*terms and conditions. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip"
+        footer = getPromotionalContentFooter(showClickableFooter)
+    )
+}
+
+@Composable
+private fun getPromotionalContentFooter(
+    showClickableFooter: Boolean
+): PromotionalContentFooter {
+    val footerText = if (showClickableFooter) {
+        "[B]Click here to learn more[/B]"
+    } else {
+        "*terms and conditions. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip"
+    }
+
+    val footerTextAlign = if (showClickableFooter) TextAlign.Center else TextAlign.Start
+    return PromotionalContentFooter(
+        text = footerText,
+        textAlign = footerTextAlign,
+        spanStyles = if (showClickableFooter) {
+            mapOf(
+                SpanIndicator('B') to SpanStyleWithAnnotation(
+                    MegaSpanStyle.LinkColorStyle(
+                        SpanStyle(),
+                        LinkColor.Primary
+                    ), "d"
+                )
+            )
+        } else {
+            emptyMap()
+        },
+        onClick = {}
     )
 }
 

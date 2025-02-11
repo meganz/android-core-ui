@@ -19,6 +19,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
+import mega.android.core.ui.components.LinkSpannedText
 import mega.android.core.ui.components.MegaText
 import mega.android.core.ui.components.list.IconContentListItem
 import mega.android.core.ui.components.list.ImageContentListItem
@@ -80,7 +81,7 @@ internal fun PromotionalContent(
     isIllustration: Boolean = false,
     listItems: List<PromotionalListAttributes> = emptyList(),
     contentText: String? = null,
-    footer: String? = null,
+    footer: PromotionalContentFooter? = null,
 ) {
     Column(
         modifier = modifier
@@ -169,8 +170,8 @@ internal fun PromotionalContent(
             )
         }
 
-        if (!footer.isNullOrBlank()) {
-            MegaText(
+        if (footer != null) {
+            LinkSpannedText(
                 modifier = Modifier
                     .padding(
                         top = LocalSpacing.current.x24,
@@ -178,10 +179,11 @@ internal fun PromotionalContent(
                         end = LocalSpacing.current.x16
                     )
                     .fillMaxWidth(),
-                text = footer,
-                textColor = TextColor.Secondary,
-                style = AppTheme.typography.bodySmall,
-                textAlign = TextAlign.Center
+                value = footer.text,
+                baseTextColor = TextColor.Secondary,
+                baseStyle = AppTheme.typography.bodySmall.copy(textAlign = footer.textAlign),
+                spanStyles = footer.spanStyles,
+                onAnnotationClick = footer.onClick
             )
         }
 

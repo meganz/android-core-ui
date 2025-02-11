@@ -17,26 +17,35 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import mega.android.core.ui.R
 import mega.android.core.ui.app.util.Section
 import mega.android.core.ui.components.MegaText
 import mega.android.core.ui.components.button.PrimaryFilledButton
 import mega.android.core.ui.components.checkbox.Checkbox
+import mega.android.core.ui.components.common.PromotionalContentFooter
 import mega.android.core.ui.components.common.PromotionalListAttributes
 import mega.android.core.ui.components.sheets.PromotionalFullImageSheet
 import mega.android.core.ui.components.sheets.PromotionalIllustrationSheet
 import mega.android.core.ui.components.sheets.PromotionalImageSheet
 import mega.android.core.ui.components.sheets.PromotionalPlainSheet
 import mega.android.core.ui.model.IllustrationIconSizeMode
+import mega.android.core.ui.model.MegaSpanStyle
+import mega.android.core.ui.model.SpanIndicator
+import mega.android.core.ui.model.SpanStyleWithAnnotation
 import mega.android.core.ui.theme.spacing.LocalSpacing
+import mega.android.core.ui.theme.values.LinkColor
 import mega.android.core.ui.theme.values.TextColor
 
 @Composable
 fun PromotionalSheetsCatalog(
+    footerClickable: Boolean,
     showCloseButton: Boolean,
     illustrationMode: IllustrationIconSizeMode,
     onShowCloseButtonChange: (Boolean) -> Unit,
+    onShowClickableFooterChange: (Boolean) -> Unit,
     onIllustrationModeChange: (IllustrationIconSizeMode) -> Unit
 ) {
     Spacer(modifier = Modifier.height(LocalSpacing.current.x16))
@@ -68,6 +77,19 @@ fun PromotionalSheetsCatalog(
                 textColor = TextColor.Primary
             )
         }
+        Row(
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Checkbox(checked = footerClickable, onCheckStateChanged = {
+                onShowClickableFooterChange(it)
+            })
+
+            MegaText(
+                modifier = Modifier.padding(horizontal = LocalSpacing.current.x8),
+                text = "Make Footer Clickable",
+                textColor = TextColor.Primary
+            )
+        }
 
         LazyVerticalGrid(
             columns = GridCells.Fixed(3),
@@ -93,7 +115,8 @@ fun PromotionalSheetsCatalog(
                 if (showPlainSheet) {
                     PromotionalPlainSheetComponent(
                         showCloseButton = showCloseButton,
-                        illustrationMode = illustrationMode
+                        illustrationMode = illustrationMode,
+                        showClickableFooter = footerClickable
                     ) {
                         showPlainSheet = false
                     }
@@ -113,7 +136,8 @@ fun PromotionalSheetsCatalog(
 
                 if (showImageSheet) {
                     PromotionalImageSheetComponent(
-                        showCloseButton = showCloseButton
+                        showCloseButton = showCloseButton,
+                        showClickableFooter = footerClickable
                     ) {
                         showImageSheet = false
                     }
@@ -133,7 +157,8 @@ fun PromotionalSheetsCatalog(
 
                 if (showFullImageSheet) {
                     PromotionalFullImageSheetComponent(
-                        showCloseButton = showCloseButton
+                        showCloseButton = showCloseButton,
+                        showClickableFooter = footerClickable
                     ) {
                         showFullImageSheet = false
                     }
@@ -154,7 +179,8 @@ fun PromotionalSheetsCatalog(
                 if (showIllustrationSheet) {
                     PromotionalIllustrationSheetComponent(
                         showCloseButton = showCloseButton,
-                        illustrationMode = illustrationMode
+                        illustrationMode = illustrationMode,
+                        showClickableFooter = footerClickable
                     ) {
                         showIllustrationSheet = false
                     }
@@ -167,6 +193,7 @@ fun PromotionalSheetsCatalog(
 @Composable
 private fun PromotionalPlainSheetComponent(
     showCloseButton: Boolean,
+    showClickableFooter: Boolean,
     illustrationMode: IllustrationIconSizeMode,
     onDismissRequest: () -> Unit
 ) {
@@ -181,13 +208,14 @@ private fun PromotionalPlainSheetComponent(
         secondaryButton = "Button 2" to {},
         onDismissRequest = onDismissRequest,
         listItems = listItemSamples,
-        footer = "*terms and conditions. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip"
+        footer = getPromotionalContentFooter(showClickableFooter),
     )
 }
 
 @Composable
 private fun PromotionalFullImageSheetComponent(
     showCloseButton: Boolean,
+    showClickableFooter: Boolean,
     onDismissRequest: () -> Unit
 ) {
     PromotionalFullImageSheet(
@@ -201,13 +229,14 @@ private fun PromotionalFullImageSheetComponent(
         secondaryButton = "Button 2" to {},
         onDismissRequest = onDismissRequest,
         listItems = listItemSamples,
-        footer = "*terms and conditions. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip"
+        footer = getPromotionalContentFooter(showClickableFooter),
     )
 }
 
 @Composable
 private fun PromotionalIllustrationSheetComponent(
     showCloseButton: Boolean,
+    showClickableFooter: Boolean,
     illustrationMode: IllustrationIconSizeMode,
     onDismissRequest: () -> Unit
 ) {
@@ -223,13 +252,14 @@ private fun PromotionalIllustrationSheetComponent(
         secondaryButton = "Button 2" to {},
         onDismissRequest = onDismissRequest,
         listItems = listItemSamples,
-        footer = "*terms and conditions. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip"
+        footer = getPromotionalContentFooter(showClickableFooter),
     )
 }
 
 @Composable
 private fun PromotionalImageSheetComponent(
     showCloseButton: Boolean,
+    showClickableFooter: Boolean,
     onDismissRequest: () -> Unit
 ) {
     PromotionalImageSheet(
@@ -243,7 +273,7 @@ private fun PromotionalImageSheetComponent(
         secondaryButton = "Button 2" to {},
         onDismissRequest = onDismissRequest,
         listItems = listItemSamples,
-        footer = "*terms and conditions. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip"
+        footer = getPromotionalContentFooter(showClickableFooter),
     )
 }
 
@@ -253,5 +283,36 @@ private val listItemSamples = IntRange(1, 3).map {
         subtitle = "Subtitle $it",
         icon = R.drawable.ic_check_circle,
         imageUrl = "https://placehold.co/400x400/000000/FFFFFF/png"
+    )
+}
+
+
+@Composable
+private fun getPromotionalContentFooter(
+    showClickableFooter: Boolean
+): PromotionalContentFooter {
+    val footerText = if (showClickableFooter) {
+        "[B]Click here to learn more[/B]"
+    } else {
+        "*terms and conditions. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip"
+    }
+
+    val footerTextAlign = if (showClickableFooter) TextAlign.Center else TextAlign.Start
+    return PromotionalContentFooter(
+        text = footerText,
+        textAlign = footerTextAlign,
+        spanStyles = if (showClickableFooter) {
+            mapOf(
+                SpanIndicator('B') to SpanStyleWithAnnotation(
+                    MegaSpanStyle.LinkColorStyle(
+                        SpanStyle(),
+                        LinkColor.Primary
+                    ), "d"
+                )
+            )
+        } else {
+            emptyMap()
+        },
+        onClick = {}
     )
 }

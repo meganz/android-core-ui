@@ -1,12 +1,13 @@
 package mega.android.core.ui.model
 
 import androidx.annotation.DrawableRes
+import mega.android.core.ui.components.common.PromotionalContentFooter
 
 sealed class NewFeaturesAttributes {
     abstract val title: String
     abstract val headline: String
     abstract val description: String?
-    abstract val footer: String?
+    abstract val footer: PromotionalContentFooter?
     abstract val showCloseButton: Boolean
     abstract val featuresList: List<FeatureListItem>?
     abstract val primaryButtonText: String?
@@ -16,7 +17,7 @@ sealed class NewFeaturesAttributes {
         override val title: String,
         override val headline: String,
         override val description: String? = null,
-        override val footer: String? = null,
+        override val footer: PromotionalContentFooter? = null,
         override val showCloseButton: Boolean = true,
         override val featuresList: List<FeatureListItem>? = null,
         override val primaryButtonText: String? = null,
@@ -28,7 +29,7 @@ sealed class NewFeaturesAttributes {
         override val title: String,
         override val headline: String,
         override val description: String? = null,
-        override val footer: String? = null,
+        override val footer: PromotionalContentFooter? = null,
         override val showCloseButton: Boolean = true,
         override val featuresList: List<FeatureListItem>? = null,
         override val primaryButtonText: String? = null,
@@ -40,7 +41,7 @@ sealed class NewFeaturesAttributes {
         override val title: String,
         override val headline: String,
         override val description: String? = null,
-        override val footer: String? = null,
+        override val footer: PromotionalContentFooter? = null,
         override val showCloseButton: Boolean = true,
         override val featuresList: List<FeatureListItem>? = null,
         override val primaryButtonText: String? = null,
@@ -53,7 +54,7 @@ sealed class NewFeaturesAttributes {
         override val title: String,
         override val headline: String,
         override val description: String? = null,
-        override val footer: String? = null,
+        override val footer: PromotionalContentFooter? = null,
         override val showCloseButton: Boolean = true,
         override val featuresList: List<FeatureListItem>? = null,
         override val primaryButtonText: String? = null,

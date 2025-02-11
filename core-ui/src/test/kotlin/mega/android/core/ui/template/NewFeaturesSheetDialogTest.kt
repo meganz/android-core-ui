@@ -6,6 +6,7 @@ import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import mega.android.core.ui.R
+import mega.android.core.ui.components.common.PromotionalContentFooterDefaults
 import mega.android.core.ui.model.FeatureListItem
 import mega.android.core.ui.model.IllustrationIconSizeMode
 import mega.android.core.ui.model.NewFeaturesAttributes
@@ -29,7 +30,7 @@ class NewFeaturesSheetDialogTest {
                         title = "title",
                         headline = "headline",
                         description = "description",
-                        footer = "footer",
+                        footer = PromotionalContentFooterDefaults.footer("footer"),
                         showCloseButton = true,
                         featuresList = listOf(
                             FeatureListItem(
@@ -60,7 +61,7 @@ class NewFeaturesSheetDialogTest {
                         title = "title",
                         headline = "headline",
                         description = "description",
-                        footer = "footer",
+                        footer = PromotionalContentFooterDefaults.footer("footer"),
                         showCloseButton = true,
                         featuresList = listOf(
                             FeatureListItem(
@@ -91,7 +92,7 @@ class NewFeaturesSheetDialogTest {
                         title = "title",
                         headline = "headline",
                         description = "description",
-                        footer = "footer",
+                        footer = PromotionalContentFooterDefaults.footer("footer"),
                         showCloseButton = true,
                         featuresList = listOf(
                             FeatureListItem(
@@ -122,7 +123,7 @@ class NewFeaturesSheetDialogTest {
                         title = "title",
                         headline = "headline",
                         description = "description",
-                        footer = "footer",
+                        footer = PromotionalContentFooterDefaults.footer("footer"),
                         showCloseButton = true,
                         featuresList = listOf(
                             FeatureListItem(
@@ -153,7 +154,7 @@ class NewFeaturesSheetDialogTest {
                         title = "title",
                         headline = "headline",
                         description = "description",
-                        footer = "footer",
+                        footer = PromotionalContentFooterDefaults.footer("footer"),
                         showCloseButton = true,
                         featuresList = listOf(
                             FeatureListItem(
@@ -185,7 +186,7 @@ class NewFeaturesSheetDialogTest {
                         title = "title",
                         headline = "headline",
                         description = "description",
-                        footer = "footer",
+                        footer = PromotionalContentFooterDefaults.footer("footer"),
                         showCloseButton = true,
                         featuresList = listOf(
                             FeatureListItem(
@@ -217,7 +218,7 @@ class NewFeaturesSheetDialogTest {
                         title = "title",
                         headline = "headline",
                         description = "description",
-                        footer = "footer",
+                        footer = PromotionalContentFooterDefaults.footer("footer"),
                         showCloseButton = true,
                         featuresList = listOf(
                             FeatureListItem(
@@ -247,7 +248,7 @@ class NewFeaturesSheetDialogTest {
                         title = "title",
                         headline = "headline",
                         description = "description",
-                        footer = "footer",
+                        footer = PromotionalContentFooterDefaults.footer("footer"),
                         showCloseButton = true,
                         featuresList = listOf(
                             FeatureListItem(
