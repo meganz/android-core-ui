@@ -30,6 +30,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import mega.android.core.ui.R
@@ -40,12 +41,11 @@ import mega.android.core.ui.theme.AppTheme
 import mega.android.core.ui.theme.spacing.LocalSpacing
 import mega.android.core.ui.theme.values.TextColor
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SearchInputField(
-    modifier: Modifier,
     placeHolderText: String,
     text: String,
+    modifier: Modifier = Modifier,
     imeAction: ImeAction = ImeAction.Search,
     capitalization: KeyboardCapitalization = KeyboardCapitalization.Words,
     onKeyboardAction: (() -> Unit)? = null,
@@ -55,9 +55,88 @@ fun SearchInputField(
     isError: Boolean = false,
     autoCorrect: Boolean = true,
 ) {
+    // Holds the latest internal TextFieldValue state. We need to keep it to have the correct value
+    // of the composition.
+    var textFieldValueState by remember { mutableStateOf(TextFieldValue(text = text)) }
+    // Last String value that either text field was recomposed with or updated in the onValueChange
+    // callback. We keep track of it to prevent calling onValueChange(String) for same String when
+    // BaseSearchInputField's onValueChange is called multiple times without recomposition in between.
+    var lastTextValue by remember(text) { mutableStateOf(text) }
+
+    BaseSearchInputField(
+        modifier = modifier,
+        value = textFieldValueState,
+        placeHolderText = placeHolderText,
+        onValueChange = { newTextFieldValueState ->
+            textFieldValueState = newTextFieldValueState
+
+            val stringChangedSinceLastInvocation = lastTextValue != newTextFieldValueState.text
+            lastTextValue = newTextFieldValueState.text
+
+            if (stringChangedSinceLastInvocation) {
+                onValueChanged?.invoke(newTextFieldValueState.text)
+            }
+        },
+        imeAction = imeAction,
+        capitalization = capitalization,
+        onKeyboardAction = onKeyboardAction,
+        onFocusChanged = onFocusChanged,
+        enabled = enabled,
+        isError = isError,
+        autoCorrect = autoCorrect
+    )
+}
+
+@Composable
+fun SearchInputField(
+    value: TextFieldValue,
+    placeHolderText: String,
+    onValueChange: (TextFieldValue) -> Unit,
+    modifier: Modifier = Modifier,
+    imeAction: ImeAction = ImeAction.Search,
+    capitalization: KeyboardCapitalization = KeyboardCapitalization.Words,
+    onKeyboardAction: (() -> Unit)? = null,
+    onFocusChanged: ((Boolean) -> Unit)? = null,
+    enabled: Boolean = true,
+    isError: Boolean = false,
+    autoCorrect: Boolean = true,
+) {
+    BaseSearchInputField(
+        modifier = modifier,
+        value = value,
+        placeHolderText = placeHolderText,
+        onValueChange = {
+            if (value != it) {
+                onValueChange(it)
+            }
+        },
+        imeAction = imeAction,
+        capitalization = capitalization,
+        onKeyboardAction = onKeyboardAction,
+        onFocusChanged = onFocusChanged,
+        enabled = enabled,
+        isError = isError,
+        autoCorrect = autoCorrect
+    )
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun BaseSearchInputField(
+    value: TextFieldValue,
+    placeHolderText: String,
+    onValueChange: (TextFieldValue) -> Unit,
+    modifier: Modifier = Modifier,
+    imeAction: ImeAction = ImeAction.Search,
+    capitalization: KeyboardCapitalization = KeyboardCapitalization.Words,
+    onKeyboardAction: (() -> Unit)? = null,
+    onFocusChanged: ((Boolean) -> Unit)? = null,
+    enabled: Boolean = true,
+    isError: Boolean = false,
+    autoCorrect: Boolean = true,
+) {
     val spacing = LocalSpacing.current
     val interactionSource: MutableInteractionSource = remember { MutableInteractionSource() }
-    var baseText by remember(text) { mutableStateOf(text) }
     var isFocused by remember { mutableStateOf(false) }
     val primaryTextSelectionColors = TextSelectionColors(
         handleColor = AppTheme.colors.text.primary,
@@ -90,11 +169,8 @@ fun SearchInputField(
                     isFocused = it.isFocused
                     onFocusChanged?.invoke(it.isFocused)
                 },
-            value = baseText,
-            onValueChange = {
-                baseText = it
-                onValueChanged?.invoke(it)
-            },
+            value = value,
+            onValueChange = onValueChange,
             enabled = enabled,
             textStyle = AppTheme.typography.bodyLarge.copy(
                 // Basic text field requires a color to be set on the text style
@@ -112,7 +188,7 @@ fun SearchInputField(
             },
         ) { innerTextField ->
             OutlinedTextFieldDefaults.DecorationBox(
-                value = baseText,
+                value = value.text,
                 innerTextField = innerTextField,
                 enabled = enabled,
                 singleLine = true,
@@ -128,12 +204,11 @@ fun SearchInputField(
                 interactionSource = interactionSource,
                 contentPadding = PaddingValues(8.dp),
                 trailingIcon = {
-                    if (baseText.isNotEmpty()) {
+                    if (value.text.isNotEmpty()) {
                         Icon(
                             modifier = Modifier
                                 .clickable {
-                                    baseText = ""
-                                    onValueChanged?.invoke(baseText)
+                                    onValueChange(TextFieldValue(text = ""))
                                 }
                                 .padding(end = spacing.x12),
                             painter = painterResource(id = R.drawable.ic_x_thin),
@@ -169,7 +244,12 @@ fun SearchInputField(
 @Composable
 private fun SearchInputFieldPreview() {
     AndroidThemeForPreviews {
-        SearchInputField(Modifier, text = "", placeHolderText = "Search", onValueChanged = {})
+        SearchInputField(
+            modifier = Modifier,
+            text = "",
+            placeHolderText = "Search",
+            onValueChanged = {}
+        )
     }
 }
 
@@ -178,10 +258,12 @@ private fun SearchInputFieldPreview() {
 private fun SearchInputFieldFocusedPreview() {
     AndroidThemeForPreviews {
         val focusRequester = remember { FocusRequester() }
-        SearchInputField(Modifier.focusRequester(focusRequester),
+        SearchInputField(
+            modifier = Modifier.focusRequester(focusRequester),
             text = "",
             placeHolderText = "Search",
-            onValueChanged = {})
+            onValueChanged = {}
+        )
         LaunchedEffect(Unit) {
             focusRequester.requestFocus()
         }
@@ -194,10 +276,12 @@ private fun SearchInputFieldFocusedPreview() {
 private fun SearchInputFieldFocusedPreviewWithText() {
     AndroidThemeForPreviews {
         val focusRequester = remember { FocusRequester() }
-        SearchInputField(Modifier.focusRequester(focusRequester),
+        SearchInputField(
+            modifier = Modifier.focusRequester(focusRequester),
             text = "Facebook",
             placeHolderText = "Search",
-            onValueChanged = {})
+            onValueChanged = {}
+        )
         LaunchedEffect(Unit) {
             focusRequester.requestFocus()
         }
