@@ -77,11 +77,11 @@ internal fun PromotionalContent(
     modifier: Modifier,
     title: String,
     headline: String,
-    description: String? = null,
+    description: PromotionalContentDescription? = null,
     isIllustration: Boolean = false,
     listItems: List<PromotionalListAttributes> = emptyList(),
     contentText: String? = null,
-    footer: PromotionalContentFooter? = null,
+    footer: String? = null,
 ) {
     Column(
         modifier = modifier
@@ -112,7 +112,7 @@ internal fun PromotionalContent(
         )
 
         if (description != null) {
-            MegaText(
+            LinkSpannedText(
                 modifier = Modifier
                     .padding(
                         top = LocalSpacing.current.x16,
@@ -120,10 +120,11 @@ internal fun PromotionalContent(
                         end = LocalSpacing.current.x16
                     )
                     .fillMaxWidth(),
-                text = description,
-                textColor = TextColor.Secondary,
-                style = AppTheme.typography.bodyMedium,
-                textAlign = TextAlign.Center
+                value = description.text,
+                baseTextColor = TextColor.Secondary,
+                baseStyle = AppTheme.typography.bodyMedium.copy(textAlign = description.textAlign),
+                spanStyles = description.spanStyles,
+                onAnnotationClick = description.onClick
             )
         }
 
@@ -170,8 +171,8 @@ internal fun PromotionalContent(
             )
         }
 
-        if (footer != null) {
-            LinkSpannedText(
+        if (!footer.isNullOrBlank()) {
+            MegaText(
                 modifier = Modifier
                     .padding(
                         top = LocalSpacing.current.x24,
@@ -179,11 +180,10 @@ internal fun PromotionalContent(
                         end = LocalSpacing.current.x16
                     )
                     .fillMaxWidth(),
-                value = footer.text,
-                baseTextColor = TextColor.Secondary,
-                baseStyle = AppTheme.typography.bodySmall.copy(textAlign = footer.textAlign),
-                spanStyles = footer.spanStyles,
-                onAnnotationClick = footer.onClick
+                text = footer,
+                textColor = TextColor.Secondary,
+                style = AppTheme.typography.bodySmall,
+                textAlign = TextAlign.Center
             )
         }
 

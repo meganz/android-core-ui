@@ -70,7 +70,7 @@ class MainActivity : ComponentActivity() {
 fun MainComposeView() {
     var showCloseButton by remember { mutableStateOf(true) }
     var illustrationMode by remember { mutableStateOf(IllustrationIconSizeMode.Small) }
-    var footerClickable by remember { mutableStateOf(false) }
+    var descriptionClickable by remember { mutableStateOf(false) }
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
@@ -116,17 +116,17 @@ fun MainComposeView() {
             PromotionalSheetsCatalog(
                 showCloseButton = showCloseButton,
                 illustrationMode = illustrationMode,
-                footerClickable = footerClickable,
+                footerClickable = descriptionClickable,
                 onShowCloseButtonChange = { showCloseButton = it },
                 onIllustrationModeChange = { illustrationMode = it },
-                onShowClickableFooterChange = { footerClickable = it }
+                onShowClickableFooterChange = { descriptionClickable = it }
             )
         }
         item(key = 12) {
             PromotionalDialogsCatalog(
                 showCloseButton = showCloseButton,
                 illustrationsMode = illustrationMode,
-                showClickableFooter = footerClickable,
+                showClickableDescription = descriptionClickable,
             )
         }
         item(key = 13) {

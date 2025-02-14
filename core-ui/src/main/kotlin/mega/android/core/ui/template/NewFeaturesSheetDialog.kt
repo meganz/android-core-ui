@@ -20,6 +20,7 @@ import mega.android.core.ui.theme.devicetype.LocalDeviceType
 @Composable
 fun NewFeaturesSheetDialog(
     attributes: NewFeaturesAttributes,
+    modifier: Modifier = Modifier,
     onDismissRequest: () -> Unit = {},
     onPrimaryButtonClick: () -> Unit = {},
     onSecondaryButtonClick: () -> Unit = {}
@@ -29,13 +30,13 @@ fun NewFeaturesSheetDialog(
     val listItems = attributes.featuresList?.map {
         PromotionalListAttributes(it.title, it.subtitle, it.icon)
     } ?: emptyList()
-    val sheetsModifier = Modifier.statusBarsPadding()
+    val sheetDialogModifier = if(deviceType == DeviceType.Tablet) modifier else modifier.statusBarsPadding()
 
     when (attributes) {
         is NewFeaturesAttributes.FullImage -> {
             if (deviceType == DeviceType.Tablet) {
                 PromotionalFullImageDialog(
-                    modifier = Modifier.testTag(TestTags.NEW_FEATURES_SHEET_DIALOG_FULL_IMAGE_DIALOG),
+                    modifier = sheetDialogModifier.testTag(TestTags.NEW_FEATURES_SHEET_DIALOG_FULL_IMAGE_DIALOG),
                     image = attributes.image,
                     title = attributes.title,
                     headline = attributes.headline,
@@ -49,7 +50,7 @@ fun NewFeaturesSheetDialog(
                 )
             } else {
                 PromotionalFullImageSheet(
-                    modifier = sheetsModifier.testTag(TestTags.NEW_FEATURES_SHEET_DIALOG_FULL_IMAGE_SHEET),
+                    modifier = sheetDialogModifier.testTag(TestTags.NEW_FEATURES_SHEET_DIALOG_FULL_IMAGE_SHEET),
                     image = attributes.image,
                     title = attributes.title,
                     headline = attributes.headline,
@@ -68,7 +69,7 @@ fun NewFeaturesSheetDialog(
         is NewFeaturesAttributes.Image -> {
             if (deviceType == DeviceType.Tablet) {
                 PromotionalImageDialog(
-                    modifier = Modifier.testTag(TestTags.NEW_FEATURES_SHEET_DIALOG_IMAGE_DIALOG),
+                    modifier = sheetDialogModifier.testTag(TestTags.NEW_FEATURES_SHEET_DIALOG_IMAGE_DIALOG),
                     image = attributes.image,
                     title = attributes.title,
                     headline = attributes.headline,
@@ -82,7 +83,7 @@ fun NewFeaturesSheetDialog(
                 )
             } else {
                 PromotionalImageSheet(
-                    modifier = sheetsModifier.testTag(TestTags.NEW_FEATURES_SHEET_DIALOG_IMAGE_SHEET),
+                    modifier = sheetDialogModifier.testTag(TestTags.NEW_FEATURES_SHEET_DIALOG_IMAGE_SHEET),
                     image = attributes.image,
                     title = attributes.title,
                     headline = attributes.headline,
@@ -100,7 +101,7 @@ fun NewFeaturesSheetDialog(
         is NewFeaturesAttributes.Illustration -> {
             if (deviceType == DeviceType.Tablet) {
                 PromotionalIllustrationDialog(
-                    modifier = Modifier.testTag(TestTags.NEW_FEATURES_SHEET_DIALOG_ILLUSTRATION_DIALOG),
+                    modifier = sheetDialogModifier.testTag(TestTags.NEW_FEATURES_SHEET_DIALOG_ILLUSTRATION_DIALOG),
                     illustration = attributes.illustration,
                     title = attributes.title,
                     headline = attributes.headline,
@@ -115,7 +116,7 @@ fun NewFeaturesSheetDialog(
                 )
             } else {
                 PromotionalIllustrationSheet(
-                    modifier = sheetsModifier.testTag(TestTags.NEW_FEATURES_SHEET_DIALOG_ILLUSTRATION_SHEET),
+                    modifier = sheetDialogModifier.testTag(TestTags.NEW_FEATURES_SHEET_DIALOG_ILLUSTRATION_SHEET),
                     illustration = attributes.illustration,
                     title = attributes.title,
                     headline = attributes.headline,
@@ -134,7 +135,7 @@ fun NewFeaturesSheetDialog(
         is NewFeaturesAttributes.Plain -> {
             if (deviceType == DeviceType.Tablet) {
                 PromotionalPlainDialog(
-                    modifier = Modifier.testTag(TestTags.NEW_FEATURES_SHEET_DIALOG_PLAIN_DIALOG),
+                    modifier = sheetDialogModifier.testTag(TestTags.NEW_FEATURES_SHEET_DIALOG_PLAIN_DIALOG),
                     title = attributes.title,
                     headline = attributes.headline,
                     description = attributes.description,
@@ -147,7 +148,7 @@ fun NewFeaturesSheetDialog(
                 )
             } else {
                 PromotionalPlainSheet(
-                    modifier = sheetsModifier.testTag(TestTags.NEW_FEATURES_SHEET_DIALOG_PLAIN_SHEET),
+                    modifier = sheetDialogModifier.testTag(TestTags.NEW_FEATURES_SHEET_DIALOG_PLAIN_SHEET),
                     title = attributes.title,
                     headline = attributes.headline,
                     description = attributes.description,

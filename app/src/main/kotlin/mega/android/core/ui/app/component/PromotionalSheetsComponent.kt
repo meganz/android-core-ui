@@ -25,7 +25,7 @@ import mega.android.core.ui.app.util.Section
 import mega.android.core.ui.components.MegaText
 import mega.android.core.ui.components.button.PrimaryFilledButton
 import mega.android.core.ui.components.checkbox.Checkbox
-import mega.android.core.ui.components.common.PromotionalContentFooter
+import mega.android.core.ui.components.common.PromotionalContentDescription
 import mega.android.core.ui.components.common.PromotionalListAttributes
 import mega.android.core.ui.components.sheets.PromotionalFullImageSheet
 import mega.android.core.ui.components.sheets.PromotionalIllustrationSheet
@@ -86,7 +86,7 @@ fun PromotionalSheetsCatalog(
 
             MegaText(
                 modifier = Modifier.padding(horizontal = LocalSpacing.current.x8),
-                text = "Make Footer Clickable",
+                text = "Make Description Clickable",
                 textColor = TextColor.Primary
             )
         }
@@ -116,7 +116,7 @@ fun PromotionalSheetsCatalog(
                     PromotionalPlainSheetComponent(
                         showCloseButton = showCloseButton,
                         illustrationMode = illustrationMode,
-                        showClickableFooter = footerClickable
+                        showClickableDescription = footerClickable
                     ) {
                         showPlainSheet = false
                     }
@@ -137,7 +137,7 @@ fun PromotionalSheetsCatalog(
                 if (showImageSheet) {
                     PromotionalImageSheetComponent(
                         showCloseButton = showCloseButton,
-                        showClickableFooter = footerClickable
+                        showClickableDescription = footerClickable
                     ) {
                         showImageSheet = false
                     }
@@ -158,7 +158,7 @@ fun PromotionalSheetsCatalog(
                 if (showFullImageSheet) {
                     PromotionalFullImageSheetComponent(
                         showCloseButton = showCloseButton,
-                        showClickableFooter = footerClickable
+                        showClickableDescription = footerClickable
                     ) {
                         showFullImageSheet = false
                     }
@@ -180,7 +180,7 @@ fun PromotionalSheetsCatalog(
                     PromotionalIllustrationSheetComponent(
                         showCloseButton = showCloseButton,
                         illustrationMode = illustrationMode,
-                        showClickableFooter = footerClickable
+                        showClickableDescription = footerClickable
                     ) {
                         showIllustrationSheet = false
                     }
@@ -193,7 +193,7 @@ fun PromotionalSheetsCatalog(
 @Composable
 private fun PromotionalPlainSheetComponent(
     showCloseButton: Boolean,
-    showClickableFooter: Boolean,
+    showClickableDescription: Boolean,
     illustrationMode: IllustrationIconSizeMode,
     onDismissRequest: () -> Unit
 ) {
@@ -201,21 +201,21 @@ private fun PromotionalPlainSheetComponent(
         modifier = Modifier.statusBarsPadding(),
         title = "Title",
         headline = "Headline",
-        description = "I’m just an intro title, I don’t have any meaningful content at the moment. I’ll get there",
+        description = getPromotionalContentDescription(showClickableDescription),
         showCloseButton = showCloseButton,
         illustrationMode = illustrationMode,
         primaryButton = "Button" to {},
         secondaryButton = "Button 2" to {},
         onDismissRequest = onDismissRequest,
         listItems = listItemSamples,
-        footer = getPromotionalContentFooter(showClickableFooter),
+        footer = "*terms and conditions. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip"
     )
 }
 
 @Composable
 private fun PromotionalFullImageSheetComponent(
     showCloseButton: Boolean,
-    showClickableFooter: Boolean,
+    showClickableDescription: Boolean,
     onDismissRequest: () -> Unit
 ) {
     PromotionalFullImageSheet(
@@ -223,20 +223,20 @@ private fun PromotionalFullImageSheetComponent(
         image = "https:images.unsplash.com/photo-1579353977828-2a4eab540b9a?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8c2FtcGxlfGVufDB8fDB8fHww",
         title = "Title",
         headline = "Headline",
-        description = "I’m just an intro title, I don’t have any meaningful content at the moment. I’ll get there",
+        description = getPromotionalContentDescription(showClickableDescription),
         showCloseButton = showCloseButton,
         primaryButton = "Button" to {},
         secondaryButton = "Button 2" to {},
         onDismissRequest = onDismissRequest,
         listItems = listItemSamples,
-        footer = getPromotionalContentFooter(showClickableFooter),
+        footer = "*terms and conditions. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip"
     )
 }
 
 @Composable
 private fun PromotionalIllustrationSheetComponent(
     showCloseButton: Boolean,
-    showClickableFooter: Boolean,
+    showClickableDescription: Boolean,
     illustrationMode: IllustrationIconSizeMode,
     onDismissRequest: () -> Unit
 ) {
@@ -245,21 +245,21 @@ private fun PromotionalIllustrationSheetComponent(
         illustration = R.drawable.illustration_mega_anniversary,
         title = "Title",
         headline = "Headline",
-        description = "I’m just an intro title, I don’t have any meaningful content at the moment. I’ll get there",
+        description = getPromotionalContentDescription(showClickableDescription),
         showCloseButton = showCloseButton,
         illustrationMode = illustrationMode,
         primaryButton = "Button" to {},
         secondaryButton = "Button 2" to {},
         onDismissRequest = onDismissRequest,
         listItems = listItemSamples,
-        footer = getPromotionalContentFooter(showClickableFooter),
+        footer = "*terms and conditions. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip"
     )
 }
 
 @Composable
 private fun PromotionalImageSheetComponent(
     showCloseButton: Boolean,
-    showClickableFooter: Boolean,
+    showClickableDescription: Boolean,
     onDismissRequest: () -> Unit
 ) {
     PromotionalImageSheet(
@@ -267,13 +267,13 @@ private fun PromotionalImageSheetComponent(
         image = "https:images.unsplash.com/photo-1579353977828-2a4eab540b9a?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8c2FtcGxlfGVufDB8fDB8fHww",
         title = "Title",
         headline = "Headline",
-        description = "I’m just an intro title, I don’t have any meaningful content at the moment. I’ll get there",
+        description = getPromotionalContentDescription(showClickableDescription),
         showCloseButton = showCloseButton,
         primaryButton = "Button" to {},
         secondaryButton = "Button 2" to {},
         onDismissRequest = onDismissRequest,
         listItems = listItemSamples,
-        footer = getPromotionalContentFooter(showClickableFooter),
+        footer = "*terms and conditions. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip",
     )
 }
 
@@ -288,20 +288,20 @@ private val listItemSamples = IntRange(1, 3).map {
 
 
 @Composable
-private fun getPromotionalContentFooter(
-    showClickableFooter: Boolean
-): PromotionalContentFooter {
-    val footerText = if (showClickableFooter) {
-        "[B]Click here to learn more[/B]"
+private fun getPromotionalContentDescription(
+    showClickableDescription: Boolean
+): PromotionalContentDescription {
+    val descriptionText = if (showClickableDescription) {
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip \n\n[B]Click here to learn more[/B]"
     } else {
-        "*terms and conditions. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip"
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip"
     }
 
-    val footerTextAlign = if (showClickableFooter) TextAlign.Center else TextAlign.Start
-    return PromotionalContentFooter(
-        text = footerText,
+    val footerTextAlign = if (showClickableDescription) TextAlign.Center else TextAlign.Start
+    return PromotionalContentDescription(
+        text = descriptionText,
         textAlign = footerTextAlign,
-        spanStyles = if (showClickableFooter) {
+        spanStyles = if (showClickableDescription) {
             mapOf(
                 SpanIndicator('B') to SpanStyleWithAnnotation(
                     MegaSpanStyle.LinkColorStyle(

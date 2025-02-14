@@ -1,13 +1,13 @@
 package mega.android.core.ui.model
 
 import androidx.annotation.DrawableRes
-import mega.android.core.ui.components.common.PromotionalContentFooter
+import mega.android.core.ui.components.common.PromotionalContentDescription
 
 sealed class NewFeaturesAttributes {
     abstract val title: String
     abstract val headline: String
-    abstract val description: String?
-    abstract val footer: PromotionalContentFooter?
+    abstract val description: PromotionalContentDescription?
+    abstract val footer: String?
     abstract val showCloseButton: Boolean
     abstract val featuresList: List<FeatureListItem>?
     abstract val primaryButtonText: String?
@@ -16,8 +16,8 @@ sealed class NewFeaturesAttributes {
     data class FullImage(
         override val title: String,
         override val headline: String,
-        override val description: String? = null,
-        override val footer: PromotionalContentFooter? = null,
+        override val description: PromotionalContentDescription? = null,
+        override val footer: String? = null,
         override val showCloseButton: Boolean = true,
         override val featuresList: List<FeatureListItem>? = null,
         override val primaryButtonText: String? = null,
@@ -28,8 +28,8 @@ sealed class NewFeaturesAttributes {
     data class Image(
         override val title: String,
         override val headline: String,
-        override val description: String? = null,
-        override val footer: PromotionalContentFooter? = null,
+        override val description: PromotionalContentDescription? = null,
+        override val footer: String? = null,
         override val showCloseButton: Boolean = true,
         override val featuresList: List<FeatureListItem>? = null,
         override val primaryButtonText: String? = null,
@@ -40,8 +40,8 @@ sealed class NewFeaturesAttributes {
     data class Illustration(
         override val title: String,
         override val headline: String,
-        override val description: String? = null,
-        override val footer: PromotionalContentFooter? = null,
+        override val description: PromotionalContentDescription? = null,
+        override val footer: String? = null,
         override val showCloseButton: Boolean = true,
         override val featuresList: List<FeatureListItem>? = null,
         override val primaryButtonText: String? = null,
@@ -53,8 +53,8 @@ sealed class NewFeaturesAttributes {
     data class Plain(
         override val title: String,
         override val headline: String,
-        override val description: String? = null,
-        override val footer: PromotionalContentFooter? = null,
+        override val description: PromotionalContentDescription? = null,
+        override val footer: String? = null,
         override val showCloseButton: Boolean = true,
         override val featuresList: List<FeatureListItem>? = null,
         override val primaryButtonText: String? = null,

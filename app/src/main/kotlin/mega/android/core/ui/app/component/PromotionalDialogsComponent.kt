@@ -20,7 +20,7 @@ import androidx.compose.ui.unit.dp
 import mega.android.core.ui.R
 import mega.android.core.ui.app.util.Section
 import mega.android.core.ui.components.button.PrimaryFilledButton
-import mega.android.core.ui.components.common.PromotionalContentFooter
+import mega.android.core.ui.components.common.PromotionalContentDescription
 import mega.android.core.ui.components.common.PromotionalListAttributes
 import mega.android.core.ui.components.dialogs.PromotionalFullImageDialog
 import mega.android.core.ui.components.dialogs.PromotionalIllustrationDialog
@@ -36,7 +36,7 @@ import mega.android.core.ui.theme.values.LinkColor
 @Composable
 fun PromotionalDialogsCatalog(
     showCloseButton: Boolean,
-    showClickableFooter: Boolean,
+    showClickableDescription: Boolean,
     illustrationsMode: IllustrationIconSizeMode,
 ) {
     Spacer(modifier = Modifier.height(LocalSpacing.current.x16))
@@ -65,7 +65,7 @@ fun PromotionalDialogsCatalog(
                     PromotionalPlainDialogComponent(
                         showCloseButton = showCloseButton,
                         illustrationMode = illustrationsMode,
-                        showClickableFooter = showClickableFooter,
+                        showClickableDescription = showClickableDescription,
                         onDismissRequest = {
                             showPlainDialog = false
                         }
@@ -87,7 +87,7 @@ fun PromotionalDialogsCatalog(
                 if (showImageDialog) {
                     PromotionalImageDialogComponent(
                         showCloseButton = showCloseButton,
-                        showClickableFooter = showClickableFooter
+                        showClickableDescription = showClickableDescription
                     ) {
                         showImageDialog = false
                     }
@@ -108,7 +108,7 @@ fun PromotionalDialogsCatalog(
                 if (showFullImageDialog) {
                     PromotionalFullImageDialogComponent(
                         showCloseButton = showCloseButton,
-                        showClickableFooter = showClickableFooter
+                        showClickableDescription = showClickableDescription
                     ) {
                         showFullImageDialog = false
                     }
@@ -130,7 +130,7 @@ fun PromotionalDialogsCatalog(
                     PromotionalIllustrationDialogComponent(
                         showCloseButton = showCloseButton,
                         illustrationMode = illustrationsMode,
-                        showClickableFooter = showClickableFooter
+                        showClickableDescription = showClickableDescription
                     ) {
                         showIllustrationDialog = false
                     }
@@ -143,7 +143,7 @@ fun PromotionalDialogsCatalog(
 @Composable
 private fun PromotionalImageDialogComponent(
     showCloseButton: Boolean,
-    showClickableFooter: Boolean,
+    showClickableDescription: Boolean,
     onDismissRequest: () -> Unit
 ) {
 
@@ -151,40 +151,40 @@ private fun PromotionalImageDialogComponent(
         image = "https:images.unsplash.com/photo-1579353977828-2a4eab540b9a?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8c2FtcGxlfGVufDB8fDB8fHww",
         title = "Title",
         headline = "Headline",
-        description = "Description",
+        description = getPromotionalContentDescription(showClickableDescription),
         showCloseButton = showCloseButton,
         primaryButton = "Button" to {},
         secondaryButton = "Button 2" to {},
         onDismissRequest = onDismissRequest,
         listItems = listItemSamples,
-        footer = getPromotionalContentFooter(showClickableFooter)
+        footer = "*terms and conditions. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip",
     )
 }
 
 @Composable
 private fun PromotionalFullImageDialogComponent(
     showCloseButton: Boolean,
-    showClickableFooter: Boolean,
+    showClickableDescription: Boolean,
     onDismissRequest: () -> Unit
 ) {
     PromotionalFullImageDialog(
         image = "https:images.unsplash.com/photo-1579353977828-2a4eab540b9a?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8c2FtcGxlfGVufDB8fDB8fHww",
         title = "Title",
         headline = "Headline",
-        description = "I’m just an intro title, I don’t have any meaningful content at the moment. I’ll get there",
+        description = getPromotionalContentDescription(showClickableDescription),
         showCloseButton = showCloseButton,
         primaryButton = "Button" to {},
         secondaryButton = "Button 2" to {},
         onDismissRequest = onDismissRequest,
         listItems = listItemSamples,
-        footer = getPromotionalContentFooter(showClickableFooter)
+        footer = "*terms and conditions. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip",
     )
 }
 
 @Composable
 private fun PromotionalIllustrationDialogComponent(
     showCloseButton: Boolean,
-    showClickableFooter: Boolean,
+    showClickableDescription: Boolean,
     illustrationMode: IllustrationIconSizeMode = IllustrationIconSizeMode.Small,
     onDismissRequest: () -> Unit
 ) {
@@ -192,53 +192,53 @@ private fun PromotionalIllustrationDialogComponent(
         illustration = R.drawable.illustration_mega_anniversary,
         title = "Title",
         headline = "Headline",
-        description = "I’m just an intro title, I don’t have any meaningful content at the moment. I’ll get there",
+        description = getPromotionalContentDescription(showClickableDescription),
         showCloseButton = showCloseButton,
         illustrationMode = illustrationMode,
         primaryButton = "Button" to {},
         secondaryButton = "Button 2" to {},
         onDismissRequest = onDismissRequest,
         listItems = listItemSamples,
-        footer = getPromotionalContentFooter(showClickableFooter)
+        footer = "*terms and conditions. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip",
     )
 }
 
 @Composable
 private fun PromotionalPlainDialogComponent(
     showCloseButton: Boolean,
-    showClickableFooter: Boolean,
+    showClickableDescription: Boolean,
     illustrationMode: IllustrationIconSizeMode = IllustrationIconSizeMode.Small,
     onDismissRequest: () -> Unit
 ) {
     PromotionalPlainDialog(
         title = "Title",
         headline = "Headline",
-        description = "I’m just an intro title, I don’t have any meaningful content at the moment. I’ll get there",
+        description = getPromotionalContentDescription(showClickableDescription),
         showCloseButton = showCloseButton,
         illustrationMode = illustrationMode,
         primaryButton = "Button" to {},
         secondaryButton = "Button 2" to {},
         onDismissRequest = onDismissRequest,
         listItems = listItemSamples,
-        footer = getPromotionalContentFooter(showClickableFooter)
+        footer = "*terms and conditions. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip",
     )
 }
 
 @Composable
-private fun getPromotionalContentFooter(
-    showClickableFooter: Boolean
-): PromotionalContentFooter {
-    val footerText = if (showClickableFooter) {
-        "[B]Click here to learn more[/B]"
+private fun getPromotionalContentDescription(
+    showClickableDescription: Boolean
+): PromotionalContentDescription {
+    val descriptionText = if (showClickableDescription) {
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip \n\n[B]Click here to learn more[/B]"
     } else {
-        "*terms and conditions. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip"
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip"
     }
 
-    val footerTextAlign = if (showClickableFooter) TextAlign.Center else TextAlign.Start
-    return PromotionalContentFooter(
-        text = footerText,
+    val footerTextAlign = if (showClickableDescription) TextAlign.Center else TextAlign.Start
+    return PromotionalContentDescription(
+        text = descriptionText,
         textAlign = footerTextAlign,
-        spanStyles = if (showClickableFooter) {
+        spanStyles = if (showClickableDescription) {
             mapOf(
                 SpanIndicator('B') to SpanStyleWithAnnotation(
                     MegaSpanStyle.LinkColorStyle(
