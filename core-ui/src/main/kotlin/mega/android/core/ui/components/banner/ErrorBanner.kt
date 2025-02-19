@@ -4,11 +4,38 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.font.FontStyle
 import mega.android.core.ui.R
 import mega.android.core.ui.components.text.SpannableText
+import mega.android.core.ui.model.MegaSpanStyle
+import mega.android.core.ui.model.SpanIndicator
+import mega.android.core.ui.model.SpanStyleWithAnnotation
 import mega.android.core.ui.preview.CombinedThemePreviews
 import mega.android.core.ui.theme.AndroidThemeForPreviews
 import mega.android.core.ui.theme.AppTheme
+
+@Composable
+fun InlineErrorBanner(
+    modifier: Modifier,
+    body: SpannableText,
+    showCancelButton: Boolean,
+    title: SpannableText? = null,
+    actionButtonText: String? = null,
+    onActionButtonClick: () -> Unit = {},
+    onCancelButtonClick: () -> Unit = {},
+) {
+    ErrorBanner(
+        modifier = modifier,
+        backgroundShape = AppTheme.shapes.small,
+        body = body,
+        title = title,
+        actionButtonText = actionButtonText,
+        onActionButtonClick = onActionButtonClick,
+        showCancelButton = showCancelButton,
+        onCancelButtonClick = onCancelButtonClick
+    )
+}
 
 @Composable
 fun InlineErrorBanner(
@@ -23,6 +50,28 @@ fun InlineErrorBanner(
     ErrorBanner(
         modifier = modifier,
         backgroundShape = AppTheme.shapes.small,
+        body = SpannableText(body),
+        title = SpannableText(title),
+        actionButtonText = actionButtonText,
+        onActionButtonClick = onActionButtonClick,
+        showCancelButton = showCancelButton,
+        onCancelButtonClick = onCancelButtonClick
+    )
+}
+
+@Composable
+fun TopErrorBanner(
+    modifier: Modifier,
+    body: SpannableText,
+    showCancelButton: Boolean,
+    title: SpannableText? = null,
+    actionButtonText: String? = null,
+    onActionButtonClick: () -> Unit = {},
+    onCancelButtonClick: () -> Unit = {},
+) {
+    ErrorBanner(
+        modifier = modifier,
+        backgroundShape = RectangleShape,
         body = body,
         title = title,
         actionButtonText = actionButtonText,
@@ -45,8 +94,8 @@ fun TopErrorBanner(
     ErrorBanner(
         modifier = modifier,
         backgroundShape = RectangleShape,
-        body = body,
-        title = title,
+        body = SpannableText(body),
+        title = SpannableText(title),
         actionButtonText = actionButtonText,
         onActionButtonClick = onActionButtonClick,
         showCancelButton = showCancelButton,
@@ -58,9 +107,9 @@ fun TopErrorBanner(
 private fun ErrorBanner(
     modifier: Modifier,
     backgroundShape: Shape,
-    body: String,
+    body: SpannableText,
     showCancelButton: Boolean,
-    title: String? = null,
+    title: SpannableText? = null,
     actionButtonText: String? = null,
     onActionButtonClick: () -> Unit = {},
     onCancelButtonClick: () -> Unit = {},
@@ -71,8 +120,8 @@ private fun ErrorBanner(
         backgroundShape = backgroundShape,
         iconResId = R.drawable.ic_alert_triangle,
         iconColor = AppTheme.colors.support.error,
-        body = SpannableText(body),
-        title = SpannableText(title),
+        body = body,
+        title = title,
         buttonText = actionButtonText,
         onButtonClick = onActionButtonClick,
         showCancelButton = showCancelButton,
@@ -102,6 +151,44 @@ private fun TopErrorBannerPreview() {
             modifier = Modifier,
             body = "Error Body",
             title = "Error Title",
+            actionButtonText = "Action Button",
+            showCancelButton = true
+        )
+    }
+}
+
+@CombinedThemePreviews
+@Composable
+private fun SpannableInlineErrorBannerPreview() {
+    AndroidThemeForPreviews {
+        InlineErrorBanner(
+            modifier = Modifier,
+            body = SpannableText(
+                text = "[A]Banner[/A] Body",
+                annotations =  mapOf(
+                    SpanIndicator('A') to SpanStyleWithAnnotation(
+                        megaSpanStyle = MegaSpanStyle.DefaultColorStyle(
+                            spanStyle = SpanStyle(fontStyle = FontStyle.Italic),
+                        ),
+                        annotation = "[A]Banner[/A] Body"
+                            .substringAfter("[A]")
+                            .substringBefore("[/A]")
+                    )
+                )
+            ),
+            title = SpannableText(
+                text = "[A]Banner[/A] Title",
+                annotations =  mapOf(
+                    SpanIndicator('A') to SpanStyleWithAnnotation(
+                        megaSpanStyle = MegaSpanStyle.DefaultColorStyle(
+                            spanStyle = SpanStyle(fontStyle = FontStyle.Italic),
+                        ),
+                        annotation = "[A]Banner[/A] Title"
+                            .substringAfter("[A]")
+                            .substringBefore("[/A]")
+                    )
+                )
+            ),
             actionButtonText = "Action Button",
             showCancelButton = true
         )
