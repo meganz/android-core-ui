@@ -92,7 +92,7 @@ internal fun PromotionalContent(
             modifier = Modifier
                 .fillMaxWidth(),
             text = title,
-            color = AppTheme.colors.button.brand,
+            color = AppTheme.colors.components.interactive,
             style = AppTheme.typography.titleMedium,
             textAlign = TextAlign.Center
         )
