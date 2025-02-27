@@ -1,18 +1,24 @@
 package mega.android.core.ui.app.component
 
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import mega.android.core.ui.R
 import mega.android.core.ui.app.util.Section
+import mega.android.core.ui.components.button.AccessoryBarButton
+import mega.android.core.ui.components.button.AccessoryBarButtonGroup
 import mega.android.core.ui.components.button.AnchoredButtonGroup
 import mega.android.core.ui.components.button.MegaOutlinedButton
 import mega.android.core.ui.components.button.PrimaryFilledButton
 import mega.android.core.ui.components.button.SecondaryFilledButton
 import mega.android.core.ui.components.button.TextOnlyButton
+import mega.android.core.ui.model.AccessoryBarButtonContent
 import mega.android.core.ui.model.Button
 import mega.android.core.ui.theme.spacing.LocalSpacing
 
@@ -83,5 +89,28 @@ fun ButtonComponentCatalog() {
             ),
             withDivider = true
         )
+    }
+    Section(header = "Accessory Bar Buttons") {
+        Column {
+            AccessoryBarButton(
+                button = AccessoryBarButtonContent(
+                    icon = painterResource(id = R.drawable.ic_search_large),
+                    text = "Button",
+                    onClick = {}
+                ),
+            )
+            AccessoryBarButtonGroup(
+                firstButton = AccessoryBarButtonContent(
+                    icon = painterResource(id = R.drawable.ic_close),
+                    text = "Cancel",
+                    onClick = {}
+                ),
+                secondButton = AccessoryBarButtonContent(
+                    icon = painterResource(id = R.drawable.ic_search_large),
+                    text = "Search",
+                    onClick = {}
+                ),
+            )
+        }
     }
 }

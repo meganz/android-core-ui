@@ -87,6 +87,7 @@ dependencies {
     implementation(libs.core.ktx)
     implementation(libs.appcompat)
     implementation(libs.constraintlayout.compose)
+    implementation(libs.kotlinx.collections.immutable)
     implementation(libs.google.font)
     testImplementation(libs.compose.junit)
     debugImplementation(libs.compose.manifest)
