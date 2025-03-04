@@ -127,10 +127,10 @@ private fun HelpText(
     onAnnotationClick: (String) -> Unit = {},
     spanStyles: Map<SpanIndicator, SpanStyleWithAnnotation> = emptyMap(),
 ) {
-    Row(modifier = modifier, verticalAlignment = Alignment.CenterVertically) {
+    Row(modifier = modifier) {
         Icon(
             modifier = Modifier
-                .padding(end = LocalSpacing.current.x8)
+                .padding(top = LocalSpacing.current.x2, end = LocalSpacing.current.x8)
                 .size(16.dp)
                 .testTag(HELP_TEXT_ICON_TEST_TAG),
             painter = painterResource(id = iconResId),
@@ -140,6 +140,7 @@ private fun HelpText(
         LinkSpannedText(
             modifier = Modifier
                 .fillMaxWidth()
+                .align(Alignment.CenterVertically)
                 .testTag(HELP_TEXT_TEXT_TEST_TAG),
             value = text,
             baseStyle = textStyle,
@@ -187,15 +188,15 @@ private fun HelpTextInfoPreview() {
 private fun HelpTextLinkPreview() {
     AndroidThemeForPreviews {
         HelpTextLink(
-            text = "Click here to [A]learn more[/A]",
-            textStyle = AppTheme.typography.bodyLarge,
+            text = "Enable 2FA or OTP on this site or app, then paste the key or scan the QR code. [A]What is this?[/A]",
+            textStyle = AppTheme.typography.bodySmall,
             spanStyles = hashMapOf(
                 SpanIndicator('A') to SpanStyleWithAnnotation(
                     megaSpanStyle = MegaSpanStyle.LinkColorStyle(
-                        spanStyle = AppTheme.typography.bodyLarge.toSpanStyle(),
+                        spanStyle = AppTheme.typography.bodySmall.toSpanStyle(),
                         linkColor = LinkColor.Primary,
                     ),
-                    annotation = "Click here to [A]learn more[/A]"
+                    annotation = "Enable 2FA or OTP on this site or app, then paste the key or scan the QR code. [A]What is this?[/A]"
                         .substringAfter("[A]")
                         .substringBefore("[/A]")
                 )
