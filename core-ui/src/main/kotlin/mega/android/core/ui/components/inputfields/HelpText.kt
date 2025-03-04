@@ -6,19 +6,24 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Icon
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import mega.android.core.ui.R
+import mega.android.core.ui.components.LinkSpannedText
+import mega.android.core.ui.model.MegaSpanStyle
+import mega.android.core.ui.model.SpanIndicator
+import mega.android.core.ui.model.SpanStyleWithAnnotation
 import mega.android.core.ui.preview.CombinedThemePreviews
 import mega.android.core.ui.theme.AndroidThemeForPreviews
 import mega.android.core.ui.theme.AppTheme
 import mega.android.core.ui.theme.spacing.LocalSpacing
+import mega.android.core.ui.theme.values.LinkColor
 import mega.android.core.ui.theme.values.TextColor
 
 @Composable
@@ -90,6 +95,28 @@ fun HelpTextInfo(
 }
 
 @Composable
+fun HelpTextLink(
+    text: String,
+    modifier: Modifier = Modifier,
+    iconResId: Int = R.drawable.ic_help,
+    textColor: TextColor = TextColor.Primary,
+    textStyle: TextStyle = AppTheme.typography.bodySmall,
+    onAnnotationClick: (String) -> Unit,
+    spanStyles: Map<SpanIndicator, SpanStyleWithAnnotation> = emptyMap(),
+) {
+    HelpText(
+        modifier = modifier,
+        text = text,
+        iconColor = AppTheme.colors.icon.primary,
+        textColor = textColor,
+        textStyle = textStyle,
+        iconResId = iconResId,
+        onAnnotationClick = onAnnotationClick,
+        spanStyles = spanStyles
+    )
+}
+
+@Composable
 private fun HelpText(
     text: String,
     iconColor: Color,
@@ -97,23 +124,28 @@ private fun HelpText(
     textStyle: TextStyle,
     @DrawableRes iconResId: Int,
     modifier: Modifier = Modifier,
+    onAnnotationClick: (String) -> Unit = {},
+    spanStyles: Map<SpanIndicator, SpanStyleWithAnnotation> = emptyMap(),
 ) {
-    Row(modifier = modifier) {
+    Row(modifier = modifier, verticalAlignment = Alignment.CenterVertically) {
         Icon(
             modifier = Modifier
-                .padding(top = LocalSpacing.current.x2, end = LocalSpacing.current.x8)
-                .size(16.dp),
+                .padding(end = LocalSpacing.current.x8)
+                .size(16.dp)
+                .testTag(HELP_TEXT_ICON_TEST_TAG),
             painter = painterResource(id = iconResId),
             tint = iconColor,
             contentDescription = text
         )
-        Text(
+        LinkSpannedText(
             modifier = Modifier
                 .fillMaxWidth()
-                .align(Alignment.CenterVertically),
-            text = text,
-            style = textStyle,
-            color = AppTheme.textColor(textColor = textColor)
+                .testTag(HELP_TEXT_TEXT_TEST_TAG),
+            value = text,
+            baseStyle = textStyle,
+            baseTextColor = textColor,
+            spanStyles = spanStyles,
+            onAnnotationClick = onAnnotationClick
         )
     }
 }
@@ -149,3 +181,29 @@ private fun HelpTextInfoPreview() {
         HelpTextInfo(text = "Warning footer text example")
     }
 }
+
+@CombinedThemePreviews
+@Composable
+private fun HelpTextLinkPreview() {
+    AndroidThemeForPreviews {
+        HelpTextLink(
+            text = "Click here to [A]learn more[/A]",
+            textStyle = AppTheme.typography.bodyLarge,
+            spanStyles = hashMapOf(
+                SpanIndicator('A') to SpanStyleWithAnnotation(
+                    megaSpanStyle = MegaSpanStyle.LinkColorStyle(
+                        spanStyle = AppTheme.typography.bodyLarge.toSpanStyle(),
+                        linkColor = LinkColor.Primary,
+                    ),
+                    annotation = "Click here to [A]learn more[/A]"
+                        .substringAfter("[A]")
+                        .substringBefore("[/A]")
+                )
+            ),
+            onAnnotationClick = { /* do something */ }
+        )
+    }
+}
+
+internal const val HELP_TEXT_ICON_TEST_TAG = "help_text:icon"
+internal const val HELP_TEXT_TEXT_TEST_TAG = "help_text:text"
