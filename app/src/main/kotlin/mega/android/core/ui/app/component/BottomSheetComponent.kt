@@ -21,11 +21,16 @@ import mega.android.core.ui.app.util.Section
 import mega.android.core.ui.components.button.PrimaryFilledButton
 import mega.android.core.ui.components.image.MegaIcon
 import mega.android.core.ui.components.list.OneLineListItem
+import mega.android.core.ui.components.settings.SettingsOptionsModal
 import mega.android.core.ui.components.sheets.MegaModalBottomSheet
 import mega.android.core.ui.components.sheets.MegaModalBottomSheetBackground
 import mega.android.core.ui.theme.spacing.LocalSpacing
 import mega.android.core.ui.theme.values.IconColor
 import mega.android.core.ui.R as coreR
+
+enum class Server {
+    Production, Staging, Development
+}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -35,6 +40,8 @@ fun BottomSheetComponentCatalog() {
     Section(header = "Bottom Sheet") {
         val modalBottomSheetState = rememberModalBottomSheetState()
         var showBottomSheet by remember { mutableStateOf(false) }
+        var showSettingBottomSheet by remember { mutableStateOf(false) }
+        var selectedItem by remember { mutableStateOf(Server.Production) }
 
         PrimaryFilledButton(
             modifier = Modifier
@@ -43,6 +50,44 @@ fun BottomSheetComponentCatalog() {
             text = "Show Bottom Sheet",
             onClick = { showBottomSheet = true }
         )
+
+        PrimaryFilledButton(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 16.dp)
+                .padding(horizontal = LocalSpacing.current.x16),
+            text = "Show Setting Bottom Sheet",
+            onClick = { showSettingBottomSheet = true }
+        )
+
+        if (showSettingBottomSheet) {
+            SettingsOptionsModal(
+                key = "server",
+                content = {
+                    addHeader(
+                        "Change server",
+                        "Are you sure you want to change a test server? Your account may server irrecoverable problems."
+                    )
+                    addItem(
+                        isSelected = selectedItem == Server.Production,
+                        value = Server.Production,
+                        valueToString = { it.toString() })
+                    addItem(
+                        isSelected = selectedItem == Server.Staging,
+                        value = Server.Staging,
+                        valueToString = { it.toString() })
+                    addItem(
+                        isSelected = selectedItem == Server.Development,
+                        value = Server.Development,
+                        valueToString = { it.toString() })
+                },
+                onDismiss = {
+                    showSettingBottomSheet = false
+                },
+            ) {
+                selectedItem = it
+            }
+        }
 
         if (showBottomSheet) {
             MegaModalBottomSheet(
