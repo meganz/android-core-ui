@@ -17,7 +17,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
-import com.google.common.collect.ImmutableList
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
 import mega.android.core.ui.R
 import mega.android.core.ui.components.MegaText
 import mega.android.core.ui.components.image.MegaIcon
@@ -262,7 +263,7 @@ class SettingOptionsModalScope<T> {
     internal fun buildHeader(): SettingsSheetHeaderContent? = headerCell
 
     internal fun buildItems(): ImmutableList<SettingsSheetItemContent<T>> =
-        ImmutableList.copyOf(itemCells)
+        persistentListOf(*itemCells.toTypedArray())
 }
 
 @CombinedThemePreviews
