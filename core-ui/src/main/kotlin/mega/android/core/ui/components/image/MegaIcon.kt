@@ -19,13 +19,73 @@ import mega.android.core.ui.theme.values.TextColor
 @Composable
 fun MegaIcon(
     painter: Painter,
+    tint: IconColor,
     modifier: Modifier = Modifier,
-    tint: IconColor? = null,
     contentDescription: String? = null,
 ) {
     Icon(
         painter = painter,
-        tint = if (tint != null) AppTheme.iconColor(iconColor = tint) else Color.Unspecified,
+        tint = AppTheme.iconColor(iconColor = tint),
+        contentDescription = contentDescription,
+        modifier = modifier
+    )
+}
+
+@Composable
+fun MegaIcon(
+    painter: Painter,
+    textColorTint: TextColor,
+    modifier: Modifier = Modifier,
+    contentDescription: String? = null,
+) {
+    Icon(
+        painter = painter,
+        tint = AppTheme.textColor(textColor = textColorTint),
+        contentDescription = contentDescription,
+        modifier = modifier
+    )
+}
+
+@Composable
+fun MegaIcon(
+    painter: Painter,
+    supportTint: SupportColor,
+    modifier: Modifier = Modifier,
+    contentDescription: String? = null,
+) {
+    Icon(
+        painter = painter,
+        tint = AppTheme.supportColor(supportColor = supportTint),
+        contentDescription = contentDescription,
+        modifier = modifier
+    )
+}
+
+@Composable
+fun MegaIcon(
+    painter: Painter,
+    linkColorTint: LinkColor,
+    modifier: Modifier = Modifier,
+    contentDescription: String? = null,
+) {
+    Icon(
+        painter = painter,
+        tint = AppTheme.linkColor(linkColor = linkColorTint),
+        contentDescription = contentDescription,
+        modifier = modifier
+    )
+}
+
+@Composable
+fun MegaIcon(
+    painter: Painter,
+    componentsColorTint: ComponentsColor,
+    modifier: Modifier = Modifier,
+    contentDescription: String? = null,
+) {
+    Icon(
+        painter = painter,
+        tint = AppTheme.componentsColor(componentsColor = componentsColorTint),
         contentDescription = contentDescription,
         modifier = modifier
     )
@@ -35,57 +95,11 @@ fun MegaIcon(
 fun MegaIcon(
     painter: Painter,
     modifier: Modifier = Modifier,
-    textColorTint: TextColor? = null,
     contentDescription: String? = null,
 ) {
     Icon(
         painter = painter,
-        tint = if (textColorTint != null) AppTheme.textColor(textColor = textColorTint) else Color.Unspecified,
-        contentDescription = contentDescription,
-        modifier = modifier
-    )
-}
-
-@Composable
-fun MegaIcon(
-    painter: Painter,
-    modifier: Modifier = Modifier,
-    supportTint: SupportColor? = null,
-    contentDescription: String? = null,
-) {
-    Icon(
-        painter = painter,
-        tint = if (supportTint != null) AppTheme.supportColor(supportColor = supportTint) else Color.Unspecified,
-        contentDescription = contentDescription,
-        modifier = modifier
-    )
-}
-
-@Composable
-fun MegaIcon(
-    painter: Painter,
-    modifier: Modifier = Modifier,
-    linkColorTint: LinkColor? = null,
-    contentDescription: String? = null,
-) {
-    Icon(
-        painter = painter,
-        tint = if (linkColorTint != null) AppTheme.linkColor(linkColor = linkColorTint) else Color.Unspecified,
-        contentDescription = contentDescription,
-        modifier = modifier
-    )
-}
-
-@Composable
-fun MegaIcon(
-    painter: Painter,
-    modifier: Modifier = Modifier,
-    componentsColorTint: ComponentsColor? = null,
-    contentDescription: String? = null,
-) {
-    Icon(
-        painter = painter,
-        tint = if (componentsColorTint != null) AppTheme.componentsColor(componentsColor = componentsColorTint) else Color.Unspecified,
+        tint = Color.Unspecified,
         contentDescription = contentDescription,
         modifier = modifier
     )
@@ -131,7 +145,6 @@ private fun MegaIconPreviewUnspecified() {
     AndroidThemeForPreviews {
         MegaIcon(
             painter = painterResource(id = R.drawable.ic_close),
-            tint = null
         )
     }
 }
