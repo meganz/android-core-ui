@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.text.selection.TextSelectionColors
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -184,6 +185,7 @@ fun PasswordTextInputField(
     imeAction: ImeAction = ImeAction.Done,
     successText: String? = null,
     errorText: String? = null,
+    keyboardActions: KeyboardActions = KeyboardActions.Default,
     maxCharLimit: Int = Int.MAX_VALUE,
     onValueChanged: ((String) -> Unit)? = null,
     onFocusChanged: ((Boolean) -> Unit)? = null,
@@ -201,6 +203,7 @@ fun PasswordTextInputField(
     },
     text = text,
     keyboardType = KeyboardType.Password,
+    keyboardActions = keyboardActions,
     imeAction = imeAction,
     capitalization = KeyboardCapitalization.None,
     successText = successText,
@@ -301,6 +304,7 @@ private fun BaseTextField(
     successText: String?,
     errorText: String?,
     inputTextAlign: TextAlign,
+    keyboardActions: KeyboardActions = KeyboardActions.Default,
     maxCharLimit: Int = Int.MAX_VALUE,
     label: @Composable (() -> Unit)? = null,
     onValueChanged: ((String) -> Unit)? = null,
@@ -357,10 +361,11 @@ private fun BaseTextField(
                 },
             keyboardOptions = KeyboardOptions(
                 keyboardType = keyboardType,
-                autoCorrect = isPasswordMode.not(),
+                autoCorrectEnabled = isPasswordMode.not(),
                 imeAction = imeAction,
                 capitalization = capitalization
             ),
+            keyboardActions = keyboardActions,
             value = baseText,
             onValueChange = {
                 if (it.length <= maxCharLimit) {
