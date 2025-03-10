@@ -6,14 +6,25 @@ import androidx.compose.animation.core.infiniteRepeatable
 import androidx.compose.animation.core.keyframes
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
@@ -21,7 +32,10 @@ import androidx.compose.ui.draw.drawWithContent
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Rect
-import androidx.compose.ui.graphics.*
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.SolidColor
+import androidx.compose.ui.graphics.isUnspecified
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.KeyboardType
@@ -39,7 +53,8 @@ import mega.android.core.ui.theme.spacing.LocalSpacing
  * @param onValueChange             the input field value change observer
  * @param isCodeCorrect             Pass the verification state
  * @param errorText                 when error state show the error text
- * @param isEnabled                  the input field enable state
+ * @param isEnabled                 the input field enable state
+ * @param shouldMaskInput           the input field will be masked when enabled
  */
 @Composable
 fun VerificationTextInputField(
@@ -48,14 +63,15 @@ fun VerificationTextInputField(
     modifier: Modifier = Modifier,
     isCodeCorrect: Boolean? = null,
     errorText: String = "",
-    isEnabled: Boolean = true
+    isEnabled: Boolean = true,
+    shouldMaskInput: Boolean = false,
 ) {
     val focusState = remember {
         mutableStateOf(false)
     }
     val textFieldValue = TextFieldValue(text = value, selection = TextRange(value.length))
     var lastTextValue by remember { mutableStateOf(value) }
-    val cipherMask = ""
+    val cipherMask = if (shouldMaskInput) CIPHER_MASK_CHAR.toString() else ""
     val textColor = AppTheme.colors.text.primary
     val spacing = LocalSpacing.current
 
@@ -78,10 +94,13 @@ fun VerificationTextInputField(
             textStyle = TextStyle(color = Color.Transparent),
             singleLine = true,
             cursorBrush = SolidColor(Color.Unspecified)
-        ) { inner->
+        ) { inner ->
             inner()
 
-            Row(horizontalArrangement = Arrangement.SpaceBetween, modifier = Modifier.fillMaxWidth()) {
+            Row(
+                horizontalArrangement = Arrangement.SpaceBetween,
+                modifier = Modifier.fillMaxWidth()
+            ) {
                 repeat(DEFAULT_VERIFICATION_INPUT_LENGTH) { position ->
                     val selection = position == value.length
 
@@ -246,16 +265,18 @@ private const val TIME_DISPLAY_START_TIME = 0
 private const val TIME_DISPLAY_END_TIME = 499
 private const val TIME_DISAPPEAR_START_TIME = 500
 private const val TIME_DISAPPEAR_END_TIME = 999
+private const val CIPHER_MASK_CHAR = '\u2022'
 
 
 @CombinedThemePreviews
 @Composable
 private fun DefaultVerificationTextInputFieldPreview() {
+    var text by remember { mutableStateOf("") }
     AndroidThemeForPreviews {
         VerificationTextInputField(
-            value = "",
+            value = text,
             onValueChange = {
-
+                text = it
             },
             errorText = "Incorrect verification code"
         )
@@ -265,10 +286,15 @@ private fun DefaultVerificationTextInputFieldPreview() {
 @CombinedThemePreviews
 @Composable
 private fun VerificationTextInputFieldPreview() {
+    var text by remember { mutableStateOf("") }
     AndroidThemeForPreviews {
-        VerificationTextInputField(value = "",
+        VerificationTextInputField(
+            value = text,
+            shouldMaskInput = true,
             onValueChange = {
-
-            })
+                text = it
+            },
+            errorText = "Incorrect verification code"
+        )
     }
 }
