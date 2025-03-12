@@ -19,6 +19,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.delay
@@ -45,8 +47,8 @@ fun TimerRadialProgressBar(
     totalTimeInSeconds: Long,
     remainingTimeInMilliSeconds: () -> Long,
     modifier: Modifier = Modifier,
-    size: Int = 24,
-    textSize: Int = 12,
+    size: Dp = 24.dp,
+    textSize: TextUnit = 12.sp,
     strokeWidth: Float = 2f,
 ) {
 
@@ -70,11 +72,11 @@ fun TimerRadialProgressBar(
             strokeWidth = strokeWidth.dp,
             strokeCap = StrokeCap.Butt,
             gapSize = 0.dp,
-            modifier = Modifier.size(size.dp),
+            modifier = Modifier.size(size),
         )
         MegaText(
             text = totalTimeText,
-            style = AppTheme.typography.bodySmall.copy(fontSize = textSize.sp),
+            style = AppTheme.typography.bodySmall.copy(fontSize = textSize),
             textColor = TextColor.Secondary
         )
     }
@@ -119,8 +121,8 @@ fun TimerRadialProgressBarInteractablePreview() {
                 )
                 TimerRadialProgressBar(
                     totalTimeInSeconds = timer,
-                    size = 100,
-                    textSize = 50,
+                    size = 100.dp,
+                    textSize = 50.sp,
                     strokeWidth = 5f,
                     remainingTimeInMilliSeconds = { timeLeft }
                 )

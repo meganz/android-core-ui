@@ -24,6 +24,8 @@ import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import mega.android.core.ui.R
 import mega.android.core.ui.components.MegaClickableText
@@ -67,6 +69,8 @@ fun ReadOnlyInputFieldItem(
     showDivider: Boolean = false,
     firstTrailingIcon: @Composable (() -> Unit)? = null,
     secondTrailingIcon: @Composable (() -> Unit)? = null,
+    firstTrailingIconSize: Dp = 20.dp,
+    secondTrailingIconSize: Dp = 20.dp,
     helpText: @Composable (() -> Unit)? = null,
 ) {
     val spacing = LocalSpacing.current
@@ -117,13 +121,13 @@ fun ReadOnlyInputFieldItem(
 
 
             firstTrailingIcon?.let {
-                Box(modifier = Modifier.size(spacing.x20)) {
+                Box(modifier = Modifier.size(firstTrailingIconSize)) {
                     it()
                 }
             }
 
             secondTrailingIcon?.let {
-                Box(modifier = Modifier.size(spacing.x20)) {
+                Box(modifier = Modifier.size(secondTrailingIconSize)) {
                     it()
                 }
             }

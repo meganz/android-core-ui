@@ -6,6 +6,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.delay
 import mega.android.core.ui.components.indicators.TimerRadialProgressBar
 
@@ -27,8 +29,8 @@ fun TimerRadialProgressBarComponent() {
 
     TimerRadialProgressBar(
         totalTimeInSeconds = timer,
-        size = 36,
-        textSize = 18,
+        size = 36.dp,
+        textSize = 18.sp,
         strokeWidth = 2f,
         remainingTimeInMilliSeconds = { timeLeft }
     )
