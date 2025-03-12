@@ -27,8 +27,6 @@ import mega.android.core.ui.preview.CombinedThemePreviews
 import mega.android.core.ui.theme.AndroidThemeForPreviews
 import mega.android.core.ui.theme.AppTheme
 import mega.android.core.ui.theme.values.TextColor
-import kotlin.time.DurationUnit
-import kotlin.time.toDuration
 
 /**
  * TimerRadialProgressBar is a circular progress bar that shows the remaining time of a timer.
@@ -36,32 +34,32 @@ import kotlin.time.toDuration
  * The color of the progress bar changes according to the remaining time.
  * The progress bar is animated.
  *
- * @param totalTime the total time of the timer
- * @param remainingTime a lambda that returns the remaining time of the timer
+ * @param totalTimeInSeconds the total time of the timer
+ * @param remainingTimeInMilliSeconds a lambda that returns the remaining time of the timer
  * @param modifier the modifier to apply to this layout
  * @param size the size of the progress bar
  * @param textSize the size of the text in the center
  */
 @Composable
 fun TimerRadialProgressBar(
-    totalTime: Long,
-    remainingTime: () -> Long,
+    totalTimeInSeconds: Long,
+    remainingTimeInMilliSeconds: () -> Long,
     modifier: Modifier = Modifier,
     size: Int = 24,
     textSize: Int = 12,
     strokeWidth: Float = 2f,
 ) {
 
-    val totalTimeText by remember {
+    val totalTimeText by remember(remainingTimeInMilliSeconds()) {
         derivedStateOf {
-            "${remainingTime().toDuration(DurationUnit.MILLISECONDS).inWholeSeconds}"
+            "${remainingTimeInMilliSeconds() / 1000}"
         }
     }
-    val progress by remember { derivedStateOf { remainingTime().toFloat() / totalTime } }
+    val progress by remember(remainingTimeInMilliSeconds()) { derivedStateOf { remainingTimeInMilliSeconds().toFloat() / (totalTimeInSeconds * 1000) } }
 
-    val color = when (remainingTime()) {
-        in 0..totalTime / 3 -> AppTheme.colors.support.error
-        in (totalTime / 3)..(2 * totalTime / 3) -> AppTheme.colors.support.warning
+    val color = when (remainingTimeInMilliSeconds() / 1000) {
+        in 0..totalTimeInSeconds / 3 -> AppTheme.colors.support.error
+        in (totalTimeInSeconds / 3)..(2 * totalTimeInSeconds / 3) -> AppTheme.colors.support.warning
         else -> AppTheme.colors.support.success
     }
     Box(modifier = modifier, contentAlignment = Alignment.Center) {
@@ -87,25 +85,22 @@ fun TimerRadialProgressBar(
 @Composable
 fun TimerRadialProgressBarInteractablePreview() {
     AndroidThemeForPreviews {
-        val timer = 30000L
+        val timer = 30L
         Column(
             modifier = Modifier.fillMaxWidth(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            var timeLeft by remember { mutableLongStateOf(timer) }
-            var isRunning by remember { mutableStateOf(true) }
+            var timeLeft by remember { mutableLongStateOf(timer * 1000) }
             var textFieldValue by remember { mutableStateOf("$timer") }
 
-            LaunchedEffect(isRunning) {
-                if (isRunning) {
-                    while (timeLeft > 0) {
+            LaunchedEffect(Unit) {
+                while (true) {
+                    if (timeLeft > 0) {
                         delay(100L)
                         timeLeft -= 100L
+                    } else {
+                        timeLeft = timer * 1000
                     }
-                    isRunning = false
-                } else {
-                    isRunning = true
-                    timeLeft = timer
                 }
             }
 
@@ -123,11 +118,11 @@ fun TimerRadialProgressBarInteractablePreview() {
                     }
                 )
                 TimerRadialProgressBar(
-                    totalTime = timer,
+                    totalTimeInSeconds = timer,
                     size = 100,
                     textSize = 50,
                     strokeWidth = 5f,
-                    remainingTime = { timeLeft }
+                    remainingTimeInMilliSeconds = { timeLeft }
                 )
             }
         }
