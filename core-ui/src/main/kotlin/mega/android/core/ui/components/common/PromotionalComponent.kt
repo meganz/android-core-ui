@@ -23,6 +23,7 @@ import mega.android.core.ui.components.LinkSpannedText
 import mega.android.core.ui.components.MegaText
 import mega.android.core.ui.components.list.IconContentListItem
 import mega.android.core.ui.components.list.ImageContentListItem
+import mega.android.core.ui.components.text.ContentText
 import mega.android.core.ui.theme.AppTheme
 import mega.android.core.ui.theme.spacing.LocalSpacing
 import mega.android.core.ui.theme.values.TextColor
@@ -77,11 +78,11 @@ internal fun PromotionalContent(
     modifier: Modifier,
     title: String,
     headline: String,
-    description: PromotionalContentDescription? = null,
+    description: ContentText? = null,
     isIllustration: Boolean = false,
     listItems: List<PromotionalListAttributes> = emptyList(),
     contentText: String? = null,
-    footer: String? = null,
+    footer: ContentText? = null,
 ) {
     Column(
         modifier = modifier
@@ -171,7 +172,7 @@ internal fun PromotionalContent(
             )
         }
 
-        if (!footer.isNullOrBlank()) {
+        if (footer != null) {
             MegaText(
                 modifier = Modifier
                     .padding(
@@ -180,10 +181,10 @@ internal fun PromotionalContent(
                         end = LocalSpacing.current.x16
                     )
                     .fillMaxWidth(),
-                text = footer,
+                text = footer.text,
                 textColor = TextColor.Secondary,
                 style = AppTheme.typography.bodySmall,
-                textAlign = TextAlign.Center
+                textAlign = footer.textAlign
             )
         }
 

@@ -47,11 +47,12 @@ import mega.android.core.ui.R
 import mega.android.core.ui.components.button.PrimaryFilledButton
 import mega.android.core.ui.components.button.SecondaryFilledButton
 import mega.android.core.ui.components.common.PromotionalContent
-import mega.android.core.ui.components.common.PromotionalContentDescription
 import mega.android.core.ui.components.common.PromotionalFullImage
 import mega.android.core.ui.components.common.PromotionalImage
 import mega.android.core.ui.components.common.PromotionalListAttributes
 import mega.android.core.ui.components.image.MegaIcon
+import mega.android.core.ui.components.text.ContentText
+import mega.android.core.ui.components.text.ContentTextDefaults
 import mega.android.core.ui.components.toolbar.MegaTopAppBar
 import mega.android.core.ui.model.IllustrationIconSizeMode
 import mega.android.core.ui.preview.CombinedThemePreviews
@@ -79,13 +80,13 @@ fun PromotionalImageSheet(
     title: String,
     headline: String,
     modifier: Modifier = Modifier,
-    description: PromotionalContentDescription? = null,
+    description: ContentText? = null,
     windowsInsets: WindowInsets? = null,
     showCloseButton: Boolean = true,
     primaryButton: SheetButtonAttribute? = null,
     secondaryButton: SheetButtonAttribute? = null,
     contentText: String? = null,
-    footer: String? = null,
+    footer: ContentText? = null,
     listItems: List<PromotionalListAttributes> = emptyList(),
     onDismissRequest: () -> Unit = {},
     isVisible: Boolean = false,
@@ -199,14 +200,14 @@ fun PromotionalFullImageSheet(
     title: String,
     headline: String,
     modifier: Modifier = Modifier,
-    description: PromotionalContentDescription? = null,
+    description: ContentText? = null,
     windowsInsets: WindowInsets? = null,
     showCloseButton: Boolean = true,
     primaryButton: SheetButtonAttribute? = null,
     secondaryButton: SheetButtonAttribute? = null,
     listItems: List<PromotionalListAttributes> = emptyList(),
     contentText: String? = null,
-    footer: String? = null,
+    footer: ContentText? = null,
     onDismissRequest: () -> Unit = {},
     isVisible: Boolean = false,
 ) {
@@ -329,7 +330,7 @@ fun PromotionalIllustrationSheet(
     title: String,
     headline: String,
     modifier: Modifier = Modifier,
-    description: PromotionalContentDescription? = null,
+    description: ContentText? = null,
     windowsInsets: WindowInsets? = null,
     showCloseButton: Boolean = true,
     @DrawableRes illustration: Int? = null,
@@ -338,7 +339,7 @@ fun PromotionalIllustrationSheet(
     secondaryButton: SheetButtonAttribute? = null,
     listItems: List<PromotionalListAttributes> = emptyList(),
     contentText: String? = null,
-    footer: String? = null,
+    footer: ContentText? = null,
     onDismissRequest: () -> Unit = {},
     isVisible: Boolean = false,
 ) {
@@ -453,7 +454,7 @@ fun PromotionalPlainSheet(
     title: String,
     headline: String,
     modifier: Modifier = Modifier,
-    description: PromotionalContentDescription? = null,
+    description: ContentText? = null,
     windowsInsets: WindowInsets? = null,
     showCloseButton: Boolean = true,
     illustrationMode: IllustrationIconSizeMode = IllustrationIconSizeMode.Small,
@@ -461,7 +462,7 @@ fun PromotionalPlainSheet(
     secondaryButton: SheetButtonAttribute? = null,
     listItems: List<PromotionalListAttributes> = emptyList(),
     contentText: String? = null,
-    footer: String? = null,
+    footer: ContentText? = null,
     onDismissRequest: () -> Unit = {},
     isVisible: Boolean = false,
 ) {
@@ -582,7 +583,7 @@ private fun PreviewPromotionalPlainSheet() {
             secondaryButton = "Button 2" to {},
             listItems = listItemSamples,
             isVisible = true,
-            footer = "*terms and conditions. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip"
+            footer = ContentTextDefaults.description("*terms and conditions. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip")
         )
     }
 }
@@ -599,7 +600,7 @@ private fun PreviewPromotionalFullImageSheetWithList() {
             secondaryButton = "Button 2" to {},
             listItems = listItemSamples,
             isVisible = true,
-            footer = "*terms and conditions. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip"
+            footer = ContentTextDefaults.description("*terms and conditions. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip")
         )
     }
 }
@@ -616,7 +617,7 @@ private fun PreviewPromotionalImageSheetWithList() {
             secondaryButton = "Button 2" to {},
             listItems = listItemSamples,
             isVisible = true,
-            footer = "*terms and conditions. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip"
+            footer = ContentTextDefaults.description("*terms and conditions. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip")
         )
     }
 }
@@ -634,7 +635,7 @@ private fun PreviewPromotionalIllustrationSheetWithList() {
             secondaryButton = "Button 2" to {},
             listItems = listItemSamples,
             isVisible = true,
-            footer = "*terms and conditions. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip"
+            footer = ContentTextDefaults.description("*terms and conditions. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip")
         )
     }
 }

@@ -25,12 +25,12 @@ import mega.android.core.ui.app.util.Section
 import mega.android.core.ui.components.MegaText
 import mega.android.core.ui.components.button.PrimaryFilledButton
 import mega.android.core.ui.components.checkbox.Checkbox
-import mega.android.core.ui.components.common.PromotionalContentDescription
 import mega.android.core.ui.components.common.PromotionalListAttributes
 import mega.android.core.ui.components.sheets.PromotionalFullImageSheet
 import mega.android.core.ui.components.sheets.PromotionalIllustrationSheet
 import mega.android.core.ui.components.sheets.PromotionalImageSheet
 import mega.android.core.ui.components.sheets.PromotionalPlainSheet
+import mega.android.core.ui.components.text.ContentText
 import mega.android.core.ui.model.IllustrationIconSizeMode
 import mega.android.core.ui.model.MegaSpanStyle
 import mega.android.core.ui.model.SpanIndicator
@@ -290,7 +290,7 @@ private val listItemSamples = IntRange(1, 3).map {
 @Composable
 private fun getPromotionalContentDescription(
     showClickableDescription: Boolean
-): PromotionalContentDescription {
+): ContentText {
     val descriptionText = if (showClickableDescription) {
         "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip \n\n[B]Click here to learn more[/B]"
     } else {
@@ -298,7 +298,7 @@ private fun getPromotionalContentDescription(
     }
 
     val footerTextAlign = if (showClickableDescription) TextAlign.Center else TextAlign.Start
-    return PromotionalContentDescription(
+    return ContentText(
         text = descriptionText,
         textAlign = footerTextAlign,
         spanStyles = if (showClickableDescription) {

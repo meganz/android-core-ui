@@ -44,11 +44,12 @@ import mega.android.core.ui.R
 import mega.android.core.ui.components.button.PrimaryFilledButton
 import mega.android.core.ui.components.button.SecondaryFilledButton
 import mega.android.core.ui.components.common.PromotionalContent
-import mega.android.core.ui.components.common.PromotionalContentDescription
 import mega.android.core.ui.components.common.PromotionalFullImage
 import mega.android.core.ui.components.common.PromotionalImage
 import mega.android.core.ui.components.common.PromotionalListAttributes
 import mega.android.core.ui.components.image.MegaIcon
+import mega.android.core.ui.components.text.ContentText
+import mega.android.core.ui.components.text.ContentTextDefaults
 import mega.android.core.ui.components.toolbar.MegaTopAppBar
 import mega.android.core.ui.model.IllustrationIconSizeMode
 import mega.android.core.ui.preview.CombinedThemePreviewsTablet
@@ -73,13 +74,13 @@ fun PromotionalImageDialog(
     title: String,
     headline: String,
     modifier: Modifier = Modifier,
-    description: PromotionalContentDescription? = null,
+    description: ContentText? = null,
     showCloseButton: Boolean = true,
     primaryButton: DialogButtonAttribute? = null,
     secondaryButton: DialogButtonAttribute? = null,
     listItems: List<PromotionalListAttributes> = emptyList(),
     contentText: String? = null,
-    footer: String? = null,
+    footer: ContentText? = null,
     onDismissRequest: () -> Unit = {},
 ) {
     Dialog(
@@ -149,13 +150,13 @@ fun PromotionalFullImageDialog(
     title: String,
     headline: String,
     modifier: Modifier = Modifier,
-    description: PromotionalContentDescription? = null,
+    description: ContentText? = null,
     showCloseButton: Boolean = true,
     primaryButton: DialogButtonAttribute? = null,
     secondaryButton: DialogButtonAttribute? = null,
     listItems: List<PromotionalListAttributes> = emptyList(),
     contentText: String? = null,
-    footer: String? = null,
+    footer: ContentText? = null,
     onDismissRequest: () -> Unit = {},
 ) {
     val spacing = LocalSpacing.current
@@ -242,7 +243,7 @@ fun PromotionalIllustrationDialog(
     title: String,
     headline: String,
     modifier: Modifier = Modifier,
-    description: PromotionalContentDescription? = null,
+    description: ContentText? = null,
     showCloseButton: Boolean = true,
     @DrawableRes illustration: Int? = null,
     illustrationMode: IllustrationIconSizeMode = IllustrationIconSizeMode.Small,
@@ -250,7 +251,7 @@ fun PromotionalIllustrationDialog(
     secondaryButton: DialogButtonAttribute? = null,
     listItems: List<PromotionalListAttributes> = emptyList(),
     contentText: String? = null,
-    footer: String? = null,
+    footer: ContentText? = null,
     onDismissRequest: () -> Unit = {},
 ) {
     val scrollState = rememberScrollState()
@@ -323,14 +324,14 @@ fun PromotionalPlainDialog(
     modifier: Modifier = Modifier,
     title: String,
     headline: String,
-    description: PromotionalContentDescription? = null,
+    description: ContentText? = null,
     showCloseButton: Boolean = true,
     illustrationMode: IllustrationIconSizeMode = IllustrationIconSizeMode.Small,
     primaryButton: DialogButtonAttribute? = null,
     secondaryButton: DialogButtonAttribute? = null,
     listItems: List<PromotionalListAttributes> = emptyList(),
     contentText: String? = null,
-    footer: String? = null,
+    footer: ContentText? = null,
     onDismissRequest: () -> Unit = {},
 ) {
     PromotionalIllustrationDialog(
@@ -438,7 +439,7 @@ private fun PromotionalImageDialogComponent() {
             secondaryButton = "Button 2" to {},
             onDismissRequest = {},
             listItems = listItemSamples,
-            footer = "*terms and conditions. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip"
+            footer = ContentTextDefaults.description("*terms and conditions. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip")
         )
     }
 }
@@ -455,7 +456,7 @@ private fun PromotionalFullImageDialogComponent() {
             secondaryButton = "Button 2" to {},
             onDismissRequest = {},
             listItems = listItemSamples,
-            footer = "*terms and conditions. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip"
+            footer = ContentTextDefaults.description("*terms and conditions. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip")
         )
     }
 }
@@ -472,7 +473,7 @@ private fun PromotionalIllustrationDialogComponent() {
             secondaryButton = "Button 2" to {},
             onDismissRequest = {},
             listItems = listItemSamples,
-            footer = "*terms and conditions. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip"
+            footer = ContentTextDefaults.description("*terms and conditions. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip")
         )
     }
 }
@@ -488,7 +489,7 @@ private fun PromotionalPlainDialogComponent() {
             secondaryButton = "Button 2" to {},
             onDismissRequest = {},
             listItems = listItemSamples,
-            footer = "*terms and conditions. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip"
+            footer = ContentTextDefaults.description("*terms and conditions. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip")
         )
     }
 }
