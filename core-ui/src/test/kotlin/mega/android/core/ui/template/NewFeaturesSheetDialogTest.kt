@@ -30,7 +30,7 @@ class NewFeaturesSheetDialogTest {
                         title = "title",
                         headline = "headline",
                         description = ContentTextDefaults.description("description"),
-                        footer = "footer",
+                        footer = ContentTextDefaults.description("footer"),
                         showCloseButton = true,
                         featuresList = listOf(
                             FeatureListItem(
@@ -61,7 +61,7 @@ class NewFeaturesSheetDialogTest {
                         title = "title",
                         headline = "headline",
                         description = ContentTextDefaults.description("description"),
-                        footer = "footer",
+                        footer = ContentTextDefaults.description("footer"),
                         showCloseButton = true,
                         featuresList = listOf(
                             FeatureListItem(
@@ -92,7 +92,7 @@ class NewFeaturesSheetDialogTest {
                         title = "title",
                         headline = "headline",
                         description = ContentTextDefaults.description("description"),
-                        footer = "footer",
+                        footer = ContentTextDefaults.description("footer"),
                         showCloseButton = true,
                         featuresList = listOf(
                             FeatureListItem(
@@ -123,7 +123,7 @@ class NewFeaturesSheetDialogTest {
                         title = "title",
                         headline = "headline",
                         description = ContentTextDefaults.description("description"),
-                        footer = "footer",
+                        footer = ContentTextDefaults.description("footer"),
                         showCloseButton = true,
                         featuresList = listOf(
                             FeatureListItem(
@@ -154,7 +154,7 @@ class NewFeaturesSheetDialogTest {
                         title = "title",
                         headline = "headline",
                         description = ContentTextDefaults.description("description"),
-                        footer = "footer",
+                        footer = ContentTextDefaults.description("footer"),
                         showCloseButton = true,
                         featuresList = listOf(
                             FeatureListItem(
@@ -186,7 +186,7 @@ class NewFeaturesSheetDialogTest {
                         title = "title",
                         headline = "headline",
                         description = ContentTextDefaults.description("description"),
-                        footer = "footer",
+                        footer = ContentTextDefaults.description("footer"),
                         showCloseButton = true,
                         featuresList = listOf(
                             FeatureListItem(
@@ -218,7 +218,7 @@ class NewFeaturesSheetDialogTest {
                         title = "title",
                         headline = "headline",
                         description = ContentTextDefaults.description("description"),
-                        footer = "footer",
+                        footer = ContentTextDefaults.description("footer"),
                         showCloseButton = true,
                         featuresList = listOf(
                             FeatureListItem(
@@ -248,7 +248,7 @@ class NewFeaturesSheetDialogTest {
                         title = "title",
                         headline = "headline",
                         description = ContentTextDefaults.description("description"),
-                        footer = "footer",
+                        footer = ContentTextDefaults.description("footer"),
                         showCloseButton = true,
                         featuresList = listOf(
                             FeatureListItem(

@@ -1,8 +1,11 @@
 package mega.android.core.ui.components.indicators
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.CircularProgressIndicator
@@ -11,16 +14,17 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.delay
@@ -29,6 +33,8 @@ import mega.android.core.ui.preview.CombinedThemePreviews
 import mega.android.core.ui.theme.AndroidThemeForPreviews
 import mega.android.core.ui.theme.AppTheme
 import mega.android.core.ui.theme.values.TextColor
+import kotlin.math.ceil
+import kotlin.math.max
 
 /**
  * TimerRadialProgressBar is a circular progress bar that shows the remaining time of a timer.
@@ -40,21 +46,22 @@ import mega.android.core.ui.theme.values.TextColor
  * @param remainingTimeInMilliSeconds a lambda that returns the remaining time of the timer
  * @param modifier the modifier to apply to this layout
  * @param size the size of the progress bar
- * @param textSize the size of the text in the center
  */
+@SuppressLint("UnusedBoxWithConstraintsScope")
 @Composable
 fun TimerRadialProgressBar(
     totalTimeInSeconds: Long,
     remainingTimeInMilliSeconds: () -> Long,
     modifier: Modifier = Modifier,
     size: Dp = 24.dp,
-    textSize: TextUnit = 12.sp,
     strokeWidth: Float = 2f,
+    minTextSize: Float = 4f,
+    maxTextSize: Float = 100f
 ) {
 
     val totalTimeText by remember(remainingTimeInMilliSeconds()) {
         derivedStateOf {
-            "${remainingTimeInMilliSeconds() / 1000}"
+            "${ceil(remainingTimeInMilliSeconds() / 1000.0).toInt()}"
         }
     }
     val progress by remember(remainingTimeInMilliSeconds()) { derivedStateOf { remainingTimeInMilliSeconds().toFloat() / (totalTimeInSeconds * 1000) } }
@@ -72,13 +79,32 @@ fun TimerRadialProgressBar(
             strokeWidth = strokeWidth.dp,
             strokeCap = StrokeCap.Butt,
             gapSize = 0.dp,
-            modifier = Modifier.size(size),
+            modifier = Modifier
+                .size(size)
+                .scale(scaleX = -1f, scaleY = 1f),
         )
-        MegaText(
-            text = totalTimeText,
-            style = AppTheme.typography.bodySmall.copy(fontSize = textSize),
-            textColor = TextColor.Secondary
-        )
+        BoxWithConstraints(
+            modifier = Modifier
+                .size(size)
+                .padding((strokeWidth * 2).dp),
+            contentAlignment = Alignment.Center
+        ) {
+            var shouldDrawText by remember { mutableStateOf(false) }
+            var textSize by remember { mutableFloatStateOf(maxTextSize) }
+            MegaText(
+                text = totalTimeText,
+                style = AppTheme.typography.bodySmall.copy(fontSize = textSize.sp),
+                textColor = TextColor.Secondary,
+                softWrap = false,
+                onTextLayout = { textLayoutResult ->
+                    if (textSize > minTextSize && textLayoutResult.didOverflowWidth || textLayoutResult.didOverflowHeight) {
+                        textSize = max(minTextSize, textSize * 0.8f)
+                    } else {
+                        shouldDrawText = true
+                    }
+                }
+            )
+        }
     }
 }
 
@@ -121,9 +147,8 @@ fun TimerRadialProgressBarInteractablePreview() {
                 )
                 TimerRadialProgressBar(
                     totalTimeInSeconds = timer,
-                    size = 100.dp,
-                    textSize = 50.sp,
                     strokeWidth = 5f,
+                    size = 100.dp,
                     remainingTimeInMilliSeconds = { timeLeft }
                 )
             }

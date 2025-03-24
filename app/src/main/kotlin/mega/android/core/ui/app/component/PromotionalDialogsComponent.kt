@@ -26,6 +26,7 @@ import mega.android.core.ui.components.dialogs.PromotionalIllustrationDialog
 import mega.android.core.ui.components.dialogs.PromotionalImageDialog
 import mega.android.core.ui.components.dialogs.PromotionalPlainDialog
 import mega.android.core.ui.components.text.ContentText
+import mega.android.core.ui.components.text.ContentTextDefaults
 import mega.android.core.ui.model.IllustrationIconSizeMode
 import mega.android.core.ui.model.MegaSpanStyle
 import mega.android.core.ui.model.SpanIndicator
@@ -157,7 +158,7 @@ private fun PromotionalImageDialogComponent(
         secondaryButton = "Button 2" to {},
         onDismissRequest = onDismissRequest,
         listItems = listItemSamples,
-        footer = "*terms and conditions. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip",
+        footer = ContentTextDefaults.description("*terms and conditions. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip"),
     )
 }
 
@@ -177,7 +178,7 @@ private fun PromotionalFullImageDialogComponent(
         secondaryButton = "Button 2" to {},
         onDismissRequest = onDismissRequest,
         listItems = listItemSamples,
-        footer = "*terms and conditions. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip",
+        footer = ContentTextDefaults.description("*terms and conditions. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip"),
     )
 }
 
@@ -199,7 +200,7 @@ private fun PromotionalIllustrationDialogComponent(
         secondaryButton = "Button 2" to {},
         onDismissRequest = onDismissRequest,
         listItems = listItemSamples,
-        footer = "*terms and conditions. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip",
+        footer = ContentTextDefaults.description("*terms and conditions. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip"),
     )
 }
 
@@ -220,7 +221,7 @@ private fun PromotionalPlainDialogComponent(
         secondaryButton = "Button 2" to {},
         onDismissRequest = onDismissRequest,
         listItems = listItemSamples,
-        footer = "*terms and conditions. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip",
+        footer = ContentTextDefaults.description("*terms and conditions. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip"),
     )
 }
 
@@ -235,7 +236,7 @@ private fun getPromotionalContentDescription(
     }
 
     val footerTextAlign = if (showClickableDescription) TextAlign.Center else TextAlign.Start
-    return ContentText(
+    return ContentTextDefaults.description(
         text = descriptionText,
         textAlign = footerTextAlign,
         spanStyles = if (showClickableDescription) {
