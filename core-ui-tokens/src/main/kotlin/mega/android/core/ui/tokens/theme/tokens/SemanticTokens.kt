@@ -51,7 +51,9 @@ public data class Text(
     public val accent: Color = Color.Magenta,
     public val brand: Color = Color.Magenta,
     public val placeholder: Color = Color.Magenta,
+    public val inverse: Color = Color.Magenta,
     public val inverseAccent: Color = Color.Magenta,
+    public val inverseSecondary: Color = Color.Magenta,
     public val onColor: Color = Color.Magenta,
     public val onColorDisabled: Color = Color.Magenta,
     public val error: Color = Color.Magenta,
@@ -59,7 +61,6 @@ public data class Text(
     public val info: Color = Color.Magenta,
     public val warning: Color = Color.Magenta,
     public val disabled: Color = Color.Magenta,
-    public val inverse: Color = Color.Magenta,
 )
 
 public data class Icon(
@@ -67,10 +68,11 @@ public data class Icon(
     public val secondary: Color = Color.Magenta,
     public val accent: Color = Color.Magenta,
     public val brand: Color = Color.Magenta,
+    public val inverse: Color = Color.Magenta,
     public val inverseAccent: Color = Color.Magenta,
+    public val inverseSecondary: Color = Color.Magenta,
     public val onColor: Color = Color.Magenta,
     public val onColorDisabled: Color = Color.Magenta,
-    public val inverse: Color = Color.Magenta,
     public val disabled: Color = Color.Magenta,
 )
 
@@ -114,6 +116,17 @@ public data class Focus(
     public val colorFocus: Color = Color.Magenta,
 )
 
+public data class Brand(
+    public val default: Color = Color.Magenta,
+    public val hover: Color = Color.Magenta,
+    public val pressed: Color = Color.Magenta,
+    public val onBrand: Color = Color.Magenta,
+    public val containerDefault: Color = Color.Magenta,
+    public val containerHover: Color = Color.Magenta,
+    public val containerPressed: Color = Color.Magenta,
+    public val onContainer: Color = Color.Magenta,
+)
+
 public interface SemanticTokens {
     public val background: Background
 
@@ -136,4 +149,6 @@ public interface SemanticTokens {
     public val link: Link
 
     public val focus: Focus
+
+    public val brand: Brand
 }

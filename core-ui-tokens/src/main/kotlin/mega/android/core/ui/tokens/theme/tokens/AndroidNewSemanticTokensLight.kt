@@ -50,7 +50,9 @@ public object AndroidNewSemanticTokensLight : SemanticTokens {
             accent = Colors.Accent.n900,
             brand = Colors.Primary.n600,
             placeholder = Colors.Neutral.n600,
+            inverse = Colors.Neutral.n025,
             inverseAccent = Colors.Accent.n025,
+            inverseSecondary = Colors.Grey.n200,
             onColor = Colors.Neutral.n025,
             onColorDisabled = Colors.Neutral.n300,
             error = Colors.Error.n600,
@@ -58,7 +60,6 @@ public object AndroidNewSemanticTokensLight : SemanticTokens {
             info = Colors.Secondary.Blue.n700,
             warning = Colors.Warning.n700,
             disabled = Colors.Neutral.n200,
-            inverse = Colors.Neutral.n025,
             )
 
     override val icon: Icon = Icon(
@@ -66,10 +67,11 @@ public object AndroidNewSemanticTokensLight : SemanticTokens {
             secondary = Colors.Neutral.n600,
             accent = Colors.Accent.n900,
             brand = Colors.Primary.n600,
+            inverse = Colors.Neutral.n025,
             inverseAccent = Colors.Accent.n025,
+            inverseSecondary = Colors.Grey.n200,
             onColor = Colors.Neutral.n025,
             onColorDisabled = Colors.Neutral.n300,
-            inverse = Colors.Neutral.n025,
             disabled = Colors.Neutral.n200,
             )
 
@@ -111,5 +113,16 @@ public object AndroidNewSemanticTokensLight : SemanticTokens {
 
     override val focus: Focus = Focus(
             colorFocus = Colors.Secondary.Indigo.n200,
+            )
+
+    override val brand: Brand = Brand(
+            default = Colors.Primary.n600,
+            hover = Colors.Primary.n700,
+            pressed = Colors.Primary.n800,
+            onBrand = Colors.Grey.n25,
+            containerDefault = Colors.Primary.n050,
+            containerHover = Colors.Primary.n100,
+            containerPressed = Colors.Primary.n200,
+            onContainer = Colors.Primary.n900,
             )
 }

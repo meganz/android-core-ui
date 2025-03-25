@@ -13,7 +13,9 @@ public enum class TextColor {
     Accent,
     Brand,
     Placeholder,
+    Inverse,
     InverseAccent,
+    InverseSecondary,
     OnColor,
     OnColorDisabled,
     Error,
@@ -21,7 +23,6 @@ public enum class TextColor {
     Info,
     Warning,
     Disabled,
-    Inverse,
     ;
 
     public fun getTextColor(text: Text): Color = when (this) {
@@ -30,7 +31,9 @@ public enum class TextColor {
         Accent -> text.accent
         Brand -> text.brand
         Placeholder -> text.placeholder
+        Inverse -> text.inverse
         InverseAccent -> text.inverseAccent
+        InverseSecondary -> text.inverseSecondary
         OnColor -> text.onColor
         OnColorDisabled -> text.onColorDisabled
         Error -> text.error
@@ -38,6 +41,5 @@ public enum class TextColor {
         Info -> text.info
         Warning -> text.warning
         Disabled -> text.disabled
-        Inverse -> text.inverse
     }
 }

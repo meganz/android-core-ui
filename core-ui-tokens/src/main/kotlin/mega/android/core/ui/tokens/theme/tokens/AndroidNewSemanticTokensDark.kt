@@ -36,7 +36,7 @@ public object AndroidNewSemanticTokensDark : SemanticTokens {
             )
 
     override val border: Border = Border(
-            brand = Colors.Primary.n400,
+            brand = Colors.Primary.n500,
             strong = Colors.Neutral.n600,
             strongSelected = Colors.Accent.n050,
             subtle = Colors.Neutral.n800,
@@ -50,7 +50,9 @@ public object AndroidNewSemanticTokensDark : SemanticTokens {
             accent = Colors.Accent.n025,
             brand = Colors.Primary.n500,
             placeholder = Colors.Neutral.n200,
+            inverse = Colors.Neutral.n800,
             inverseAccent = Colors.Accent.n900,
+            inverseSecondary = Colors.Grey.n500,
             onColor = Colors.Neutral.n025,
             onColorDisabled = Colors.Neutral.n400,
             error = Colors.Error.n400,
@@ -58,7 +60,6 @@ public object AndroidNewSemanticTokensDark : SemanticTokens {
             info = Colors.Secondary.Blue.n500,
             warning = Colors.Warning.n500,
             disabled = Colors.Neutral.n500,
-            inverse = Colors.Neutral.n800,
             )
 
     override val icon: Icon = Icon(
@@ -66,10 +67,11 @@ public object AndroidNewSemanticTokensDark : SemanticTokens {
             secondary = Colors.Neutral.n300,
             accent = Colors.Accent.n025,
             brand = Colors.Primary.n500,
+            inverse = Colors.Neutral.n800,
             inverseAccent = Colors.Accent.n900,
+            inverseSecondary = Colors.Grey.n500,
             onColor = Colors.Neutral.n025,
             onColorDisabled = Colors.Neutral.n400,
-            inverse = Colors.Neutral.n800,
             disabled = Colors.Neutral.n500,
             )
 
@@ -82,7 +84,7 @@ public object AndroidNewSemanticTokensDark : SemanticTokens {
 
     override val components: Components = Components(
             selectionControl = Colors.Accent.n050,
-            interactive = Colors.Primary.n400,
+            interactive = Colors.Primary.n500,
             toastBackground = Colors.Neutral.n200,
             )
 
@@ -111,5 +113,16 @@ public object AndroidNewSemanticTokensDark : SemanticTokens {
 
     override val focus: Focus = Focus(
             colorFocus = Colors.Secondary.Indigo.n700,
+            )
+
+    override val brand: Brand = Brand(
+            default = Colors.Primary.n500,
+            hover = Colors.Primary.n400,
+            pressed = Colors.Primary.n300,
+            onBrand = Colors.Grey.n25,
+            containerDefault = Colors.Primary.n900,
+            containerHover = Colors.Primary.n800,
+            containerPressed = Colors.Primary.n700,
+            onContainer = Colors.Primary.n050,
             )
 }

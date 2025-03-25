@@ -23,7 +23,6 @@ rootProject.name = "Core UI"
 include(":app")
 include(":core-ui")
 include(":core-ui-tokens")
-include(":example:temp-theme")
 
 dependencyResolutionManagement {
     versionCatalogs {

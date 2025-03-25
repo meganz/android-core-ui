@@ -12,10 +12,11 @@ public enum class IconColor {
     Secondary,
     Accent,
     Brand,
+    Inverse,
     InverseAccent,
+    InverseSecondary,
     OnColor,
     OnColorDisabled,
-    Inverse,
     Disabled,
     ;
 
@@ -24,10 +25,11 @@ public enum class IconColor {
         Secondary -> icon.secondary
         Accent -> icon.accent
         Brand -> icon.brand
+        Inverse -> icon.inverse
         InverseAccent -> icon.inverseAccent
+        InverseSecondary -> icon.inverseSecondary
         OnColor -> icon.onColor
         OnColorDisabled -> icon.onColorDisabled
-        Inverse -> icon.inverse
         Disabled -> icon.disabled
     }
 }
