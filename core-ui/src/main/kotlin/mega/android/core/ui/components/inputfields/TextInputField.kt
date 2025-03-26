@@ -35,12 +35,14 @@ import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.ImeOptions
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -290,6 +292,250 @@ fun AnnotatedLabelTextInputField(
         onValueChanged = onValueChanged,
         onFocusChanged = onFocusChanged
     )
+}
+
+/**
+ * Text input field with annotated label.
+ *
+ * @param textValue The input text to be shown in the text field
+ * @param keyboardType The keyboard type to be used in this text field. Note that this input type
+ * is honored by keyboard and shows corresponding keyboard but this is not guaranteed. For example,
+ * some keyboards may send non-ASCII character even if you set [KeyboardType.Ascii].
+ * @param modifier The [Modifier] to be applied to this text field
+ * @param imeAction The IME action. This IME action is honored by keyboard and may show specific
+ * icons on the keyboard. For example, search icon may be shown if [ImeAction.Search] is specified.
+ * When [ImeOptions.singleLine] is false, the keyboard might show return key rather than the action
+ * requested here.
+ * @param capitalization informs the keyboard whether to automatically capitalize characters,
+ * words or sentences. Only applicable to only text based [KeyboardType]s such as
+ * [KeyboardType.Text], [KeyboardType.Ascii]. It will not be applied to [KeyboardType]s such as
+ * [KeyboardType.Number].
+ * @param spannedLabel The optional spanned label to be displayed inside the text field container.
+ * @param inputTextAlign The alignment of the text within the lines of the paragraph
+ * @param showTrailingIcon whether the component needs to display the default icons. Available default icons:
+ *  - Close icon when the text is not empty.
+ *  - Eye icon for password mode.
+ * @param successText The optional supporting text to be displayed below the text field
+ * @param errorText The optional error text to be displayed below the text field
+ * @param maxCharLimit The maximum character to be displayed in the text field.
+ * @param onValueChanged The callback that is triggered when the text is changed. In this component,
+ *   this callback will be called when the user clear all the text by clicking the close icon.
+ * @param onFocusChanged The callback that is triggered when the focus state of this text field changes.
+ */
+@Composable
+fun AnnotatedLabelTextInputField(
+    textValue: TextFieldValue,
+    keyboardType: KeyboardType,
+    modifier: Modifier = Modifier,
+    imeAction: ImeAction = ImeAction.Done,
+    capitalization: KeyboardCapitalization = KeyboardCapitalization.Words,
+    spannedLabel: InputFieldLabelSpanStyle? = null,
+    inputTextAlign: TextAlign = TextAlign.Unspecified,
+    showTrailingIcon: Boolean = true,
+    successText: String? = null,
+    errorText: String? = null,
+    maxCharLimit: Int = Int.MAX_VALUE,
+    onValueChanged: ((TextFieldValue) -> Unit)? = null,
+    onFocusChanged: ((Boolean) -> Unit)? = null,
+) {
+    BaseTextField(
+        modifier = modifier,
+        label = {
+            spannedLabel?.let {
+                val annotatedLabelString = spannedTextWithAnnotation(
+                    it.value,
+                    it.spanStyles
+                )
+                Text(
+                    modifier = Modifier.padding(bottom = LocalSpacing.current.x4),
+                    text = annotatedLabelString,
+                    style = it.baseStyle.copy(
+                        color = AppTheme.textColor(textColor = it.baseTextColor)
+                    )
+                )
+            }
+        },
+        keyboardType = keyboardType,
+        imeAction = imeAction,
+        capitalization = capitalization,
+        textValue = textValue,
+        successText = successText,
+        errorText = errorText,
+        inputTextAlign = inputTextAlign,
+        isPasswordMode = false,
+        showTrailingIcon = showTrailingIcon,
+        maxCharLimit = maxCharLimit,
+        onValueChanged = onValueChanged,
+        onFocusChanged = onFocusChanged
+    )
+}
+
+@Composable
+private fun BaseTextField(
+    modifier: Modifier,
+    textValue: TextFieldValue,
+    isPasswordMode: Boolean,
+    showTrailingIcon: Boolean,
+    keyboardType: KeyboardType,
+    imeAction: ImeAction,
+    capitalization: KeyboardCapitalization,
+    successText: String?,
+    errorText: String?,
+    inputTextAlign: TextAlign,
+    keyboardActions: KeyboardActions = KeyboardActions.Default,
+    maxCharLimit: Int = Int.MAX_VALUE,
+    label: @Composable (() -> Unit)? = null,
+    onValueChanged: ((TextFieldValue) -> Unit)? = null,
+    onFocusChanged: ((Boolean) -> Unit)? = null,
+) {
+    val spacing = LocalSpacing.current
+    val interactionSource: MutableInteractionSource = remember { MutableInteractionSource() }
+    var textFieldValueState by remember {
+        mutableStateOf(
+            TextFieldValue(
+                text = textValue.text,
+                selection = TextRange(textValue.text.length)
+            )
+        )
+    }
+    var isFocused by remember { mutableStateOf(false) }
+    var showPassword by rememberSaveable { mutableStateOf(false) }
+    val focusedColor = when {
+        successText.isNullOrBlank().not() -> AppTheme.colors.support.success
+        errorText != null -> AppTheme.colors.support.error
+        else -> AppTheme.colors.border.strongSelected
+    }
+    val unfocusedColor = when {
+        successText.isNullOrBlank().not() -> AppTheme.colors.support.success
+        errorText != null -> AppTheme.colors.support.error
+        else -> AppTheme.colors.border.strong
+    }
+    val colors = OutlinedTextFieldDefaults.colors(
+        focusedTextColor = AppTheme.colors.text.primary,
+        unfocusedTextColor = AppTheme.colors.text.primary,
+        cursorColor = AppTheme.colors.text.primary,
+        errorCursorColor = AppTheme.colors.text.primary,
+        selectionColors = TextSelectionColors(
+            handleColor = AppTheme.colors.text.primary,
+            backgroundColor = AppTheme.colors.text.primary.copy(alpha = 0.4f),
+        ),
+        focusedBorderColor = focusedColor,
+        unfocusedBorderColor = unfocusedColor,
+        errorBorderColor = AppTheme.colors.support.error,
+        errorTextColor = AppTheme.colors.text.primary,
+        focusedPlaceholderColor = AppTheme.colors.text.primary,
+        unfocusedPlaceholderColor = AppTheme.colors.text.placeholder,
+        disabledTextColor = AppTheme.colors.text.disabled,
+        disabledContainerColor = AppTheme.colors.button.disabled,
+        disabledBorderColor = AppTheme.colors.border.disabled,
+    )
+
+    Column(
+        modifier = modifier
+            .fillMaxWidth()
+    ) {
+        label?.invoke()
+
+        OutlinedTextField(
+            modifier = Modifier
+                .fillMaxWidth()
+                .heightIn(min = inputFieldHeight)
+                .onFocusChanged {
+                    isFocused = it.isFocused
+                    onFocusChanged?.invoke(it.isFocused)
+                },
+            keyboardOptions = KeyboardOptions(
+                keyboardType = keyboardType,
+                autoCorrectEnabled = isPasswordMode.not(),
+                imeAction = imeAction,
+                capitalization = capitalization
+            ),
+            keyboardActions = keyboardActions,
+            value = textFieldValueState,
+            onValueChange = { textFieldValue ->
+                if (textFieldValue.text.length <= maxCharLimit) {
+                    when {
+                        keyboardType == KeyboardType.Number -> {
+                            if (textFieldValue.text.isDigitsOnly()) {
+                                textFieldValueState = textFieldValue
+                                onValueChanged?.invoke(textFieldValue)
+                            }
+                        }
+
+                        else -> {
+                            textFieldValueState = textFieldValue
+                            onValueChanged?.invoke(textFieldValue)
+                        }
+                    }
+                }
+            },
+            colors = colors,
+            shape = RoundedCornerShape(8.dp),
+            interactionSource = interactionSource,
+            singleLine = true,
+            textStyle = AppTheme.typography.bodyLarge.copy(textAlign = inputTextAlign),
+            isError = successText.isNullOrBlank() && errorText != null,
+            visualTransformation = if (!isPasswordMode || showPassword) VisualTransformation.None else PasswordVisualTransformation(),
+            trailingIcon = if (textFieldValueState.text.isNotEmpty() && showTrailingIcon) {
+                when {
+                    isPasswordMode.not() && isFocused -> {
+                        {
+                            Icon(
+                                modifier = Modifier
+                                    .clickable {
+                                        textFieldValueState = TextFieldValue("")
+                                        onValueChanged?.invoke(TextFieldValue(""))
+                                    },
+                                painter = painterResource(id = R.drawable.ic_close),
+                                tint = AppTheme.colors.icon.primary,
+                                contentDescription = "Clear Text"
+                            )
+                        }
+                    }
+
+                    isPasswordMode -> {
+                        val eyeIcon = if (showPassword) R.drawable.ic_eye_off else R.drawable.ic_eye
+                        {
+                            Icon(
+                                modifier = Modifier
+                                    .padding(horizontal = spacing.x8)
+                                    .clickable { showPassword = !showPassword },
+                                painter = painterResource(id = eyeIcon),
+                                tint = AppTheme.colors.icon.secondary,
+                                contentDescription = "Show Password"
+                            )
+                        }
+                    }
+
+                    else -> {
+                        null
+                    }
+                }
+            } else {
+                null
+            }
+        )
+
+        val footerModifier = Modifier
+            .padding(top = spacing.x4)
+            .fillMaxWidth()
+
+        when {
+            !successText.isNullOrBlank() -> {
+                HelpTextSuccess(
+                    modifier = footerModifier,
+                    text = successText
+                )
+            }
+
+            !errorText.isNullOrBlank() -> {
+                HelpTextError(
+                    modifier = footerModifier,
+                    text = errorText
+                )
+            }
+        }
+    }
 }
 
 @Composable
@@ -835,26 +1081,48 @@ private fun AnnotatedLabelTextInputFieldPreview() {
 @CombinedThemePreviews
 @Composable
 private fun AnnotatedLabelTextInputFieldWithAnErrorTextPreview() {
+    val sampleText = "Annotated label text input"
     AndroidThemeForPreviews {
-        AnnotatedLabelTextInputField(
-            text = "Annotated label",
-            keyboardType = KeyboardType.Text,
-            spannedLabel = InputFieldLabelSpanStyle(
-                value = "Annotated [A](Optional)[/A]",
-                spanStyles = mapOf(
-                    SpanIndicator('A') to SpanStyleWithAnnotation(
-                        megaSpanStyle = MegaSpanStyle.TextColorStyle(
-                            spanStyle = AppTheme.typography.bodyMedium.toSpanStyle(),
-                            textColor = TextColor.Secondary
-                        ),
-                        annotation = null
-                    )
+        Column {
+            AnnotatedLabelTextInputField(
+                text = "Annotated label",
+                keyboardType = KeyboardType.Text,
+                spannedLabel = InputFieldLabelSpanStyle(
+                    value = "Annotated [A](Optional)[/A]",
+                    spanStyles = mapOf(
+                        SpanIndicator('A') to SpanStyleWithAnnotation(
+                            megaSpanStyle = MegaSpanStyle.TextColorStyle(
+                                spanStyle = AppTheme.typography.bodyMedium.toSpanStyle(),
+                                textColor = TextColor.Secondary
+                            ),
+                            annotation = null
+                        )
+                    ),
+                    baseStyle = AppTheme.typography.titleSmall,
+                    baseTextColor = TextColor.Primary
                 ),
-                baseStyle = AppTheme.typography.titleSmall,
-                baseTextColor = TextColor.Primary
-            ),
-            errorText = "error"
-        )
+                errorText = "error"
+            )
+            AnnotatedLabelTextInputField(
+                textValue = TextFieldValue(sampleText, TextRange(0, sampleText.length)),
+                keyboardType = KeyboardType.Text,
+                spannedLabel = InputFieldLabelSpanStyle(
+                    value = "Annotated [A](Optional)[/A]",
+                    spanStyles = mapOf(
+                        SpanIndicator('A') to SpanStyleWithAnnotation(
+                            megaSpanStyle = MegaSpanStyle.TextColorStyle(
+                                spanStyle = AppTheme.typography.bodyMedium.toSpanStyle(),
+                                textColor = TextColor.Secondary
+                            ),
+                            annotation = null
+                        )
+                    ),
+                    baseStyle = AppTheme.typography.titleSmall,
+                    baseTextColor = TextColor.Primary
+                ),
+                errorText = "error"
+            )
+        }
     }
 }
 
