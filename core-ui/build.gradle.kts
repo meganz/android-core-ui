@@ -3,6 +3,7 @@ import mega.privacy.megagradle.plugin.extension.Dependency
 plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
+    id("kotlin-parcelize")
     alias(libs.plugins.mega.artifactory.publish.convention)
     alias(libs.plugins.mega.android.library.jacoco.convention)
 }
