@@ -390,7 +390,7 @@ private fun BaseTextField(
 ) {
     val spacing = LocalSpacing.current
     val interactionSource: MutableInteractionSource = remember { MutableInteractionSource() }
-    var textFieldValueState by remember {
+    var textFieldValueState by remember(textValue) {
         mutableStateOf(
             TextFieldValue(
                 text = textValue.text,
