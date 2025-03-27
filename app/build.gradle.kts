@@ -54,6 +54,10 @@ dependencies {
     implementation(project(":core-ui"))
     //implementation("mega.android.core:ui:1.0")
 
+    // No need to add this to the catalog. We only use this for the Core-Ui app.
+    val navVersion = "2.8.9"
+    implementation("androidx.navigation:navigation-compose:$navVersion")
+
     implementation(libs.core.ktx)
     implementation(libs.lifecycle.runtime.ktx)
     implementation(libs.activity.compose)
