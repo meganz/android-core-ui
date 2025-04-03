@@ -1,6 +1,7 @@
 package mega.android.core.ui.components.badge
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -30,12 +31,14 @@ enum class BadgeType {
     Warning,
     Info,
     Error,
-    Mega
+    Mega,
+    MegaSecondary
 }
 
 private data class Badge(
     val textColor: TextColor,
-    val backgroundColor: Color
+    val backgroundColor: Color,
+    val borderColor: Color? = null
 )
 
 /**
@@ -64,6 +67,17 @@ fun Badge(
             .background(
                 color = attributes.backgroundColor,
                 shape = AppTheme.shapes.extraSmall
+            )
+            .then(
+                if (attributes.borderColor != null) {
+                    Modifier.border(
+                        width = 1.dp,
+                        color = attributes.borderColor,
+                        shape = AppTheme.shapes.extraSmall
+                    )
+                } else {
+                    Modifier
+                }
             )
             .padding(vertical = spacing.x2, horizontal = spacing.x4),
         verticalAlignment = Alignment.CenterVertically,
@@ -110,6 +124,11 @@ private fun getBadgeAttributes(badgeType: BadgeType): Badge {
         BadgeType.Mega -> Badge(
             textColor = TextColor.OnColor,
             backgroundColor = AppTheme.colors.button.brand
+        )
+        BadgeType.MegaSecondary -> Badge(
+            textColor = TextColor.Brand,
+            backgroundColor = Color.Transparent,
+            borderColor = AppTheme.colors.button.brand
         )
     }
 }
