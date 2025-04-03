@@ -73,10 +73,10 @@ internal fun PlansRadioSelectionPreview() {
     AndroidThemeForPreviews {
         var selectedPlan by remember { mutableStateOf<Plan?>(null) }
         val plans = listOf(
-            Plan("Plan 1", "Description 1", "$10", badgeAttributes = BadgeType.Mega to "Save 20%"),
-            Plan("Plan 2", "Description 2", "$20"),
-            Plan("Plan 3", "Description 3", "$30"),
-            Plan("Plan 4", "Description 4", "$40", enabled = false),
+            Plan("1", "Plan 1", "Description 1", "$10", badgeAttributes = BadgeType.Mega to "Save 20%"),
+            Plan("1", "Plan 2", "Description 2", "$20"),
+            Plan("1", "Plan 3", "Description 3", "$30"),
+            Plan("1", "Plan 4", "Description 4", "$40", enabled = false),
         )
         PlansRadioSelection(
             modifier = Modifier.padding(16.dp),

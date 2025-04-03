@@ -110,6 +110,7 @@ private fun PlansComponentPreview() {
         PlansComponent(
             modifier = Modifier.padding(LocalSpacing.current.x16),
             plan = Plan(
+                id = "1",
                 title = "Monthly",
                 price = "$3.99",
                 description = "EUR per month. Billed every month"
@@ -133,6 +134,7 @@ private fun PlansComponentSelectedPreview() {
         PlansComponent(
             modifier = Modifier.padding(LocalSpacing.current.x16),
             plan = Plan(
+                id = "1",
                 title = "Yearly",
                 price = "$1.99",
                 description = "EUR per month. Billed €23.88 every 12 months",
@@ -157,6 +159,7 @@ private fun PlansComponentSecondarySelectedPreview() {
         PlansComponent(
             modifier = Modifier.padding(LocalSpacing.current.x16),
             plan = Plan(
+                id = "1",
                 title = "Yearly",
                 price = "$1.99",
                 description = "EUR per month. Billed €23.88 every 12 months",

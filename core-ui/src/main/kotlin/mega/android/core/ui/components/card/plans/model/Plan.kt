@@ -8,6 +8,7 @@ typealias PlanBadgeAttributes = Pair<BadgeType, String?>
 /**
  * Represents a plan with its title, description, price, and optional badge attributes.
  *
+ * @property id The unique identifier of the plan.
  * @property title The title of the plan.
  * @property description The description of the plan.
  * @property price The price of the plan.
@@ -17,6 +18,7 @@ typealias PlanBadgeAttributes = Pair<BadgeType, String?>
  */
 @Immutable
 data class Plan(
+    val id: String,
     val title: String,
     val description: String,
     val price: String,
