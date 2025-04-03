@@ -51,7 +51,11 @@ fun PlansComponent(
             .background(AppTheme.colors.background.pageBackground)
             .border(
                 width = 1.dp,
-                color = if (selected) AppTheme.colors.border.strongSelected else AppTheme.colors.border.strong,
+                color = when {
+                    plan.enabled == false -> AppTheme.colors.border.disabled
+                    selected -> AppTheme.colors.border.strongSelected
+                    else -> AppTheme.colors.border.strong
+                },
                 shape = AppTheme.shapes.small
             )
             .padding(spacing.x16),
@@ -64,7 +68,7 @@ fun PlansComponent(
                 MegaText(
                     text = plan.title,
                     style = AppTheme.typography.titleMedium,
-                    textColor = TextColor.Primary,
+                    textColor = if (plan.enabled) TextColor.Primary else TextColor.Disabled,
                 )
 
                 plan.badgeAttributes?.let {
@@ -81,13 +85,13 @@ fun PlansComponent(
             MegaText(
                 text = plan.price,
                 style = AppTheme.typography.titleLarge,
-                textColor = TextColor.Primary,
+                textColor = if (plan.enabled) TextColor.Primary else TextColor.Disabled,
                 modifier = Modifier.padding(top = spacing.x24)
             )
             MegaText(
                 text = plan.description,
                 style = AppTheme.typography.bodySmall,
-                textColor = TextColor.Secondary,
+                textColor = if (plan.enabled) TextColor.Secondary else TextColor.Disabled,
             )
         }
 

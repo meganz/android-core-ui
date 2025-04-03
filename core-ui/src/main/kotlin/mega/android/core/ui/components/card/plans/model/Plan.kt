@@ -12,6 +12,8 @@ typealias PlanBadgeAttributes = Pair<BadgeType, String?>
  * @property description The description of the plan.
  * @property price The price of the plan.
  * @property badgeAttributes Optional attributes for the plan's badge, including type and text.
+ * @property enabled Indicates whether the plan is enabled or not.
+ * @property tag Optional tag for the plan, used for testing purposes.
  */
 @Immutable
 data class Plan(
@@ -19,4 +21,6 @@ data class Plan(
     val description: String,
     val price: String,
     val badgeAttributes: PlanBadgeAttributes? = null,
+    val enabled: Boolean = true,
+    val tag: String? = null,
 )
