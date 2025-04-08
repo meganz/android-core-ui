@@ -740,6 +740,9 @@ private fun BaseReadOnlyTextField(
         disabledTextColor = AppTheme.colors.text.disabled,
         disabledContainerColor = AppTheme.colors.button.disabled,
         disabledBorderColor = AppTheme.colors.border.disabled,
+        focusedContainerColor = AppTheme.colors.background.pageBackground,
+        errorContainerColor = AppTheme.colors.background.pageBackground,
+        unfocusedContainerColor = AppTheme.colors.background.pageBackground
     )
 
     Column(modifier = modifier.fillMaxWidth()) {

@@ -3,6 +3,7 @@ package mega.android.core.ui.components.tooltip.popup.interactive
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.LayoutCoordinates
+import androidx.compose.ui.window.PopupProperties
 import mega.android.core.ui.components.tooltip.basics.BasicBottomDirectionTooltip
 import mega.android.core.ui.components.tooltip.basics.BasicLeftDirectionTooltip
 import mega.android.core.ui.components.tooltip.basics.BasicNoneTooltip
@@ -25,6 +26,7 @@ fun InteractiveLeftDirectionTooltipPopup(
     title: String,
     anchorViewCoordinates: LayoutCoordinates,
     modifier: Modifier = Modifier,
+    properties: PopupProperties = PopupProperties(),
     tooltipState: MegaTooltipState = rememberMegaTooltipState(),
     onDismissRequest: (() -> Unit)? = null,
     body: String? = null,
@@ -35,6 +37,7 @@ fun InteractiveLeftDirectionTooltipPopup(
     needDivider: Boolean = false
 ) {
     BasicTooltipPopup(
+        properties = properties,
         tooltipState = tooltipState,
         popupPositionProvider = rememberLeftTooltipPositionProvider(
             anchorViewCoordinates = anchorViewCoordinates
@@ -66,6 +69,7 @@ fun InteractiveTopDirectionTooltipPopup(
     direction: TooltipDirection.Top,
     anchorViewCoordinates: LayoutCoordinates,
     modifier: Modifier = Modifier,
+    properties: PopupProperties = PopupProperties(),
     tooltipState: MegaTooltipState = rememberMegaTooltipState(),
     onDismissRequest: (() -> Unit)? = null,
     body: String? = null,
@@ -76,6 +80,7 @@ fun InteractiveTopDirectionTooltipPopup(
     needDivider: Boolean = false
 ) {
     BasicTooltipPopup(
+        properties = properties,
         tooltipState = tooltipState,
         popupPositionProvider = rememberTopTooltipPositionProvider(
             direction = direction,
@@ -108,6 +113,7 @@ fun InteractiveRightDirectionTooltipPopup(
     title: String,
     anchorViewCoordinates: LayoutCoordinates,
     modifier: Modifier = Modifier,
+    properties: PopupProperties = PopupProperties(),
     tooltipState: MegaTooltipState = rememberMegaTooltipState(),
     onDismissRequest: (() -> Unit)? = null,
     body: String? = null,
@@ -118,6 +124,7 @@ fun InteractiveRightDirectionTooltipPopup(
     needDivider: Boolean = false
 ) {
     BasicTooltipPopup(
+        properties = properties,
         tooltipState = tooltipState,
         popupPositionProvider = rememberRightTooltipPositionProvider(
             anchorViewCoordinates = anchorViewCoordinates
@@ -149,6 +156,7 @@ fun InteractiveBottomDirectionTooltipPopup(
     direction: TooltipDirection.Bottom,
     anchorViewCoordinates: LayoutCoordinates,
     modifier: Modifier = Modifier,
+    properties: PopupProperties = PopupProperties(),
     tooltipState: MegaTooltipState = rememberMegaTooltipState(),
     onDismissRequest: (() -> Unit)? = null,
     body: String? = null,
@@ -159,6 +167,7 @@ fun InteractiveBottomDirectionTooltipPopup(
     needDivider: Boolean = false
 ) {
     BasicTooltipPopup(
+        properties = properties,
         tooltipState = tooltipState,
         popupPositionProvider = rememberBottomTooltipPositionProvider(
             direction = direction,
@@ -192,6 +201,7 @@ fun InteractiveNoneTooltipPopup(
     position: NoneTooltipPosition,
     anchorViewCoordinates: LayoutCoordinates,
     modifier: Modifier = Modifier,
+    properties: PopupProperties = PopupProperties(),
     tooltipState: MegaTooltipState = rememberMegaTooltipState(),
     onDismissRequest: (() -> Unit)? = null,
     body: String? = null,
@@ -206,6 +216,7 @@ fun InteractiveNoneTooltipPopup(
         anchorViewCoordinates = anchorViewCoordinates
     )
     BasicTooltipPopup(
+        properties = properties,
         tooltipState = tooltipState,
         popupPositionProvider = positionProvider,
         onDismissRequest = onDismissRequest
