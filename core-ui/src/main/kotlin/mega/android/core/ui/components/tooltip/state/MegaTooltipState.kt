@@ -32,13 +32,9 @@ class MegaTooltipState {
     internal var dismissCountDownEnd by mutableStateOf(false)
         private set
 
-    internal var onDismissFinish: (() -> Unit)? = null
-        private set
-
     private var isCountingDown = false
 
-    fun dismiss(onFinish: (() -> Unit)? = null) {
-        onDismissFinish = onFinish
+    fun dismiss() {
         visibilityState = false
     }
 
@@ -66,8 +62,7 @@ class MegaTooltipState {
     @Parcelize
     data class MegaTooltipStateData(
         val visibilityState: Boolean,
-        val dismissDuration: String,
-        val onDismissFinish: (() -> Unit)?
+        val dismissDuration: String
     ) : Parcelable
 
     companion object {
@@ -75,8 +70,7 @@ class MegaTooltipState {
             save = {
                 MegaTooltipStateData(
                     visibilityState = it.visibilityState,
-                    dismissDuration = it.dismissDuration.toString(),
-                    onDismissFinish = it.onDismissFinish
+                    dismissDuration = it.dismissDuration.toString()
                 )
             },
             restore = {
@@ -90,7 +84,6 @@ class MegaTooltipState {
                     }
 
                     visibilityState = it.visibilityState
-                    onDismissFinish = it.onDismissFinish
                 }
             }
         )

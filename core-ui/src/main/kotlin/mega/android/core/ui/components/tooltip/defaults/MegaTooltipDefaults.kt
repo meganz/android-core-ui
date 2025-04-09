@@ -18,7 +18,7 @@ object MegaTooltipDefaults {
     fun rememberLeftTooltipPositionProvider(anchorViewCoordinates: LayoutCoordinates): PopupPositionProvider {
         val tooltipAnchorSpacing =
             with(LocalDensity.current) { TooltipSizeDefaults.SpacingBetweenTooltipAndAnchor.roundToPx() }
-        return remember(anchorViewCoordinates) {
+        return remember(anchorViewCoordinates.positionInRoot()) {
             object : PopupPositionProvider {
                 override fun calculatePosition(
                     anchorBounds: IntRect,
@@ -46,7 +46,7 @@ object MegaTooltipDefaults {
     ): PopupPositionProvider {
         val tooltipAnchorSpacing =
             with(LocalDensity.current) { TooltipSizeDefaults.SpacingBetweenTooltipAndAnchor.roundToPx() }
-        return remember(anchorViewCoordinates) {
+        return remember(anchorViewCoordinates.positionInRoot()) {
             object : PopupPositionProvider {
                 override fun calculatePosition(
                     anchorBounds: IntRect,
@@ -91,7 +91,7 @@ object MegaTooltipDefaults {
     fun rememberRightTooltipPositionProvider(anchorViewCoordinates: LayoutCoordinates): PopupPositionProvider {
         val tooltipAnchorSpacing =
             with(LocalDensity.current) { TooltipSizeDefaults.SpacingBetweenTooltipAndAnchor.roundToPx() }
-        return remember(anchorViewCoordinates) {
+        return remember(anchorViewCoordinates.positionInRoot()) {
             object : PopupPositionProvider {
                 override fun calculatePosition(
                     anchorBounds: IntRect,
@@ -119,7 +119,7 @@ object MegaTooltipDefaults {
     ): PopupPositionProvider {
         val tooltipAnchorSpacing =
             with(LocalDensity.current) { TooltipSizeDefaults.SpacingBetweenTooltipAndAnchor.roundToPx() }
-        return remember(anchorViewCoordinates) {
+        return remember(anchorViewCoordinates.positionInRoot()) {
             object : PopupPositionProvider {
                 override fun calculatePosition(
                     anchorBounds: IntRect,

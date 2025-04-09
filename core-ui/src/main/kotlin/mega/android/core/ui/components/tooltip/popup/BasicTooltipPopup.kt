@@ -44,7 +44,6 @@ internal fun BasicTooltipPopup(
 
         // Exit animation finished
         if (!mutableTransitionState.targetState && mutableTransitionState.isIdle) {
-            tooltipState.onDismissFinish?.invoke()
             onDismissRequest?.invoke()
             return@LaunchedEffect
         }
