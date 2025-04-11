@@ -8,6 +8,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Shapes
 import androidx.compose.material3.Typography
 import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
+import androidx.compose.material3.windowsizeclass.WindowHeightSizeClass
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
@@ -125,9 +126,15 @@ fun AndroidTheme(
         }
     }
 
-    val deviceType = if (getWindowSize().widthSizeClass != WindowWidthSizeClass.Compact) {
+    val windowSize = getWindowSize()
+    val deviceType = if (
+        windowSize.widthSizeClass >= WindowWidthSizeClass.Medium &&
+        windowSize.heightSizeClass >= WindowHeightSizeClass.Medium
+    ) {
         DeviceType.Tablet
-    } else DeviceType.Phone
+    } else {
+        DeviceType.Phone
+    }
     CompositionLocalProvider(
         LocalColorPalette provides colorPalette,
         LocalSpacing provides Dimensions(),
