@@ -390,14 +390,7 @@ private fun BaseTextField(
 ) {
     val spacing = LocalSpacing.current
     val interactionSource: MutableInteractionSource = remember { MutableInteractionSource() }
-    var textFieldValueState by remember(textValue) {
-        mutableStateOf(
-            TextFieldValue(
-                text = textValue.text,
-                selection = TextRange(textValue.text.length)
-            )
-        )
-    }
+
     var isFocused by remember { mutableStateOf(false) }
     var showPassword by rememberSaveable { mutableStateOf(false) }
     val focusedColor = when {
@@ -451,19 +444,17 @@ private fun BaseTextField(
                 capitalization = capitalization
             ),
             keyboardActions = keyboardActions,
-            value = textFieldValueState,
+            value = textValue,
             onValueChange = { textFieldValue ->
                 if (textFieldValue.text.length <= maxCharLimit) {
                     when {
                         keyboardType == KeyboardType.Number -> {
                             if (textFieldValue.text.isDigitsOnly()) {
-                                textFieldValueState = textFieldValue
                                 onValueChanged?.invoke(textFieldValue)
                             }
                         }
 
                         else -> {
-                            textFieldValueState = textFieldValue
                             onValueChanged?.invoke(textFieldValue)
                         }
                     }
@@ -476,14 +467,13 @@ private fun BaseTextField(
             textStyle = AppTheme.typography.bodyLarge.copy(textAlign = inputTextAlign),
             isError = successText.isNullOrBlank() && errorText != null,
             visualTransformation = if (!isPasswordMode || showPassword) VisualTransformation.None else PasswordVisualTransformation(),
-            trailingIcon = if (textFieldValueState.text.isNotEmpty() && showTrailingIcon) {
+            trailingIcon = if (textValue.text.isNotEmpty() && showTrailingIcon) {
                 when {
                     isPasswordMode.not() && isFocused -> {
                         {
                             Icon(
                                 modifier = Modifier
                                     .clickable {
-                                        textFieldValueState = TextFieldValue("")
                                         onValueChanged?.invoke(TextFieldValue(""))
                                     },
                                 painter = painterResource(id = R.drawable.ic_close),
