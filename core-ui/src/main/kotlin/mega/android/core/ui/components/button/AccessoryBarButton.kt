@@ -100,7 +100,7 @@ private fun RowScope.AccessoryBarButtonItem(content: AccessoryBarButtonContent) 
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Center,
         modifier = Modifier
-            .padding(spacing.x16)
+            .padding(vertical = spacing.x12)
             .weight(1f)
             .fillMaxWidth()
             .clickable { content.onClick() }
