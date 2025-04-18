@@ -17,6 +17,7 @@ import mega.android.core.ui.app.component.CheckboxCatalog
 import mega.android.core.ui.app.component.ContentListComponent
 import mega.android.core.ui.app.component.DividerComponentCatalog
 import mega.android.core.ui.app.component.DropDownMenuComponent
+import mega.android.core.ui.app.component.LabelledTextInputWithActionCatalog
 import mega.android.core.ui.app.component.ListComponentCatalog
 import mega.android.core.ui.app.component.MegaDialogComponent
 import mega.android.core.ui.app.component.PasswordGeneratorInputComponentCatalog
@@ -165,6 +166,9 @@ internal fun MainComposeView(
                 title = "Tooltip",
                 onClicked = { onNavigateToTooltip() }
             )
+        }
+        item(key = 28) {
+            LabelledTextInputWithActionCatalog()
         }
     }
 }

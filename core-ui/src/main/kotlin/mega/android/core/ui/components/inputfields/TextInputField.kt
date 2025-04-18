@@ -28,6 +28,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
@@ -371,7 +372,7 @@ fun AnnotatedLabelTextInputField(
 }
 
 @Composable
-private fun BaseTextField(
+internal fun BaseTextField(
     modifier: Modifier,
     textValue: TextFieldValue,
     isPasswordMode: Boolean,
@@ -387,6 +388,7 @@ private fun BaseTextField(
     label: @Composable (() -> Unit)? = null,
     onValueChanged: ((TextFieldValue) -> Unit)? = null,
     onFocusChanged: ((Boolean) -> Unit)? = null,
+    trailingView: @Composable (() -> Unit)? = null,
 ) {
     val spacing = LocalSpacing.current
     val interactionSource: MutableInteractionSource = remember { MutableInteractionSource() }
@@ -429,82 +431,86 @@ private fun BaseTextField(
     ) {
         label?.invoke()
 
-        OutlinedTextField(
-            modifier = Modifier
-                .fillMaxWidth()
-                .heightIn(min = inputFieldHeight)
-                .onFocusChanged {
-                    isFocused = it.isFocused
-                    onFocusChanged?.invoke(it.isFocused)
-                },
-            keyboardOptions = KeyboardOptions(
-                keyboardType = keyboardType,
-                autoCorrectEnabled = isPasswordMode.not(),
-                imeAction = imeAction,
-                capitalization = capitalization
-            ),
-            keyboardActions = keyboardActions,
-            value = textValue,
-            onValueChange = { textFieldValue ->
-                if (textFieldValue.text.length <= maxCharLimit) {
-                    when {
-                        keyboardType == KeyboardType.Number -> {
-                            if (textFieldValue.text.isDigitsOnly()) {
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            OutlinedTextField(
+                modifier = Modifier
+                    .weight(1f)
+                    .heightIn(min = inputFieldHeight)
+                    .onFocusChanged {
+                        isFocused = it.isFocused
+                        onFocusChanged?.invoke(it.isFocused)
+                    },
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = keyboardType,
+                    autoCorrectEnabled = isPasswordMode.not(),
+                    imeAction = imeAction,
+                    capitalization = capitalization
+                ),
+                keyboardActions = keyboardActions,
+                value = textValue,
+                onValueChange = { textFieldValue ->
+                    if (textFieldValue.text.length <= maxCharLimit) {
+                        when {
+                            keyboardType == KeyboardType.Number -> {
+                                if (textFieldValue.text.isDigitsOnly()) {
+                                    onValueChanged?.invoke(textFieldValue)
+                                }
+                            }
+
+                            else -> {
                                 onValueChanged?.invoke(textFieldValue)
+                            }
+                        }
+                    }
+                },
+                colors = colors,
+                shape = RoundedCornerShape(8.dp),
+                interactionSource = interactionSource,
+                singleLine = true,
+                textStyle = AppTheme.typography.bodyLarge.copy(textAlign = inputTextAlign),
+                isError = successText.isNullOrBlank() && errorText != null,
+                visualTransformation = if (!isPasswordMode || showPassword) VisualTransformation.None else PasswordVisualTransformation(),
+                trailingIcon = if (textValue.text.isNotEmpty() && showTrailingIcon) {
+                    when {
+                        isPasswordMode.not() && isFocused -> {
+                            {
+                                Icon(
+                                    modifier = Modifier
+                                        .clickable {
+                                            onValueChanged?.invoke(TextFieldValue(""))
+                                        },
+                                    painter = painterResource(id = R.drawable.ic_close),
+                                    tint = AppTheme.colors.icon.primary,
+                                    contentDescription = "Clear Text"
+                                )
+                            }
+                        }
+
+                        isPasswordMode -> {
+                            val eyeIcon =
+                                if (showPassword) R.drawable.ic_eye_off else R.drawable.ic_eye
+                            {
+                                Icon(
+                                    modifier = Modifier
+                                        .padding(horizontal = spacing.x8)
+                                        .clickable { showPassword = !showPassword },
+                                    painter = painterResource(id = eyeIcon),
+                                    tint = AppTheme.colors.icon.secondary,
+                                    contentDescription = "Show Password"
+                                )
                             }
                         }
 
                         else -> {
-                            onValueChanged?.invoke(textFieldValue)
+                            null
                         }
                     }
+                } else {
+                    null
                 }
-            },
-            colors = colors,
-            shape = RoundedCornerShape(8.dp),
-            interactionSource = interactionSource,
-            singleLine = true,
-            textStyle = AppTheme.typography.bodyLarge.copy(textAlign = inputTextAlign),
-            isError = successText.isNullOrBlank() && errorText != null,
-            visualTransformation = if (!isPasswordMode || showPassword) VisualTransformation.None else PasswordVisualTransformation(),
-            trailingIcon = if (textValue.text.isNotEmpty() && showTrailingIcon) {
-                when {
-                    isPasswordMode.not() && isFocused -> {
-                        {
-                            Icon(
-                                modifier = Modifier
-                                    .clickable {
-                                        onValueChanged?.invoke(TextFieldValue(""))
-                                    },
-                                painter = painterResource(id = R.drawable.ic_close),
-                                tint = AppTheme.colors.icon.primary,
-                                contentDescription = "Clear Text"
-                            )
-                        }
-                    }
-
-                    isPasswordMode -> {
-                        val eyeIcon = if (showPassword) R.drawable.ic_eye_off else R.drawable.ic_eye
-                        {
-                            Icon(
-                                modifier = Modifier
-                                    .padding(horizontal = spacing.x8)
-                                    .clickable { showPassword = !showPassword },
-                                painter = painterResource(id = eyeIcon),
-                                tint = AppTheme.colors.icon.secondary,
-                                contentDescription = "Show Password"
-                            )
-                        }
-                    }
-
-                    else -> {
-                        null
-                    }
-                }
-            } else {
-                null
-            }
-        )
+            )
+            trailingView?.invoke()
+        }
 
         val footerModifier = Modifier
             .padding(top = spacing.x4)
@@ -529,7 +535,7 @@ private fun BaseTextField(
 }
 
 @Composable
-private fun BaseTextField(
+internal fun BaseTextField(
     modifier: Modifier,
     text: String,
     isPasswordMode: Boolean,
@@ -545,6 +551,7 @@ private fun BaseTextField(
     label: @Composable (() -> Unit)? = null,
     onValueChanged: ((String) -> Unit)? = null,
     onFocusChanged: ((Boolean) -> Unit)? = null,
+    trailingView: @Composable (() -> Unit)? = null,
 ) {
     val spacing = LocalSpacing.current
     val interactionSource: MutableInteractionSource = remember { MutableInteractionSource() }
@@ -587,85 +594,89 @@ private fun BaseTextField(
     ) {
         label?.invoke()
 
-        OutlinedTextField(
-            modifier = Modifier
-                .fillMaxWidth()
-                .heightIn(min = inputFieldHeight)
-                .onFocusChanged {
-                    isFocused = it.isFocused
-                    onFocusChanged?.invoke(it.isFocused)
-                },
-            keyboardOptions = KeyboardOptions(
-                keyboardType = keyboardType,
-                autoCorrectEnabled = isPasswordMode.not(),
-                imeAction = imeAction,
-                capitalization = capitalization
-            ),
-            keyboardActions = keyboardActions,
-            value = baseText,
-            onValueChange = {
-                if (it.length <= maxCharLimit) {
-                    when {
-                        keyboardType == KeyboardType.Number -> {
-                            if (it.isDigitsOnly()) {
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            OutlinedTextField(
+                modifier = Modifier
+                    .weight(1f)
+                    .heightIn(min = inputFieldHeight)
+                    .onFocusChanged {
+                        isFocused = it.isFocused
+                        onFocusChanged?.invoke(it.isFocused)
+                    },
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = keyboardType,
+                    autoCorrectEnabled = isPasswordMode.not(),
+                    imeAction = imeAction,
+                    capitalization = capitalization
+                ),
+                keyboardActions = keyboardActions,
+                value = baseText,
+                onValueChange = {
+                    if (it.length <= maxCharLimit) {
+                        when {
+                            keyboardType == KeyboardType.Number -> {
+                                if (it.isDigitsOnly()) {
+                                    baseText = it
+                                    onValueChanged?.invoke(it)
+                                }
+                            }
+
+                            else -> {
                                 baseText = it
                                 onValueChanged?.invoke(it)
                             }
                         }
+                    }
+                },
+                colors = colors,
+                shape = RoundedCornerShape(8.dp),
+                interactionSource = interactionSource,
+                singleLine = true,
+                textStyle = AppTheme.typography.bodyLarge.copy(textAlign = inputTextAlign),
+                isError = successText.isNullOrBlank() && errorText != null,
+                visualTransformation = if (!isPasswordMode || showPassword) VisualTransformation.None else PasswordVisualTransformation(),
+                trailingIcon = if (baseText.isNotEmpty() && showTrailingIcon) {
+                    when {
+                        isPasswordMode.not() && isFocused -> {
+                            {
+                                Icon(
+                                    modifier = Modifier
+                                        .clickable {
+                                            baseText = ""
+                                            onValueChanged?.invoke("")
+                                        },
+                                    painter = painterResource(id = R.drawable.ic_close),
+                                    tint = AppTheme.colors.icon.primary,
+                                    contentDescription = "Clear Text"
+                                )
+                            }
+                        }
+
+                        isPasswordMode -> {
+                            val eyeIcon =
+                                if (showPassword) R.drawable.ic_eye_off else R.drawable.ic_eye
+                            {
+                                Icon(
+                                    modifier = Modifier
+                                        .padding(horizontal = spacing.x8)
+                                        .clickable { showPassword = !showPassword },
+                                    painter = painterResource(id = eyeIcon),
+                                    tint = AppTheme.colors.icon.secondary,
+                                    contentDescription = "Show Password"
+                                )
+                            }
+                        }
 
                         else -> {
-                            baseText = it
-                            onValueChanged?.invoke(it)
+                            null
                         }
                     }
+                } else {
+                    null
                 }
-            },
-            colors = colors,
-            shape = RoundedCornerShape(8.dp),
-            interactionSource = interactionSource,
-            singleLine = true,
-            textStyle = AppTheme.typography.bodyLarge.copy(textAlign = inputTextAlign),
-            isError = successText.isNullOrBlank() && errorText != null,
-            visualTransformation = if (!isPasswordMode || showPassword) VisualTransformation.None else PasswordVisualTransformation(),
-            trailingIcon = if (baseText.isNotEmpty() && showTrailingIcon) {
-                when {
-                    isPasswordMode.not() && isFocused -> {
-                        {
-                            Icon(
-                                modifier = Modifier
-                                    .clickable {
-                                        baseText = ""
-                                        onValueChanged?.invoke("")
-                                    },
-                                painter = painterResource(id = R.drawable.ic_close),
-                                tint = AppTheme.colors.icon.primary,
-                                contentDescription = "Clear Text"
-                            )
-                        }
-                    }
-
-                    isPasswordMode -> {
-                        val eyeIcon = if (showPassword) R.drawable.ic_eye_off else R.drawable.ic_eye
-                        {
-                            Icon(
-                                modifier = Modifier
-                                    .padding(horizontal = spacing.x8)
-                                    .clickable { showPassword = !showPassword },
-                                painter = painterResource(id = eyeIcon),
-                                tint = AppTheme.colors.icon.secondary,
-                                contentDescription = "Show Password"
-                            )
-                        }
-                    }
-
-                    else -> {
-                        null
-                    }
-                }
-            } else {
-                null
-            }
-        )
+            )
+            trailingView?.invoke()
+        }
 
         val footerModifier = Modifier
             .padding(top = spacing.x4)
