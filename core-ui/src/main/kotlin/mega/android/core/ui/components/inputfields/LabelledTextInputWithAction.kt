@@ -1,9 +1,14 @@
 package mega.android.core.ui.components.inputfields
 
+import androidx.annotation.DrawableRes
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.ImeAction
@@ -15,6 +20,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import mega.android.core.ui.R
 import mega.android.core.ui.components.button.SecondaryLargeIconButton
+import mega.android.core.ui.components.image.MegaIcon
 import mega.android.core.ui.components.spannedTextWithAnnotation
 import mega.android.core.ui.model.InputFieldLabelSpanStyle
 import mega.android.core.ui.preview.CombinedThemePreviews
@@ -22,6 +28,7 @@ import mega.android.core.ui.preview.CombinedThemePreviewsTablet
 import mega.android.core.ui.theme.AndroidThemeForPreviews
 import mega.android.core.ui.theme.AppTheme
 import mega.android.core.ui.theme.spacing.LocalSpacing
+import mega.android.core.ui.theme.values.IconColor
 import mega.android.core.ui.theme.values.TextColor
 
 /**
@@ -175,13 +182,33 @@ fun LabelledTextInputWithAction(
         successText = successText,
         errorText = errorText,
         inputTextAlign = inputTextAlign,
-        isPasswordMode = false,
+        isPasswordMode = isPasswordMode,
         showTrailingIcon = showTrailingIcon,
         maxCharLimit = maxCharLimit,
         onValueChanged = onValueChanged,
         onFocusChanged = onFocusChanged,
         trailingView = trailingView,
     )
+}
+
+@Composable
+fun LabelledTextInputAction(
+    @DrawableRes iconRes: Int,
+    modifier: Modifier = Modifier
+) {
+    Box(
+        modifier = modifier
+            .background(
+                color = AppTheme.colors.background.surface3,
+                shape = RoundedCornerShape(LocalSpacing.current.x8)
+            ),
+        contentAlignment = Alignment.Center
+    ) {
+        MegaIcon(
+            painter = painterResource(id = iconRes),
+            tint = IconColor.Primary
+        )
+    }
 }
 
 @Composable
@@ -286,5 +313,15 @@ private fun LabelledTextInputWithActionPreview() {
                 onFocusChanged = {}
             )
         }
+    }
+}
+
+@CombinedThemePreviews
+@Composable
+private fun LabelledTextInputActionPreview() {
+    AndroidThemeForPreviews {
+        LabelledTextInputAction(
+            iconRes = R.drawable.ic_eye
+        )
     }
 }

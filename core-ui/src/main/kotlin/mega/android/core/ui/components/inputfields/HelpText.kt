@@ -81,6 +81,7 @@ fun HelpTextWarning(
 fun HelpTextInfo(
     text: String,
     modifier: Modifier = Modifier,
+    iconResId: Int = R.drawable.ic_info,
     textColor: TextColor = TextColor.Secondary,
     textStyle: TextStyle = AppTheme.typography.bodySmall,
 ) {
@@ -90,7 +91,7 @@ fun HelpTextInfo(
         iconColor = AppTheme.colors.icon.secondary,
         textColor = textColor,
         textStyle = textStyle,
-        iconResId = R.drawable.ic_info
+        iconResId = iconResId
     )
 }
 

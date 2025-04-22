@@ -51,6 +51,7 @@ import androidx.core.text.isDigitsOnly
 import mega.android.core.ui.R
 import mega.android.core.ui.components.inputFieldHeight
 import mega.android.core.ui.components.spannedTextWithAnnotation
+import mega.android.core.ui.components.visualtransformation.CCExpiryDateVisualTransformation
 import mega.android.core.ui.model.InputFieldLabelSpanStyle
 import mega.android.core.ui.model.MegaSpanStyle
 import mega.android.core.ui.model.SpanIndicator
@@ -118,6 +119,7 @@ fun ReadOnlyTextInputField(
 fun TextInputField(
     modifier: Modifier,
     keyboardType: KeyboardType,
+    visualTransformation: VisualTransformation = VisualTransformation.None,
     imeAction: ImeAction = ImeAction.Done,
     capitalization: KeyboardCapitalization = KeyboardCapitalization.Words,
     text: String = "",
@@ -157,6 +159,7 @@ fun TextInputField(
                 }
             }
         },
+        visualTransformation = visualTransformation,
         keyboardType = keyboardType,
         imeAction = imeAction,
         capitalization = capitalization,
@@ -218,6 +221,79 @@ fun PasswordTextInputField(
     onValueChanged = onValueChanged,
     onFocusChanged = onFocusChanged,
 )
+
+/**
+ * Text input field for expiration date.
+ *
+ * @param text The input text to be shown in the text field
+ * @param modifier The [Modifier] to be applied to this text field
+ * @param imeAction The IME action. This IME action is honored by keyboard and may show specific
+ * icons on the keyboard. For example, search icon may be shown if [ImeAction.Search] is specified.
+ * When [ImeOptions.singleLine] is false, the keyboard might show return key rather than the action
+ * requested here.
+ * @param capitalization informs the keyboard whether to automatically capitalize characters,
+ * words or sentences. Only applicable to only text based [KeyboardType]s such as
+ * [KeyboardType.Text], [KeyboardType.Ascii]. It will not be applied to [KeyboardType]s such as
+ * [KeyboardType.Number].
+ * @param spannedLabel The optional spanned label to be displayed inside the text field container.
+ * @param inputTextAlign The alignment of the text within the lines of the paragraph
+ * @param showTrailingIcon whether the component needs to display the default icons. Available default icons:
+ *  - Close icon when the text is not empty.
+ *  - Eye icon for password mode.
+ * @param successText The optional supporting text to be displayed below the text field
+ * @param errorText The optional error text to be displayed below the text field
+ * @param onValueChanged The callback that is triggered when the text is changed. In this component,
+ *   this callback will be called when the user clear all the text by clicking the close icon.
+ * @param onFocusChanged The callback that is triggered when the focus state of this text field changes.
+ */
+@Composable
+fun ExpirationDateInputField(
+    text: String,
+    modifier: Modifier = Modifier,
+    imeAction: ImeAction = ImeAction.Done,
+    capitalization: KeyboardCapitalization = KeyboardCapitalization.Words,
+    spannedLabel: InputFieldLabelSpanStyle? = null,
+    inputTextAlign: TextAlign = TextAlign.Unspecified,
+    showTrailingIcon: Boolean = true,
+    successText: String? = null,
+    errorText: String? = null,
+    onValueChanged: ((String) -> Unit)? = null,
+    onFocusChanged: ((Boolean) -> Unit)? = null,
+) {
+    BaseTextField(
+        modifier = modifier,
+        label = {
+            spannedLabel?.let {
+                val annotatedLabelString = spannedTextWithAnnotation(
+                    it.value,
+                    it.spanStyles
+                )
+                Text(
+                    modifier = Modifier.padding(bottom = LocalSpacing.current.x4),
+                    text = annotatedLabelString,
+                    style = it.baseStyle.copy(
+                        color = AppTheme.textColor(textColor = it.baseTextColor)
+                    )
+                )
+            }
+        },
+        visualTransformation = CCExpiryDateVisualTransformation(
+            hintColor = AppTheme.textColor(TextColor.Placeholder)
+        ),
+        keyboardType = KeyboardType.Number,
+        imeAction = imeAction,
+        capitalization = capitalization,
+        text = text,
+        successText = successText,
+        errorText = errorText,
+        inputTextAlign = inputTextAlign,
+        isPasswordMode = false,
+        showTrailingIcon = showTrailingIcon,
+        maxCharLimit = 4,
+        onValueChanged = onValueChanged,
+        onFocusChanged = onFocusChanged
+    )
+}
 
 /**
  * Text input field with annotated label.
@@ -383,6 +459,7 @@ internal fun BaseTextField(
     successText: String?,
     errorText: String?,
     inputTextAlign: TextAlign,
+    visualTransformation: VisualTransformation = VisualTransformation.None,
     keyboardActions: KeyboardActions = KeyboardActions.Default,
     maxCharLimit: Int = Int.MAX_VALUE,
     label: @Composable (() -> Unit)? = null,
@@ -469,7 +546,11 @@ internal fun BaseTextField(
                 singleLine = true,
                 textStyle = AppTheme.typography.bodyLarge.copy(textAlign = inputTextAlign),
                 isError = successText.isNullOrBlank() && errorText != null,
-                visualTransformation = if (!isPasswordMode || showPassword) VisualTransformation.None else PasswordVisualTransformation(),
+                visualTransformation = if (!isPasswordMode) {
+                    visualTransformation
+                } else {
+                    if (showPassword) VisualTransformation.None else PasswordVisualTransformation()
+                },
                 trailingIcon = if (textValue.text.isNotEmpty() && showTrailingIcon) {
                     when {
                         isPasswordMode.not() && isFocused -> {
@@ -546,6 +627,7 @@ internal fun BaseTextField(
     successText: String?,
     errorText: String?,
     inputTextAlign: TextAlign,
+    visualTransformation: VisualTransformation = VisualTransformation.None,
     keyboardActions: KeyboardActions = KeyboardActions.Default,
     maxCharLimit: Int = Int.MAX_VALUE,
     label: @Composable (() -> Unit)? = null,
@@ -634,7 +716,11 @@ internal fun BaseTextField(
                 singleLine = true,
                 textStyle = AppTheme.typography.bodyLarge.copy(textAlign = inputTextAlign),
                 isError = successText.isNullOrBlank() && errorText != null,
-                visualTransformation = if (!isPasswordMode || showPassword) VisualTransformation.None else PasswordVisualTransformation(),
+                visualTransformation = if (!isPasswordMode) {
+                    visualTransformation
+                } else {
+                    if (showPassword) VisualTransformation.None else PasswordVisualTransformation()
+                },
                 trailingIcon = if (baseText.isNotEmpty() && showTrailingIcon) {
                     when {
                         isPasswordMode.not() && isFocused -> {
