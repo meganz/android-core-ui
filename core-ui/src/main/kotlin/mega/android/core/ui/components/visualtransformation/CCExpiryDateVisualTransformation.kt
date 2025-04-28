@@ -20,20 +20,21 @@ class CCExpiryDateVisualTransformation(private val hintColor: Color) : VisualTra
                     appendYearHint()
                 }
 
-                text.length <= 2 -> {
+                text.length == 2 -> {
                     // MM
                     append(text)
                     appendSlash()
-                    appendYearHint()
                 }
 
-                else -> {
+                text.length > 2 -> {
                     // MM
                     append(text.substring(0, 2))
                     appendSlash()
                     // YY
                     append(text.substring(2))
                 }
+
+                else -> append(text)
             }
         }
 
@@ -47,14 +48,14 @@ class CCExpiryDateVisualTransformation(private val hintColor: Color) : VisualTra
         val offset = object : OffsetMapping {
             override fun originalToTransformed(offset: Int): Int {
                 return when {
-                    offset <= 2 -> offset
+                    offset < 2 -> offset
                     else -> offset + 3
                 }.coerceIn(0, formattedText.length)
             }
 
             override fun transformedToOriginal(offset: Int): Int {
                 return when {
-                    offset <= 2 -> offset
+                    offset < 2 -> offset
                     else -> offset - 3
                 }.coerceIn(0, text.length)
             }
