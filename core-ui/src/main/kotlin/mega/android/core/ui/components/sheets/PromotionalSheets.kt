@@ -3,6 +3,7 @@ package mega.android.core.ui.components.sheets
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.PaddingValues
@@ -40,8 +41,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import androidx.constraintlayout.compose.ConstraintLayout
-import androidx.constraintlayout.compose.Dimension
 import kotlinx.coroutines.launch
 import mega.android.core.ui.R
 import mega.android.core.ui.components.button.PrimaryFilledButton
@@ -113,21 +112,15 @@ fun PromotionalImageSheet(
         sheetState = sheetState,
         isVisible = isVisible,
     ) {
-        ConstraintLayout(
+        Column(
             modifier = Modifier
                 .fillMaxSize()
                 .navigationBarsPadding()
-                .padding(bottom = LocalSpacing.current.x16)
+                .padding(bottom = spacing.x16)
         ) {
-            val (toolbar, content, buttonContainer) = createRefs()
 
             MegaTopAppBar(
-                modifier = Modifier
-                    .constrainAs(toolbar) {
-                        top.linkTo(parent.top)
-                        start.linkTo(parent.start, margin = spacing.x16)
-                        end.linkTo(parent.end, margin = spacing.x16)
-                    },
+                modifier = Modifier,
                 title = "",
                 navigationIcon = if (showCloseButton) painterResource(id = R.drawable.ic_close) else null,
                 onNavigationIconClicked = {
@@ -140,18 +133,7 @@ fun PromotionalImageSheet(
 
             Column(
                 modifier = Modifier
-                    .constrainAs(content) {
-                        height = Dimension.preferredWrapContent
-                        width = Dimension.fillToConstraints
-                        linkTo(
-                            top = toolbar.bottom,
-                            bottom = buttonContainer.top,
-                            topMargin = spacing.x16,
-                            bias = 0f
-                        )
-                        start.linkTo(parent.start)
-                        end.linkTo(parent.end)
-                    }
+                    .weight(1f)
                     .verticalScroll(scrollState)
             ) {
                 PromotionalImage(
@@ -174,13 +156,7 @@ fun PromotionalImageSheet(
             }
 
             SheetActions(
-                modifier = Modifier
-                    .constrainAs(buttonContainer) {
-                        bottom.linkTo(parent.bottom)
-                        start.linkTo(parent.start)
-                        end.linkTo(parent.end)
-                        height = Dimension.wrapContent
-                    },
+                modifier = Modifier,
                 primaryButton = primaryButton,
                 secondaryButton = secondaryButton,
                 isDividerVisible = isScrollable
@@ -233,57 +209,52 @@ fun PromotionalFullImageSheet(
         sheetState = sheetState,
         isVisible = isVisible
     ) {
-        ConstraintLayout(
+        Box(
             modifier = Modifier
                 .fillMaxSize()
                 .navigationBarsPadding()
-                .padding(bottom = LocalSpacing.current.x16)
+                .padding(bottom = spacing.x16)
         ) {
-            val (closeButton, content, buttonContainer) = createRefs()
-
-            Column(
-                modifier = Modifier
-                    .constrainAs(content) {
-                        height = Dimension.preferredWrapContent
-                        width = Dimension.fillToConstraints
-                        linkTo(
-                            top = parent.top,
-                            bottom = buttonContainer.top,
-                            bias = 0f
-                        )
-                        start.linkTo(parent.start)
-                        end.linkTo(parent.end)
-                    }
-                    .verticalScroll(scrollState, enabled = true)
-            ) {
-                PromotionalFullImage(
+            Column(modifier = Modifier.fillMaxSize()) {
+                Column(
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .clip(RoundedCornerShape(topStart = 24.dp, topEnd = 24.dp)),
-                    image = image,
-                    description = title
-                )
+                        .weight(1f)
+                        .verticalScroll(scrollState)
+                ) {
+                    PromotionalFullImage(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clip(RoundedCornerShape(topStart = 24.dp, topEnd = 24.dp)),
+                        image = image,
+                        description = title
+                    )
 
-                PromotionalContent(
+                    PromotionalContent(
+                        modifier = Modifier
+                            .padding(top = spacing.x32),
+                        title = title,
+                        headline = headline,
+                        description = description,
+                        listItems = listItems,
+                        contentText = contentText,
+                        footer = footer,
+                    )
+                }
+                SheetActions(
                     modifier = Modifier
-                        .padding(top = LocalSpacing.current.x32),
-                    title = title,
-                    headline = headline,
-                    description = description,
-                    listItems = listItems,
-                    contentText = contentText,
-                    footer = footer,
+                        .fillMaxWidth(),
+                    primaryButton = primaryButton,
+                    secondaryButton = secondaryButton,
+                    isDividerVisible = isScrollable
                 )
             }
 
             if (showCloseButton) {
                 Button(
                     modifier = Modifier
+                        .padding(spacing.x16)
                         .size(32.dp)
-                        .constrainAs(closeButton) {
-                            top.linkTo(content.top, margin = spacing.x16)
-                            start.linkTo(content.start, margin = spacing.x16)
-                        },
+                        .align(Alignment.TopStart),
                     onClick = {
                         coroutineScope.launch {
                             sheetState.hide()
@@ -303,19 +274,6 @@ fun PromotionalFullImageSheet(
                     )
                 }
             }
-
-            SheetActions(
-                modifier = Modifier
-                    .constrainAs(buttonContainer) {
-                        bottom.linkTo(parent.bottom)
-                        start.linkTo(parent.start)
-                        end.linkTo(parent.end)
-                        height = Dimension.fillToConstraints
-                    },
-                primaryButton = primaryButton,
-                secondaryButton = secondaryButton,
-                isDividerVisible = isScrollable
-            )
         }
     }
 }
