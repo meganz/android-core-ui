@@ -365,21 +365,14 @@ fun PromotionalIllustrationSheet(
         sheetState = sheetState,
         isVisible = isVisible,
     ) {
-        ConstraintLayout(
+        Column(
             modifier = Modifier
                 .fillMaxSize()
                 .navigationBarsPadding()
-                .padding(bottom = LocalSpacing.current.x16)
+                .padding(bottom = spacing.x16)
         ) {
-            val (toolbar, content, buttonContainer) = createRefs()
-
             MegaTopAppBar(
-                modifier = Modifier
-                    .constrainAs(toolbar) {
-                        top.linkTo(parent.top, margin = spacing.x8)
-                        start.linkTo(parent.start, margin = spacing.x16)
-                        end.linkTo(parent.end, margin = spacing.x16)
-                    },
+                modifier = Modifier.padding(top = spacing.x8),
                 title = "",
                 navigationIcon = if (showCloseButton) painterResource(id = R.drawable.ic_close) else null,
                 onNavigationIconClicked = {
@@ -392,24 +385,14 @@ fun PromotionalIllustrationSheet(
 
             Column(
                 modifier = Modifier
-                    .constrainAs(content) {
-                        height = Dimension.preferredWrapContent
-                        linkTo(
-                            top = toolbar.bottom,
-                            bottom = buttonContainer.top,
-                            topMargin = spacing.x16,
-                            bias = 0f
-                        )
-                        start.linkTo(parent.start)
-                        end.linkTo(parent.end)
-                    }
-                    .verticalScroll(scrollState, enabled = true),
+                    .weight(1f)
+                    .verticalScroll(scrollState),
                 verticalArrangement = Arrangement.Center
             ) {
                 if (illustration != null) {
                     Image(
                         modifier = Modifier
-                            .padding(bottom = LocalSpacing.current.x32)
+                            .padding(bottom = spacing.x32)
                             .size(illustrationMode.size)
                             .align(Alignment.CenterHorizontally),
                         painter = painterResource(id = illustration),
@@ -431,12 +414,7 @@ fun PromotionalIllustrationSheet(
 
             SheetActions(
                 modifier = Modifier
-                    .constrainAs(buttonContainer) {
-                        bottom.linkTo(parent.bottom)
-                        start.linkTo(parent.start)
-                        end.linkTo(parent.end)
-                        height = Dimension.fillToConstraints
-                    },
+                    .fillMaxWidth(),
                 primaryButton = primaryButton,
                 secondaryButton = secondaryButton,
                 isDividerVisible = isScrollable
