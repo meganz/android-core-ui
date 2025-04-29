@@ -30,12 +30,15 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.autofill.ContentType
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.semantics.contentType
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
@@ -130,6 +133,7 @@ fun TextInputField(
     errorText: String? = null,
     maxCharLimit: Int = Int.MAX_VALUE,
     optionalLabelText: String? = null,
+    contentType: ContentType? = null,
     onValueChanged: ((String) -> Unit)? = null,
     onFocusChanged: ((Boolean) -> Unit)? = null,
 ) {
@@ -170,6 +174,7 @@ fun TextInputField(
         isPasswordMode = false,
         showTrailingIcon = showTrailingIcon,
         maxCharLimit = maxCharLimit,
+        contentType = contentType,
         onValueChanged = onValueChanged,
         onFocusChanged = onFocusChanged
     )
@@ -193,6 +198,7 @@ fun PasswordTextInputField(
     errorText: String? = null,
     keyboardActions: KeyboardActions = KeyboardActions.Default,
     maxCharLimit: Int = Int.MAX_VALUE,
+    contentType: ContentType = ContentType.Password,
     onValueChanged: ((String) -> Unit)? = null,
     onFocusChanged: ((Boolean) -> Unit)? = null,
 ) = BaseTextField(
@@ -218,6 +224,7 @@ fun PasswordTextInputField(
     isPasswordMode = true,
     showTrailingIcon = showTrailingIcon,
     maxCharLimit = maxCharLimit,
+    contentType = contentType,
     onValueChanged = onValueChanged,
     onFocusChanged = onFocusChanged,
 )
@@ -319,6 +326,7 @@ fun ExpirationDateInputField(
  * @param successText The optional supporting text to be displayed below the text field
  * @param errorText The optional error text to be displayed below the text field
  * @param maxCharLimit The maximum character to be displayed in the text field.
+ * @param contentType The [ContentType] for autofill.
  * @param onValueChanged The callback that is triggered when the text is changed. In this component,
  *   this callback will be called when the user clear all the text by clicking the close icon.
  * @param onFocusChanged The callback that is triggered when the focus state of this text field changes.
@@ -336,6 +344,7 @@ fun AnnotatedLabelTextInputField(
     successText: String? = null,
     errorText: String? = null,
     maxCharLimit: Int = Int.MAX_VALUE,
+    contentType: ContentType? = null,
     onValueChanged: ((String) -> Unit)? = null,
     onFocusChanged: ((Boolean) -> Unit)? = null,
 ) {
@@ -366,6 +375,7 @@ fun AnnotatedLabelTextInputField(
         isPasswordMode = false,
         showTrailingIcon = showTrailingIcon,
         maxCharLimit = maxCharLimit,
+        contentType = contentType,
         onValueChanged = onValueChanged,
         onFocusChanged = onFocusChanged
     )
@@ -395,6 +405,7 @@ fun AnnotatedLabelTextInputField(
  * @param successText The optional supporting text to be displayed below the text field
  * @param errorText The optional error text to be displayed below the text field
  * @param maxCharLimit The maximum character to be displayed in the text field.
+ * @param contentType The [ContentType] for autofill.
  * @param onValueChanged The callback that is triggered when the text is changed. In this component,
  *   this callback will be called when the user clear all the text by clicking the close icon.
  * @param onFocusChanged The callback that is triggered when the focus state of this text field changes.
@@ -412,6 +423,7 @@ fun AnnotatedLabelTextInputField(
     successText: String? = null,
     errorText: String? = null,
     maxCharLimit: Int = Int.MAX_VALUE,
+    contentType: ContentType? = null,
     onValueChanged: ((TextFieldValue) -> Unit)? = null,
     onFocusChanged: ((Boolean) -> Unit)? = null,
 ) {
@@ -442,6 +454,7 @@ fun AnnotatedLabelTextInputField(
         isPasswordMode = false,
         showTrailingIcon = showTrailingIcon,
         maxCharLimit = maxCharLimit,
+        contentType = contentType,
         onValueChanged = onValueChanged,
         onFocusChanged = onFocusChanged
     )
@@ -462,6 +475,7 @@ internal fun BaseTextField(
     visualTransformation: VisualTransformation = VisualTransformation.None,
     keyboardActions: KeyboardActions = KeyboardActions.Default,
     maxCharLimit: Int = Int.MAX_VALUE,
+    contentType: ContentType? = null,
     label: @Composable (() -> Unit)? = null,
     onValueChanged: ((TextFieldValue) -> Unit)? = null,
     onFocusChanged: ((Boolean) -> Unit)? = null,
@@ -516,6 +530,11 @@ internal fun BaseTextField(
                     .onFocusChanged {
                         isFocused = it.isFocused
                         onFocusChanged?.invoke(it.isFocused)
+                    }
+                    .semantics {
+                        contentType?.let {
+                            this.contentType = it
+                        }
                     },
                 keyboardOptions = KeyboardOptions(
                     keyboardType = keyboardType,
@@ -630,6 +649,7 @@ internal fun BaseTextField(
     visualTransformation: VisualTransformation = VisualTransformation.None,
     keyboardActions: KeyboardActions = KeyboardActions.Default,
     maxCharLimit: Int = Int.MAX_VALUE,
+    contentType: ContentType? = null,
     label: @Composable (() -> Unit)? = null,
     onValueChanged: ((String) -> Unit)? = null,
     onFocusChanged: ((Boolean) -> Unit)? = null,
@@ -684,6 +704,11 @@ internal fun BaseTextField(
                     .onFocusChanged {
                         isFocused = it.isFocused
                         onFocusChanged?.invoke(it.isFocused)
+                    }
+                    .semantics {
+                        contentType?.let {
+                            this.contentType = it
+                        }
                     },
                 keyboardOptions = KeyboardOptions(
                     keyboardType = keyboardType,

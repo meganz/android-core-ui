@@ -10,6 +10,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.autofill.ContentType
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.ImeOptions
@@ -56,6 +57,7 @@ import mega.android.core.ui.theme.values.TextColor
  * @param successText The optional supporting text to be displayed below the text field
  * @param errorText The optional error text to be displayed below the text field
  * @param maxCharLimit The maximum character to be displayed in the text field.
+ * @param contentType The [ContentType] for autofill.
  * @param onValueChanged The callback that is triggered when the text is changed. In this component,
  *   this callback will be called when the user clear all the text by clicking the close icon.
  * @param onFocusChanged The callback that is triggered when the focus state of this text field changes.
@@ -74,6 +76,7 @@ fun LabelledTextInputWithAction(
     successText: String? = null,
     errorText: String? = null,
     maxCharLimit: Int = Int.MAX_VALUE,
+    contentType: ContentType? = null,
     onValueChanged: ((String) -> Unit)? = null,
     onFocusChanged: ((Boolean) -> Unit)? = null,
     trailingView: @Composable (() -> Unit)? = null,
@@ -105,6 +108,7 @@ fun LabelledTextInputWithAction(
         isPasswordMode = isPasswordMode,
         showTrailingIcon = showTrailingIcon,
         maxCharLimit = maxCharLimit,
+        contentType = contentType,
         onValueChanged = onValueChanged,
         onFocusChanged = onFocusChanged,
         trailingView = trailingView,
@@ -136,6 +140,7 @@ fun LabelledTextInputWithAction(
  * @param errorText The optional error text to be displayed below the text field
  * @param isPasswordMode Whether the text field is in password mode or not. If true, the text
  * @param maxCharLimit The maximum character to be displayed in the text field.
+ * @param contentType The [ContentType] for autofill.
  * @param onValueChanged The callback that is triggered when the text is changed. In this component,
  *   this callback will be called when the user clear all the text by clicking the close icon.
  * @param onFocusChanged The callback that is triggered when the focus state of this text field changes.
@@ -154,6 +159,7 @@ fun LabelledTextInputWithAction(
     errorText: String? = null,
     isPasswordMode: Boolean = false,
     maxCharLimit: Int = Int.MAX_VALUE,
+    contentType: ContentType? = null,
     onValueChanged: ((TextFieldValue) -> Unit)? = null,
     onFocusChanged: ((Boolean) -> Unit)? = null,
     trailingView: @Composable (() -> Unit)? = null,
@@ -185,6 +191,7 @@ fun LabelledTextInputWithAction(
         isPasswordMode = isPasswordMode,
         showTrailingIcon = showTrailingIcon,
         maxCharLimit = maxCharLimit,
+        contentType = contentType,
         onValueChanged = onValueChanged,
         onFocusChanged = onFocusChanged,
         trailingView = trailingView,
