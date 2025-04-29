@@ -6,11 +6,12 @@ plugins {
     id("kotlin-parcelize")
     alias(libs.plugins.mega.artifactory.publish.convention)
     alias(libs.plugins.mega.android.library.jacoco.convention)
+    alias(libs.plugins.compose.compiler)
 }
 
 android {
     namespace = "mega.android.core.ui"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         minSdk = 26

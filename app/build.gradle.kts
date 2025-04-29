@@ -1,11 +1,12 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
+    alias(libs.plugins.compose.compiler)
 }
 
 android {
     namespace = "mega.android.core.ui.app"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "mega.android.core.ui.app"

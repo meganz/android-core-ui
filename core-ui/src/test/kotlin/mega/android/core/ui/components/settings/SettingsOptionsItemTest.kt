@@ -5,16 +5,16 @@ import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
-import androidx.test.ext.junit.runners.AndroidJUnit4
 import kotlinx.coroutines.test.runTest
+import org.junit.Ignore
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.verify
-import kotlin.String
+import org.robolectric.RobolectricTestRunner
 
-@RunWith(AndroidJUnit4::class)
+@RunWith(RobolectricTestRunner::class)
 class SettingsOptionsItemTest {
     @get:Rule
     val composeRule = createComposeRule()
@@ -63,6 +63,12 @@ class SettingsOptionsItemTest {
     }
 
     @Test
+    @Ignore(
+        value = "Ignore until it's fixed by the Compose team. This is a known issue form bottom sheet" +
+                "https://issuetracker.google.com/issues/215231631 " +
+                "https://issuetracker.google.com/issues/366255137 " +
+                "https://github.com/robolectric/robolectric/issues/9595"
+    )
     fun `test that onValueSelected callback is invoked when item is clicked in the bottom sheet`() =
         runTest {
             val values = (1..5).map { "itemTest $it" }

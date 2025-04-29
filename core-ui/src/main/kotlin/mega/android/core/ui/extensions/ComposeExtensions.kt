@@ -14,19 +14,11 @@ import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.autofill.AutofillNode
-import androidx.compose.ui.autofill.AutofillType
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
-import androidx.compose.ui.layout.boundsInWindow
-import androidx.compose.ui.layout.onGloballyPositioned
-import androidx.compose.ui.platform.LocalAutofill
-import androidx.compose.ui.platform.LocalAutofillTree
 import androidx.compose.ui.platform.LocalDensity
-import kotlinx.collections.immutable.ImmutableList
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.drop
 import mega.android.core.ui.theme.activity.LocalActivity
@@ -112,45 +104,4 @@ fun Modifier.focusRestorer(focusRequester: FocusRequester, defaultFocus: Boolean
 private fun imeVisibilityAsState(): State<Boolean> {
     val isImeVisible = WindowInsets.ime.getBottom(LocalDensity.current) > 0
     return rememberUpdatedState(isImeVisible)
-}
-
-/**
- * Source: https://www.ackee.agency/blog/how-to-enable-the-new-autofill-api-in-jetpack-compose
- */
-@OptIn(ExperimentalComposeUiApi::class)
-@Composable
-fun Modifier.autofill(
-    autofillType: ImmutableList<AutofillType>,
-    onFill: (String) -> Unit,
-    onReady: () -> Unit = {}
-): Modifier {
-    val autofill = LocalAutofill.current
-    val autofillTree = LocalAutofillTree.current
-
-    var ready by remember { mutableStateOf(value = false) }
-    val autofillNode = remember(autofillType) { AutofillNode(autofillType, onFill = onFill) }
-
-    LaunchedEffect(autofillNode) {
-        autofillTree += autofillNode
-    }
-
-    LaunchedEffect(ready) {
-        if (ready) onReady()
-    }
-
-    return this
-        .onGloballyPositioned {
-            autofillNode.boundingBox = it.boundsInWindow()
-            ready = true
-        }
-        .onFocusChanged { focusState ->
-            autofill?.run {
-                if (!ready) return@onFocusChanged
-                if (focusState.isFocused) {
-                    requestAutofillForNode(autofillNode)
-                } else {
-                    cancelAutofillForNode(autofillNode)
-                }
-            }
-        }
 }
