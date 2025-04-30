@@ -17,7 +17,7 @@ pipeline {
         LC_ALL = "en_US.UTF-8"
         LANG = "en_US.UTF-8"
 
-        JAVA_HOME = "/opt/buildtools/zulu17.42.19-ca-jdk17.0.7-macosx"
+        JAVA_HOME = "/opt/buildtools/zulu21.40.17-ca-jdk21.0.6-macosx"
         ANDROID_HOME = "/opt/buildtools/android-sdk"
 
         // Jenkins build log will be saved in this file.

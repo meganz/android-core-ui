@@ -44,4 +44,6 @@ extra["mavenGroupId"] = "mega.android.core"
 extra["commit"] = System.getenv(LIB_COMMIT)?.takeIf { it.isNotBlank() } ?: "N/A"
 extra["builder"] = System.getenv(GITLAB_USER_NAME)?.takeIf { it.isNotBlank() } ?: "N/A"
 
-//apply(from = "${project.rootDir}/publish.gradle")
+//JDK and Java Version
+extra["jdk"] = "21"
+extra["javaVersion"] = JavaVersion.VERSION_21

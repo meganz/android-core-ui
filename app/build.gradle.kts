@@ -30,12 +30,14 @@ android {
             )
         }
     }
+    val jdk: String by rootProject.extra
+    val javaVersion: JavaVersion by rootProject.extra
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
+        sourceCompatibility = javaVersion
+        targetCompatibility = javaVersion
     }
     kotlinOptions {
-        jvmTarget = "17"
+        jvmTarget = jdk
     }
     buildFeatures {
         compose = true
