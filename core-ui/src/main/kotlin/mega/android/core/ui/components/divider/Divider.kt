@@ -10,14 +10,14 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import mega.android.core.ui.preview.CombinedThemePreviews
 import mega.android.core.ui.theme.AndroidThemeForPreviews
-import mega.android.core.ui.theme.AppTheme
+import mega.android.core.ui.tokens.theme.DSTokens
 
 @Composable
 fun SubtleDivider(modifier: Modifier = Modifier) {
     HorizontalDivider(
         modifier = modifier,
         thickness = 1.dp,
-        color = AppTheme.colors.border.subtle
+        color = DSTokens.colors.border.subtle
     )
 }
 
@@ -26,7 +26,7 @@ fun SubtleVerticalDivider(thickness: Dp, modifier: Modifier = Modifier) {
     VerticalDivider(
         modifier = modifier,
         thickness = thickness,
-        color = AppTheme.colors.border.subtle
+        color = DSTokens.colors.border.subtle
     )
 }
 
@@ -35,7 +35,7 @@ fun StrongDivider(modifier: Modifier = Modifier) {
     HorizontalDivider(
         modifier = modifier,
         thickness = 1.dp,
-        color = AppTheme.colors.border.strong
+        color = DSTokens.colors.border.strong
     )
 }
 
@@ -44,7 +44,7 @@ fun StrongVerticalDivider(thickness: Dp, modifier: Modifier = Modifier) {
     VerticalDivider(
         modifier = modifier,
         thickness = thickness,
-        color = AppTheme.colors.border.strong
+        color = DSTokens.colors.border.strong
     )
 }
 

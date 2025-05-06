@@ -23,6 +23,7 @@ import mega.android.core.ui.components.textDefaultHeight
 import mega.android.core.ui.preview.CombinedThemePreviews
 import mega.android.core.ui.theme.AndroidThemeForPreviews
 import mega.android.core.ui.theme.AppTheme
+import mega.android.core.ui.tokens.theme.DSTokens
 import mega.android.core.ui.theme.spacing.LocalSpacing
 
 @Composable
@@ -37,11 +38,11 @@ fun PrimaryTopNavigationButton(
         text = text,
         enabled = enabled,
         onClick = onClick,
-        containerColorDefault = AppTheme.colors.button.primary,
-        containerColorDisabled = AppTheme.colors.button.disabled,
-        containerColorPressed = AppTheme.colors.button.primaryPressed,
-        textColorDefault = AppTheme.colors.text.inverseAccent,
-        textColorDisabled = AppTheme.colors.text.onColorDisabled,
+        containerColorDefault = DSTokens.colors.button.primary,
+        containerColorDisabled = DSTokens.colors.button.disabled,
+        containerColorPressed = DSTokens.colors.button.primaryPressed,
+        textColorDefault = DSTokens.colors.text.inverseAccent,
+        textColorDisabled = DSTokens.colors.text.onColorDisabled,
     )
 }
 
@@ -57,11 +58,11 @@ fun SecondaryTopNavigationButton(
         text = text,
         enabled = enabled,
         onClick = onClick,
-        containerColorDefault = AppTheme.colors.button.secondary,
-        containerColorDisabled = AppTheme.colors.button.disabled,
-        containerColorPressed = AppTheme.colors.button.secondaryPressed,
-        textColorDefault = AppTheme.colors.text.accent,
-        textColorDisabled = AppTheme.colors.text.onColorDisabled,
+        containerColorDefault = DSTokens.colors.button.secondary,
+        containerColorDisabled = DSTokens.colors.button.disabled,
+        containerColorPressed = DSTokens.colors.button.secondaryPressed,
+        textColorDefault = DSTokens.colors.text.accent,
+        textColorDisabled = DSTokens.colors.text.onColorDisabled,
     )
 }
 

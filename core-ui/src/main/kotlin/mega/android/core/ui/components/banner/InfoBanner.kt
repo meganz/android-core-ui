@@ -13,7 +13,7 @@ import mega.android.core.ui.model.SpanIndicator
 import mega.android.core.ui.model.SpanStyleWithAnnotation
 import mega.android.core.ui.preview.CombinedThemePreviews
 import mega.android.core.ui.theme.AndroidThemeForPreviews
-import mega.android.core.ui.theme.AppTheme
+import mega.android.core.ui.tokens.theme.DSTokens
 
 @Composable
 fun InlineInfoBanner(
@@ -27,7 +27,7 @@ fun InlineInfoBanner(
 ) {
     InfoBanner(
         modifier = modifier,
-        backgroundShape = AppTheme.shapes.small,
+        backgroundShape = DSTokens.shapes.small,
         body = body,
         title = title,
         actionButtonText = actionButtonText,
@@ -50,7 +50,7 @@ fun InlineInfoBanner(
 ) {
     InfoBanner(
         modifier = modifier,
-        backgroundShape = AppTheme.shapes.small,
+        backgroundShape = DSTokens.shapes.small,
         body = SpannableText(body),
         title = SpannableText(title),
         actionButtonText = actionButtonText,
@@ -117,10 +117,10 @@ private fun InfoBanner(
 ) {
     BaseBanner(
         modifier = modifier,
-        backgroundColor = AppTheme.colors.notifications.notificationInfo,
+        backgroundColor = DSTokens.colors.notifications.notificationInfo,
         backgroundShape = backgroundShape,
         iconResId = R.drawable.ic_info,
-        iconColor = AppTheme.colors.support.info,
+        iconColor = DSTokens.colors.support.info,
         body = body,
         title =     title,
         buttonText = actionButtonText,

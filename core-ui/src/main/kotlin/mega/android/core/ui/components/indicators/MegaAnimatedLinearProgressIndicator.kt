@@ -24,7 +24,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import mega.android.core.ui.preview.CombinedThemePreviews
 import mega.android.core.ui.theme.AndroidTheme
-import mega.android.core.ui.theme.AppTheme
+import mega.android.core.ui.tokens.theme.DSTokens
 
 /**
  * Wrapper for [MegaAnimatedLinearProgressIndicator] to set default parameters to better represent the project theme
@@ -59,9 +59,9 @@ fun MegaAnimatedLinearProgressIndicator(
                 .height(height)
                 .clip(clip),
             progress = { progressAnimation },
-            color = AppTheme.colors.border.brand,
+            color = DSTokens.colors.border.brand,
             strokeCap = strokeCap,
-            trackColor = AppTheme.colors.background.surface2,
+            trackColor = DSTokens.colors.background.surface2,
             gapSize = gapSize,
             drawStopIndicator = {}
         )
@@ -76,9 +76,9 @@ fun MegaAnimatedLinearProgressIndicator(
                 .fillMaxWidth()
                 .height(height)
                 .clip(clip),
-            color = AppTheme.colors.border.brand,
+            color = DSTokens.colors.border.brand,
             strokeCap = strokeCap,
-            trackColor = AppTheme.colors.background.surface2,
+            trackColor = DSTokens.colors.background.surface2,
             gapSize = gapSize,
         )
     }

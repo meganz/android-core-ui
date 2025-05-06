@@ -14,6 +14,7 @@ import mega.android.core.ui.preview.CombinedThemePreviews
 import mega.android.core.ui.theme.AndroidThemeForPreviews
 import mega.android.core.ui.theme.AppTheme
 import mega.android.core.ui.theme.spacing.LocalSpacing
+import mega.android.core.ui.tokens.theme.DSTokens
 
 @Immutable
 sealed interface SimpleTooltipContent {
@@ -78,7 +79,7 @@ private fun SimpleTooltipContentScope(
 @Composable
 private fun SimpleTooltipContentTitleAndBodyPreview() {
     AndroidThemeForPreviews {
-        Box(modifier = Modifier.background(AppTheme.colors.background.inverse)) {
+        Box(modifier = Modifier.background(DSTokens.colors.background.inverse)) {
             SimpleTooltipContentTitleAndBody(title = "Simple text", body = "Simple text").Content()
         }
     }
@@ -88,7 +89,7 @@ private fun SimpleTooltipContentTitleAndBodyPreview() {
 @Composable
 private fun SimpleTooltipContentTitleOnlyPreview() {
     AndroidThemeForPreviews {
-        Box(modifier = Modifier.background(AppTheme.colors.background.inverse)) {
+        Box(modifier = Modifier.background(DSTokens.colors.background.inverse)) {
             SimpleTooltipContentTitleOnly(value = "Simple text").Content()
         }
     }
@@ -98,7 +99,7 @@ private fun SimpleTooltipContentTitleOnlyPreview() {
 @Composable
 private fun SimpleTooltipContentBodyOnlyPreview() {
     AndroidThemeForPreviews {
-        Box(modifier = Modifier.background(AppTheme.colors.background.inverse)) {
+        Box(modifier = Modifier.background(DSTokens.colors.background.inverse)) {
             SimpleTooltipContentBodyOnly(value = "Simple text").Content()
         }
     }

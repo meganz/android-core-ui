@@ -13,7 +13,7 @@ import androidx.compose.ui.unit.dp
 import mega.android.core.ui.R
 import mega.android.core.ui.preview.CombinedThemePreviews
 import mega.android.core.ui.theme.AndroidThemeForPreviews
-import mega.android.core.ui.theme.AppTheme
+import mega.android.core.ui.tokens.theme.DSTokens
 
 private val defaultToggleWidth = 52.dp
 private val defaultToggleHeight = 32.dp
@@ -54,20 +54,20 @@ fun Toggle(
         },
         enabled = isEnabled,
         colors = SwitchDefaults.colors(
-            checkedThumbColor = AppTheme.colors.background.pageBackground,
-            checkedTrackColor = AppTheme.colors.components.selectionControl,
-            checkedIconColor = AppTheme.colors.components.selectionControl,
-            uncheckedThumbColor = AppTheme.colors.components.selectionControl,
-            uncheckedTrackColor = AppTheme.colors.background.pageBackground,
-            uncheckedBorderColor = AppTheme.colors.components.selectionControl,
-            uncheckedIconColor = AppTheme.colors.background.pageBackground,
-            disabledCheckedThumbColor = AppTheme.colors.background.pageBackground,
-            disabledCheckedTrackColor = AppTheme.colors.border.disabled,
-            disabledCheckedIconColor = AppTheme.colors.border.disabled,
-            disabledUncheckedThumbColor = AppTheme.colors.border.disabled,
-            disabledUncheckedTrackColor = AppTheme.colors.background.pageBackground,
-            disabledUncheckedBorderColor = AppTheme.colors.border.disabled,
-            disabledUncheckedIconColor = AppTheme.colors.background.pageBackground,
+            checkedThumbColor = DSTokens.colors.background.pageBackground,
+            checkedTrackColor = DSTokens.colors.components.selectionControl,
+            checkedIconColor = DSTokens.colors.components.selectionControl,
+            uncheckedThumbColor = DSTokens.colors.components.selectionControl,
+            uncheckedTrackColor = DSTokens.colors.background.pageBackground,
+            uncheckedBorderColor = DSTokens.colors.components.selectionControl,
+            uncheckedIconColor = DSTokens.colors.background.pageBackground,
+            disabledCheckedThumbColor = DSTokens.colors.background.pageBackground,
+            disabledCheckedTrackColor = DSTokens.colors.border.disabled,
+            disabledCheckedIconColor = DSTokens.colors.border.disabled,
+            disabledUncheckedThumbColor = DSTokens.colors.border.disabled,
+            disabledUncheckedTrackColor = DSTokens.colors.background.pageBackground,
+            disabledUncheckedBorderColor = DSTokens.colors.border.disabled,
+            disabledUncheckedIconColor = DSTokens.colors.background.pageBackground,
         )
     )
 }

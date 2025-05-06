@@ -15,6 +15,7 @@ import mega.android.core.ui.components.profile.LargeProfilePicture
 import mega.android.core.ui.preview.CombinedThemePreviews
 import mega.android.core.ui.theme.AndroidThemeForPreviews
 import mega.android.core.ui.theme.AppTheme
+import mega.android.core.ui.tokens.theme.DSTokens
 import mega.android.core.ui.theme.spacing.LocalSpacing
 import mega.android.core.ui.theme.values.TextColor
 import java.io.File
@@ -46,7 +47,7 @@ fun ProfileListItem(
     modifier: Modifier = Modifier,
     fullNameLineStyle: ProfileListTextLineStyle = ProfileListTextLineStyleDefaults.lineStyle(),
     emailLineStyle: ProfileListTextLineStyle = ProfileListTextLineStyleDefaults.lineStyle(),
-    avatarColor: Color = AppTheme.colors.background.surface3,
+    avatarColor: Color = DSTokens.colors.background.surface3,
 ) {
     Row(
         modifier = modifier.fillMaxWidth(),

@@ -45,6 +45,7 @@ import androidx.core.text.isDigitsOnly
 import mega.android.core.ui.preview.CombinedThemePreviews
 import mega.android.core.ui.theme.AndroidThemeForPreviews
 import mega.android.core.ui.theme.AppTheme
+import mega.android.core.ui.tokens.theme.DSTokens
 import mega.android.core.ui.theme.spacing.LocalSpacing
 
 /**
@@ -72,7 +73,7 @@ fun VerificationTextInputField(
     val textFieldValue = TextFieldValue(text = value, selection = TextRange(value.length))
     var lastTextValue by remember { mutableStateOf(value) }
     val cipherMask = if (shouldMaskInput) CIPHER_MASK_CHAR.toString() else ""
-    val textColor = AppTheme.colors.text.primary
+    val textColor = DSTokens.colors.text.primary
     val spacing = LocalSpacing.current
 
     Column(modifier = modifier) {
@@ -113,7 +114,7 @@ fun VerificationTextInputField(
                                     isCodeCorrect == false -> {
                                         BorderStroke(
                                             width = TextFieldDefaults.UnfocusedIndicatorThickness,
-                                            color = AppTheme.colors.support.error
+                                            color = DSTokens.colors.support.error
                                         )
                                     }
 
@@ -121,7 +122,7 @@ fun VerificationTextInputField(
                                     isCodeCorrect == true -> {
                                         BorderStroke(
                                             width = TextFieldDefaults.UnfocusedIndicatorThickness,
-                                            color = AppTheme.colors.support.success
+                                            color = DSTokens.colors.support.success
                                         )
                                     }
 
@@ -129,14 +130,14 @@ fun VerificationTextInputField(
                                     focusState.value && selection -> {
                                         BorderStroke(
                                             width = TextFieldDefaults.UnfocusedIndicatorThickness,
-                                            color = AppTheme.colors.border.strongSelected
+                                            color = DSTokens.colors.border.strongSelected
                                         )
                                     }
 
                                     else -> {
                                         BorderStroke(
                                             width = TextFieldDefaults.UnfocusedIndicatorThickness,
-                                            color = AppTheme.colors.border.disabled
+                                            color = DSTokens.colors.border.disabled
                                         )
                                     }
                                 },
@@ -158,7 +159,7 @@ fun VerificationTextInputField(
                         Text(
                             text = if (cipherMask.isNotEmpty() && text.isNotEmpty()) cipherMask else text,
                             modifier = if (showCursor) Modifier.cursor(
-                                cursorBrush = SolidColor(AppTheme.colors.text.primary),
+                                cursorBrush = SolidColor(DSTokens.colors.text.primary),
                                 cursorRect = cursorRectState.value,
                             ) else Modifier,
                             color = textColor,

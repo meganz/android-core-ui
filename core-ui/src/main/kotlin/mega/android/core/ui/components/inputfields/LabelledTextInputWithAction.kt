@@ -29,8 +29,10 @@ import mega.android.core.ui.preview.CombinedThemePreviewsTablet
 import mega.android.core.ui.theme.AndroidThemeForPreviews
 import mega.android.core.ui.theme.AppTheme
 import mega.android.core.ui.theme.spacing.LocalSpacing
+import mega.android.core.ui.theme.textColor
 import mega.android.core.ui.theme.values.IconColor
 import mega.android.core.ui.theme.values.TextColor
+import mega.android.core.ui.tokens.theme.DSTokens
 
 /**
  * Labelled text input field with annotated label.
@@ -93,7 +95,7 @@ fun LabelledTextInputWithAction(
                     modifier = Modifier.padding(bottom = LocalSpacing.current.x4),
                     text = annotatedLabelString,
                     style = it.baseStyle.copy(
-                        color = AppTheme.textColor(textColor = it.baseTextColor)
+                        color = DSTokens.textColor(textColor = it.baseTextColor)
                     )
                 )
             }
@@ -176,7 +178,7 @@ fun LabelledTextInputWithAction(
                     modifier = Modifier.padding(bottom = LocalSpacing.current.x4),
                     text = annotatedLabelString,
                     style = it.baseStyle.copy(
-                        color = AppTheme.textColor(textColor = it.baseTextColor)
+                        color = DSTokens.textColor(textColor = it.baseTextColor)
                     )
                 )
             }
@@ -206,7 +208,7 @@ fun LabelledTextInputAction(
     Box(
         modifier = modifier
             .background(
-                color = AppTheme.colors.background.surface3,
+                color = DSTokens.colors.background.surface3,
                 shape = RoundedCornerShape(LocalSpacing.current.x8)
             ),
         contentAlignment = Alignment.Center

@@ -12,7 +12,7 @@ import mega.android.core.ui.components.slider.MegaSliderDefaults.Thumb
 import mega.android.core.ui.components.slider.MegaSliderDefaults.Track
 import mega.android.core.ui.preview.CombinedThemePreviews
 import mega.android.core.ui.theme.AndroidThemeForPreviews
-import mega.android.core.ui.theme.AppTheme
+import mega.android.core.ui.tokens.theme.DSTokens
 import mega.android.core.ui.theme.spacing.LocalSpacing
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -29,9 +29,9 @@ fun MegaSlider(
     val spacing = LocalSpacing.current
     val interactionSource = remember { MutableInteractionSource() }
     val sliderColors = SliderDefaults.colors(
-        thumbColor = AppTheme.colors.button.primary,
-        activeTrackColor = AppTheme.colors.button.primary,
-        inactiveTrackColor = AppTheme.colors.border.strong
+        thumbColor = DSTokens.colors.button.primary,
+        activeTrackColor = DSTokens.colors.button.primary,
+        inactiveTrackColor = DSTokens.colors.border.strong
     )
     Slider(
         value = value,

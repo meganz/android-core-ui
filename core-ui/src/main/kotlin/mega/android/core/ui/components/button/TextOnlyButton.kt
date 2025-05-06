@@ -15,6 +15,7 @@ import androidx.compose.ui.text.style.TextDecoration
 import mega.android.core.ui.preview.CombinedThemePreviews
 import mega.android.core.ui.theme.AndroidThemeForPreviews
 import mega.android.core.ui.theme.AppTheme
+import mega.android.core.ui.tokens.theme.DSTokens
 
 @Composable
 fun TextOnlyButton(
@@ -27,9 +28,9 @@ fun TextOnlyButton(
         modifier = modifier,
         text = text,
         enabled = enabled,
-        textColorDefault = AppTheme.colors.button.primary,
-        textColorDisabled = AppTheme.colors.text.disabled,
-        textColorPressed = AppTheme.colors.button.primary,
+        textColorDefault = DSTokens.colors.button.primary,
+        textColorDisabled = DSTokens.colors.text.disabled,
+        textColorPressed = DSTokens.colors.button.primary,
         onClick = onClick
     )
 }

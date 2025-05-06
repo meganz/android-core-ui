@@ -54,7 +54,7 @@ import mega.android.core.ui.components.toolbar.MegaTopAppBar
 import mega.android.core.ui.model.IllustrationIconSizeMode
 import mega.android.core.ui.preview.CombinedThemePreviewsTablet
 import mega.android.core.ui.theme.AndroidThemeForPreviews
-import mega.android.core.ui.theme.AppTheme
+import mega.android.core.ui.tokens.theme.DSTokens
 import mega.android.core.ui.theme.spacing.LocalSpacing
 import mega.android.core.ui.theme.values.IconColor
 
@@ -130,7 +130,7 @@ fun PromotionalImageDialog(
 
             DialogActions(
                 modifier = Modifier
-                    .background(AppTheme.colors.background.pageBackground),
+                    .background(DSTokens.colors.background.pageBackground),
                 primaryButton = primaryButton,
                 secondaryButton = secondaryButton,
                 isDividerVisible = isScrollable
@@ -209,7 +209,7 @@ fun PromotionalFullImageDialog(
                         shape = CircleShape,
                         colors = ButtonDefaults.buttonColors(
                             containerColor = Color.Black.copy(alpha = 0.5f),
-                            contentColor = AppTheme.colors.icon.onColor
+                            contentColor = DSTokens.colors.icon.onColor
                         ),
                         contentPadding = PaddingValues(4.dp)
                     ) {
@@ -223,7 +223,7 @@ fun PromotionalFullImageDialog(
 
             DialogActions(
                 modifier = Modifier
-                    .background(AppTheme.colors.background.pageBackground)
+                    .background(DSTokens.colors.background.pageBackground)
                     .wrapContentHeight(),
                 primaryButton = primaryButton,
                 secondaryButton = secondaryButton,
@@ -304,7 +304,7 @@ fun PromotionalIllustrationDialog(
 
             DialogActions(
                 modifier = Modifier
-                    .background(AppTheme.colors.background.pageBackground)
+                    .background(DSTokens.colors.background.pageBackground)
                     .wrapContentHeight(),
                 primaryButton = primaryButton,
                 secondaryButton = secondaryButton,
@@ -368,8 +368,8 @@ private fun DialogContent(
             .padding(vertical = if (isLandscapeDevice) LocalSpacing.current.x48 else LocalSpacing.current.x80)
             .widthIn(max = DIALOG_MAXIMUM_WIDTH)
             .heightIn(max = DIALOG_MAXIMUM_HEIGHT)
-            .clip(AppTheme.shapes.small)
-            .background(AppTheme.colors.background.pageBackground),
+            .clip(DSTokens.shapes.small)
+            .background(DSTokens.colors.background.pageBackground),
         content = content
     )
 }
@@ -381,7 +381,7 @@ private fun DialogActions(
     secondaryButton: DialogButtonAttribute? = null,
     isDividerVisible: Boolean = false
 ) {
-    val borderStrokeColor = AppTheme.colors.border.strong
+    val borderStrokeColor = DSTokens.colors.border.strong
 
     Row(
         modifier = modifier

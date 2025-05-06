@@ -19,6 +19,7 @@ import mega.android.core.ui.components.MegaText
 import mega.android.core.ui.preview.CombinedThemePreviews
 import mega.android.core.ui.theme.AndroidThemeForPreviews
 import mega.android.core.ui.theme.AppTheme
+import mega.android.core.ui.tokens.theme.DSTokens
 import mega.android.core.ui.theme.spacing.LocalSpacing
 import mega.android.core.ui.theme.values.TextColor
 
@@ -28,9 +29,9 @@ val numberOfTextThumbnailBackgrounds = 3
 @Composable
 private fun getTextThumbnailBackgroundColors(): Map<Int, Color> {
     return mapOf(
-        1 to AppTheme.colors.indicator.green,
-        2 to AppTheme.colors.indicator.blue,
-        3 to AppTheme.colors.indicator.yellow
+        1 to DSTokens.colors.indicator.green,
+        2 to DSTokens.colors.indicator.blue,
+        3 to DSTokens.colors.indicator.yellow
     )
 }
 
@@ -40,10 +41,10 @@ fun TextThumbnail(
     text: String,
     numberOfCharacters: Int,
     randomInt: Int,
-    shape: Shape = AppTheme.shapes.extraSmall
+    shape: Shape = DSTokens.shapes.extraSmall
 ) {
     val backgroundColor =
-        getTextThumbnailBackgroundColors()[randomInt] ?: AppTheme.colors.indicator.yellow
+        getTextThumbnailBackgroundColors()[randomInt] ?: DSTokens.colors.indicator.yellow
     val chars = text.trim().onlyTake(numberOfCharacters)
 
     val defaultTextStyle = AppTheme.typography.titleSmall
@@ -52,7 +53,7 @@ fun TextThumbnail(
 
     Box(
         modifier = modifier.background(
-            color = if (chars.isEmpty()) AppTheme.colors.background.surface3 else backgroundColor,
+            color = if (chars.isEmpty()) DSTokens.colors.background.surface3 else backgroundColor,
             shape = shape
         )
     ) {

@@ -18,6 +18,7 @@ import mega.android.core.ui.components.tooltip.model.MegaTooltipType
 import mega.android.core.ui.components.tooltip.model.TooltipPointerSizeInPx
 import mega.android.core.ui.components.tooltip.shape.MegaTooltipShape
 import mega.android.core.ui.theme.AppTheme
+import mega.android.core.ui.tokens.theme.DSTokens
 
 @Composable
 internal fun BasicTopDirectionTooltip(
@@ -143,7 +144,7 @@ private fun BasicMegaTooltip(
             modifier
         }
             .background(
-                color = AppTheme.colors.background.inverse,
+                color = DSTokens.colors.background.inverse,
                 shape = MegaTooltipShape(
                     radius = radiusInPx,
                     pointerSize = pointerSize,

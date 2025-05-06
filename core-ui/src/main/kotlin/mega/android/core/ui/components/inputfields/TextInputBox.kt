@@ -43,7 +43,9 @@ import mega.android.core.ui.model.SpanStyleWithAnnotation
 import mega.android.core.ui.preview.CombinedThemePreviews
 import mega.android.core.ui.theme.AndroidThemeForPreviews
 import mega.android.core.ui.theme.AppTheme
+import mega.android.core.ui.tokens.theme.DSTokens
 import mega.android.core.ui.theme.spacing.LocalSpacing
+import mega.android.core.ui.theme.textColor
 import mega.android.core.ui.theme.values.IconColor
 import mega.android.core.ui.theme.values.TextColor
 
@@ -75,14 +77,14 @@ fun TextInputBox(
                     Text(
                         text = label,
                         style = AppTheme.typography.titleSmall,
-                        color = AppTheme.colors.text.primary
+                        color = DSTokens.colors.text.primary
                     )
                     optionalLabelText?.let {
                         Text(
                             modifier = Modifier.padding(start = LocalSpacing.current.x8),
                             text = optionalLabelText,
                             style = AppTheme.typography.bodyMedium,
-                            color = AppTheme.colors.text.secondary
+                            color = DSTokens.colors.text.secondary
                         )
                     }
                 }
@@ -148,7 +150,7 @@ fun AnnotatedLabelTextInputBox(
                 Text(
                     text = annotatedLabelString,
                     style = it.baseStyle.copy(
-                        color = AppTheme.textColor(textColor = it.baseTextColor)
+                        color = DSTokens.textColor(textColor = it.baseTextColor)
                     )
                 )
             }
@@ -185,27 +187,27 @@ private fun BaseTextInputBox(
     val interactionSource: MutableInteractionSource = remember { MutableInteractionSource() }
     var baseText by remember(text) { mutableStateOf(text) }
     var isFocused by remember { mutableStateOf(false) }
-    val focusedColor = AppTheme.colors.border.strongSelected
-    val unfocusedColor = AppTheme.colors.border.strong
+    val focusedColor = DSTokens.colors.border.strongSelected
+    val unfocusedColor = DSTokens.colors.border.strong
 
     val colors = OutlinedTextFieldDefaults.colors(
-        focusedTextColor = AppTheme.colors.text.primary,
-        unfocusedTextColor = AppTheme.colors.text.primary,
-        cursorColor = AppTheme.colors.text.primary,
-        errorCursorColor = AppTheme.colors.text.primary,
+        focusedTextColor = DSTokens.colors.text.primary,
+        unfocusedTextColor = DSTokens.colors.text.primary,
+        cursorColor = DSTokens.colors.text.primary,
+        errorCursorColor = DSTokens.colors.text.primary,
         selectionColors = TextSelectionColors(
-            handleColor = AppTheme.colors.text.primary,
-            backgroundColor = AppTheme.colors.text.primary.copy(alpha = 0.4f),
+            handleColor = DSTokens.colors.text.primary,
+            backgroundColor = DSTokens.colors.text.primary.copy(alpha = 0.4f),
         ),
         focusedBorderColor = focusedColor,
         unfocusedBorderColor = unfocusedColor,
-        errorBorderColor = AppTheme.colors.support.error,
-        errorTextColor = AppTheme.colors.text.primary,
-        focusedPlaceholderColor = AppTheme.colors.text.primary,
-        unfocusedPlaceholderColor = AppTheme.colors.text.placeholder,
-        disabledTextColor = AppTheme.colors.text.disabled,
-        disabledContainerColor = AppTheme.colors.button.disabled,
-        disabledBorderColor = AppTheme.colors.border.disabled,
+        errorBorderColor = DSTokens.colors.support.error,
+        errorTextColor = DSTokens.colors.text.primary,
+        focusedPlaceholderColor = DSTokens.colors.text.primary,
+        unfocusedPlaceholderColor = DSTokens.colors.text.placeholder,
+        disabledTextColor = DSTokens.colors.text.disabled,
+        disabledContainerColor = DSTokens.colors.button.disabled,
+        disabledBorderColor = DSTokens.colors.border.disabled,
     )
 
     Column(

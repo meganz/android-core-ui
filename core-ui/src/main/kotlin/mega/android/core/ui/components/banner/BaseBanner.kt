@@ -25,6 +25,7 @@ import mega.android.core.ui.components.LinkSpannedText
 import mega.android.core.ui.components.MegaClickableText
 import mega.android.core.ui.components.text.SpannableText
 import mega.android.core.ui.theme.AppTheme
+import mega.android.core.ui.tokens.theme.DSTokens
 import mega.android.core.ui.theme.spacing.LocalSpacing
 import mega.android.core.ui.theme.values.TextColor
 
@@ -98,7 +99,7 @@ internal fun BaseBanner(
                         .size(LocalSpacing.current.x24)
                         .clickable { onCancelButtonClick() },
                     painter = painterResource(id = R.drawable.ic_close),
-                    tint = AppTheme.colors.icon.primary,
+                    tint = DSTokens.colors.icon.primary,
                     contentDescription = "Banner Cancel"
                 )
             }

@@ -34,6 +34,7 @@ import mega.android.core.ui.model.SpanStyleWithAnnotation
 import mega.android.core.ui.preview.CombinedThemePreviews
 import mega.android.core.ui.theme.AndroidThemeForPreviews
 import mega.android.core.ui.theme.AppTheme
+import mega.android.core.ui.tokens.theme.DSTokens
 import mega.android.core.ui.theme.spacing.LocalSpacing
 import mega.android.core.ui.theme.values.ComponentsColor
 import mega.android.core.ui.theme.values.IconColor
@@ -64,7 +65,7 @@ fun ImageContentListItem(
             AsyncImage(
                 modifier = Modifier
                     .size(40.dp)
-                    .background(AppTheme.colors.background.surface1),
+                    .background(DSTokens.colors.background.surface1),
                 model = ImageRequest.Builder(LocalContext.current)
                     .data(imageUrl)
                     .crossfade(true)
@@ -194,7 +195,7 @@ fun NumberContentListItem(
                     .size(24.dp)
                     .border(
                         width = 1.dp,
-                        color = AppTheme.colors.border.strong,
+                        color = DSTokens.colors.border.strong,
                         shape = CircleShape
                     )
             ) {

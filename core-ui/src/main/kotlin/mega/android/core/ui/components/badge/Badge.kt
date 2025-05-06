@@ -23,6 +23,7 @@ import mega.android.core.ui.components.image.MegaIcon
 import mega.android.core.ui.preview.CombinedThemePreviews
 import mega.android.core.ui.theme.AndroidThemeForPreviews
 import mega.android.core.ui.theme.AppTheme
+import mega.android.core.ui.tokens.theme.DSTokens
 import mega.android.core.ui.theme.spacing.LocalSpacing
 import mega.android.core.ui.theme.values.TextColor
 
@@ -66,14 +67,14 @@ fun Badge(
             .wrapContentHeight()
             .background(
                 color = attributes.backgroundColor,
-                shape = AppTheme.shapes.extraSmall
+                shape = DSTokens.shapes.extraSmall
             )
             .then(
                 if (attributes.borderColor != null) {
                     Modifier.border(
                         width = 1.dp,
                         color = attributes.borderColor,
-                        shape = AppTheme.shapes.extraSmall
+                        shape = DSTokens.shapes.extraSmall
                     )
                 } else {
                     Modifier
@@ -107,28 +108,28 @@ private fun getBadgeAttributes(badgeType: BadgeType): Badge {
     return when (badgeType) {
         BadgeType.Success -> Badge(
             textColor = TextColor.Success,
-            backgroundColor = AppTheme.colors.notifications.notificationSuccess
+            backgroundColor = DSTokens.colors.notifications.notificationSuccess
         )
         BadgeType.Warning -> Badge(
             textColor = TextColor.Warning,
-            backgroundColor = AppTheme.colors.notifications.notificationWarning
+            backgroundColor = DSTokens.colors.notifications.notificationWarning
         )
         BadgeType.Info -> Badge(
             textColor = TextColor.Info,
-            backgroundColor = AppTheme.colors.notifications.notificationInfo
+            backgroundColor = DSTokens.colors.notifications.notificationInfo
         )
         BadgeType.Error -> Badge(
             textColor = TextColor.Error,
-            backgroundColor = AppTheme.colors.notifications.notificationError
+            backgroundColor = DSTokens.colors.notifications.notificationError
         )
         BadgeType.Mega -> Badge(
             textColor = TextColor.OnColor,
-            backgroundColor = AppTheme.colors.button.brand
+            backgroundColor = DSTokens.colors.button.brand
         )
         BadgeType.MegaSecondary -> Badge(
             textColor = TextColor.Brand,
             backgroundColor = Color.Transparent,
-            borderColor = AppTheme.colors.button.brand
+            borderColor = DSTokens.colors.button.brand
         )
     }
 }

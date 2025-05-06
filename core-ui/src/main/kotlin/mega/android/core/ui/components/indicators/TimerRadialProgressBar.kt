@@ -31,6 +31,7 @@ import mega.android.core.ui.components.MegaText
 import mega.android.core.ui.preview.CombinedThemePreviews
 import mega.android.core.ui.theme.AndroidThemeForPreviews
 import mega.android.core.ui.theme.AppTheme
+import mega.android.core.ui.tokens.theme.DSTokens
 import mega.android.core.ui.theme.values.TextColor
 import kotlin.math.ceil
 
@@ -63,15 +64,15 @@ fun TimerRadialProgressBar(
     val progress by remember(remainingTimeInMilliSeconds()) { derivedStateOf { remainingTimeInMilliSeconds().toFloat() / (totalTimeInSeconds * 1000) } }
 
     val color = when (ceil(remainingTimeInMilliSeconds() / 1000.0).toInt()) {
-        in 0..totalTimeInSeconds / 3 -> AppTheme.colors.support.error
-        in (totalTimeInSeconds / 3)..(2 * totalTimeInSeconds / 3) -> AppTheme.colors.support.warning
-        else -> AppTheme.colors.support.success
+        in 0..totalTimeInSeconds / 3 -> DSTokens.colors.support.error
+        in (totalTimeInSeconds / 3)..(2 * totalTimeInSeconds / 3) -> DSTokens.colors.support.warning
+        else -> DSTokens.colors.support.success
     }
     Box(modifier = modifier, contentAlignment = Alignment.Center) {
         CircularProgressIndicator(
             progress = { progress },
             color = color,
-            trackColor = AppTheme.colors.border.strong,
+            trackColor = DSTokens.colors.border.strong,
             strokeWidth = strokeWidth.dp,
             strokeCap = StrokeCap.Butt,
             gapSize = 0.dp,

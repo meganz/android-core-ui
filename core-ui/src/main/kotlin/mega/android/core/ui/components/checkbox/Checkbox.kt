@@ -33,7 +33,7 @@ import androidx.compose.ui.unit.dp
 import mega.android.core.ui.R
 import mega.android.core.ui.preview.CombinedThemePreviews
 import mega.android.core.ui.theme.AndroidThemeForPreviews
-import mega.android.core.ui.theme.AppTheme
+import mega.android.core.ui.tokens.theme.DSTokens
 
 private val checkboxContainerSize = 42.dp
 private val checkboxSize = 19.dp
@@ -55,15 +55,15 @@ private data class CheckboxColors(
     companion object {
         @Composable
         fun default() = CheckboxColors(
-            checkedCheckmarkColor = AppTheme.colors.icon.inverse,
-            disabledCheckedCheckmarkColor = AppTheme.colors.icon.disabled,
-            checkedBoxColor = AppTheme.colors.components.selectionControl,
-            uncheckedBoxColor = AppTheme.colors.icon.inverse,
-            disabledCheckedBoxColor = AppTheme.colors.button.disabled,
-            disabledUncheckedBoxColor = AppTheme.colors.button.disabled,
-            checkedBorderColor = AppTheme.colors.components.selectionControl,
-            uncheckedBorderColor = AppTheme.colors.border.strongSelected,
-            disabledBorderColor = AppTheme.colors.button.disabled,
+            checkedCheckmarkColor = DSTokens.colors.icon.inverse,
+            disabledCheckedCheckmarkColor = DSTokens.colors.icon.disabled,
+            checkedBoxColor = DSTokens.colors.components.selectionControl,
+            uncheckedBoxColor = DSTokens.colors.icon.inverse,
+            disabledCheckedBoxColor = DSTokens.colors.button.disabled,
+            disabledUncheckedBoxColor = DSTokens.colors.button.disabled,
+            checkedBorderColor = DSTokens.colors.components.selectionControl,
+            uncheckedBorderColor = DSTokens.colors.border.strongSelected,
+            disabledBorderColor = DSTokens.colors.button.disabled,
         )
     }
 }
@@ -100,7 +100,7 @@ fun Checkbox(
     val focusRequester = remember { FocusRequester() }
     val color = CheckboxColors.default()
     var isChecked by remember { mutableStateOf(checked) }
-    val focusColor = AppTheme.colors.focus.colorFocus
+    val focusColor = DSTokens.colors.focus.colorFocus
     val isFocused by mutableInteractionSource.collectIsFocusedAsState()
     val isPressed by mutableInteractionSource.collectIsPressedAsState()
 
@@ -115,7 +115,7 @@ fun Checkbox(
                             indication = ripple(
                                 bounded = true,
                                 radius = checkboxContainerSize / 2f,
-                                color = AppTheme.colors.icon.primary
+                                color = DSTokens.colors.icon.primary
                             )
                         ) {
                             isChecked = !isChecked

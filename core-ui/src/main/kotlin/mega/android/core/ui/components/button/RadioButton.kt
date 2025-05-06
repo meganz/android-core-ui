@@ -19,7 +19,7 @@ import androidx.compose.ui.state.ToggleableState
 import androidx.compose.ui.unit.dp
 import mega.android.core.ui.preview.CombinedThemePreviews
 import mega.android.core.ui.theme.AndroidThemeForPreviews
-import mega.android.core.ui.theme.AppTheme
+import mega.android.core.ui.tokens.theme.DSTokens
 
 @Composable
 fun MegaRadioButton(
@@ -31,7 +31,7 @@ fun MegaRadioButton(
 ) {
     val buttonSize = 20.dp
     val containerSize = 48.dp
-    val buttonColor = if (enabled) AppTheme.colors.button.primary else AppTheme.colors.border.disabled
+    val buttonColor = if (enabled) DSTokens.colors.button.primary else DSTokens.colors.border.disabled
 
     Box(
         modifier = modifier

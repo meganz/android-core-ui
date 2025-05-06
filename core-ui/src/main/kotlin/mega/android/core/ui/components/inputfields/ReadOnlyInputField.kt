@@ -35,6 +35,7 @@ import mega.android.core.ui.components.image.MegaIcon
 import mega.android.core.ui.preview.CombinedThemePreviews
 import mega.android.core.ui.theme.AndroidThemeForPreviews
 import mega.android.core.ui.theme.AppTheme
+import mega.android.core.ui.tokens.theme.DSTokens
 import mega.android.core.ui.theme.font.GoogleFontFamily
 import mega.android.core.ui.theme.spacing.LocalSpacing
 import mega.android.core.ui.theme.values.IconColor
@@ -53,7 +54,7 @@ fun ReadOnlyInputField(
     Column(
         modifier = modifier
             .fillMaxWidth()
-            .background(color = AppTheme.colors.background.surface1, shape = AppTheme.shapes.small)
+            .background(color = DSTokens.colors.background.surface1, shape = DSTokens.shapes.small)
     ) {
         content()
     }
@@ -87,13 +88,13 @@ fun ReadOnlyInputFieldItem(
                 Text(
                     text = label,
                     style = AppTheme.typography.titleSmall,
-                    color = AppTheme.colors.text.primary
+                    color = DSTokens.colors.text.primary
                 )
                 optionalLabelText?.let {
                     Text(
                         text = optionalLabelText,
                         style = AppTheme.typography.bodyMedium,
-                        color = AppTheme.colors.text.secondary
+                        color = DSTokens.colors.text.secondary
                     )
                 }
             }
@@ -174,13 +175,13 @@ fun ReadOnlyPasswordInputFieldItem(
                 Text(
                     text = label,
                     style = AppTheme.typography.titleSmall,
-                    color = AppTheme.colors.text.primary
+                    color = DSTokens.colors.text.primary
                 )
                 optionalLabelText?.let {
                     Text(
                         text = optionalLabelText,
                         style = AppTheme.typography.bodyMedium,
-                        color = AppTheme.colors.text.secondary
+                        color = DSTokens.colors.text.secondary
                     )
                 }
             }
@@ -198,7 +199,7 @@ fun ReadOnlyPasswordInputFieldItem(
                     fontWeight = FontWeight.Medium,
                     fontSize = 16.sp,
                     letterSpacing = 0.sp
-                ) else AppTheme.typography.bodyLarge.copy(color = AppTheme.colors.text.primary),
+                ) else AppTheme.typography.bodyLarge.copy(color = DSTokens.colors.text.primary),
                 maxLines = if (showPassword) Int.MAX_VALUE else 1,
             )
 

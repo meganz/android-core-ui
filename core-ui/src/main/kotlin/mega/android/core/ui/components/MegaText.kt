@@ -14,7 +14,9 @@ import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
 import mega.android.core.ui.preview.CombinedThemePreviews
 import mega.android.core.ui.theme.AndroidThemeForPreviews
-import mega.android.core.ui.theme.AppTheme
+import mega.android.core.ui.theme.linkColor
+import mega.android.core.ui.theme.textColor
+import mega.android.core.ui.tokens.theme.DSTokens
 import mega.android.core.ui.theme.values.LinkColor
 import mega.android.core.ui.theme.values.TextColor
 
@@ -52,7 +54,7 @@ fun MegaText(
 ) = Text(
     text,
     modifier = modifier,
-    color = AppTheme.textColor(textColor = textColor),
+    color = DSTokens.textColor(textColor = textColor),
     overflow = overflow,
     maxLines = maxLines,
     minLines = minLines,
@@ -75,7 +77,7 @@ fun MegaText(
 ) = Text(
     text,
     modifier = modifier,
-    color = AppTheme.linkColor(linkColor = linkColor),
+    color = DSTokens.linkColor(linkColor = linkColor),
     overflow = overflow,
     maxLines = maxLines,
     minLines = minLines,

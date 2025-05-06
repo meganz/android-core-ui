@@ -22,7 +22,8 @@ import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import mega.android.core.ui.theme.AppTheme
+import mega.android.core.ui.theme.iconColor
+import mega.android.core.ui.tokens.theme.DSTokens
 import mega.android.core.ui.theme.values.IconColor
 import kotlin.math.abs
 import kotlin.math.max
@@ -85,7 +86,7 @@ fun VerticalScrollbar(
                 .fillMaxHeight()
                 .background(
                     shape = RoundedCornerShape(3.dp),
-                    color = AppTheme.iconColor(IconColor.Secondary)
+                    color = DSTokens.iconColor(IconColor.Secondary)
                 ),
         )
     }

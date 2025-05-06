@@ -28,6 +28,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import mega.android.core.ui.theme.AppTheme
 import mega.android.core.ui.theme.spacing.LocalSpacing
+import mega.android.core.ui.tokens.theme.DSTokens
 
 @Immutable
 data class ContentHighlighterOffsetPadding(
@@ -83,7 +84,7 @@ fun ContentHighlighter(
         )
     }
     val animatedOffset by animateOffsetAsState(targetValue = currentOffset)
-    val overlayColor = AppTheme.colors.background.blur
+    val overlayColor = DSTokens.colors.background.blur
 
     Canvas(
         modifier = modifier.onGloballyPositioned {

@@ -14,7 +14,7 @@ import mega.android.core.ui.components.divider.StrongDivider
 import mega.android.core.ui.model.TabItems
 import mega.android.core.ui.preview.CombinedThemePreviews
 import mega.android.core.ui.theme.AndroidThemeForPreviews
-import mega.android.core.ui.theme.AppTheme
+import mega.android.core.ui.tokens.theme.DSTokens
 import mega.android.core.ui.theme.spacing.LocalSpacing
 
 @Composable
@@ -32,7 +32,7 @@ fun MegaFixedTabRow(
         indicator = { tabPositions ->
             TabRowDefaults.SecondaryIndicator(
                 Modifier.tabIndicatorOffset(tabPositions[tabIndex]),
-                color = AppTheme.colors.border.brand
+                color = DSTokens.colors.border.brand
             )
         }
     ) {
@@ -64,7 +64,7 @@ fun MegaScrollableTabRow(
         indicator = { tabPositions ->
             TabRowDefaults.SecondaryIndicator(
                 Modifier.tabIndicatorOffset(tabPositions[tabIndex]),
-                color = AppTheme.colors.border.brand
+                color = DSTokens.colors.border.brand
             )
         }
     ) {

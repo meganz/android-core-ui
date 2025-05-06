@@ -23,6 +23,7 @@ import mega.android.core.ui.theme.AndroidThemeForPreviews
 import mega.android.core.ui.theme.AppTheme
 import mega.android.core.ui.theme.spacing.LocalSpacing
 import mega.android.core.ui.theme.values.TextColor
+import mega.android.core.ui.tokens.theme.DSTokens
 
 
 /**
@@ -47,16 +48,16 @@ fun PlansComponent(
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .clip(AppTheme.shapes.small)
-            .background(AppTheme.colors.background.pageBackground)
+            .clip(DSTokens.shapes.small)
+            .background(DSTokens.colors.background.pageBackground)
             .border(
                 width = 1.dp,
                 color = when {
-                    plan.enabled == false -> AppTheme.colors.border.disabled
-                    selected -> AppTheme.colors.border.strongSelected
-                    else -> AppTheme.colors.border.strong
+                    plan.enabled == false -> DSTokens.colors.border.disabled
+                    selected -> DSTokens.colors.border.strongSelected
+                    else -> DSTokens.colors.border.strong
                 },
-                shape = AppTheme.shapes.small
+                shape = DSTokens.shapes.small
             )
             .padding(spacing.x16),
     ) {

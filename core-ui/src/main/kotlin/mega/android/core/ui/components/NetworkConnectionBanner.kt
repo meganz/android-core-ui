@@ -18,6 +18,7 @@ import mega.android.core.ui.preview.BooleanProvider
 import mega.android.core.ui.preview.CombinedThemePreviews
 import mega.android.core.ui.theme.AndroidThemeForPreviews
 import mega.android.core.ui.theme.AppTheme
+import mega.android.core.ui.tokens.theme.DSTokens
 
 @Composable
 fun NetworkConnectionBanner(
@@ -33,13 +34,13 @@ fun NetworkConnectionBanner(
         Box(
             modifier = modifier
                 .height(38.dp)
-                .background(AppTheme.colors.notifications.notificationError)
+                .background(DSTokens.colors.notifications.notificationError)
         ) {
             Text(
                 modifier = Modifier.align(Alignment.Center),
                 text = message,
                 style = AppTheme.typography.bodyMedium,
-                color = AppTheme.colors.text.primary
+                color = DSTokens.colors.text.primary
             )
         }
     }

@@ -62,7 +62,9 @@ import mega.android.core.ui.model.SpanStyleWithAnnotation
 import mega.android.core.ui.preview.CombinedThemePreviews
 import mega.android.core.ui.theme.AndroidThemeForPreviews
 import mega.android.core.ui.theme.AppTheme
+import mega.android.core.ui.tokens.theme.DSTokens
 import mega.android.core.ui.theme.spacing.LocalSpacing
+import mega.android.core.ui.theme.textColor
 import mega.android.core.ui.theme.values.TextColor
 
 /**
@@ -150,14 +152,14 @@ fun TextInputField(
                     Text(
                         text = label,
                         style = AppTheme.typography.titleSmall,
-                        color = AppTheme.colors.text.primary
+                        color = DSTokens.colors.text.primary
                     )
                     optionalLabelText?.let {
                         Text(
                             modifier = Modifier.padding(start = spacing.x8),
                             text = optionalLabelText,
                             style = AppTheme.typography.bodyMedium,
-                            color = AppTheme.colors.text.secondary
+                            color = DSTokens.colors.text.secondary
                         )
                     }
                 }
@@ -210,7 +212,7 @@ fun PasswordTextInputField(
                 .padding(bottom = LocalSpacing.current.x4),
             text = label,
             style = AppTheme.typography.titleSmall,
-            color = AppTheme.colors.text.primary
+            color = DSTokens.colors.text.primary
         )
     },
     text = text,
@@ -279,13 +281,13 @@ fun ExpirationDateInputField(
                     modifier = Modifier.padding(bottom = LocalSpacing.current.x4),
                     text = annotatedLabelString,
                     style = it.baseStyle.copy(
-                        color = AppTheme.textColor(textColor = it.baseTextColor)
+                        color = DSTokens.textColor(textColor = it.baseTextColor)
                     )
                 )
             }
         },
         visualTransformation = CCExpiryDateVisualTransformation(
-            hintColor = AppTheme.textColor(TextColor.Placeholder)
+            hintColor = DSTokens.textColor(TextColor.Placeholder)
         ),
         keyboardType = KeyboardType.Number,
         imeAction = imeAction,
@@ -360,7 +362,7 @@ fun AnnotatedLabelTextInputField(
                     modifier = Modifier.padding(bottom = LocalSpacing.current.x4),
                     text = annotatedLabelString,
                     style = it.baseStyle.copy(
-                        color = AppTheme.textColor(textColor = it.baseTextColor)
+                        color = DSTokens.textColor(textColor = it.baseTextColor)
                     )
                 )
             }
@@ -439,7 +441,7 @@ fun AnnotatedLabelTextInputField(
                     modifier = Modifier.padding(bottom = LocalSpacing.current.x4),
                     text = annotatedLabelString,
                     style = it.baseStyle.copy(
-                        color = AppTheme.textColor(textColor = it.baseTextColor)
+                        color = DSTokens.textColor(textColor = it.baseTextColor)
                     )
                 )
             }
@@ -487,33 +489,33 @@ internal fun BaseTextField(
     var isFocused by remember { mutableStateOf(false) }
     var showPassword by rememberSaveable { mutableStateOf(false) }
     val focusedColor = when {
-        successText.isNullOrBlank().not() -> AppTheme.colors.support.success
-        errorText != null -> AppTheme.colors.support.error
-        else -> AppTheme.colors.border.strongSelected
+        successText.isNullOrBlank().not() -> DSTokens.colors.support.success
+        errorText != null -> DSTokens.colors.support.error
+        else -> DSTokens.colors.border.strongSelected
     }
     val unfocusedColor = when {
-        successText.isNullOrBlank().not() -> AppTheme.colors.support.success
-        errorText != null -> AppTheme.colors.support.error
-        else -> AppTheme.colors.border.strong
+        successText.isNullOrBlank().not() -> DSTokens.colors.support.success
+        errorText != null -> DSTokens.colors.support.error
+        else -> DSTokens.colors.border.strong
     }
     val colors = OutlinedTextFieldDefaults.colors(
-        focusedTextColor = AppTheme.colors.text.primary,
-        unfocusedTextColor = AppTheme.colors.text.primary,
-        cursorColor = AppTheme.colors.text.primary,
-        errorCursorColor = AppTheme.colors.text.primary,
+        focusedTextColor = DSTokens.colors.text.primary,
+        unfocusedTextColor = DSTokens.colors.text.primary,
+        cursorColor = DSTokens.colors.text.primary,
+        errorCursorColor = DSTokens.colors.text.primary,
         selectionColors = TextSelectionColors(
-            handleColor = AppTheme.colors.text.primary,
-            backgroundColor = AppTheme.colors.text.primary.copy(alpha = 0.4f),
+            handleColor = DSTokens.colors.text.primary,
+            backgroundColor = DSTokens.colors.text.primary.copy(alpha = 0.4f),
         ),
         focusedBorderColor = focusedColor,
         unfocusedBorderColor = unfocusedColor,
-        errorBorderColor = AppTheme.colors.support.error,
-        errorTextColor = AppTheme.colors.text.primary,
-        focusedPlaceholderColor = AppTheme.colors.text.primary,
-        unfocusedPlaceholderColor = AppTheme.colors.text.placeholder,
-        disabledTextColor = AppTheme.colors.text.disabled,
-        disabledContainerColor = AppTheme.colors.button.disabled,
-        disabledBorderColor = AppTheme.colors.border.disabled,
+        errorBorderColor = DSTokens.colors.support.error,
+        errorTextColor = DSTokens.colors.text.primary,
+        focusedPlaceholderColor = DSTokens.colors.text.primary,
+        unfocusedPlaceholderColor = DSTokens.colors.text.placeholder,
+        disabledTextColor = DSTokens.colors.text.disabled,
+        disabledContainerColor = DSTokens.colors.button.disabled,
+        disabledBorderColor = DSTokens.colors.border.disabled,
     )
 
     Column(
@@ -580,7 +582,7 @@ internal fun BaseTextField(
                                             onValueChanged?.invoke(TextFieldValue(""))
                                         },
                                     painter = painterResource(id = R.drawable.ic_close),
-                                    tint = AppTheme.colors.icon.primary,
+                                    tint = DSTokens.colors.icon.primary,
                                     contentDescription = "Clear Text"
                                 )
                             }
@@ -595,7 +597,7 @@ internal fun BaseTextField(
                                         .padding(horizontal = spacing.x8)
                                         .clickable { showPassword = !showPassword },
                                     painter = painterResource(id = eyeIcon),
-                                    tint = AppTheme.colors.icon.secondary,
+                                    tint = DSTokens.colors.icon.secondary,
                                     contentDescription = "Show Password"
                                 )
                             }
@@ -661,33 +663,33 @@ internal fun BaseTextField(
     var isFocused by remember { mutableStateOf(false) }
     var showPassword by rememberSaveable { mutableStateOf(false) }
     val focusedColor = when {
-        successText.isNullOrBlank().not() -> AppTheme.colors.support.success
-        errorText != null -> AppTheme.colors.support.error
-        else -> AppTheme.colors.border.strongSelected
+        successText.isNullOrBlank().not() -> DSTokens.colors.support.success
+        errorText != null -> DSTokens.colors.support.error
+        else -> DSTokens.colors.border.strongSelected
     }
     val unfocusedColor = when {
-        successText.isNullOrBlank().not() -> AppTheme.colors.support.success
-        errorText != null -> AppTheme.colors.support.error
-        else -> AppTheme.colors.border.strong
+        successText.isNullOrBlank().not() -> DSTokens.colors.support.success
+        errorText != null -> DSTokens.colors.support.error
+        else -> DSTokens.colors.border.strong
     }
     val colors = OutlinedTextFieldDefaults.colors(
-        focusedTextColor = AppTheme.colors.text.primary,
-        unfocusedTextColor = AppTheme.colors.text.primary,
-        cursorColor = AppTheme.colors.text.primary,
-        errorCursorColor = AppTheme.colors.text.primary,
+        focusedTextColor = DSTokens.colors.text.primary,
+        unfocusedTextColor = DSTokens.colors.text.primary,
+        cursorColor = DSTokens.colors.text.primary,
+        errorCursorColor = DSTokens.colors.text.primary,
         selectionColors = TextSelectionColors(
-            handleColor = AppTheme.colors.text.primary,
-            backgroundColor = AppTheme.colors.text.primary.copy(alpha = 0.4f),
+            handleColor = DSTokens.colors.text.primary,
+            backgroundColor = DSTokens.colors.text.primary.copy(alpha = 0.4f),
         ),
         focusedBorderColor = focusedColor,
         unfocusedBorderColor = unfocusedColor,
-        errorBorderColor = AppTheme.colors.support.error,
-        errorTextColor = AppTheme.colors.text.primary,
-        focusedPlaceholderColor = AppTheme.colors.text.primary,
-        unfocusedPlaceholderColor = AppTheme.colors.text.placeholder,
-        disabledTextColor = AppTheme.colors.text.disabled,
-        disabledContainerColor = AppTheme.colors.button.disabled,
-        disabledBorderColor = AppTheme.colors.border.disabled,
+        errorBorderColor = DSTokens.colors.support.error,
+        errorTextColor = DSTokens.colors.text.primary,
+        focusedPlaceholderColor = DSTokens.colors.text.primary,
+        unfocusedPlaceholderColor = DSTokens.colors.text.placeholder,
+        disabledTextColor = DSTokens.colors.text.disabled,
+        disabledContainerColor = DSTokens.colors.button.disabled,
+        disabledBorderColor = DSTokens.colors.border.disabled,
     )
 
     Column(
@@ -757,7 +759,7 @@ internal fun BaseTextField(
                                             onValueChanged?.invoke("")
                                         },
                                     painter = painterResource(id = R.drawable.ic_close),
-                                    tint = AppTheme.colors.icon.primary,
+                                    tint = DSTokens.colors.icon.primary,
                                     contentDescription = "Clear Text"
                                 )
                             }
@@ -772,7 +774,7 @@ internal fun BaseTextField(
                                         .padding(horizontal = spacing.x8)
                                         .clickable { showPassword = !showPassword },
                                     painter = painterResource(id = eyeIcon),
-                                    tint = AppTheme.colors.icon.secondary,
+                                    tint = DSTokens.colors.icon.secondary,
                                     contentDescription = "Show Password"
                                 )
                             }
@@ -830,31 +832,31 @@ private fun BaseReadOnlyTextField(
     var baseText by rememberSaveable(text) { mutableStateOf(text) }
     var showPassword by rememberSaveable { mutableStateOf(false) }
     val focusedColor = when {
-        successText.isNullOrBlank().not() -> AppTheme.colors.support.success
-        errorText != null -> AppTheme.colors.support.error
-        else -> AppTheme.colors.border.strong
+        successText.isNullOrBlank().not() -> DSTokens.colors.support.success
+        errorText != null -> DSTokens.colors.support.error
+        else -> DSTokens.colors.border.strong
     }
     val colors = OutlinedTextFieldDefaults.colors(
-        focusedTextColor = AppTheme.colors.text.primary,
-        unfocusedTextColor = AppTheme.colors.text.primary,
-        cursorColor = AppTheme.colors.text.primary,
-        errorCursorColor = AppTheme.colors.text.primary,
+        focusedTextColor = DSTokens.colors.text.primary,
+        unfocusedTextColor = DSTokens.colors.text.primary,
+        cursorColor = DSTokens.colors.text.primary,
+        errorCursorColor = DSTokens.colors.text.primary,
         selectionColors = TextSelectionColors(
-            handleColor = AppTheme.colors.text.primary,
-            backgroundColor = AppTheme.colors.text.primary.copy(alpha = 0.4f),
+            handleColor = DSTokens.colors.text.primary,
+            backgroundColor = DSTokens.colors.text.primary.copy(alpha = 0.4f),
         ),
         focusedBorderColor = focusedColor,
         unfocusedBorderColor = focusedColor,
-        errorBorderColor = AppTheme.colors.support.error,
-        errorTextColor = AppTheme.colors.text.primary,
-        focusedPlaceholderColor = AppTheme.colors.text.primary,
-        unfocusedPlaceholderColor = AppTheme.colors.text.placeholder,
-        disabledTextColor = AppTheme.colors.text.disabled,
-        disabledContainerColor = AppTheme.colors.button.disabled,
-        disabledBorderColor = AppTheme.colors.border.disabled,
-        focusedContainerColor = AppTheme.colors.background.pageBackground,
-        errorContainerColor = AppTheme.colors.background.pageBackground,
-        unfocusedContainerColor = AppTheme.colors.background.pageBackground
+        errorBorderColor = DSTokens.colors.support.error,
+        errorTextColor = DSTokens.colors.text.primary,
+        focusedPlaceholderColor = DSTokens.colors.text.primary,
+        unfocusedPlaceholderColor = DSTokens.colors.text.placeholder,
+        disabledTextColor = DSTokens.colors.text.disabled,
+        disabledContainerColor = DSTokens.colors.button.disabled,
+        disabledBorderColor = DSTokens.colors.border.disabled,
+        focusedContainerColor = DSTokens.colors.background.pageBackground,
+        errorContainerColor = DSTokens.colors.background.pageBackground,
+        unfocusedContainerColor = DSTokens.colors.background.pageBackground
     )
 
     Column(modifier = modifier.fillMaxWidth()) {
@@ -867,14 +869,14 @@ private fun BaseReadOnlyTextField(
                 Text(
                     text = label,
                     style = AppTheme.typography.titleSmall,
-                    color = AppTheme.colors.text.primary
+                    color = DSTokens.colors.text.primary
                 )
                 optionalLabelText?.let {
                     Text(
                         modifier = Modifier.padding(start = spacing.x8),
                         text = optionalLabelText,
                         style = AppTheme.typography.bodyMedium,
-                        color = AppTheme.colors.text.secondary
+                        color = DSTokens.colors.text.secondary
                     )
                 }
             }
@@ -907,7 +909,7 @@ private fun BaseReadOnlyTextField(
                                         onValueChanged?.invoke("")
                                     },
                                 painter = painterResource(id = R.drawable.ic_close),
-                                tint = AppTheme.colors.icon.primary,
+                                tint = DSTokens.colors.icon.primary,
                                 contentDescription = "Clear Text"
                             )
                         }
@@ -921,7 +923,7 @@ private fun BaseReadOnlyTextField(
                                     .padding(horizontal = spacing.x8)
                                     .clickable { showPassword = !showPassword },
                                 painter = painterResource(id = eyeIcon),
-                                tint = AppTheme.colors.icon.secondary,
+                                tint = DSTokens.colors.icon.secondary,
                                 contentDescription = "Show Password"
                             )
                         }
@@ -1110,7 +1112,7 @@ private fun ReadOnlyTextFieldWithCustomTrailingIconPreview() {
             trailingIcon = {
                 Icon(
                     painter = painterResource(id = R.drawable.ic_copy),
-                    tint = AppTheme.colors.icon.primary,
+                    tint = DSTokens.colors.icon.primary,
                     contentDescription = "Clear Text"
                 )
             }

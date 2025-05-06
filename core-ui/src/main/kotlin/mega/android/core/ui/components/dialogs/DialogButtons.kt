@@ -25,6 +25,7 @@ import androidx.compose.ui.unit.dp
 import mega.android.core.ui.preview.CombinedThemePreviews
 import mega.android.core.ui.theme.AndroidThemeForPreviews
 import mega.android.core.ui.theme.AppTheme
+import mega.android.core.ui.tokens.theme.DSTokens
 import mega.android.core.ui.theme.spacing.LocalSpacing
 
 @Composable
@@ -36,8 +37,8 @@ fun DialogButton(
     val focusRequester = FocusRequester()
     val mutableInteractionSource = remember { MutableInteractionSource() }
     val isFocused by mutableInteractionSource.collectIsFocusedAsState()
-    val borderColor = if (isFocused) AppTheme.colors.focus.colorFocus else Color.Unspecified
-    val pressedBackgroundColor = AppTheme.colors.button.primaryPressed
+    val borderColor = if (isFocused) DSTokens.colors.focus.colorFocus else Color.Unspecified
+    val pressedBackgroundColor = DSTokens.colors.button.primaryPressed
     var componentWidth by remember { mutableStateOf(0.dp) }
     val density = LocalDensity.current
 
@@ -83,7 +84,7 @@ fun DialogButton(
     ) {
         Text(
             text = buttonText,
-            color = AppTheme.colors.button.primary,
+            color = DSTokens.colors.button.primary,
             style = AppTheme.typography.labelLarge,
         )
     }

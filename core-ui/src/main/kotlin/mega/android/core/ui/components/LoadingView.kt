@@ -11,7 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import mega.android.core.ui.preview.CombinedThemePreviews
 import mega.android.core.ui.theme.AndroidThemeForPreviews
-import mega.android.core.ui.theme.AppTheme
+import mega.android.core.ui.tokens.theme.DSTokens
 
 @Composable
 fun LoadingView(modifier: Modifier) {
@@ -22,7 +22,7 @@ fun LoadingView(modifier: Modifier) {
             modifier = Modifier
                 .size(108.dp)
                 .background(
-                    color = AppTheme.colors.background.surface1.copy(alpha = 0.85f),
+                    color = DSTokens.colors.background.surface1.copy(alpha = 0.85f),
                     shape = RoundedCornerShape(8.dp),
                 ),
         )
@@ -31,7 +31,7 @@ fun LoadingView(modifier: Modifier) {
             modifier = Modifier
                 .size(48.dp)
                 .align(Alignment.Center),
-            color = AppTheme.colors.icon.primary,
+            color = DSTokens.colors.icon.primary,
         )
     }
 }

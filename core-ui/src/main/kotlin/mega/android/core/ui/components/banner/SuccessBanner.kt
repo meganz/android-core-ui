@@ -13,7 +13,7 @@ import mega.android.core.ui.model.SpanIndicator
 import mega.android.core.ui.model.SpanStyleWithAnnotation
 import mega.android.core.ui.preview.CombinedThemePreviews
 import mega.android.core.ui.theme.AndroidThemeForPreviews
-import mega.android.core.ui.theme.AppTheme
+import mega.android.core.ui.tokens.theme.DSTokens
 
 @Composable
 fun InlineSuccessBanner(
@@ -27,7 +27,7 @@ fun InlineSuccessBanner(
 ) {
     SuccessBanner(
         modifier = modifier,
-        backgroundShape = AppTheme.shapes.small,
+        backgroundShape = DSTokens.shapes.small,
         body = body,
         title = title,
         actionButtonText = actionButtonText,
@@ -50,7 +50,7 @@ fun InlineSuccessBanner(
 ) {
     SuccessBanner(
         modifier = modifier,
-        backgroundShape = AppTheme.shapes.small,
+        backgroundShape = DSTokens.shapes.small,
         body = SpannableText(body),
         title = SpannableText(title),
         actionButtonText = actionButtonText,
@@ -117,10 +117,10 @@ private fun SuccessBanner(
 ) {
     BaseBanner(
         modifier = modifier,
-        backgroundColor = AppTheme.colors.notifications.notificationSuccess,
+        backgroundColor = DSTokens.colors.notifications.notificationSuccess,
         backgroundShape = backgroundShape,
         iconResId = R.drawable.ic_check_circle,
-        iconColor = AppTheme.colors.support.success,
+        iconColor = DSTokens.colors.support.success,
         body = body,
         title = title,
         buttonText = actionButtonText,

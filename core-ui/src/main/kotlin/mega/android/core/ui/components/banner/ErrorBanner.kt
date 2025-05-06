@@ -13,7 +13,7 @@ import mega.android.core.ui.model.SpanIndicator
 import mega.android.core.ui.model.SpanStyleWithAnnotation
 import mega.android.core.ui.preview.CombinedThemePreviews
 import mega.android.core.ui.theme.AndroidThemeForPreviews
-import mega.android.core.ui.theme.AppTheme
+import mega.android.core.ui.tokens.theme.DSTokens
 
 @Composable
 fun InlineErrorBanner(
@@ -27,7 +27,7 @@ fun InlineErrorBanner(
 ) {
     ErrorBanner(
         modifier = modifier,
-        backgroundShape = AppTheme.shapes.small,
+        backgroundShape = DSTokens.shapes.small,
         body = body,
         title = title,
         actionButtonText = actionButtonText,
@@ -49,7 +49,7 @@ fun InlineErrorBanner(
 ) {
     ErrorBanner(
         modifier = modifier,
-        backgroundShape = AppTheme.shapes.small,
+        backgroundShape = DSTokens.shapes.small,
         body = SpannableText(body),
         title = SpannableText(title),
         actionButtonText = actionButtonText,
@@ -116,10 +116,10 @@ private fun ErrorBanner(
 ) {
     BaseBanner(
         modifier = modifier,
-        backgroundColor = AppTheme.colors.notifications.notificationError,
+        backgroundColor = DSTokens.colors.notifications.notificationError,
         backgroundShape = backgroundShape,
         iconResId = R.drawable.ic_alert_triangle,
-        iconColor = AppTheme.colors.support.error,
+        iconColor = DSTokens.colors.support.error,
         body = body,
         title = title,
         buttonText = actionButtonText,

@@ -24,6 +24,7 @@ import mega.android.core.ui.model.AccessoryBarButtonContent
 import mega.android.core.ui.preview.CombinedThemePreviews
 import mega.android.core.ui.theme.AndroidThemeForPreviews
 import mega.android.core.ui.theme.AppTheme
+import mega.android.core.ui.tokens.theme.DSTokens
 import mega.android.core.ui.theme.spacing.LocalSpacing
 import mega.android.core.ui.theme.values.TextColor
 
@@ -76,7 +77,7 @@ private fun AccessoryBarButton(
         verticalAlignment = Alignment.CenterVertically,
         modifier = modifier
             .fillMaxWidth()
-            .background(AppTheme.colors.background.surface3)
+            .background(DSTokens.colors.background.surface3)
     ) {
         repeat(buttons.size) { i ->
             val content = buttons[i]
@@ -110,7 +111,7 @@ private fun RowScope.AccessoryBarButtonItem(content: AccessoryBarButtonContent) 
             Icon(
                 painter = it,
                 contentDescription = null,
-                tint = AppTheme.colors.icon.primary,
+                tint = DSTokens.colors.icon.primary,
                 modifier = Modifier.testTag(ACCESSORY_BAR_BUTTON_ICON_TEST_TAG)
             )
         }

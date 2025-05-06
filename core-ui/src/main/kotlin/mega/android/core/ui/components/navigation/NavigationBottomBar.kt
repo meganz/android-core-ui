@@ -8,14 +8,14 @@ import mega.android.core.ui.R
 import mega.android.core.ui.preview.BooleanProvider
 import mega.android.core.ui.preview.CombinedThemePreviews
 import mega.android.core.ui.theme.AndroidThemeForPreviews
-import mega.android.core.ui.theme.AppTheme
+import mega.android.core.ui.tokens.theme.DSTokens
 
 @Composable
 fun NavigationBottomBar(
     content: @Composable RowScope.() -> Unit
 ) {
     NavigationBar(
-        containerColor = AppTheme.colors.background.pageBackground,
+        containerColor = DSTokens.colors.background.pageBackground,
         content = content
     )
 }

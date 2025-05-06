@@ -25,6 +25,7 @@ import mega.android.core.ui.components.buttonDefaultHeight
 import mega.android.core.ui.preview.CombinedThemePreviews
 import mega.android.core.ui.theme.AndroidThemeForPreviews
 import mega.android.core.ui.theme.AppTheme
+import mega.android.core.ui.tokens.theme.DSTokens
 
 @Composable
 fun PrimaryFilledButton(
@@ -44,14 +45,14 @@ fun PrimaryFilledButton(
         enabled = enabled,
         isLoading = isLoading,
         onClick = onClick,
-        containerColorDefault = AppTheme.colors.button.primary,
-        containerColorDisabled = AppTheme.colors.button.disabled,
-        containerColorPressed = AppTheme.colors.button.primaryPressed,
-        textColorDefault = AppTheme.colors.text.inverseAccent,
-        textColorDisabled = AppTheme.colors.text.onColorDisabled,
-        iconColorDefault = AppTheme.colors.icon.inverseAccent,
-        iconColorDisabled = AppTheme.colors.icon.onColorDisabled,
-        loaderIconColor = AppTheme.colors.icon.inverseAccent
+        containerColorDefault = DSTokens.colors.button.primary,
+        containerColorDisabled = DSTokens.colors.button.disabled,
+        containerColorPressed = DSTokens.colors.button.primaryPressed,
+        textColorDefault = DSTokens.colors.text.inverseAccent,
+        textColorDisabled = DSTokens.colors.text.onColorDisabled,
+        iconColorDefault = DSTokens.colors.icon.inverseAccent,
+        iconColorDisabled = DSTokens.colors.icon.onColorDisabled,
+        loaderIconColor = DSTokens.colors.icon.inverseAccent
     )
 }
 
@@ -73,14 +74,14 @@ fun SecondaryFilledButton(
         enabled = enabled,
         isLoading = isLoading,
         onClick = onClick,
-        containerColorDefault = AppTheme.colors.button.secondary,
-        containerColorDisabled = AppTheme.colors.button.disabled,
-        containerColorPressed = AppTheme.colors.button.secondaryPressed,
-        textColorDefault = AppTheme.colors.text.accent,
-        textColorDisabled = AppTheme.colors.text.onColorDisabled,
-        iconColorDefault = AppTheme.colors.icon.accent,
-        iconColorDisabled = AppTheme.colors.icon.onColorDisabled,
-        loaderIconColor = AppTheme.colors.icon.accent
+        containerColorDefault = DSTokens.colors.button.secondary,
+        containerColorDisabled = DSTokens.colors.button.disabled,
+        containerColorPressed = DSTokens.colors.button.secondaryPressed,
+        textColorDefault = DSTokens.colors.text.accent,
+        textColorDisabled = DSTokens.colors.text.onColorDisabled,
+        iconColorDefault = DSTokens.colors.icon.accent,
+        iconColorDisabled = DSTokens.colors.icon.onColorDisabled,
+        loaderIconColor = DSTokens.colors.icon.accent
     )
 }
 

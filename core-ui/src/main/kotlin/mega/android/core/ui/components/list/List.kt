@@ -34,6 +34,7 @@ import mega.android.core.ui.components.util.shimmerEffect
 import mega.android.core.ui.preview.CombinedThemePreviews
 import mega.android.core.ui.theme.AndroidThemeForPreviews
 import mega.android.core.ui.theme.AppTheme
+import mega.android.core.ui.tokens.theme.DSTokens
 import mega.android.core.ui.theme.spacing.LocalSpacing
 import mega.android.core.ui.theme.values.IconColor
 import mega.android.core.ui.theme.values.TextColor
@@ -295,7 +296,7 @@ private fun ListItem(
     ) {
         if (leadingElement != null) {
             CompositionLocalProvider(
-                LocalContentColor provides AppTheme.colors.icon.primary.copy(alpha = 1f)
+                LocalContentColor provides DSTokens.colors.icon.primary.copy(alpha = 1f)
             ) {
                 Box(
                     modifier = Modifier
@@ -395,7 +396,7 @@ private fun OneLineListItemPreviewWithElements() {
                     modifier = Modifier
                         .size(24.dp)
                         .align(Alignment.Center),
-                    tint = AppTheme.colors.icon.primary
+                    tint = DSTokens.colors.icon.primary
                 )
             },
             trailingElement = {
@@ -403,7 +404,7 @@ private fun OneLineListItemPreviewWithElements() {
                     painter = painterResource(id = R.drawable.ic_check_circle),
                     contentDescription = null,
                     modifier = Modifier.size(24.dp),
-                    tint = AppTheme.colors.icon.primary
+                    tint = DSTokens.colors.icon.primary
                 )
             },
         )
@@ -424,7 +425,7 @@ private fun OneLineListItemPreviewWithLargeElements() {
                     modifier = Modifier
                         .size(35.dp)
                         .align(Alignment.Center),
-                    tint = AppTheme.colors.icon.primary
+                    tint = DSTokens.colors.icon.primary
                 )
             },
             trailingElement = {
@@ -432,7 +433,7 @@ private fun OneLineListItemPreviewWithLargeElements() {
                     painter = painterResource(id = R.drawable.ic_check_circle),
                     contentDescription = null,
                     modifier = Modifier.size(24.dp),
-                    tint = AppTheme.colors.icon.primary
+                    tint = DSTokens.colors.icon.primary
                 )
             },
         )
@@ -454,7 +455,7 @@ private fun MultiLineListItemPreviewWithElements() {
                     modifier = Modifier
                         .size(24.dp)
                         .align(Alignment.Center),
-                    tint = AppTheme.colors.icon.primary
+                    tint = DSTokens.colors.icon.primary
                 )
             },
             trailingElement = {
@@ -462,7 +463,7 @@ private fun MultiLineListItemPreviewWithElements() {
                     painter = painterResource(id = R.drawable.ic_check_circle),
                     contentDescription = null,
                     modifier = Modifier.size(24.dp),
-                    tint = AppTheme.colors.icon.primary
+                    tint = DSTokens.colors.icon.primary
                 )
             }
         )

@@ -13,7 +13,7 @@ import mega.android.core.ui.model.SpanIndicator
 import mega.android.core.ui.model.SpanStyleWithAnnotation
 import mega.android.core.ui.preview.CombinedThemePreviews
 import mega.android.core.ui.theme.AndroidThemeForPreviews
-import mega.android.core.ui.theme.AppTheme
+import mega.android.core.ui.tokens.theme.DSTokens
 
 @Composable
 fun InlineWarningBanner(
@@ -69,7 +69,7 @@ fun InlineWarningBanner(
 ) {
     WarningBanner(
         modifier = modifier,
-        backgroundShape = AppTheme.shapes.small,
+        backgroundShape = DSTokens.shapes.small,
         body = body,
         title = title,
         actionButtonText = actionButtonText,
@@ -114,10 +114,10 @@ private fun WarningBanner(
 ) {
     BaseBanner(
         modifier = modifier,
-        backgroundColor = AppTheme.colors.notifications.notificationWarning,
+        backgroundColor = DSTokens.colors.notifications.notificationWarning,
         backgroundShape = backgroundShape,
         iconResId = R.drawable.ic_alert_circle,
-        iconColor = AppTheme.colors.support.warning,
+        iconColor = DSTokens.colors.support.warning,
         body = body,
         title = title,
         buttonText = actionButtonText,

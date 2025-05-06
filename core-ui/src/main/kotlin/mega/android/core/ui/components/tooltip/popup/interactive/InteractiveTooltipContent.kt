@@ -31,6 +31,7 @@ import mega.android.core.ui.theme.AppTheme
 import mega.android.core.ui.theme.spacing.LocalSpacing
 import mega.android.core.ui.theme.values.IconColor
 import mega.android.core.ui.theme.values.TextColor
+import mega.android.core.ui.tokens.theme.DSTokens
 
 @Stable
 class InteractiveTooltipButtonProperties(
@@ -108,7 +109,7 @@ private fun LeftContent(
             HorizontalDivider(
                 modifier = Modifier.padding(top = spacing.x12, bottom = spacing.x4),
                 thickness = 1.dp,
-                color = AppTheme.colors.icon.secondary
+                color = DSTokens.colors.icon.secondary
             )
         }
 
@@ -174,7 +175,7 @@ private fun RightContent(
 @Composable
 private fun InteractiveTooltipContentPreview() {
     AndroidThemeForPreviews {
-        Box(modifier = Modifier.background(AppTheme.colors.background.inverse)) {
+        Box(modifier = Modifier.background(DSTokens.colors.background.inverse)) {
             InteractiveTooltipContent(
                 title = "Title",
                 body = "Body",

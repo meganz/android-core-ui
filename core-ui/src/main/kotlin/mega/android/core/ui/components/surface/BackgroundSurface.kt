@@ -14,7 +14,7 @@ import androidx.compose.ui.graphics.Color
 import mega.android.core.ui.components.MegaText
 import mega.android.core.ui.preview.CombinedThemePreviews
 import mega.android.core.ui.theme.AndroidThemeForPreviews
-import mega.android.core.ui.theme.AppTheme
+import mega.android.core.ui.tokens.theme.DSTokens
 import mega.android.core.ui.theme.values.TextColor
 
 @Composable
@@ -81,11 +81,11 @@ enum class SurfaceColor {
 @Composable
 internal fun SurfaceColor.toBackgroundColor(): Color {
     return when (this) {
-        SurfaceColor.Surface1 -> AppTheme.colors.background.surface1
-        SurfaceColor.Surface2 -> AppTheme.colors.background.surface2
-        SurfaceColor.Surface3 -> AppTheme.colors.background.surface3
-        SurfaceColor.PageBackground -> AppTheme.colors.background.pageBackground
-        SurfaceColor.Blur -> AppTheme.colors.background.blur
-        SurfaceColor.Inverse -> AppTheme.colors.background.inverse
+        SurfaceColor.Surface1 -> DSTokens.colors.background.surface1
+        SurfaceColor.Surface2 -> DSTokens.colors.background.surface2
+        SurfaceColor.Surface3 -> DSTokens.colors.background.surface3
+        SurfaceColor.PageBackground -> DSTokens.colors.background.pageBackground
+        SurfaceColor.Blur -> DSTokens.colors.background.blur
+        SurfaceColor.Inverse -> DSTokens.colors.background.inverse
     }
 }

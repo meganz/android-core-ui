@@ -6,7 +6,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import mega.android.core.ui.theme.AppTheme
+import mega.android.core.ui.tokens.theme.DSTokens
 
 @Composable
 fun MegaScaffold(
@@ -27,6 +27,6 @@ fun MegaScaffold(
         floatingActionButton = floatingActionButton,
         floatingActionButtonPosition = floatingActionButtonPosition,
         content = content,
-        containerColor = if (fromAutofill) Color.Transparent else AppTheme.colors.background.pageBackground
+        containerColor = if (fromAutofill) Color.Transparent else DSTokens.colors.background.pageBackground
     )
 }

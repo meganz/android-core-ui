@@ -7,7 +7,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.tooling.preview.Preview
-import mega.android.core.ui.theme.AppTheme
+import mega.android.core.ui.tokens.theme.DSTokens
 
 /**
  * Custom implementation of ClickableText following our design
@@ -31,7 +31,7 @@ fun MegaClickableText(
     ClickableText(
         modifier = modifier,
         text = annotatedLinkString,
-        style = style.copy(color = AppTheme.colors.link.primary),
+        style = style.copy(color = DSTokens.colors.link.primary),
         onClick = { onClick() }
     )
 }

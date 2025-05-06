@@ -25,6 +25,7 @@ import mega.android.core.ui.components.list.IconContentListItem
 import mega.android.core.ui.components.list.ImageContentListItem
 import mega.android.core.ui.components.text.ContentText
 import mega.android.core.ui.theme.AppTheme
+import mega.android.core.ui.tokens.theme.DSTokens
 import mega.android.core.ui.theme.spacing.LocalSpacing
 import mega.android.core.ui.theme.values.TextColor
 
@@ -45,7 +46,7 @@ internal fun PromotionalImage(
     AsyncImage(
         modifier = modifier
             .aspectRatio(16f / 9f)
-            .clip(AppTheme.shapes.small),
+            .clip(DSTokens.shapes.small),
         model = ImageRequest.Builder(LocalContext.current)
             .data(image)
             .crossfade(true)
@@ -93,7 +94,7 @@ internal fun PromotionalContent(
             modifier = Modifier
                 .fillMaxWidth(),
             text = title,
-            color = AppTheme.colors.components.interactive,
+            color = DSTokens.colors.components.interactive,
             style = AppTheme.typography.titleMedium,
             textAlign = TextAlign.Center
         )

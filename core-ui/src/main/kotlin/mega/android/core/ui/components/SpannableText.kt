@@ -20,6 +20,8 @@ import mega.android.core.ui.model.SpanStyleWithAnnotation
 import mega.android.core.ui.preview.CombinedThemePreviews
 import mega.android.core.ui.theme.AndroidThemeForPreviews
 import mega.android.core.ui.theme.AppTheme
+import mega.android.core.ui.theme.textColor
+import mega.android.core.ui.tokens.theme.DSTokens
 import mega.android.core.ui.theme.values.LinkColor
 import mega.android.core.ui.theme.values.TextColor
 
@@ -47,7 +49,7 @@ fun LinkSpannedText(
     ClickableText(
         modifier = modifier,
         text = annotatedLinkString,
-        style = baseStyle.copy(color = AppTheme.textColor(textColor = baseTextColor)),
+        style = baseStyle.copy(color = DSTokens.textColor(textColor = baseTextColor)),
         onClick = { position ->
             annotatedLinkString
                 .getStringAnnotations(ANNOTATION_TAG, position, position + 1)

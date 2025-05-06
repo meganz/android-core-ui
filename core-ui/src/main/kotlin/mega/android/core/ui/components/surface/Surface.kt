@@ -9,7 +9,7 @@ import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import mega.android.core.ui.theme.AppTheme
+import mega.android.core.ui.tokens.theme.DSTokens
 
 @Composable
 fun ThemedSurface(
@@ -20,7 +20,7 @@ fun ThemedSurface(
     border: BorderStroke? = null,
     content: @Composable () -> Unit
 ) {
-    val surfaceColor = AppTheme.colors.background.pageBackground
+    val surfaceColor = DSTokens.colors.background.pageBackground
 
     Surface(
         modifier,

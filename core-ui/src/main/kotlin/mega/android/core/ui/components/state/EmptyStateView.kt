@@ -24,6 +24,7 @@ import mega.android.core.ui.model.SpanStyleWithAnnotation
 import mega.android.core.ui.preview.CombinedThemePreviews
 import mega.android.core.ui.theme.AndroidThemeForPreviews
 import mega.android.core.ui.theme.AppTheme
+import mega.android.core.ui.tokens.theme.DSTokens
 import mega.android.core.ui.theme.spacing.LocalSpacing
 import mega.android.core.ui.theme.values.LinkColor
 import mega.android.core.ui.theme.values.TextColor
@@ -48,7 +49,7 @@ fun EmptyStateView(
             Image(
                 modifier = Modifier
                     .size(120.dp)
-                    .clip(shape = AppTheme.shapes.medium),
+                    .clip(shape = DSTokens.shapes.medium),
                 painter = painterResource(id = illustration),
                 contentDescription = "Empty icon"
             )

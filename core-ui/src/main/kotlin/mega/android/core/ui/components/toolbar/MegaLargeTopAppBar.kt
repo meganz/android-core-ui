@@ -19,7 +19,7 @@ import androidx.compose.ui.unit.dp
 import mega.android.core.ui.R
 import mega.android.core.ui.preview.CombinedThemePreviews
 import mega.android.core.ui.theme.AndroidThemeForPreviews
-import mega.android.core.ui.theme.AppTheme
+import mega.android.core.ui.tokens.theme.DSTokens
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -47,11 +47,11 @@ fun MegaLargeTopAppBar(
             }
         },
         colors = TopAppBarDefaults.topAppBarColors(
-            containerColor = AppTheme.colors.background.pageBackground,
-            scrolledContainerColor = AppTheme.colors.background.pageBackground,
-            navigationIconContentColor = AppTheme.colors.icon.primary,
-            titleContentColor = AppTheme.colors.text.primary,
-            actionIconContentColor = AppTheme.colors.icon.primary
+            containerColor = DSTokens.colors.background.pageBackground,
+            scrolledContainerColor = DSTokens.colors.background.pageBackground,
+            navigationIconContentColor = DSTokens.colors.icon.primary,
+            titleContentColor = DSTokens.colors.text.primary,
+            actionIconContentColor = DSTokens.colors.icon.primary
         ),
         actions = {
             if (trailingElement != null) {
@@ -92,7 +92,7 @@ private fun LargeToolbarWithBothIconsPreview() {
                     painter = painterResource(id = R.drawable.ic_check_circle),
                     contentDescription = null,
                     modifier = Modifier.size(24.dp),
-                    tint = AppTheme.colors.icon.primary
+                    tint = DSTokens.colors.icon.primary
                 )
             })
     }

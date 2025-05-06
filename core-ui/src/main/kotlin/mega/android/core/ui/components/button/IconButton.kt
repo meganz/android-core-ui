@@ -17,7 +17,7 @@ import androidx.compose.ui.res.painterResource
 import mega.android.core.ui.R
 import mega.android.core.ui.preview.CombinedThemePreviews
 import mega.android.core.ui.theme.AndroidThemeForPreviews
-import mega.android.core.ui.theme.AppTheme
+import mega.android.core.ui.tokens.theme.DSTokens
 import mega.android.core.ui.theme.spacing.LocalSpacing
 
 @Composable
@@ -31,13 +31,13 @@ fun PrimaryLargeIconButton(
     BaseIconButton(
         modifier = modifier.size(LocalSpacing.current.x56),
         icon = icon,
-        shape = AppTheme.shapes.small,
+        shape = DSTokens.shapes.small,
         enabled = enabled,
-        containerColorDefault = AppTheme.colors.button.primary,
-        containerColorPressed = AppTheme.colors.button.primaryPressed,
-        containerColorDisabled = AppTheme.colors.button.disabled,
-        iconColorDefault = AppTheme.colors.icon.inverseAccent,
-        iconColorDisabled = AppTheme.colors.icon.onColorDisabled,
+        containerColorDefault = DSTokens.colors.button.primary,
+        containerColorPressed = DSTokens.colors.button.primaryPressed,
+        containerColorDisabled = DSTokens.colors.button.disabled,
+        iconColorDefault = DSTokens.colors.icon.inverseAccent,
+        iconColorDisabled = DSTokens.colors.icon.onColorDisabled,
         contentDescription = contentDescription,
         onClick = onClick
     )
@@ -54,13 +54,13 @@ fun PrimarySmallIconButton(
     BaseIconButton(
         modifier = modifier.size(LocalSpacing.current.x40),
         icon = icon,
-        shape = AppTheme.shapes.extraSmall,
+        shape = DSTokens.shapes.extraSmall,
         enabled = enabled,
-        containerColorDefault = AppTheme.colors.button.primary,
-        containerColorPressed = AppTheme.colors.button.primaryPressed,
-        containerColorDisabled = AppTheme.colors.button.disabled,
-        iconColorDefault = AppTheme.colors.icon.inverseAccent,
-        iconColorDisabled = AppTheme.colors.icon.onColorDisabled,
+        containerColorDefault = DSTokens.colors.button.primary,
+        containerColorPressed = DSTokens.colors.button.primaryPressed,
+        containerColorDisabled = DSTokens.colors.button.disabled,
+        iconColorDefault = DSTokens.colors.icon.inverseAccent,
+        iconColorDisabled = DSTokens.colors.icon.onColorDisabled,
         contentDescription = contentDescription,
         onClick = onClick
     )
@@ -77,13 +77,13 @@ fun SecondaryLargeIconButton(
     BaseIconButton(
         modifier = modifier.size(LocalSpacing.current.x56),
         icon = icon,
-        shape = AppTheme.shapes.small,
+        shape = DSTokens.shapes.small,
         enabled = enabled,
-        containerColorDefault = AppTheme.colors.button.secondary,
-        containerColorPressed = AppTheme.colors.button.secondary,
-        containerColorDisabled = AppTheme.colors.button.disabled,
-        iconColorDefault = AppTheme.colors.icon.primary,
-        iconColorDisabled = AppTheme.colors.icon.onColorDisabled,
+        containerColorDefault = DSTokens.colors.button.secondary,
+        containerColorPressed = DSTokens.colors.button.secondary,
+        containerColorDisabled = DSTokens.colors.button.disabled,
+        iconColorDefault = DSTokens.colors.icon.primary,
+        iconColorDisabled = DSTokens.colors.icon.onColorDisabled,
         contentDescription = contentDescription,
         onClick = onClick
     )
@@ -100,13 +100,13 @@ fun SecondarySmallIconButton(
     BaseIconButton(
         modifier = modifier.size(LocalSpacing.current.x40),
         icon = icon,
-        shape = AppTheme.shapes.extraSmall,
+        shape = DSTokens.shapes.extraSmall,
         enabled = enabled,
-        containerColorDefault = AppTheme.colors.button.secondary,
-        containerColorPressed = AppTheme.colors.button.secondary,
-        containerColorDisabled = AppTheme.colors.button.disabled,
-        iconColorDefault = AppTheme.colors.icon.primary,
-        iconColorDisabled = AppTheme.colors.icon.onColorDisabled,
+        containerColorDefault = DSTokens.colors.button.secondary,
+        containerColorPressed = DSTokens.colors.button.secondary,
+        containerColorDisabled = DSTokens.colors.button.disabled,
+        iconColorDefault = DSTokens.colors.icon.primary,
+        iconColorDisabled = DSTokens.colors.icon.onColorDisabled,
         contentDescription = contentDescription,
         onClick = onClick
     )

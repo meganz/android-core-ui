@@ -38,6 +38,7 @@ import mega.android.core.ui.model.SpanStyleWithAnnotation
 import mega.android.core.ui.preview.CombinedThemePreviews
 import mega.android.core.ui.theme.AndroidThemeForPreviews
 import mega.android.core.ui.theme.AppTheme
+import mega.android.core.ui.tokens.theme.DSTokens
 import mega.android.core.ui.theme.spacing.LocalSpacing
 import mega.android.core.ui.theme.values.TextColor
 import kotlin.math.max
@@ -247,7 +248,7 @@ private fun MegaBasicDialogContent(
     Surface(
         modifier = modifier,
         shape = shape,
-        color = AppTheme.colors.background.surface1
+        color = DSTokens.colors.background.surface1
     ) {
         Column(modifier = Modifier.padding(DialogPadding)) {
             title?.let {

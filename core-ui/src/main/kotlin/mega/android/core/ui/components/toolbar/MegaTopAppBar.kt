@@ -27,6 +27,7 @@ import mega.android.core.ui.components.button.SecondarySmallIconButton
 import mega.android.core.ui.preview.CombinedThemePreviews
 import mega.android.core.ui.theme.AndroidThemeForPreviews
 import mega.android.core.ui.theme.AppTheme
+import mega.android.core.ui.tokens.theme.DSTokens
 import mega.android.core.ui.theme.spacing.LocalSpacing
 
 @Composable
@@ -87,7 +88,7 @@ fun TransparentTopBar(
 ) {
     DefaultTopAppBar(
         modifier = Modifier
-            .background(AppTheme.colors.background.pageBackground.copy(alpha = backgroundAlpha))
+            .background(DSTokens.colors.background.pageBackground.copy(alpha = backgroundAlpha))
             .then(modifier),
         title = "",
         navigationIcon = {
@@ -105,9 +106,9 @@ fun TransparentTopBar(
         colors = TopAppBarDefaults.topAppBarColors(
             containerColor = Color.Transparent,
             scrolledContainerColor = Color.Transparent,
-            navigationIconContentColor = AppTheme.colors.icon.primary,
-            titleContentColor = AppTheme.colors.text.primary,
-            actionIconContentColor = AppTheme.colors.icon.primary
+            navigationIconContentColor = DSTokens.colors.icon.primary,
+            titleContentColor = DSTokens.colors.text.primary,
+            actionIconContentColor = DSTokens.colors.icon.primary
         )
     )
 }
@@ -133,11 +134,11 @@ private fun DefaultTopAppBar(
         navigationIcon = navigationIcon,
         actions = actions,
         colors = colors ?: TopAppBarDefaults.topAppBarColors(
-            containerColor = AppTheme.colors.background.pageBackground,
-            scrolledContainerColor = AppTheme.colors.background.pageBackground,
-            navigationIconContentColor = AppTheme.colors.icon.primary,
-            titleContentColor = AppTheme.colors.text.primary,
-            actionIconContentColor = AppTheme.colors.icon.primary
+            containerColor = DSTokens.colors.background.pageBackground,
+            scrolledContainerColor = DSTokens.colors.background.pageBackground,
+            navigationIconContentColor = DSTokens.colors.icon.primary,
+            titleContentColor = DSTokens.colors.text.primary,
+            actionIconContentColor = DSTokens.colors.icon.primary
         )
     )
 }

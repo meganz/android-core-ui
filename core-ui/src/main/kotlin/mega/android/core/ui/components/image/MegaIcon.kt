@@ -9,7 +9,12 @@ import androidx.compose.ui.res.painterResource
 import mega.android.core.ui.R
 import mega.android.core.ui.preview.CombinedThemePreviews
 import mega.android.core.ui.theme.AndroidThemeForPreviews
-import mega.android.core.ui.theme.AppTheme
+import mega.android.core.ui.theme.componentsColor
+import mega.android.core.ui.theme.iconColor
+import mega.android.core.ui.theme.linkColor
+import mega.android.core.ui.theme.supportColor
+import mega.android.core.ui.theme.textColor
+import mega.android.core.ui.tokens.theme.DSTokens
 import mega.android.core.ui.theme.values.ComponentsColor
 import mega.android.core.ui.theme.values.IconColor
 import mega.android.core.ui.theme.values.LinkColor
@@ -25,7 +30,7 @@ fun MegaIcon(
 ) {
     Icon(
         painter = painter,
-        tint = AppTheme.iconColor(iconColor = tint),
+        tint = DSTokens.iconColor(iconColor = tint),
         contentDescription = contentDescription,
         modifier = modifier
     )
@@ -40,7 +45,7 @@ fun MegaIcon(
 ) {
     Icon(
         painter = painter,
-        tint = AppTheme.textColor(textColor = textColorTint),
+        tint = DSTokens.textColor(textColor = textColorTint),
         contentDescription = contentDescription,
         modifier = modifier
     )
@@ -55,7 +60,7 @@ fun MegaIcon(
 ) {
     Icon(
         painter = painter,
-        tint = AppTheme.supportColor(supportColor = supportTint),
+        tint = DSTokens.supportColor(supportColor = supportTint),
         contentDescription = contentDescription,
         modifier = modifier
     )
@@ -70,7 +75,7 @@ fun MegaIcon(
 ) {
     Icon(
         painter = painter,
-        tint = AppTheme.linkColor(linkColor = linkColorTint),
+        tint = DSTokens.linkColor(linkColor = linkColorTint),
         contentDescription = contentDescription,
         modifier = modifier
     )
@@ -85,7 +90,7 @@ fun MegaIcon(
 ) {
     Icon(
         painter = painter,
-        tint = AppTheme.componentsColor(componentsColor = componentsColorTint),
+        tint = DSTokens.componentsColor(componentsColor = componentsColorTint),
         contentDescription = contentDescription,
         modifier = modifier
     )

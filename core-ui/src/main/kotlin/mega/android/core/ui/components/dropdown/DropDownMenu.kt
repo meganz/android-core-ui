@@ -22,6 +22,7 @@ import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import mega.android.core.ui.components.divider.StrongDivider
 import mega.android.core.ui.theme.AppTheme
+import mega.android.core.ui.tokens.theme.DSTokens
 
 private val menuItemMinWidth = 220.dp
 
@@ -46,7 +47,7 @@ fun MegaDropDownMenu(
     DropdownMenu(
         expanded = expanded,
         onDismissRequest = onDismissRequest,
-        modifier = modifier.background(AppTheme.colors.background.surface1),
+        modifier = modifier.background(DSTokens.colors.background.surface1),
         offset = offset
     ) {
         dropdownItems.forEach { dropDownItem ->
@@ -67,9 +68,9 @@ internal fun MegaDropDownMenuItem(
     val isHovered by interactionSource.collectIsHoveredAsState()
 
     val backgroundColor = when {
-        isPressed -> AppTheme.colors.button.secondaryPressed
-        isHovered -> AppTheme.colors.button.secondaryHover
-        else -> AppTheme.colors.background.surface1
+        isPressed -> DSTokens.colors.button.secondaryPressed
+        isHovered -> DSTokens.colors.button.secondaryHover
+        else -> DSTokens.colors.background.surface1
     }
 
     Column(
@@ -86,12 +87,12 @@ internal fun MegaDropDownMenuItem(
             enabled = dropDownItem.enabled,
             contentPadding = PaddingValues(horizontal = 12.dp, vertical = 8.dp),
             colors = MenuDefaults.itemColors(
-                textColor = AppTheme.colors.text.primary,
-                leadingIconColor = AppTheme.colors.icon.primary,
-                trailingIconColor = AppTheme.colors.icon.primary,
-                disabledTextColor = AppTheme.colors.text.disabled,
-                disabledLeadingIconColor = AppTheme.colors.icon.disabled,
-                disabledTrailingIconColor = AppTheme.colors.icon.disabled
+                textColor = DSTokens.colors.text.primary,
+                leadingIconColor = DSTokens.colors.icon.primary,
+                trailingIconColor = DSTokens.colors.icon.primary,
+                disabledTextColor = DSTokens.colors.text.disabled,
+                disabledLeadingIconColor = DSTokens.colors.icon.disabled,
+                disabledTrailingIconColor = DSTokens.colors.icon.disabled
             ),
             interactionSource = interactionSource
         )

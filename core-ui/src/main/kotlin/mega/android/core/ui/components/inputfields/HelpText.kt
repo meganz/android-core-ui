@@ -22,6 +22,7 @@ import mega.android.core.ui.model.SpanStyleWithAnnotation
 import mega.android.core.ui.preview.CombinedThemePreviews
 import mega.android.core.ui.theme.AndroidThemeForPreviews
 import mega.android.core.ui.theme.AppTheme
+import mega.android.core.ui.tokens.theme.DSTokens
 import mega.android.core.ui.theme.spacing.LocalSpacing
 import mega.android.core.ui.theme.values.LinkColor
 import mega.android.core.ui.theme.values.TextColor
@@ -36,7 +37,7 @@ fun HelpTextSuccess(
     HelpText(
         modifier = modifier,
         text = text,
-        iconColor = AppTheme.colors.text.success,
+        iconColor = DSTokens.colors.text.success,
         textColor = textColor,
         textStyle = textStyle,
         iconResId = R.drawable.ic_check_circle
@@ -53,7 +54,7 @@ fun HelpTextError(
     HelpText(
         modifier = modifier,
         text = text,
-        iconColor = AppTheme.colors.text.error,
+        iconColor = DSTokens.colors.text.error,
         textColor = textColor,
         textStyle = textStyle,
         iconResId = R.drawable.ic_alert_triangle
@@ -70,7 +71,7 @@ fun HelpTextWarning(
     HelpText(
         modifier = modifier,
         text = text,
-        iconColor = AppTheme.colors.text.warning,
+        iconColor = DSTokens.colors.text.warning,
         textColor = textColor,
         textStyle = textStyle,
         iconResId = R.drawable.ic_alert_circle
@@ -88,7 +89,7 @@ fun HelpTextInfo(
     HelpText(
         modifier = modifier,
         text = text,
-        iconColor = AppTheme.colors.icon.secondary,
+        iconColor = DSTokens.colors.icon.secondary,
         textColor = textColor,
         textStyle = textStyle,
         iconResId = iconResId
@@ -108,7 +109,7 @@ fun HelpTextLink(
     HelpText(
         modifier = modifier,
         text = text,
-        iconColor = AppTheme.colors.icon.primary,
+        iconColor = DSTokens.colors.icon.primary,
         textColor = textColor,
         textStyle = textStyle,
         iconResId = iconResId,

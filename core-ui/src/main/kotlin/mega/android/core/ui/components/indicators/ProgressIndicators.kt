@@ -18,7 +18,8 @@ import androidx.compose.ui.unit.dp
 import mega.android.core.ui.components.util.blurShadow
 import mega.android.core.ui.preview.CombinedThemePreviews
 import mega.android.core.ui.theme.AndroidThemeForPreviews
-import mega.android.core.ui.theme.AppTheme
+import mega.android.core.ui.theme.iconColor
+import mega.android.core.ui.tokens.theme.DSTokens
 import mega.android.core.ui.theme.spacing.LocalSpacing
 import mega.android.core.ui.theme.values.IconColor
 
@@ -37,7 +38,7 @@ fun ProgressBarIndicator(
             .wrapContentHeight()
             .fillMaxWidth(),
         progress = { progressPercentage / 100f },
-        color = AppTheme.iconColor(IconColor.Accent),
+        color = DSTokens.iconColor(IconColor.Accent),
         trackColor = Color.Transparent,
     )
 }
@@ -116,7 +117,7 @@ private fun SpinnerIndicator(
     CircularProgressIndicator(
         progress = { progressPercentage / 100f },
         modifier = modifier.size(spinnerVariant.size),
-        color = AppTheme.iconColor(iconColor),
+        color = DSTokens.iconColor(iconColor),
         trackColor = Color.Transparent,
         strokeWidth = spinnerVariant.spinnerThickness(),
     )
@@ -131,7 +132,7 @@ private fun SpinnerIndicator(
     CircularProgressIndicator(
         modifier = modifier.size(spinnerVariant.size),
         trackColor = Color.Transparent,
-        color = AppTheme.iconColor(iconColor),
+        color = DSTokens.iconColor(iconColor),
         strokeWidth = spinnerVariant.spinnerThickness()
     )
 }
@@ -149,8 +150,8 @@ private fun HUD(
                 cornerRadius = 8.dp,
                 blurRadius = 20.dp,
             )
-            .clip(AppTheme.shapes.small)
-            .background(AppTheme.colors.background.surface1)
+            .clip(DSTokens.shapes.small)
+            .background(DSTokens.colors.background.surface1)
             .padding(LocalSpacing.current.x16)
     ) {
         SpinnerIndicator(spinnerVariant)

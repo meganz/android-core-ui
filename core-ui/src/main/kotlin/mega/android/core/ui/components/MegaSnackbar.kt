@@ -9,10 +9,10 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import mega.android.core.ui.theme.AppTheme
 import mega.android.core.ui.theme.spacing.LocalSpacing
 import mega.android.core.ui.theme.devicetype.DeviceType
 import mega.android.core.ui.theme.devicetype.LocalDeviceType
+import mega.android.core.ui.tokens.theme.DSTokens
 
 private val snackBarWidthTablet = 344.dp
 
@@ -37,9 +37,9 @@ fun MegaSnackbar(
         Snackbar(
             modifier = snackbarModifier,
             snackbarData = data,
-            containerColor = AppTheme.colors.components.toastBackground,
-            contentColor = AppTheme.colors.background.pageBackground,
-            actionColor = AppTheme.colors.link.primary
+            containerColor = DSTokens.colors.components.toastBackground,
+            contentColor = DSTokens.colors.background.pageBackground,
+            actionColor = DSTokens.colors.link.primary
         )
     }
 }

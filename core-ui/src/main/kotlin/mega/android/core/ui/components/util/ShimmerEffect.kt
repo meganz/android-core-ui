@@ -17,7 +17,7 @@ import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.unit.IntSize
-import mega.android.core.ui.theme.AppTheme
+import mega.android.core.ui.tokens.theme.DSTokens
 
 fun Modifier.shimmerEffect(shape: Shape = RectangleShape): Modifier = composed {
     var size by remember {
@@ -34,9 +34,9 @@ fun Modifier.shimmerEffect(shape: Shape = RectangleShape): Modifier = composed {
     background(
         brush = Brush.linearGradient(
             colors = listOf(
-                AppTheme.colors.background.surface1,
-                AppTheme.colors.background.surface2,
-                AppTheme.colors.background.surface1,
+                DSTokens.colors.background.surface1,
+                DSTokens.colors.background.surface2,
+                DSTokens.colors.background.surface1,
             ),
             start = Offset(startOffsetX, 0f),
             end = Offset(startOffsetX + size.width.toFloat(), size.height.toFloat())

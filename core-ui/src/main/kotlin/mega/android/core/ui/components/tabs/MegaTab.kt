@@ -11,6 +11,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import mega.android.core.ui.theme.AppTheme
+import mega.android.core.ui.tokens.theme.DSTokens
 
 @Composable
 internal fun MegaTab(
@@ -25,8 +26,8 @@ internal fun MegaTab(
     val textStyle =
         if (isSelected) AppTheme.typography.titleMedium else AppTheme.typography.bodyLarge
     val textColor = when {
-        isTabPressed -> AppTheme.colors.button.primaryPressed
-        else -> AppTheme.colors.text.primary
+        isTabPressed -> DSTokens.colors.button.primaryPressed
+        else -> DSTokens.colors.text.primary
     }
     Tab(
         modifier = modifier,
@@ -37,7 +38,7 @@ internal fun MegaTab(
             BadgedBox(
                 badge = {
                     if (showBadge)
-                        Badge(containerColor = AppTheme.colors.components.interactive)
+                        Badge(containerColor = DSTokens.colors.components.interactive)
                 }
             ) {
                 Text(text = title, color = textColor, style = textStyle)

@@ -38,6 +38,7 @@ import mega.android.core.ui.components.MegaText
 import mega.android.core.ui.preview.CombinedThemePreviews
 import mega.android.core.ui.theme.AndroidThemeForPreviews
 import mega.android.core.ui.theme.AppTheme
+import mega.android.core.ui.tokens.theme.DSTokens
 import mega.android.core.ui.theme.spacing.LocalSpacing
 import mega.android.core.ui.theme.values.TextColor
 
@@ -139,23 +140,23 @@ private fun BaseSearchInputField(
     val interactionSource: MutableInteractionSource = remember { MutableInteractionSource() }
     var isFocused by remember { mutableStateOf(false) }
     val primaryTextSelectionColors = TextSelectionColors(
-        handleColor = AppTheme.colors.text.primary,
-        backgroundColor = AppTheme.colors.text.primary.copy(alpha = 0.4f),
+        handleColor = DSTokens.colors.text.primary,
+        backgroundColor = DSTokens.colors.text.primary.copy(alpha = 0.4f),
     )
     val colors = OutlinedTextFieldDefaults.colors(
-        focusedTextColor = AppTheme.colors.text.primary,
-        unfocusedTextColor = AppTheme.colors.text.primary,
-        cursorColor = AppTheme.colors.text.primary,
-        errorCursorColor = AppTheme.colors.text.primary,
-        focusedBorderColor = AppTheme.colors.border.strongSelected,
-        unfocusedBorderColor = AppTheme.colors.border.strong,
-        errorBorderColor = AppTheme.colors.support.error,
-        errorTextColor = AppTheme.colors.text.primary,
-        focusedPlaceholderColor = AppTheme.colors.text.placeholder,
-        unfocusedPlaceholderColor = AppTheme.colors.text.placeholder,
-        disabledTextColor = AppTheme.colors.text.disabled,
-        disabledContainerColor = AppTheme.colors.button.disabled,
-        disabledBorderColor = AppTheme.colors.border.disabled,
+        focusedTextColor = DSTokens.colors.text.primary,
+        unfocusedTextColor = DSTokens.colors.text.primary,
+        cursorColor = DSTokens.colors.text.primary,
+        errorCursorColor = DSTokens.colors.text.primary,
+        focusedBorderColor = DSTokens.colors.border.strongSelected,
+        unfocusedBorderColor = DSTokens.colors.border.strong,
+        errorBorderColor = DSTokens.colors.support.error,
+        errorTextColor = DSTokens.colors.text.primary,
+        focusedPlaceholderColor = DSTokens.colors.text.placeholder,
+        unfocusedPlaceholderColor = DSTokens.colors.text.placeholder,
+        disabledTextColor = DSTokens.colors.text.disabled,
+        disabledContainerColor = DSTokens.colors.button.disabled,
+        disabledBorderColor = DSTokens.colors.border.disabled,
     )
 
     CompositionLocalProvider(
@@ -174,7 +175,7 @@ private fun BaseSearchInputField(
             enabled = enabled,
             textStyle = AppTheme.typography.bodyLarge.copy(
                 // Basic text field requires a color to be set on the text style
-                color = AppTheme.colors.text.primary
+                color = DSTokens.colors.text.primary
             ),
             interactionSource = interactionSource,
             keyboardOptions = KeyboardOptions(
@@ -212,7 +213,7 @@ private fun BaseSearchInputField(
                                 }
                                 .padding(end = spacing.x12),
                             painter = painterResource(id = R.drawable.ic_x_thin),
-                            tint = AppTheme.colors.icon.primary,
+                            tint = DSTokens.colors.icon.primary,
                             contentDescription = "Clear Text")
                     }
                 },
@@ -221,7 +222,7 @@ private fun BaseSearchInputField(
                         modifier = Modifier
                             .padding(start = spacing.x12, end = spacing.x16),
                         painter = painterResource(id = R.drawable.ic_search_large),
-                        tint = AppTheme.colors.icon.secondary,
+                        tint = DSTokens.colors.icon.secondary,
                         contentDescription = "Search"
                     )
                 },
@@ -231,7 +232,7 @@ private fun BaseSearchInputField(
                         isError = isError,
                         interactionSource = interactionSource,
                         colors = colors,
-                        shape = AppTheme.shapes.small,
+                        shape = DSTokens.shapes.small,
                     )
                 }
             )

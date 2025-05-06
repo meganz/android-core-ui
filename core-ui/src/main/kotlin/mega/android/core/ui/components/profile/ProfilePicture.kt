@@ -23,6 +23,7 @@ import mega.android.core.ui.components.MegaText
 import mega.android.core.ui.preview.CombinedThemePreviews
 import mega.android.core.ui.theme.AndroidThemeForPreviews
 import mega.android.core.ui.theme.AppTheme
+import mega.android.core.ui.tokens.theme.DSTokens
 import mega.android.core.ui.theme.values.TextColor
 import java.io.File
 
@@ -38,7 +39,7 @@ private fun BaseProfilePicture(
     contentDescription: String?,
     modifier: Modifier = Modifier,
     baseStyle: TextStyle = LocalTextStyle.current,
-    avatarColor: Color = AppTheme.colors.background.surface3,
+    avatarColor: Color = DSTokens.colors.background.surface3,
 ) {
     Box(
         modifier = modifier,
@@ -62,7 +63,7 @@ private fun BaseProfilePicture(
                     .clip(CircleShape)
                     .background(
                         color = if (avatarColor == Color.Unspecified) {
-                            AppTheme.colors.background.surface3
+                            DSTokens.colors.background.surface3
                         } else {
                             avatarColor
                         }
@@ -88,7 +89,7 @@ fun LargeProfilePicture(
     name: String?,
     contentDescription: String?,
     modifier: Modifier = Modifier,
-    avatarColor: Color = AppTheme.colors.background.surface3,
+    avatarColor: Color = DSTokens.colors.background.surface3,
 ) {
     BaseProfilePicture(
         avatarSize = LARGE_PROFILE_PICTURE_SIZE,
@@ -107,7 +108,7 @@ fun MediumProfilePicture(
     name: String?,
     contentDescription: String?,
     modifier: Modifier = Modifier,
-    avatarColor: Color = AppTheme.colors.background.surface3,
+    avatarColor: Color = DSTokens.colors.background.surface3,
 ) {
     BaseProfilePicture(
         avatarSize = MEDIUM_PROFILE_PICTURE_SIZE,
@@ -126,7 +127,7 @@ fun SmallProfilePicture(
     name: String?,
     contentDescription: String?,
     modifier: Modifier = Modifier,
-    avatarColor: Color = AppTheme.colors.background.surface3,
+    avatarColor: Color = DSTokens.colors.background.surface3,
 ) {
     BaseProfilePicture(
         avatarSize = SMALL_PROFILE_PICTURE_SIZE,

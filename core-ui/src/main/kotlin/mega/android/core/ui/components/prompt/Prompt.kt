@@ -15,6 +15,7 @@ import mega.android.core.ui.components.MegaText
 import mega.android.core.ui.preview.CombinedThemePreviews
 import mega.android.core.ui.theme.AndroidThemeForPreviews
 import mega.android.core.ui.theme.AppTheme
+import mega.android.core.ui.tokens.theme.DSTokens
 import mega.android.core.ui.theme.spacing.LocalSpacing
 import mega.android.core.ui.theme.values.TextColor
 
@@ -27,7 +28,7 @@ fun SuccessPrompt(
 ) {
     BasePrompt(
         modifier = modifier,
-        backgroundColor = AppTheme.colors.notifications.notificationSuccess,
+        backgroundColor = DSTokens.colors.notifications.notificationSuccess,
         message = message,
     )
 }
@@ -39,7 +40,7 @@ fun ErrorPrompt(
 ) {
     BasePrompt(
         modifier = modifier,
-        backgroundColor = AppTheme.colors.notifications.notificationError,
+        backgroundColor = DSTokens.colors.notifications.notificationError,
         message = message,
     )
 }

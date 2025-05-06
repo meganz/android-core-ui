@@ -23,6 +23,7 @@ import mega.android.core.ui.components.buttonDefaultHeight
 import mega.android.core.ui.preview.CombinedThemePreviews
 import mega.android.core.ui.theme.AndroidThemeForPreviews
 import mega.android.core.ui.theme.AppTheme
+import mega.android.core.ui.tokens.theme.DSTokens
 
 @Composable
 fun MegaOutlinedButton(
@@ -37,26 +38,26 @@ fun MegaOutlinedButton(
     val interactionSource = remember { MutableInteractionSource() }
     val isButtonPressed by interactionSource.collectIsPressedAsState()
     val borderColor = when {
-        enabled.not() -> AppTheme.colors.border.disabled
-        isButtonPressed -> AppTheme.colors.button.primary
-        else -> AppTheme.colors.button.outline
+        enabled.not() -> DSTokens.colors.border.disabled
+        isButtonPressed -> DSTokens.colors.button.primary
+        else -> DSTokens.colors.button.outline
     }
 
     OutlinedButton(
         modifier = modifier.heightIn(buttonDefaultHeight),
         interactionSource = interactionSource,
-        shape = AppTheme.shapes.small,
+        shape = DSTokens.shapes.small,
         onClick = { if (!isLoading) onClick() },
         border = BorderStroke(width = 2.dp, color = borderColor),
         enabled = enabled
     ) {
-        val textColor = if (enabled) AppTheme.colors.text.primary else AppTheme.colors.text.disabled
-        val iconColor = if (enabled) AppTheme.colors.icon.primary else AppTheme.colors.icon.disabled
+        val textColor = if (enabled) DSTokens.colors.text.primary else DSTokens.colors.text.disabled
+        val iconColor = if (enabled) DSTokens.colors.icon.primary else DSTokens.colors.icon.disabled
 
         if (isLoading) {
             CircularProgressIndicator(
                 modifier = Modifier.size(buttonDefaultHeight / 2),
-                color = AppTheme.colors.icon.accent,
+                color = DSTokens.colors.icon.accent,
             )
         } else {
             leadingIcon?.let {

@@ -11,7 +11,7 @@ import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import mega.android.core.ui.preview.CombinedThemePreviewsTablet
 import mega.android.core.ui.theme.AndroidThemeForPreviews
-import mega.android.core.ui.theme.AppTheme
+import mega.android.core.ui.tokens.theme.DSTokens
 
 enum class MegaDialogBackground {
     PageBackground,
@@ -26,8 +26,8 @@ fun MegaDialog(
     content: @Composable ColumnScope.() -> Unit,
 ) {
     val containerColor = when (dialogBackground) {
-        MegaDialogBackground.PageBackground -> AppTheme.colors.background.pageBackground
-        MegaDialogBackground.Surface1 -> AppTheme.colors.background.surface1
+        MegaDialogBackground.PageBackground -> DSTokens.colors.background.pageBackground
+        MegaDialogBackground.Surface1 -> DSTokens.colors.background.surface1
     }
 
     Dialog(
@@ -35,7 +35,7 @@ fun MegaDialog(
         properties = DialogProperties(decorFitsSystemWindows = false)
     ) {
         Column(modifier = modifier
-            .clip(AppTheme.shapes.small)
+            .clip(DSTokens.shapes.small)
             .background(color = containerColor)
         ) {
             content()

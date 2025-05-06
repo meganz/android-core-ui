@@ -9,7 +9,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
-import mega.android.core.ui.theme.AppTheme
+import mega.android.core.ui.tokens.theme.DSTokens
 
 @Composable
 fun RowScope.NavigationBottomBarItem(
@@ -28,11 +28,11 @@ fun RowScope.NavigationBottomBarItem(
         selected = isSelected,
         onClick = onClick,
         colors = NavigationBarItemDefaults.colors(
-            selectedIconColor = AppTheme.colors.button.brand,
-            unselectedIconColor = AppTheme.colors.icon.secondary,
-            selectedTextColor = AppTheme.colors.button.brand,
-            unselectedTextColor = AppTheme.colors.text.secondary,
-            indicatorColor = AppTheme.colors.background.pageBackground,
+            selectedIconColor = DSTokens.colors.button.brand,
+            unselectedIconColor = DSTokens.colors.icon.secondary,
+            selectedTextColor = DSTokens.colors.button.brand,
+            unselectedTextColor = DSTokens.colors.text.secondary,
+            indicatorColor = DSTokens.colors.background.pageBackground,
         )
     )
 }

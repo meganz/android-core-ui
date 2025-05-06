@@ -19,7 +19,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import mega.android.core.ui.R
 import mega.android.core.ui.components.image.MegaIcon
-import mega.android.core.ui.theme.AppTheme
+import mega.android.core.ui.tokens.theme.DSTokens
 import mega.android.core.ui.theme.spacing.LocalSpacing
 import mega.android.core.ui.theme.values.IconColor
 
@@ -41,8 +41,8 @@ fun MegaModalBottomSheet(
     content: @Composable ColumnScope.() -> Unit,
 ) {
     val containerColor = when (bottomSheetBackground) {
-        MegaModalBottomSheetBackground.PageBackground -> AppTheme.colors.background.pageBackground
-        MegaModalBottomSheetBackground.Surface1 -> AppTheme.colors.background.surface1
+        MegaModalBottomSheetBackground.PageBackground -> DSTokens.colors.background.pageBackground
+        MegaModalBottomSheetBackground.Surface1 -> DSTokens.colors.background.surface1
     }
 
     ModalBottomSheet(
@@ -50,7 +50,7 @@ fun MegaModalBottomSheet(
         onDismissRequest = onDismissRequest,
         sheetState = sheetState,
         containerColor = containerColor,
-        scrimColor = AppTheme.colors.background.blur,
+        scrimColor = DSTokens.colors.background.blur,
         dragHandle = dragHandle,
         shape = RoundedCornerShape(
             topStart = LocalSpacing.current.x24,

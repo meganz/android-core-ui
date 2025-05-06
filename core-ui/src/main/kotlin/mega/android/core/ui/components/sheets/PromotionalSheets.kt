@@ -56,7 +56,7 @@ import mega.android.core.ui.components.toolbar.MegaTopAppBar
 import mega.android.core.ui.model.IllustrationIconSizeMode
 import mega.android.core.ui.preview.CombinedThemePreviews
 import mega.android.core.ui.theme.AndroidThemeForPreviews
-import mega.android.core.ui.theme.AppTheme
+import mega.android.core.ui.tokens.theme.DSTokens
 import mega.android.core.ui.theme.spacing.LocalSpacing
 import mega.android.core.ui.theme.values.IconColor
 
@@ -264,7 +264,7 @@ fun PromotionalFullImageSheet(
                     shape = CircleShape,
                     colors = ButtonDefaults.buttonColors(
                         containerColor = Color.Black.copy(alpha = 0.5f),
-                        contentColor = AppTheme.colors.icon.onColor
+                        contentColor = DSTokens.colors.icon.onColor
                     ),
                     contentPadding = PaddingValues(4.dp)
                 ) {
@@ -446,7 +446,7 @@ private fun ModalBottomSheetScaffold(
         },
         onDismissRequest = onDismissRequest,
         sheetState = sheetState,
-        containerColor = AppTheme.colors.background.pageBackground,
+        containerColor = DSTokens.colors.background.pageBackground,
         dragHandle = null,
         shape = bottomSheetShape,
         content = content,
@@ -460,7 +460,7 @@ private fun SheetActions(
     secondaryButton: SheetButtonAttribute? = null,
     isDividerVisible: Boolean = false
 ) {
-    val borderStrokeColor = AppTheme.colors.border.strong
+    val borderStrokeColor = DSTokens.colors.border.strong
 
     Column(
         modifier = modifier

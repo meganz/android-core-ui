@@ -47,6 +47,7 @@ import mega.android.core.ui.components.inputFieldHeight
 import mega.android.core.ui.preview.CombinedThemePreviews
 import mega.android.core.ui.theme.AndroidThemeForPreviews
 import mega.android.core.ui.theme.AppTheme
+import mega.android.core.ui.tokens.theme.DSTokens
 import mega.android.core.ui.theme.font.GoogleFontFamily
 import mega.android.core.ui.theme.spacing.LocalSpacing
 import mega.android.core.ui.theme.values.TextColor
@@ -61,10 +62,10 @@ fun PasswordGeneratorInputBox(
     val spacing = LocalSpacing.current
     Column(
         modifier = modifier
-            .background(color = AppTheme.colors.background.surface1, shape = AppTheme.shapes.small)
+            .background(color = DSTokens.colors.background.surface1, shape = DSTokens.shapes.small)
             .border(
-                BorderStroke(1.dp, color = AppTheme.colors.border.subtle),
-                shape = AppTheme.shapes.small
+                BorderStroke(1.dp, color = DSTokens.colors.border.subtle),
+                shape = DSTokens.shapes.small
             )
     ) {
         Text(
@@ -88,7 +89,7 @@ fun PasswordGeneratorInputBox(
                     .align(Alignment.End)
                     .clickable(onClick = onCopyClick),
                 painter = painterResource(id = R.drawable.ic_copy),
-                tint = AppTheme.colors.icon.secondary,
+                tint = DSTokens.colors.icon.secondary,
                 contentDescription = "Copy Password"
             )
         }
@@ -112,33 +113,33 @@ fun PasswordGeneratorInputField(
     var baseText by rememberSaveable(text) { mutableStateOf(text) }
     var showPassword by rememberSaveable { mutableStateOf(false) }
     val focusedColor = when {
-        successText.isNullOrBlank().not() -> AppTheme.colors.support.success
-        errorText != null -> AppTheme.colors.support.error
-        else -> AppTheme.colors.border.strongSelected
+        successText.isNullOrBlank().not() -> DSTokens.colors.support.success
+        errorText != null -> DSTokens.colors.support.error
+        else -> DSTokens.colors.border.strongSelected
     }
     val unfocusedColor = when {
-        successText.isNullOrBlank().not() -> AppTheme.colors.support.success
-        errorText != null -> AppTheme.colors.support.error
-        else -> AppTheme.colors.border.strong
+        successText.isNullOrBlank().not() -> DSTokens.colors.support.success
+        errorText != null -> DSTokens.colors.support.error
+        else -> DSTokens.colors.border.strong
     }
     val colors = OutlinedTextFieldDefaults.colors(
-        focusedTextColor = AppTheme.colors.text.primary,
-        unfocusedTextColor = AppTheme.colors.text.primary,
-        cursorColor = AppTheme.colors.text.primary,
-        errorCursorColor = AppTheme.colors.text.primary,
+        focusedTextColor = DSTokens.colors.text.primary,
+        unfocusedTextColor = DSTokens.colors.text.primary,
+        cursorColor = DSTokens.colors.text.primary,
+        errorCursorColor = DSTokens.colors.text.primary,
         selectionColors = TextSelectionColors(
-            handleColor = AppTheme.colors.text.primary,
-            backgroundColor = AppTheme.colors.text.primary.copy(alpha = 0.4f),
+            handleColor = DSTokens.colors.text.primary,
+            backgroundColor = DSTokens.colors.text.primary.copy(alpha = 0.4f),
         ),
         focusedBorderColor = focusedColor,
         unfocusedBorderColor = unfocusedColor,
-        errorBorderColor = AppTheme.colors.support.error,
-        errorTextColor = AppTheme.colors.text.primary,
-        focusedPlaceholderColor = AppTheme.colors.text.primary,
-        unfocusedPlaceholderColor = AppTheme.colors.text.placeholder,
-        disabledTextColor = AppTheme.colors.text.disabled,
-        disabledContainerColor = AppTheme.colors.button.disabled,
-        disabledBorderColor = AppTheme.colors.border.disabled,
+        errorBorderColor = DSTokens.colors.support.error,
+        errorTextColor = DSTokens.colors.text.primary,
+        focusedPlaceholderColor = DSTokens.colors.text.primary,
+        unfocusedPlaceholderColor = DSTokens.colors.text.placeholder,
+        disabledTextColor = DSTokens.colors.text.disabled,
+        disabledContainerColor = DSTokens.colors.button.disabled,
+        disabledBorderColor = DSTokens.colors.border.disabled,
     )
     val annotatedString = getAnnotatedString(text = baseText)
 
@@ -149,7 +150,7 @@ fun PasswordGeneratorInputField(
         Text(
             text = label,
             style = AppTheme.typography.titleSmall,
-            color = AppTheme.colors.text.primary
+            color = DSTokens.colors.text.primary
         )
 
         OutlinedTextField(
@@ -193,7 +194,7 @@ fun PasswordGeneratorInputField(
                             .padding(horizontal = spacing.x8)
                             .clickable { showPassword = !showPassword },
                         painter = painterResource(id = eyeIcon),
-                        tint = AppTheme.colors.icon.secondary,
+                        tint = DSTokens.colors.icon.secondary,
                         contentDescription = "Show Password"
                     )
                 }
@@ -226,9 +227,9 @@ fun PasswordGeneratorInputField(
 @Composable
 internal fun getAnnotatedString(text: String, changeSpaceStyle: Boolean = false) =
     buildAnnotatedString {
-        val letterStyle = SpanStyle(color = AppTheme.colors.text.primary)
-        val digitStyle = SpanStyle(color = AppTheme.colors.indicator.magenta)
-        val symbolStyle = SpanStyle(color = AppTheme.colors.indicator.indigo)
+        val letterStyle = SpanStyle(color = DSTokens.colors.text.primary)
+        val digitStyle = SpanStyle(color = DSTokens.colors.indicator.magenta)
+        val symbolStyle = SpanStyle(color = DSTokens.colors.indicator.indigo)
         val spaceStyle = SpanStyle(fontSize = 0.sp)
 
         text.forEach {

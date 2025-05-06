@@ -24,7 +24,7 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 import mega.android.core.ui.preview.CombinedThemePreviews
 import mega.android.core.ui.theme.AndroidThemeForPreviews
-import mega.android.core.ui.theme.AppTheme
+import mega.android.core.ui.tokens.theme.DSTokens
 import mega.android.core.ui.theme.spacing.LocalSpacing
 
 /**
@@ -43,8 +43,8 @@ fun PageControlsIndicator(
     val indicatorSize = 8.dp
     val indicatorSpacing = spacing.x16
     val widthInPx = LocalDensity.current.run { indicatorSize.toPx() }
-    val selectedColor = AppTheme.colors.icon.accent
-    val defaultColor = AppTheme.colors.icon.disabled
+    val selectedColor = DSTokens.colors.icon.accent
+    val defaultColor = DSTokens.colors.icon.disabled
 
     val currentItem by remember {
         derivedStateOf {
