@@ -42,7 +42,6 @@ import mega.android.core.ui.tokens.theme.LocalColorPalette
 import mega.android.core.ui.tokens.theme.colors.DSColors
 import mega.android.core.ui.tokens.theme.tokens.AndroidNewSemanticTokensDark
 import mega.android.core.ui.tokens.theme.tokens.AndroidNewSemanticTokensLight
-import mega.android.core.ui.tokens.theme.tokens.SemanticTokens
 
 /**
  * Only to be used for Previews within core-ui and any library module that depends on core-ui
@@ -54,44 +53,27 @@ fun AndroidThemeForPreviews(
     content: @Composable () -> Unit,
 ) = AndroidTheme(
     isDark = isSystemInDarkTheme(),
-    darkColorTokens = AndroidNewSemanticTokensDark,
-    lightColorTokens = AndroidNewSemanticTokensLight,
     content = content,
 )
 
 /**
  * Default theme to be used in fragments or activities using components in this library
+ * @param isDark
+ * @param fromAutofill
+ * @param useLegacyStatusBarColor statusBarColor is deprecated and it should not be used. This parameter is to avoid using it in screens already migrated to edge-to-edge. It will be removed once all screens support edge-to-edge.
  */
 @Composable
 fun AndroidTheme(
     isDark: Boolean,
     fromAutofill: Boolean = false,
-    content: @Composable () -> Unit,
-) = AndroidTheme(
-    isDark = isDark,
-    darkColorTokens = AndroidNewSemanticTokensDark,
-    lightColorTokens = AndroidNewSemanticTokensLight,
-    fromAutofill = fromAutofill,
-    content = content,
-)
-
-/**
- * This theme is just to add some flexibility, the version with default tokens should be preferred.
- * This can be used to inject other semantic tokens, for instance to use the components in this library with TEMP-tokens.
- */
-@Composable
-fun AndroidTheme(
-    isDark: Boolean,
-    darkColorTokens: SemanticTokens,
-    lightColorTokens: SemanticTokens,
-    fromAutofill: Boolean = false,
+    useLegacyStatusBarColor: Boolean = true,
     content: @Composable () -> Unit,
 ) {
 
     val semanticTokens = if (isDark) {
-        darkColorTokens
+        AndroidNewSemanticTokensDark
     } else {
-        lightColorTokens
+        AndroidNewSemanticTokensLight
     }
     val colors = DSColors(semanticTokens, !isDark)
     val colorPalette by remember(colors) {
@@ -100,7 +82,7 @@ fun AndroidTheme(
 
     val view = LocalView.current
     val activity = view.context.findActivity()
-    if (!view.isInEditMode) {
+    if (!view.isInEditMode && useLegacyStatusBarColor) {
         SideEffect {
             activity?.window?.let { window ->
                 window.statusBarColor =
