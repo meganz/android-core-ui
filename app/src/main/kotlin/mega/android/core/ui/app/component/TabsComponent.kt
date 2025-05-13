@@ -8,12 +8,16 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import mega.android.core.ui.app.util.Section
+import mega.android.core.ui.components.MegaText
 import mega.android.core.ui.components.tabs.MegaFixedTabRow
 import mega.android.core.ui.components.tabs.MegaScrollableTabRow
 import mega.android.core.ui.model.TabItems
 import mega.android.core.ui.theme.spacing.LocalSpacing
+import mega.android.core.ui.theme.values.TextColor
 
 @Composable
 fun TabsComponentCatalog() {
@@ -34,6 +38,22 @@ fun TabsComponentCatalog() {
                 currentTabIndex = it
             }
         )
+        MegaFixedTabRow(pagerModifier = Modifier.height(200.dp)) {
+            addTextTab(TabItems("Tab A", false)) {
+                MegaText(
+                    "Tab 1 content",
+                    textColor = TextColor.Primary,
+                    modifier = Modifier.align(Alignment.Center),
+                )
+            }
+            addTextTab(TabItems("Tab B", false)) {
+                MegaText(
+                    "Tab 2 content",
+                    textColor = TextColor.Primary,
+                    modifier = Modifier.align(Alignment.Center),
+                )
+            }
+        }
     }
 
     Section(header = "Scrollable Tabs") {
@@ -68,5 +88,16 @@ fun TabsComponentCatalog() {
                 currentTabIndex = it
             }
         )
+        MegaScrollableTabRow(pagerModifier = Modifier.height(200.dp)) {
+            (1..6).forEach {tabIndex ->
+                addTextTab(TabItems("Tab $tabIndex", false)) {
+                    MegaText(
+                        "Tab $tabIndex content",
+                        textColor = TextColor.Primary,
+                        modifier = Modifier.align(Alignment.Center),
+                    )
+                }
+            }
+        }
     }
 }
