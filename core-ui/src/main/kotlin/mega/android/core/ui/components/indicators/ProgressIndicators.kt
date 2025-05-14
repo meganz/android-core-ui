@@ -13,15 +13,19 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.tooling.preview.PreviewParameter
+import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import mega.android.core.ui.components.util.blurShadow
 import mega.android.core.ui.preview.CombinedThemePreviews
 import mega.android.core.ui.theme.AndroidThemeForPreviews
 import mega.android.core.ui.theme.iconColor
-import mega.android.core.ui.tokens.theme.DSTokens
 import mega.android.core.ui.theme.spacing.LocalSpacing
+import mega.android.core.ui.theme.supportColor
 import mega.android.core.ui.theme.values.IconColor
+import mega.android.core.ui.theme.values.SupportColor
+import mega.android.core.ui.tokens.theme.DSTokens
 
 private enum class SpinnerVariant(val size: Dp) {
     Small(24.dp),
@@ -38,7 +42,23 @@ fun ProgressBarIndicator(
             .wrapContentHeight()
             .fillMaxWidth(),
         progress = { progressPercentage / 100f },
-        color = DSTokens.iconColor(IconColor.Accent),
+        color = DSTokens.colors.icon.accent,
+        trackColor = Color.Transparent,
+    )
+}
+
+@Composable
+fun ProgressBarIndicator(
+    modifier: Modifier = Modifier,
+    progressPercentage: Float = 0f,
+    supportColor: SupportColor
+) {
+    LinearProgressIndicator(
+        modifier = modifier
+            .wrapContentHeight()
+            .fillMaxWidth(),
+        progress = { progressPercentage / 100f },
+        color = DSTokens.supportColor(supportColor),
         trackColor = Color.Transparent,
     )
 }
@@ -175,6 +195,18 @@ private fun ProgressBarIndicatorPreview() {
 
 @CombinedThemePreviews
 @Composable
+private fun ProgressBarIndicatorSupportColorPreview(
+    @PreviewParameter(SupportColorProvider::class) supportColor: SupportColor,
+) {
+    AndroidThemeForPreviews {
+        Box(modifier = Modifier.padding(16.dp)) {
+            ProgressBarIndicator(progressPercentage = 50f, supportColor = supportColor)
+        }
+    }
+}
+
+@CombinedThemePreviews
+@Composable
 private fun SpinnerIndicatorSmallPreview() {
     AndroidThemeForPreviews {
         SmallSpinnerIndicator(progressPercentage = 25f)
@@ -223,5 +255,9 @@ private fun HUDLargePreview() {
             LargeHUD()
         }
     }
+}
+
+private class SupportColorProvider : PreviewParameterProvider<SupportColor> {
+    override val values = SupportColor.entries.asSequence()
 }
 
