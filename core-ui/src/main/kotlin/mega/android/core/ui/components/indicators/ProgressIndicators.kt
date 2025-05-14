@@ -13,6 +13,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.Dp
@@ -43,7 +44,9 @@ fun ProgressBarIndicator(
             .fillMaxWidth(),
         progress = { progressPercentage / 100f },
         color = DSTokens.colors.icon.accent,
-        trackColor = Color.Transparent,
+        strokeCap = StrokeCap.Square,
+        trackColor = DSTokens.colors.background.surface1,
+        drawStopIndicator = {}
     )
 }
 
@@ -59,7 +62,9 @@ fun ProgressBarIndicator(
             .fillMaxWidth(),
         progress = { progressPercentage / 100f },
         color = DSTokens.supportColor(supportColor),
-        trackColor = Color.Transparent,
+        strokeCap = StrokeCap.Square,
+        trackColor = DSTokens.colors.background.surface1,
+        drawStopIndicator = {}
     )
 }
 
