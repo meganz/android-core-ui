@@ -50,7 +50,6 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.core.text.isDigitsOnly
 import mega.android.core.ui.R
 import mega.android.core.ui.components.inputFieldHeight
 import mega.android.core.ui.components.spannedTextWithAnnotation
@@ -62,10 +61,10 @@ import mega.android.core.ui.model.SpanStyleWithAnnotation
 import mega.android.core.ui.preview.CombinedThemePreviews
 import mega.android.core.ui.theme.AndroidThemeForPreviews
 import mega.android.core.ui.theme.AppTheme
-import mega.android.core.ui.tokens.theme.DSTokens
 import mega.android.core.ui.theme.spacing.LocalSpacing
 import mega.android.core.ui.theme.textColor
 import mega.android.core.ui.theme.values.TextColor
+import mega.android.core.ui.tokens.theme.DSTokens
 
 /**
  * A read only text input field with an optional custom trailing icon
@@ -547,19 +546,22 @@ internal fun BaseTextField(
                 keyboardActions = keyboardActions,
                 value = textValue,
                 onValueChange = { textFieldValue ->
-                    if (textFieldValue.text.length <= maxCharLimit) {
-                        when {
-                            keyboardType == KeyboardType.Number -> {
-                                if (textFieldValue.text.isDigitsOnly()) {
-                                    onValueChanged?.invoke(textFieldValue)
-                                }
-                            }
+                    val value = if (textFieldValue.text.length > maxCharLimit) {
+                        textFieldValue.text.substring(0, maxCharLimit)
+                    } else {
+                        textFieldValue.text
+                    }
+                    val newValue = when {
+                        keyboardType == KeyboardType.Number -> {
+                            val digits = value.filter { it.isDigit() }
+                            textFieldValue.copy(text = digits)
+                        }
 
-                            else -> {
-                                onValueChanged?.invoke(textFieldValue)
-                            }
+                        else -> {
+                            textFieldValue
                         }
                     }
+                    onValueChanged?.invoke(newValue)
                 },
                 colors = colors,
                 shape = RoundedCornerShape(8.dp),
@@ -720,22 +722,22 @@ internal fun BaseTextField(
                 ),
                 keyboardActions = keyboardActions,
                 value = baseText,
-                onValueChange = {
-                    if (it.length <= maxCharLimit) {
-                        when {
-                            keyboardType == KeyboardType.Number -> {
-                                if (it.isDigitsOnly()) {
-                                    baseText = it
-                                    onValueChanged?.invoke(it)
-                                }
-                            }
+                onValueChange = { newValue ->
+                    val value = if (newValue.length > maxCharLimit) {
+                        newValue.substring(0, maxCharLimit)
+                    } else {
+                        newValue
+                    }
+                    baseText = when {
+                        keyboardType == KeyboardType.Number -> {
+                            value.filter { it.isDigit() }
+                        }
 
-                            else -> {
-                                baseText = it
-                                onValueChanged?.invoke(it)
-                            }
+                        else -> {
+                            value
                         }
                     }
+                    onValueChanged?.invoke(baseText)
                 },
                 colors = colors,
                 shape = RoundedCornerShape(8.dp),
