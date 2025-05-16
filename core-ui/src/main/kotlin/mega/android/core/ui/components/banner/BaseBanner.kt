@@ -25,9 +25,9 @@ import mega.android.core.ui.components.LinkSpannedText
 import mega.android.core.ui.components.MegaClickableText
 import mega.android.core.ui.components.text.SpannableText
 import mega.android.core.ui.theme.AppTheme
-import mega.android.core.ui.tokens.theme.DSTokens
 import mega.android.core.ui.theme.spacing.LocalSpacing
 import mega.android.core.ui.theme.values.TextColor
+import mega.android.core.ui.tokens.theme.DSTokens
 
 @Composable
 internal fun BaseBanner(
@@ -36,7 +36,7 @@ internal fun BaseBanner(
     backgroundShape: Shape,
     @DrawableRes iconResId: Int,
     iconColor: Color,
-    body: SpannableText,
+    body: SpannableText?,
     showCancelButton: Boolean,
     title: SpannableText? = null,
     buttonText: String? = null,
@@ -75,14 +75,15 @@ internal fun BaseBanner(
                         baseTextColor = TextColor.Primary,
                     )
                 }
-
-                LinkSpannedText(
-                    value = body.text.orEmpty(),
-                    spanStyles = body.annotations ?: emptyMap(),
-                    onAnnotationClick = body.onAnnotationClick ?: {},
-                    baseStyle = AppTheme.typography.bodyMedium,
-                    baseTextColor = TextColor.Primary,
-                )
+                body?.let {
+                    LinkSpannedText(
+                        value = it.text.orEmpty(),
+                        spanStyles = it.annotations ?: emptyMap(),
+                        onAnnotationClick = it.onAnnotationClick ?: {},
+                        baseStyle = AppTheme.typography.bodyMedium,
+                        baseTextColor = TextColor.Primary,
+                    )
+                }
 
                 buttonText?.let {
                     MegaClickableText(

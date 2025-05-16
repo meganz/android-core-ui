@@ -18,7 +18,7 @@ import mega.android.core.ui.tokens.theme.DSTokens
 @Composable
 fun InlineWarningBanner(
     modifier: Modifier,
-    body: String,
+    body: String?,
     showCancelButton: Boolean,
     title: String? = null,
     actionButtonText: String? = null,
@@ -39,7 +39,7 @@ fun InlineWarningBanner(
 @Composable
 fun TopWarningBanner(
     modifier: Modifier,
-    body: String,
+    body: String?,
     showCancelButton: Boolean,
     title: String? = null,
     actionButtonText: String? = null,
@@ -60,7 +60,7 @@ fun TopWarningBanner(
 @Composable
 fun InlineWarningBanner(
     modifier: Modifier,
-    body: SpannableText,
+    body: SpannableText?,
     showCancelButton: Boolean,
     title: SpannableText? = null,
     actionButtonText: String? = null,
@@ -82,7 +82,7 @@ fun InlineWarningBanner(
 @Composable
 fun TopWarningBanner(
     modifier: Modifier,
-    body: SpannableText,
+    body: SpannableText?,
     showCancelButton: Boolean,
     title: SpannableText? = null,
     actionButtonText: String? = null,
@@ -105,7 +105,7 @@ fun TopWarningBanner(
 private fun WarningBanner(
     modifier: Modifier,
     backgroundShape: Shape,
-    body: SpannableText,
+    body: SpannableText?,
     showCancelButton: Boolean,
     title: SpannableText? = null,
     actionButtonText: String? = null,
@@ -150,6 +150,20 @@ private fun TopWarningBannerPreview() {
             modifier = Modifier,
             body = SpannableText("Warning Body"),
             title = SpannableText("Warning Title"),
+            actionButtonText = "Action Button",
+            showCancelButton = true
+        )
+    }
+}
+
+@CombinedThemePreviews
+@Composable
+private fun TopWarningBannerWithoutBodyPreview() {
+    AndroidThemeForPreviews {
+        TopWarningBanner(
+            modifier = Modifier,
+            title = SpannableText("Warning Title"),
+            body = null,
             actionButtonText = "Action Button",
             showCancelButton = true
         )

@@ -18,7 +18,7 @@ import mega.android.core.ui.tokens.theme.DSTokens
 @Composable
 fun InlineInfoBanner(
     modifier: Modifier,
-    body: SpannableText,
+    body: SpannableText?,
     showCancelButton: Boolean,
     title: SpannableText? = null,
     actionButtonText: String? = null,
@@ -41,7 +41,7 @@ fun InlineInfoBanner(
 @Composable
 fun InlineInfoBanner(
     modifier: Modifier,
-    body: String,
+    body: String?,
     showCancelButton: Boolean,
     title: String? = null,
     actionButtonText: String? = null,
@@ -63,7 +63,7 @@ fun InlineInfoBanner(
 @Composable
 fun TopInfoBanner(
     modifier: Modifier,
-    body: SpannableText,
+    body: SpannableText?,
     showCancelButton: Boolean,
     title: SpannableText? = null,
     actionButtonText: String? = null,
@@ -85,7 +85,7 @@ fun TopInfoBanner(
 @Composable
 fun TopInfoBanner(
     modifier: Modifier,
-    body: String,
+    body: String?,
     showCancelButton: Boolean,
     title: String? = null,
     actionButtonText: String? = null,
@@ -108,7 +108,7 @@ fun TopInfoBanner(
 private fun InfoBanner(
     modifier: Modifier,
     backgroundShape: Shape,
-    body: SpannableText,
+    body: SpannableText?,
     showCancelButton: Boolean,
     title: SpannableText? = null,
     actionButtonText: String? = null,

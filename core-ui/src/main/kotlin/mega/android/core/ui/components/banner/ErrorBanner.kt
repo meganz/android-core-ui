@@ -18,7 +18,7 @@ import mega.android.core.ui.tokens.theme.DSTokens
 @Composable
 fun InlineErrorBanner(
     modifier: Modifier,
-    body: SpannableText,
+    body: SpannableText?,
     showCancelButton: Boolean,
     title: SpannableText? = null,
     actionButtonText: String? = null,
@@ -40,7 +40,7 @@ fun InlineErrorBanner(
 @Composable
 fun InlineErrorBanner(
     modifier: Modifier,
-    body: String,
+    body: String?,
     showCancelButton: Boolean,
     title: String? = null,
     actionButtonText: String? = null,
@@ -62,7 +62,7 @@ fun InlineErrorBanner(
 @Composable
 fun TopErrorBanner(
     modifier: Modifier,
-    body: SpannableText,
+    body: SpannableText?,
     showCancelButton: Boolean,
     title: SpannableText? = null,
     actionButtonText: String? = null,
@@ -84,7 +84,7 @@ fun TopErrorBanner(
 @Composable
 fun TopErrorBanner(
     modifier: Modifier,
-    body: String,
+    body: String?,
     showCancelButton: Boolean,
     title: String? = null,
     actionButtonText: String? = null,
@@ -107,7 +107,7 @@ fun TopErrorBanner(
 private fun ErrorBanner(
     modifier: Modifier,
     backgroundShape: Shape,
-    body: SpannableText,
+    body: SpannableText?,
     showCancelButton: Boolean,
     title: SpannableText? = null,
     actionButtonText: String? = null,

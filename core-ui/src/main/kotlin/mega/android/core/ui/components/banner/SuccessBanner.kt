@@ -18,7 +18,7 @@ import mega.android.core.ui.tokens.theme.DSTokens
 @Composable
 fun InlineSuccessBanner(
     modifier: Modifier,
-    body: SpannableText,
+    body: SpannableText?,
     showCancelButton: Boolean,
     title: SpannableText? = null,
     actionButtonText: String? = null,
@@ -41,7 +41,7 @@ fun InlineSuccessBanner(
 @Composable
 fun InlineSuccessBanner(
     modifier: Modifier,
-    body: String,
+    body: String?,
     showCancelButton: Boolean,
     title: String? = null,
     actionButtonText: String? = null,
@@ -63,7 +63,7 @@ fun InlineSuccessBanner(
 @Composable
 fun TopSuccessBanner(
     modifier: Modifier,
-    body: SpannableText,
+    body: SpannableText?,
     showCancelButton: Boolean,
     title: SpannableText? = null,
     actionButtonText: String? = null,
@@ -85,7 +85,7 @@ fun TopSuccessBanner(
 @Composable
 fun TopSuccessBanner(
     modifier: Modifier,
-    body: String,
+    body: String?,
     showCancelButton: Boolean,
     title: String? = null,
     actionButtonText: String? = null,
@@ -108,7 +108,7 @@ fun TopSuccessBanner(
 private fun SuccessBanner(
     modifier: Modifier,
     backgroundShape: Shape,
-    body: SpannableText,
+    body: SpannableText?,
     showCancelButton: Boolean,
     title: SpannableText? = null,
     actionButtonText: String? = null,
