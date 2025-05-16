@@ -51,8 +51,8 @@ fun InlineInfoBanner(
     InfoBanner(
         modifier = modifier,
         backgroundShape = DSTokens.shapes.small,
-        body = SpannableText(body),
-        title = SpannableText(title),
+        body = body?.let { SpannableText(it) },
+        title = title?.let { SpannableText(title) },
         actionButtonText = actionButtonText,
         onActionButtonClick = onActionButtonClick,
         showCancelButton = showCancelButton,
@@ -95,8 +95,8 @@ fun TopInfoBanner(
     InfoBanner(
         modifier = modifier,
         backgroundShape = RectangleShape,
-        body = SpannableText(body),
-        title = SpannableText(title),
+        body = body?.let { SpannableText(it) },
+        title = title?.let { SpannableText(title) },
         actionButtonText = actionButtonText,
         onActionButtonClick = onActionButtonClick,
         showCancelButton = showCancelButton,
@@ -122,7 +122,7 @@ private fun InfoBanner(
         iconResId = R.drawable.ic_info,
         iconColor = DSTokens.colors.support.info,
         body = body,
-        title =     title,
+        title = title,
         buttonText = actionButtonText,
         onButtonClick = onActionButtonClick,
         showCancelButton = showCancelButton,
@@ -166,7 +166,7 @@ private fun SpannableInlineInfoBannerPreview() {
             modifier = Modifier,
             body = SpannableText(
                 text = "[A]Banner[/A] Body",
-                annotations =  mapOf(
+                annotations = mapOf(
                     SpanIndicator('A') to SpanStyleWithAnnotation(
                         megaSpanStyle = MegaSpanStyle.DefaultColorStyle(
                             spanStyle = SpanStyle(fontStyle = FontStyle.Italic),
@@ -179,7 +179,7 @@ private fun SpannableInlineInfoBannerPreview() {
             ),
             title = SpannableText(
                 text = "[A]Banner[/A] Title",
-                annotations =  mapOf(
+                annotations = mapOf(
                     SpanIndicator('A') to SpanStyleWithAnnotation(
                         megaSpanStyle = MegaSpanStyle.DefaultColorStyle(
                             spanStyle = SpanStyle(fontStyle = FontStyle.Italic),

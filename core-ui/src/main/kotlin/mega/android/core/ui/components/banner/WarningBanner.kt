@@ -27,8 +27,8 @@ fun InlineWarningBanner(
 ) {
     InlineWarningBanner(
         modifier = modifier,
-        body = SpannableText(body),
-        title = SpannableText(title),
+        body = body?.let { SpannableText(it) },
+        title = title?.let { SpannableText(title) },
         actionButtonText = actionButtonText,
         onActionButtonClick = onActionButtonClick,
         showCancelButton = showCancelButton,
@@ -48,8 +48,8 @@ fun TopWarningBanner(
 ) {
     TopWarningBanner(
         modifier = modifier,
-        body = SpannableText(body),
-        title = SpannableText(title),
+        body = body?.let { SpannableText(it) },
+        title = title?.let { SpannableText(title) },
         actionButtonText = actionButtonText,
         onActionButtonClick = onActionButtonClick,
         showCancelButton = showCancelButton,

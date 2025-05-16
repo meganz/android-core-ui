@@ -50,8 +50,8 @@ fun InlineErrorBanner(
     ErrorBanner(
         modifier = modifier,
         backgroundShape = DSTokens.shapes.small,
-        body = SpannableText(body),
-        title = SpannableText(title),
+        body = body?.let { SpannableText(it) },
+        title = title?.let { SpannableText(title) },
         actionButtonText = actionButtonText,
         onActionButtonClick = onActionButtonClick,
         showCancelButton = showCancelButton,
@@ -94,8 +94,8 @@ fun TopErrorBanner(
     ErrorBanner(
         modifier = modifier,
         backgroundShape = RectangleShape,
-        body = SpannableText(body),
-        title = SpannableText(title),
+        body = body?.let { SpannableText(it) },
+        title = title?.let { SpannableText(title) },
         actionButtonText = actionButtonText,
         onActionButtonClick = onActionButtonClick,
         showCancelButton = showCancelButton,
@@ -165,7 +165,7 @@ private fun SpannableInlineErrorBannerPreview() {
             modifier = Modifier,
             body = SpannableText(
                 text = "[A]Banner[/A] Body",
-                annotations =  mapOf(
+                annotations = mapOf(
                     SpanIndicator('A') to SpanStyleWithAnnotation(
                         megaSpanStyle = MegaSpanStyle.DefaultColorStyle(
                             spanStyle = SpanStyle(fontStyle = FontStyle.Italic),
@@ -178,7 +178,7 @@ private fun SpannableInlineErrorBannerPreview() {
             ),
             title = SpannableText(
                 text = "[A]Banner[/A] Title",
-                annotations =  mapOf(
+                annotations = mapOf(
                     SpanIndicator('A') to SpanStyleWithAnnotation(
                         megaSpanStyle = MegaSpanStyle.DefaultColorStyle(
                             spanStyle = SpanStyle(fontStyle = FontStyle.Italic),
