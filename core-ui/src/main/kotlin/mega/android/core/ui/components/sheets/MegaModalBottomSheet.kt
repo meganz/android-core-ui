@@ -19,9 +19,9 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import mega.android.core.ui.R
 import mega.android.core.ui.components.image.MegaIcon
-import mega.android.core.ui.tokens.theme.DSTokens
 import mega.android.core.ui.theme.spacing.LocalSpacing
 import mega.android.core.ui.theme.values.IconColor
+import mega.android.core.ui.tokens.theme.DSTokens
 
 enum class MegaModalBottomSheetBackground {
     PageBackground,
@@ -36,7 +36,6 @@ fun MegaModalBottomSheet(
     onDismissRequest: () -> Unit,
     modifier: Modifier = Modifier,
     windowInsets: WindowInsets? = null,
-    dragHandle: @Composable (() -> Unit)? = null,
     properties: ModalBottomSheetProperties = ModalBottomSheetDefaults.properties,
     content: @Composable ColumnScope.() -> Unit,
 ) {
@@ -51,7 +50,7 @@ fun MegaModalBottomSheet(
         sheetState = sheetState,
         containerColor = containerColor,
         scrimColor = DSTokens.colors.background.blur,
-        dragHandle = dragHandle,
+        dragHandle = { MegaBottomSheetDragHandler() },
         shape = RoundedCornerShape(
             topStart = LocalSpacing.current.x24,
             topEnd = LocalSpacing.current.x24,

@@ -106,7 +106,6 @@ internal fun <T> SettingsOptionsModal(
         onDismissRequest = {
             onDismiss()
         },
-        dragHandle = { MegaBottomSheetDragHandler() }
     ) {
         PrimaryHeaderListItem(
             text = title,
@@ -154,7 +153,6 @@ fun <T> SettingsOptionsModal(
         onDismissRequest = {
             onDismiss()
         },
-        dragHandle = { MegaBottomSheetDragHandler() }
     ) {
         scope.buildHeader()?.Header(
             modifier = Modifier.testTag(SettingsItemConst.headerTag(key))

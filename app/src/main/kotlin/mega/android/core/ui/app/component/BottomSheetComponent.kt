@@ -96,13 +96,6 @@ fun BottomSheetComponentCatalog() {
                 onDismissRequest = {
                     showBottomSheet = false
                 },
-                dragHandle = {
-                    MegaIcon(
-                        modifier = Modifier.padding(vertical = 8.dp),
-                        painter = painterResource(id = coreR.drawable.ic_handlebar),
-                        tint = IconColor.Secondary
-                    )
-                }
             ) {
                 OneLineListItem(text = "Item 1")
                 OneLineListItem(
