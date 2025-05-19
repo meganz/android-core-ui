@@ -37,6 +37,7 @@ fun MegaModalBottomSheet(
     modifier: Modifier = Modifier,
     windowInsets: WindowInsets? = null,
     properties: ModalBottomSheetProperties = ModalBottomSheetDefaults.properties,
+    showDragHandle: Boolean = true,
     content: @Composable ColumnScope.() -> Unit,
 ) {
     val containerColor = when (bottomSheetBackground) {
@@ -50,7 +51,9 @@ fun MegaModalBottomSheet(
         sheetState = sheetState,
         containerColor = containerColor,
         scrimColor = DSTokens.colors.background.blur,
-        dragHandle = { MegaBottomSheetDragHandler() },
+        dragHandle = if (showDragHandle) {
+            { MegaBottomSheetDragHandler() }
+        } else null,
         shape = RoundedCornerShape(
             topStart = LocalSpacing.current.x24,
             topEnd = LocalSpacing.current.x24,

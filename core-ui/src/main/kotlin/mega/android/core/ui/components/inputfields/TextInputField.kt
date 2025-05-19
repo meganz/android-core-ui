@@ -546,22 +546,25 @@ internal fun BaseTextField(
                 keyboardActions = keyboardActions,
                 value = textValue,
                 onValueChange = { textFieldValue ->
-                    val value = if (textFieldValue.text.length > maxCharLimit) {
-                        textFieldValue.text.substring(0, maxCharLimit)
-                    } else {
-                        textFieldValue.text
-                    }
-                    val newValue = when {
+                    val newTextValue = when {
                         keyboardType == KeyboardType.Number -> {
-                            val digits = value.filter { it.isDigit() }
-                            textFieldValue.copy(text = digits)
+                            val digits = textFieldValue.text.filter { it.isDigit() }
+                            if (textFieldValue.text.length > maxCharLimit && digits.isNotBlank()) {
+                                digits.substring(0, digits.length.coerceAtMost(maxCharLimit))
+                            } else {
+                                digits
+                            }
                         }
 
                         else -> {
-                            textFieldValue
+                            if (textFieldValue.text.length > maxCharLimit) {
+                                textFieldValue.text.substring(0, maxCharLimit)
+                            } else {
+                                textFieldValue.text
+                            }
                         }
                     }
-                    onValueChanged?.invoke(newValue)
+                    onValueChanged?.invoke(textFieldValue.copy(text = newTextValue))
                 },
                 colors = colors,
                 shape = RoundedCornerShape(8.dp),
@@ -723,18 +726,22 @@ internal fun BaseTextField(
                 keyboardActions = keyboardActions,
                 value = baseText,
                 onValueChange = { newValue ->
-                    val value = if (newValue.length > maxCharLimit) {
-                        newValue.substring(0, maxCharLimit)
-                    } else {
-                        newValue
-                    }
                     baseText = when {
                         keyboardType == KeyboardType.Number -> {
-                            value.filter { it.isDigit() }
+                            val digits = newValue.filter { it.isDigit() }
+                            if (newValue.length > maxCharLimit && digits.isNotBlank()) {
+                                digits.substring(0, digits.length.coerceAtMost(maxCharLimit))
+                            } else {
+                                digits
+                            }
                         }
 
                         else -> {
-                            value
+                            if (newValue.length > maxCharLimit) {
+                                newValue.substring(0, maxCharLimit)
+                            } else {
+                                newValue
+                            }
                         }
                     }
                     onValueChanged?.invoke(baseText)
