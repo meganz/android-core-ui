@@ -102,4 +102,5 @@ dependencies {
     androidTestImplementation(libs.espresso.core)
     testImplementation(libs.mockito)
     testImplementation(libs.mockito.kotlin)
+    api(libs.reorderable)
 }

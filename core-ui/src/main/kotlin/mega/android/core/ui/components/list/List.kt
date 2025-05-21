@@ -157,7 +157,7 @@ fun OneLineListItem(
     enableClick: Boolean = true,
     contentPadding: PaddingValues = ListItemToken.defaultContentPadding,
     onClickListener: () -> Unit = {},
-    onLongClickListener: () -> Unit = {},
+    onLongClickListener: (() -> Unit)? = null,
 ) = ListItem(
     modifier = modifier
         .defaultMinSize(minHeight = listItemMinHeight),
@@ -276,7 +276,7 @@ private fun ListItem(
     trailingElement: (@Composable (() -> Unit))? = null,
     enableClick: Boolean = true,
     onClickListener: () -> Unit = {},
-    onLongClickListener: () -> Unit = {},
+    onLongClickListener: (() -> Unit)? = null,
     titleMaxLines: Int = TITLE_MAX_LINES,
     subtitleMaxLines: Int = MULTI_LINE_LIST_SUBTITLE_MAX_LINES,
     replaceNullSubtitleWithShimmer: Boolean = false,
