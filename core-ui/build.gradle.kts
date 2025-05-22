@@ -72,13 +72,20 @@ megaPublish {
         "builder" to builder,
     )
     dependentTasks = listOf("assembleRelease", "releaseSourcesJar")
+    // Add runtime dependencies in the Maven POM to ensure the dependent libraries are available to the client app at runtime, while remaining invisible at compile time.
     dependencies = listOf(
         Dependency(
             groupId = mavenGroupId,
             artifactId = "ui-tokens",
             version = libs.versions.mega.core.ui.tokens.get(),
             scope = "runtime"
-        )
+        ),
+        Dependency(
+            groupId = "sh.calvin.reorderable",
+            artifactId = "reorderable",
+            version = libs.versions.reorderable.get(),
+            scope = "runtime"
+        ),
     )
 }
 
@@ -102,5 +109,5 @@ dependencies {
     androidTestImplementation(libs.espresso.core)
     testImplementation(libs.mockito)
     testImplementation(libs.mockito.kotlin)
-    api(libs.reorderable)
+    implementation(libs.reorderable)
 }

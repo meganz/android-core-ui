@@ -8,6 +8,8 @@ import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.core.view.WindowCompat
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
+import mega.android.core.ui.app.screen.ReorderableList.navigateToReorderableListScreen
+import mega.android.core.ui.app.screen.ReorderableList.reorderableListScreen
 import mega.android.core.ui.app.screen.main.mainScreen
 import mega.android.core.ui.app.screen.main.mainScreenRoute
 import mega.android.core.ui.app.screen.tooltip.navigateToTooltip
@@ -29,10 +31,15 @@ class MainActivity : ComponentActivity() {
                         mainScreen(
                             onNavigateToTooltip = {
                                 navController.navigateToTooltip()
+                            },
+                            onNavigateToReorderableList = {
+                                navController.navigateToReorderableListScreen()
                             }
                         )
 
                         tooltipScreen()
+
+                        reorderableListScreen()
                     }
                 }
             }

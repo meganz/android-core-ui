@@ -46,7 +46,8 @@ import mega.android.core.ui.theme.AndroidThemeForPreviews
 
 @Composable
 internal fun MainComposeView(
-    onNavigateToTooltip: () -> Unit
+    onNavigateToTooltip: () -> Unit,
+    onNavigateToReorderableList: () -> Unit,
 ) {
     var showCloseButton by remember { mutableStateOf(true) }
     var illustrationMode by remember { mutableStateOf(IllustrationIconSizeMode.Small) }
@@ -170,6 +171,13 @@ internal fun MainComposeView(
         item(key = 28) {
             LabelledTextInputWithActionCatalog()
         }
+        item(key = 29) {
+            SettingsNavigationItem(
+                key = "reorderableList",
+                title = "ReorderableList",
+                onClicked = { onNavigateToReorderableList() }
+            )
+        }
     }
 }
 
@@ -178,7 +186,8 @@ internal fun MainComposeView(
 private fun MainComposeViewPreview() {
     AndroidThemeForPreviews {
         MainComposeView(
-            onNavigateToTooltip = {}
+            onNavigateToTooltip = {},
+            onNavigateToReorderableList = {},
         )
     }
 }

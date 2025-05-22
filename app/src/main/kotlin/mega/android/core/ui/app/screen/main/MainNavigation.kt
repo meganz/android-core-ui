@@ -6,9 +6,13 @@ import androidx.navigation.compose.composable
 internal const val mainScreenRoute = "mainScreenRoute"
 
 internal fun NavGraphBuilder.mainScreen(
-    onNavigateToTooltip: () -> Unit
+    onNavigateToTooltip: () -> Unit,
+    onNavigateToReorderableList: () -> Unit,
 ) {
     composable(route = mainScreenRoute) {
-        MainComposeView(onNavigateToTooltip = onNavigateToTooltip)
+        MainComposeView(
+            onNavigateToTooltip = onNavigateToTooltip,
+            onNavigateToReorderableList = onNavigateToReorderableList,
+        )
     }
 }
