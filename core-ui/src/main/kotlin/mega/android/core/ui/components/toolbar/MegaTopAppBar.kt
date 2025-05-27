@@ -24,11 +24,14 @@ import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
 import mega.android.core.ui.R
 import mega.android.core.ui.components.button.SecondarySmallIconButton
+import mega.android.core.ui.components.menu.TopAppBarActionsComponent
+import mega.android.core.ui.model.TopAppBarAction
 import mega.android.core.ui.preview.CombinedThemePreviews
 import mega.android.core.ui.theme.AndroidThemeForPreviews
 import mega.android.core.ui.theme.AppTheme
-import mega.android.core.ui.tokens.theme.DSTokens
 import mega.android.core.ui.theme.spacing.LocalSpacing
+import mega.android.core.ui.tokens.theme.DSTokens
+import mega.privacy.android.shared.original.core.ui.model.TopAppBarActionWithClick
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
@@ -45,6 +48,44 @@ fun MegaTopAppBar(
         actions = trailingIcons
     )
 }
+
+@Composable
+@OptIn(ExperimentalMaterial3Api::class)
+fun MegaTopAppBar(
+    title: String,
+    navigationType: AppBarNavigationType,
+    actions: List<TopAppBarActionWithClick>,
+    modifier: Modifier = Modifier,
+    actionsEnabled: Boolean = true,
+) {
+    DefaultTopAppBar(
+        modifier = modifier,
+        title = title,
+        navigationIcon = navigationType.navigationIcon(),
+        actions = {
+            TopAppBarActionsComponent(actions, actionsEnabled)
+        }
+    )
+}
+
+@Composable
+fun MegaTopAppBar(
+    title: String,
+    navigationType: AppBarNavigationType,
+    actions: List<TopAppBarAction>,
+    onActionPressed: ((TopAppBarAction) -> Unit),
+    modifier: Modifier = Modifier,
+    actionsEnabled: Boolean = true,
+) = MegaTopAppBar(
+    modifier = modifier,
+    title = title,
+    navigationType = navigationType,
+    actions = actions.addClick(onActionPressed),
+    actionsEnabled = actionsEnabled,
+)
+
+internal fun List<TopAppBarAction>.addClick(onActionPressed: ((TopAppBarAction) -> Unit)?): List<TopAppBarActionWithClick> =
+    this.map { TopAppBarActionWithClick(it) { onActionPressed?.invoke(it) } }
 
 @Deprecated(message = "Please use the version of MegaTopAppBar with AppBarNavigationType instead of injecting the navigation painter.")
 @Composable
@@ -201,6 +242,32 @@ private fun MegaTopAppBarTypePreview(
                     )
                 }
             },
+        )
+    }
+}
+
+@CombinedThemePreviews
+@Composable
+private fun MegaTopAppBarActionsPreview() {
+    val actions =
+        listOf(R.drawable.ic_alert_circle, R.drawable.ic_alert_triangle).mapIndexed { i, iconRes ->
+            object : TopAppBarAction {
+                @Composable
+                override fun getDescription() = "Action $i"
+
+                override val testTag = getDescription()
+
+                @Composable
+                override fun getIconPainter() = painterResource(id = iconRes)
+
+            }
+        }
+    AndroidThemeForPreviews {
+        MegaTopAppBar(
+            title = "Title",
+            navigationType = AppBarNavigationType.Back {},
+            actions = actions.map { TopAppBarActionWithClick(it) {} },
+            modifier = Modifier.padding(bottom = 80.dp) //make some space for the tooltip in interactive mode
         )
     }
 }
