@@ -1,5 +1,10 @@
 package mega.android.core.ui.components.tabs
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Column
@@ -15,7 +20,11 @@ import androidx.compose.material3.TabRowDefaults
 import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -24,6 +33,7 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.launch
 import mega.android.core.ui.components.MegaText
+import mega.android.core.ui.components.button.MegaOutlinedButton
 import mega.android.core.ui.components.divider.StrongDivider
 import mega.android.core.ui.model.TabItems
 import mega.android.core.ui.preview.CombinedThemePreviews
@@ -106,6 +116,7 @@ fun MegaScrollableTabRow(
  * @param beyondViewportPageCount Pages to compose and layout before and after the list of visible pages.
  * @param onTabSelected
  * @param pagerScrollEnabled Whether scrolls in the pager change the tab or not
+ * * @param hideTabs Tabs will be hidden if true. In some situation we need to temporarily hide the tabs to avoid changing current tab. Considering set [pagerScrollEnabled] to false in this case
  *
  */
 @Composable
@@ -116,6 +127,7 @@ fun MegaFixedTabRow(
     beyondViewportPageCount: Int = 0,
     onTabSelected: (Int) -> Boolean = { true },
     pagerScrollEnabled: Boolean = true,
+    hideTabs: Boolean = false,
     cells: @Composable TabsScope.() -> Unit,
 ) = MegaTabRowWithContent(
     modifier = modifier,
@@ -126,11 +138,17 @@ fun MegaFixedTabRow(
     pagerScrollEnabled = pagerScrollEnabled,
     cells = cells,
     tabRow = { pagerState, tabs, onClick ->
-        MegaFixedTabRow(
-            tabIndex = pagerState.currentPage,
-            items = tabs,
-            onClick = onClick
-        )
+        AnimatedVisibility(
+            enter = enterTabsAnimation(),
+            exit = exitTabsAnimation(),
+            visible = !hideTabs
+        ) {
+            MegaFixedTabRow(
+                tabIndex = pagerState.currentPage,
+                items = tabs,
+                onClick = onClick
+            )
+        }
     },
 )
 
@@ -142,6 +160,7 @@ fun MegaFixedTabRow(
  * @param beyondViewportPageCount Pages to compose and layout before and after the list of visible pages.
  * @param onTabSelected
  * @param pagerScrollEnabled Whether scrolls in the pager change the tab or not
+ * @param hideTabs Tabs will be hidden if true. In some situation we need to temporarily hide the tabs to avoid changing current tab. Considering set [pagerScrollEnabled] to false in this case
  *
  */
 @Composable
@@ -152,6 +171,7 @@ fun MegaScrollableTabRow(
     beyondViewportPageCount: Int = 0,
     onTabSelected: (Int) -> Boolean = { true },
     pagerScrollEnabled: Boolean = true,
+    hideTabs: Boolean = false,
     cells: @Composable TabsScope.() -> Unit,
 ) = MegaTabRowWithContent(
     modifier = modifier,
@@ -162,15 +182,26 @@ fun MegaScrollableTabRow(
     pagerScrollEnabled = pagerScrollEnabled,
     cells = cells,
     tabRow = { pagerState, tabs, onClick ->
-        MegaScrollableTabRow(
-            tabIndex = pagerState.currentPage,
-            items = tabs,
-            withDivider = false, //we add it manually to fill width
-            onClick = onClick
-        )
-        StrongDivider()
+        AnimatedVisibility(
+            enter = enterTabsAnimation(),
+            exit = exitTabsAnimation(),
+            visible = !hideTabs
+        ) {
+            Column {
+                MegaScrollableTabRow(
+                    tabIndex = pagerState.currentPage,
+                    items = tabs,
+                    withDivider = false, //we add it manually to fill width
+                    onClick = onClick
+                )
+                StrongDivider()
+            }
+        }
     },
 )
+
+private fun enterTabsAnimation() = fadeIn() + expandVertically()
+private fun exitTabsAnimation() = fadeOut() + shrinkVertically()
 
 @Composable
 private fun MegaTabRowWithContent(
@@ -286,12 +317,19 @@ private fun MegaScrollableTabRowPreview() {
 @Composable
 private fun MegaFixedTabRowWithContentPreview() {
     AndroidThemeForPreviews {
-        MegaFixedTabRow(pagerModifier = Modifier.height(200.dp)) {
+        var hideTabs by remember { mutableStateOf(false) }
+        MegaFixedTabRow(
+            pagerModifier = Modifier.height(200.dp),
+            hideTabs = hideTabs,
+            pagerScrollEnabled = !hideTabs
+        ) {
             addTextTab(TabItems("Tab A", false)) {
-                MegaText(
-                    "Tab 1 content",
-                    textColor = TextColor.Primary,
+                MegaOutlinedButton(
+                    text = if (hideTabs) "Show tabs" else "Hide tabs",
                     modifier = Modifier.align(Alignment.Center),
+                    onClick = {
+                        hideTabs = !hideTabs
+                    },
                 )
             }
             addTextTab(TabItems("Tab B", false)) {
@@ -309,12 +347,19 @@ private fun MegaFixedTabRowWithContentPreview() {
 @Composable
 private fun MegaScrollableTabRowWithContentPreview() {
     AndroidThemeForPreviews {
-        MegaScrollableTabRow(pagerModifier = Modifier.height(200.dp)) {
+        var hideTabs by remember { mutableStateOf(false) }
+        MegaScrollableTabRow(
+            pagerModifier = Modifier.height(200.dp),
+            hideTabs = hideTabs,
+            pagerScrollEnabled = !hideTabs,
+        ) {
             addTextTab(TabItems("Tab A", false)) {
-                MegaText(
-                    "Tab 1 content",
-                    textColor = TextColor.Primary,
+                MegaOutlinedButton(
+                    text = if (hideTabs) "Show tabs" else "Hide tabs",
                     modifier = Modifier.align(Alignment.Center),
+                    onClick = {
+                        hideTabs = !hideTabs
+                    },
                 )
             }
             addTextTab(TabItems("Tab B", false)) {
