@@ -38,7 +38,7 @@ fun TabsComponentCatalog() {
                 currentTabIndex = it
             }
         )
-        MegaFixedTabRow(pagerModifier = Modifier.height(200.dp)) {
+        MegaFixedTabRow(modifier = Modifier.height(260.dp)) {
             addTextTab(TabItems("Tab A", false)) {
                 MegaText(
                     "Tab 1 content",
@@ -88,7 +88,7 @@ fun TabsComponentCatalog() {
                 currentTabIndex = it
             }
         )
-        MegaScrollableTabRow(pagerModifier = Modifier.height(200.dp)) {
+        MegaScrollableTabRow(modifier = Modifier.height(260.dp)) {
             (1..6).forEach {tabIndex ->
                 addTextTab(TabItems("Tab $tabIndex", false)) {
                     MegaText(

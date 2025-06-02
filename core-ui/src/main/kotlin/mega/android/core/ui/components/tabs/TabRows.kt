@@ -11,9 +11,14 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListScope
+import androidx.compose.foundation.lazy.LazyListState
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ScrollableTabRow
 import androidx.compose.material3.TabRow
 import androidx.compose.material3.TabRowDefaults
@@ -21,6 +26,7 @@ import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -28,14 +34,17 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.unit.dp
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.launch
+import mega.android.core.ui.components.LocalTopAppBarScrollBehavior
 import mega.android.core.ui.components.MegaText
 import mega.android.core.ui.components.button.MegaOutlinedButton
 import mega.android.core.ui.components.divider.StrongDivider
 import mega.android.core.ui.model.TabItems
+import mega.android.core.ui.modifiers.scrolledTopAppBarBackgroundColor
 import mega.android.core.ui.preview.CombinedThemePreviews
 import mega.android.core.ui.theme.AndroidThemeForPreviews
 import mega.android.core.ui.theme.spacing.LocalSpacing
@@ -111,7 +120,7 @@ fun MegaScrollableTabRow(
 /**
  * Scrollable tab row with a linked horizontal pager to show the content.
  * @param modifier to be applied to the whole component
- * @param pagerModifier to be applied to pager showing the content
+ * @param applyScrolledBackgroundColor Whether to apply scrolled background color to tabs when content is scrolled or not.
  * @param initialSelectedIndex Please notice that as content is shown in a pager selected index is stored in an internal pager state
  * @param beyondViewportPageCount Pages to compose and layout before and after the list of visible pages.
  * @param onTabSelected
@@ -122,7 +131,7 @@ fun MegaScrollableTabRow(
 @Composable
 fun MegaFixedTabRow(
     modifier: Modifier = Modifier,
-    pagerModifier: Modifier = Modifier,
+    applyScrolledBackgroundColor: Boolean = true,
     initialSelectedIndex: Int = 0,
     beyondViewportPageCount: Int = 0,
     onTabSelected: (Int) -> Boolean = { true },
@@ -131,7 +140,6 @@ fun MegaFixedTabRow(
     cells: @Composable TabsScope.() -> Unit,
 ) = MegaTabRowWithContent(
     modifier = modifier,
-    pagerModifier = pagerModifier,
     initialSelectedIndex = initialSelectedIndex,
     beyondViewportPageCount = beyondViewportPageCount,
     onTabSelected = onTabSelected,
@@ -146,7 +154,8 @@ fun MegaFixedTabRow(
             MegaFixedTabRow(
                 tabIndex = pagerState.currentPage,
                 items = tabs,
-                onClick = onClick
+                onClick = onClick,
+                modifier = if (applyScrolledBackgroundColor) Modifier.scrolledTopAppBarBackgroundColor() else Modifier,
             )
         }
     },
@@ -155,7 +164,7 @@ fun MegaFixedTabRow(
 /**
  * Scrollable tab row with a linked horizontal pager to show the content.
  * @param modifier to be applied to the whole component
- * @param pagerModifier to be applied to pager showing the content
+ * @param applyScrolledBackgroundColor Whether to apply scrolled background color to tabs when content is scrolled or not.
  * @param initialSelectedIndex Please notice that as content is shown in a pager selected index is stored in an internal pager state
  * @param beyondViewportPageCount Pages to compose and layout before and after the list of visible pages.
  * @param onTabSelected
@@ -166,7 +175,7 @@ fun MegaFixedTabRow(
 @Composable
 fun MegaScrollableTabRow(
     modifier: Modifier = Modifier,
-    pagerModifier: Modifier = Modifier,
+    applyScrolledBackgroundColor: Boolean = true,
     initialSelectedIndex: Int = 0,
     beyondViewportPageCount: Int = 0,
     onTabSelected: (Int) -> Boolean = { true },
@@ -175,7 +184,6 @@ fun MegaScrollableTabRow(
     cells: @Composable TabsScope.() -> Unit,
 ) = MegaTabRowWithContent(
     modifier = modifier,
-    pagerModifier = pagerModifier,
     initialSelectedIndex = initialSelectedIndex,
     beyondViewportPageCount = beyondViewportPageCount,
     onTabSelected = onTabSelected,
@@ -192,7 +200,8 @@ fun MegaScrollableTabRow(
                     tabIndex = pagerState.currentPage,
                     items = tabs,
                     withDivider = false, //we add it manually to fill width
-                    onClick = onClick
+                    onClick = onClick,
+                    modifier = if (applyScrolledBackgroundColor) Modifier.scrolledTopAppBarBackgroundColor() else Modifier,
                 )
                 StrongDivider()
             }
@@ -206,7 +215,6 @@ private fun exitTabsAnimation() = fadeOut() + shrinkVertically()
 @Composable
 private fun MegaTabRowWithContent(
     modifier: Modifier = Modifier,
-    pagerModifier: Modifier = Modifier,
     initialSelectedIndex: Int = 0,
     beyondViewportPageCount: Int = 0,
     onTabSelected: (Int) -> Boolean = { true },
@@ -226,17 +234,36 @@ private fun MegaTabRowWithContent(
     ) {
         tabs.size
     }
+    @OptIn(ExperimentalMaterial3Api::class)
     Column(modifier.fillMaxWidth()) {
+        //set scroll behavior to the selected tab if it has a listState
+        var selectedTabIndex by remember { mutableIntStateOf(0) }
+        val listStates = tabs.indices.mapNotNull { index ->
+            tabs[index].listState?.let { index to it }
+        }.toMap()
+        if (listStates.isNotEmpty()) {
+            val currentScrollBehaviorState = LocalTopAppBarScrollBehavior.current
+            LaunchedEffect(selectedTabIndex) {
+                listStates[selectedTabIndex]?.let { currentListState ->
+                    currentScrollBehaviorState?.state?.contentOffset =
+                        if (currentListState.firstVisibleItemIndex == 0 && currentListState.firstVisibleItemScrollOffset == 0) {
+                            0f
+                        } else {
+                            currentScrollBehaviorState?.state?.heightOffsetLimit ?: 0f
+                        }
+                }
+            }
+        }
         tabRow(pagerState, tabs.map { it.tabItem }) { index ->
             coroutineScope.launch {
                 if (onTabSelected(index)) {
+                    selectedTabIndex = index
                     pagerState.animateScrollToPage(index)
                 }
             }
         }
         HorizontalPager(
             state = pagerState,
-            modifier = pagerModifier,
             userScrollEnabled = pagerScrollEnabled,
             beyondViewportPageCount = beyondViewportPageCount,
         ) { page ->
@@ -248,6 +275,7 @@ private fun MegaTabRowWithContent(
         }
 
         LaunchedEffect(pagerState.currentPage) {
+            selectedTabIndex = pagerState.currentPage
             onTabSelected(pagerState.currentPage)
         }
     }
@@ -255,6 +283,7 @@ private fun MegaTabRowWithContent(
 
 internal data class TabContent(
     val tabItem: TabItems,
+    val listState: LazyListState? = null,
     val content: @Composable (BoxScope.(isActive: Boolean) -> Unit)? = null,
 )
 
@@ -263,6 +292,12 @@ internal data class TabContent(
  */
 class TabsScope {
     private val cells: MutableList<TabContent> = mutableListOf()
+
+    /**
+     * Adds a new text tab with its content in a Box
+     * @param tabItem Tab definition
+     * @param content the BoxScope content to show when this tab is selected
+     */
     fun addTextTab(
         tabItem: TabItems,
         content: @Composable (BoxScope.(isActive: Boolean) -> Unit)? = null,
@@ -274,6 +309,61 @@ class TabsScope {
             )
         )
     }
+
+    /**
+     * Adds a new text tab with its content in a [LazyColumn]
+     * @param tabItem Tab definition
+     * @param listState This will be used to update LocalTopAppBarScrollBehavior, so MegaTopAppBar will synchronize with the current selected tab when changed
+     * @param content the LazyListScope content to show when this tab is selected
+     */
+    @Composable
+    fun addLazyListTextTab(
+        tabItem: TabItems,
+        listState: LazyListState = rememberLazyListState(),
+        content: (LazyListScope.(isActive: Boolean) -> Unit),
+    ) = addTextTabWithLazyListState(
+        tabItem = tabItem,
+        listState = listState,
+    ) { isActive, state, modifier ->
+        LazyColumn(
+            state = state,
+            modifier = modifier,
+            content = {
+                content(isActive)
+            }
+        )
+    }
+
+    /**
+     * Adds a new text tab with its content tied to a LazyListState that can be used to show scrollable content,
+     * this is a general solution, if a simple LazyColumn is used to show the content, consider using [addLazyListTextTab] instead
+     * @param tabItem Tab definition
+     * @param listState This will be used to update LocalTopAppBarScrollBehavior, so MegaTopAppBar will synchronize with the current selected tab when changed
+     * @param content the LazyListScope content to show when this tab is selected. IMPORTANT: `listState` and `modifer` should be used to ensure correct synchronization between the content and the top app bar scroll behaviour
+     */
+    @Composable
+    fun addTextTabWithLazyListState(
+        tabItem: TabItems,
+        listState: LazyListState = rememberLazyListState(),
+        content: @Composable (BoxScope.(isActive: Boolean, listState: LazyListState, modifier: Modifier) -> Unit),
+    ) = cells.add(
+        TabContent(
+            tabItem = tabItem,
+            listState = listState,
+            content = { isActive ->
+                @OptIn(ExperimentalMaterial3Api::class)
+                content(
+                    isActive,
+                    listState,
+                    Modifier.then(
+                        if (LocalTopAppBarScrollBehavior.current == null) Modifier else Modifier.nestedScroll(
+                            LocalTopAppBarScrollBehavior.current!!.nestedScrollConnection
+                        )
+                    )
+                )
+            }
+        )
+    )
 
     internal fun build(): ImmutableList<TabContent> = persistentListOf(*cells.toTypedArray())
 }
@@ -319,7 +409,7 @@ private fun MegaFixedTabRowWithContentPreview() {
     AndroidThemeForPreviews {
         var hideTabs by remember { mutableStateOf(false) }
         MegaFixedTabRow(
-            pagerModifier = Modifier.height(200.dp),
+            modifier = Modifier.height(260.dp),
             hideTabs = hideTabs,
             pagerScrollEnabled = !hideTabs
         ) {
@@ -349,7 +439,7 @@ private fun MegaScrollableTabRowWithContentPreview() {
     AndroidThemeForPreviews {
         var hideTabs by remember { mutableStateOf(false) }
         MegaScrollableTabRow(
-            pagerModifier = Modifier.height(200.dp),
+            modifier = Modifier.height(260.dp),
             hideTabs = hideTabs,
             pagerScrollEnabled = !hideTabs,
         ) {

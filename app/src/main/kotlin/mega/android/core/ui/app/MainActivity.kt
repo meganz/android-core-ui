@@ -8,10 +8,10 @@ import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.core.view.WindowCompat
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
-import mega.android.core.ui.app.screen.ReorderableList.navigateToReorderableListScreen
-import mega.android.core.ui.app.screen.ReorderableList.reorderableListScreen
 import mega.android.core.ui.app.screen.main.mainScreen
 import mega.android.core.ui.app.screen.main.mainScreenRoute
+import mega.android.core.ui.app.screen.reorderablelist.navigateToReorderableListScreen
+import mega.android.core.ui.app.screen.reorderablelist.reorderableListScreen
 import mega.android.core.ui.app.screen.tooltip.navigateToTooltip
 import mega.android.core.ui.app.screen.tooltip.tooltipScreen
 import mega.android.core.ui.components.surface.ThemedSurface
@@ -39,7 +39,7 @@ class MainActivity : ComponentActivity() {
 
                         tooltipScreen()
 
-                        reorderableListScreen()
+                        reorderableListScreen(navController::popBackStack)
                     }
                 }
             }

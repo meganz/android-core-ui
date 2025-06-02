@@ -3,7 +3,6 @@ package mega.android.core.ui.components.toolbar
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.RowScope
-import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
@@ -14,7 +13,9 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarColors
 import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
@@ -23,7 +24,10 @@ import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
 import mega.android.core.ui.R
+import mega.android.core.ui.components.LocalTopAppBarScrollBehavior
+import mega.android.core.ui.components.OVERLAP_FRACTION_THRESHOLD
 import mega.android.core.ui.components.button.SecondarySmallIconButton
+import mega.android.core.ui.components.divider.StrongDivider
 import mega.android.core.ui.components.menu.TopAppBarActionsComponent
 import mega.android.core.ui.model.TopAppBarAction
 import mega.android.core.ui.preview.CombinedThemePreviews
@@ -34,37 +38,43 @@ import mega.android.core.ui.tokens.theme.DSTokens
 import mega.privacy.android.shared.original.core.ui.model.TopAppBarActionWithClick
 
 @Composable
-@OptIn(ExperimentalMaterial3Api::class)
 fun MegaTopAppBar(
     title: String,
     navigationType: AppBarNavigationType,
     modifier: Modifier = Modifier,
+    drawBottomLineOnScrolledContent: Boolean = false,
     trailingIcons: @Composable RowScope.() -> Unit = {},
 ) {
+    @OptIn(ExperimentalMaterial3Api::class)
     DefaultTopAppBar(
         modifier = modifier,
         title = title,
         navigationIcon = navigationType.navigationIcon(),
-        actions = trailingIcons
+        actions = trailingIcons,
+        scrollBehavior = LocalTopAppBarScrollBehavior.current,
+        drawBottomLineOnScrolledContent = drawBottomLineOnScrolledContent,
     )
 }
 
 @Composable
-@OptIn(ExperimentalMaterial3Api::class)
 fun MegaTopAppBar(
     title: String,
     navigationType: AppBarNavigationType,
     actions: List<TopAppBarActionWithClick>,
     modifier: Modifier = Modifier,
+    drawBottomLineOnScrolledContent: Boolean = false,
     actionsEnabled: Boolean = true,
 ) {
+    @OptIn(ExperimentalMaterial3Api::class)
     DefaultTopAppBar(
         modifier = modifier,
         title = title,
         navigationIcon = navigationType.navigationIcon(),
+        scrollBehavior = LocalTopAppBarScrollBehavior.current,
         actions = {
             TopAppBarActionsComponent(actions, actionsEnabled)
-        }
+        },
+        drawBottomLineOnScrolledContent = drawBottomLineOnScrolledContent,
     )
 }
 
@@ -75,6 +85,7 @@ fun MegaTopAppBar(
     actions: List<TopAppBarAction>,
     onActionPressed: ((TopAppBarAction) -> Unit),
     modifier: Modifier = Modifier,
+    drawBottomLineOnScrolledContent: Boolean = false,
     actionsEnabled: Boolean = true,
 ) = MegaTopAppBar(
     modifier = modifier,
@@ -82,6 +93,7 @@ fun MegaTopAppBar(
     navigationType = navigationType,
     actions = actions.addClick(onActionPressed),
     actionsEnabled = actionsEnabled,
+    drawBottomLineOnScrolledContent = drawBottomLineOnScrolledContent,
 )
 
 internal fun List<TopAppBarAction>.addClick(onActionPressed: ((TopAppBarAction) -> Unit)?): List<TopAppBarActionWithClick> =
@@ -89,17 +101,19 @@ internal fun List<TopAppBarAction>.addClick(onActionPressed: ((TopAppBarAction) 
 
 @Deprecated(message = "Please use the version of MegaTopAppBar with AppBarNavigationType instead of injecting the navigation painter.")
 @Composable
-@OptIn(ExperimentalMaterial3Api::class)
 fun MegaTopAppBar(
     title: String,
     modifier: Modifier = Modifier,
     navigationIcon: Painter? = null,
+    drawBottomLineOnScrolledContent: Boolean = false,
     trailingIcons: @Composable RowScope.() -> Unit = {},
     onNavigationIconClicked: () -> Unit = {},
 ) {
+    @OptIn(ExperimentalMaterial3Api::class)
     DefaultTopAppBar(
         modifier = modifier,
         title = title,
+        scrollBehavior = LocalTopAppBarScrollBehavior.current,
         navigationIcon = {
             navigationIcon?.let {
                 IconButton(
@@ -114,12 +128,12 @@ fun MegaTopAppBar(
                 }
             }
         },
-        actions = trailingIcons
+        actions = trailingIcons,
+        drawBottomLineOnScrolledContent = drawBottomLineOnScrolledContent,
     )
 }
 
 @Composable
-@OptIn(ExperimentalMaterial3Api::class)
 fun TransparentTopBar(
     modifier: Modifier = Modifier,
     navigationIcon: Painter? = null,
@@ -127,6 +141,7 @@ fun TransparentTopBar(
     onNavigationIconClicked: () -> Unit = {},
     backgroundAlpha: Float = 0f
 ) {
+    @OptIn(ExperimentalMaterial3Api::class)
     DefaultTopAppBar(
         modifier = Modifier
             .background(DSTokens.colors.background.pageBackground.copy(alpha = backgroundAlpha))
@@ -150,7 +165,8 @@ fun TransparentTopBar(
             navigationIconContentColor = DSTokens.colors.icon.primary,
             titleContentColor = DSTokens.colors.text.primary,
             actionIconContentColor = DSTokens.colors.icon.primary
-        )
+        ),
+        drawBottomLineOnScrolledContent = false
     )
 }
 
@@ -161,66 +177,35 @@ private fun DefaultTopAppBar(
     title: String,
     navigationIcon: @Composable () -> Unit = {},
     actions: @Composable RowScope.() -> Unit = {},
-    colors: TopAppBarColors? = null
+    colors: TopAppBarColors? = null,
+    drawBottomLineOnScrolledContent: Boolean,
+    scrollBehavior: TopAppBarScrollBehavior? = null,
 ) {
-    TopAppBar(
-        modifier = modifier,
-        windowInsets = WindowInsets(top = 0.dp, bottom = 0.dp),
-        title = {
-            Text(
-                text = title,
-                style = AppTheme.typography.titleLarge
-            )
-        },
-        navigationIcon = navigationIcon,
-        actions = actions,
-        colors = colors ?: TopAppBarDefaults.topAppBarColors(
-            containerColor = DSTokens.colors.background.pageBackground,
-            scrolledContainerColor = DSTokens.colors.background.pageBackground,
-            navigationIconContentColor = DSTokens.colors.icon.primary,
-            titleContentColor = DSTokens.colors.text.primary,
-            actionIconContentColor = DSTokens.colors.icon.primary
-        )
-    )
-}
-
-@CombinedThemePreviews
-@Composable
-private fun MegaTopAppBarPreview() {
-    AndroidThemeForPreviews {
-        MegaTopAppBar(
-            title = "Title",
-            navigationIcon = painterResource(id = R.drawable.ic_arrow_left),
-            trailingIcons = {
-                IconButton(modifier = Modifier.wrapContentHeight(), onClick = {}) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.ic_close),
-                        contentDescription = "Cancel Icon"
-                    )
-                }
+    Box(modifier = modifier) {
+        TopAppBar(
+            title = {
+                Text(
+                    text = title,
+                    style = AppTheme.typography.titleLarge
+                )
             },
-            onNavigationIconClicked = {}
-        )
-    }
-}
-
-@CombinedThemePreviews
-@Composable
-private fun MegaTransparentTopAppBarPreview() {
-    AndroidThemeForPreviews {
-        Box(modifier = Modifier.background(color = Color.Red)) {
-            TransparentTopBar(
-                navigationIcon = painterResource(id = R.drawable.ic_arrow_left),
-                trailingIcons = {
-                    SecondarySmallIconButton(
-                        modifier = Modifier
-                            .padding(end = LocalSpacing.current.x12)
-                            .size(32.dp),
-                        icon = painterResource(id = R.drawable.ic_close),
-                        onClick = { })
-                },
-                onNavigationIconClicked = {}
+            scrollBehavior = scrollBehavior,
+            navigationIcon = navigationIcon,
+            actions = actions,
+            colors = colors ?: TopAppBarDefaults.topAppBarColors(
+                containerColor = DSTokens.colors.background.pageBackground,
+                scrolledContainerColor = DSTokens.colors.background.surface1,
+                navigationIconContentColor = DSTokens.colors.icon.primary,
+                titleContentColor = DSTokens.colors.text.primary,
+                actionIconContentColor = DSTokens.colors.icon.primary
             )
+        )
+        // Bottom line if scroll behavior is overlapped
+        if (drawBottomLineOnScrolledContent &&
+            (LocalTopAppBarScrollBehavior.current?.state?.overlappedFraction ?: 0f)
+            > OVERLAP_FRACTION_THRESHOLD
+        ) {
+            StrongDivider(Modifier.align(Alignment.BottomCenter))
         }
     }
 }
@@ -243,6 +228,27 @@ private fun MegaTopAppBarTypePreview(
                 }
             },
         )
+    }
+}
+
+@CombinedThemePreviews
+@Composable
+private fun MegaTransparentTopAppBarPreview() {
+    AndroidThemeForPreviews {
+        Box(modifier = Modifier.background(color = Color.Red)) {
+            TransparentTopBar(
+                navigationIcon = painterResource(id = R.drawable.ic_arrow_left),
+                trailingIcons = {
+                    SecondarySmallIconButton(
+                        modifier = Modifier
+                            .padding(end = LocalSpacing.current.x12)
+                            .size(32.dp),
+                        icon = painterResource(id = R.drawable.ic_close),
+                        onClick = { })
+                },
+                onNavigationIconClicked = {}
+            )
+        }
     }
 }
 
