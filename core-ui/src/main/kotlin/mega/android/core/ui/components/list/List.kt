@@ -1,7 +1,6 @@
 package mega.android.core.ui.components.list
 
 import androidx.annotation.DrawableRes
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -34,10 +33,10 @@ import mega.android.core.ui.components.util.shimmerEffect
 import mega.android.core.ui.preview.CombinedThemePreviews
 import mega.android.core.ui.theme.AndroidThemeForPreviews
 import mega.android.core.ui.theme.AppTheme
-import mega.android.core.ui.tokens.theme.DSTokens
 import mega.android.core.ui.theme.spacing.LocalSpacing
 import mega.android.core.ui.theme.values.IconColor
 import mega.android.core.ui.theme.values.TextColor
+import mega.android.core.ui.tokens.theme.DSTokens
 
 private val listItemMinHeight = 60.dp
 private val headerListItemMinHeight = 36.dp
@@ -100,13 +99,12 @@ fun SecondaryHeaderListItem(
     )
 }
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun HeaderListItem(
     text: String,
     textColor: TextColor,
-    headerTextStyle: HeaderTextStyle = HeaderTextStyle.Small,
     modifier: Modifier = Modifier,
+    headerTextStyle: HeaderTextStyle = HeaderTextStyle.Small,
     @DrawableRes rightIconRes: Int?,
     iconColor: IconColor,
     enableClick: Boolean = true,
@@ -178,11 +176,12 @@ fun TwoLineListItem(
     modifier: Modifier = Modifier,
     leadingElement: (@Composable (BoxScope.() -> Unit))? = null,
     trailingElement: (@Composable (() -> Unit))? = null,
+    subtitleOverflow: TextOverflow = TextOverflow.Ellipsis,
     contentPadding: PaddingValues = ListItemToken.defaultContentPadding,
     enableClick: Boolean = true,
     onClickListener: () -> Unit = {},
     onLongClickListener: () -> Unit = {},
-    replaceNullSubtitleWithShimmer: Boolean = false
+    replaceNullSubtitleWithShimmer: Boolean = false,
 ) = ListItem(
     modifier = modifier
         .defaultMinSize(minHeight = listItemMinHeight),
@@ -190,12 +189,13 @@ fun TwoLineListItem(
     subtitle = subtitle,
     leadingElement = leadingElement,
     trailingElement = trailingElement,
+    subtitleOverflow = subtitleOverflow,
     contentPadding = contentPadding,
     enableClick = enableClick,
     onClickListener = onClickListener,
     onLongClickListener = onLongClickListener,
     subtitleMaxLines = TWO_LINE_LIST_SUBTITLE_MAX_LINES,
-    replaceNullSubtitleWithShimmer = replaceNullSubtitleWithShimmer
+    replaceNullSubtitleWithShimmer = replaceNullSubtitleWithShimmer,
 )
 
 @Deprecated(
@@ -212,6 +212,7 @@ fun MultiLineListItem(
     modifier: Modifier = Modifier,
     leadingElement: (@Composable (BoxScope.() -> Unit))? = null,
     trailingElement: (@Composable (() -> Unit))? = null,
+    subtitleOverflow: TextOverflow = TextOverflow.Ellipsis,
     contentPadding: PaddingValues = ListItemToken.defaultContentPadding,
     enableClick: Boolean = true,
     onClickListener: () -> Unit = {},
@@ -223,6 +224,7 @@ fun MultiLineListItem(
     subtitle = subtitle,
     leadingElement = leadingElement,
     trailingElement = trailingElement,
+    subtitleOverflow = subtitleOverflow,
     contentPadding = contentPadding,
     enableClick = enableClick,
     onClickListener = onClickListener,
@@ -239,6 +241,7 @@ fun FlexibleLineListItem(
     subtitleMaxLines: Int = Int.MAX_VALUE,
     leadingElement: (@Composable (BoxScope.() -> Unit))? = null,
     trailingElement: (@Composable (() -> Unit))? = null,
+    subtitleOverflow: TextOverflow = TextOverflow.Ellipsis,
     contentPadding: PaddingValues = ListItemToken.defaultContentPadding,
     enableClick: Boolean = true,
     onClickListener: () -> Unit = {},
@@ -254,6 +257,7 @@ fun FlexibleLineListItem(
         subtitle = subtitle,
         leadingElement = leadingElement,
         trailingElement = trailingElement,
+        subtitleOverflow = subtitleOverflow,
         contentPadding = contentPadding,
         enableClick = enableClick,
         onClickListener = onClickListener,
@@ -265,7 +269,6 @@ fun FlexibleLineListItem(
     )
 }
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun ListItem(
     modifier: Modifier,
@@ -274,6 +277,7 @@ private fun ListItem(
     subtitle: String? = null,
     leadingElement: (@Composable (BoxScope.() -> Unit))? = null,
     trailingElement: (@Composable (() -> Unit))? = null,
+    subtitleOverflow: TextOverflow = TextOverflow.Ellipsis,
     enableClick: Boolean = true,
     onClickListener: () -> Unit = {},
     onLongClickListener: (() -> Unit)? = null,
@@ -329,7 +333,7 @@ private fun ListItem(
                     textColor = TextColor.Secondary,
                     style = AppTheme.typography.bodyMedium,
                     maxLines = subtitleMaxLines,
-                    overflow = TextOverflow.Ellipsis
+                    overflow = subtitleOverflow,
                 )
             } else if (replaceNullSubtitleWithShimmer) {
                 Spacer(
@@ -366,6 +370,18 @@ private fun TwoLineListItemPreview() {
             title = "List item",
             subtitle = "Supporting line text lorem ipsum lorem ipsum lorem ipsum lorem ipsum",
             modifier = Modifier
+        )
+    }
+}
+
+@Composable
+@CombinedThemePreviews
+private fun TwoLineListItemMiddleEllipsisSubtitlePreview() {
+    AndroidThemeForPreviews {
+        TwoLineListItem(
+            title = "List item",
+            subtitle = "Supporting line text lorem ipsum lorem ipsum lorem ipsum lorem ipsum",
+            subtitleOverflow = TextOverflow.MiddleEllipsis,
         )
     }
 }
