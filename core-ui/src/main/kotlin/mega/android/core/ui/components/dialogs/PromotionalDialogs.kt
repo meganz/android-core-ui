@@ -99,7 +99,7 @@ fun PromotionalImageDialog(
             MegaTopAppBar(
                 modifier = Modifier.wrapContentHeight(),
                 title = "",
-                navigationIcon = if (showCloseButton) painterResource(id = R.drawable.ic_close) else null,
+                navigationIcon = if (showCloseButton) painterResource(id = R.drawable.ic_close_medium_thin_outline) else null,
                 onNavigationIconClicked = onDismissRequest
             )
 
@@ -214,7 +214,7 @@ fun PromotionalFullImageDialog(
                         contentPadding = PaddingValues(4.dp)
                     ) {
                         MegaIcon(
-                            painter = painterResource(id = R.drawable.ic_close),
+                            painter = painterResource(id = R.drawable.ic_close_medium_thin_outline),
                             tint = IconColor.OnColor
                         )
                     }
@@ -269,7 +269,7 @@ fun PromotionalIllustrationDialog(
             MegaTopAppBar(
                 modifier = Modifier.wrapContentHeight(),
                 title = "",
-                navigationIcon = if (showCloseButton) painterResource(id = R.drawable.ic_close) else null,
+                navigationIcon = if (showCloseButton) painterResource(id = R.drawable.ic_close_medium_thin_outline) else null,
                 onNavigationIconClicked = onDismissRequest
             )
 

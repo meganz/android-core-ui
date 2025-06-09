@@ -53,5 +53,5 @@ sealed class AppBarNavigationType(
      */
     @Immutable
     data class Close(override val onNavigationIconClicked: () -> Unit) :
-        AppBarNavigationType(R.drawable.ic_close)
+        AppBarNavigationType(R.drawable.ic_close_medium_thin_outline)
 }

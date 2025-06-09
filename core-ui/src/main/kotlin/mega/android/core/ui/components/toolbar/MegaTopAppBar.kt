@@ -222,7 +222,7 @@ private fun MegaTopAppBarTypePreview(
             trailingIcons = {
                 IconButton(modifier = Modifier.wrapContentHeight(), onClick = {}) {
                     Icon(
-                        painter = painterResource(id = R.drawable.ic_close),
+                        painter = painterResource(id = R.drawable.ic_close_medium_thin_outline),
                         contentDescription = "Cancel Icon"
                     )
                 }
@@ -243,7 +243,7 @@ private fun MegaTransparentTopAppBarPreview() {
                         modifier = Modifier
                             .padding(end = LocalSpacing.current.x12)
                             .size(32.dp),
-                        icon = painterResource(id = R.drawable.ic_close),
+                        icon = painterResource(id = R.drawable.ic_close_medium_thin_outline),
                         onClick = { })
                 },
                 onNavigationIconClicked = {}

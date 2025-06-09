@@ -101,7 +101,7 @@ fun ButtonComponentCatalog() {
             )
             AccessoryBarButtonGroup(
                 firstButton = AccessoryBarButtonContent(
-                    icon = painterResource(id = R.drawable.ic_close),
+                    icon = painterResource(id = R.drawable.ic_close_medium_thin_outline),
                     text = "Cancel",
                     onClick = {}
                 ),

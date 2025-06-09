@@ -586,7 +586,7 @@ internal fun BaseTextField(
                                         .clickable {
                                             onValueChanged?.invoke(TextFieldValue(""))
                                         },
-                                    painter = painterResource(id = R.drawable.ic_close),
+                                    painter = painterResource(id = R.drawable.ic_close_medium_thin_outline),
                                     tint = DSTokens.colors.icon.primary,
                                     contentDescription = "Clear Text"
                                 )
@@ -767,7 +767,7 @@ internal fun BaseTextField(
                                             baseText = ""
                                             onValueChanged?.invoke("")
                                         },
-                                    painter = painterResource(id = R.drawable.ic_close),
+                                    painter = painterResource(id = R.drawable.ic_close_medium_thin_outline),
                                     tint = DSTokens.colors.icon.primary,
                                     contentDescription = "Clear Text"
                                 )
@@ -917,7 +917,7 @@ private fun BaseReadOnlyTextField(
                                         baseText = ""
                                         onValueChanged?.invoke("")
                                     },
-                                painter = painterResource(id = R.drawable.ic_close),
+                                painter = painterResource(id = R.drawable.ic_close_medium_thin_outline),
                                 tint = DSTokens.colors.icon.primary,
                                 contentDescription = "Clear Text"
                             )

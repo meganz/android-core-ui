@@ -148,7 +148,7 @@ private fun BadgePreview() {
                 Badge(
                     badgeType = it,
                     text = it.name,
-                    icon = painterResource(id = R.drawable.ic_close)
+                    icon = painterResource(id = R.drawable.ic_close_medium_thin_outline)
                 )
             }
         }

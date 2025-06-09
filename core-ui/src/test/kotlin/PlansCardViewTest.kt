@@ -81,7 +81,7 @@ class PlansCardViewTest {
             PlansCard(
                 title = "Title",
                 featuresSectionTitle = expectedSectionTitle,
-                features = expected.map { PlanFeature(R.drawable.ic_close, it) }
+                features = expected.map { PlanFeature(R.drawable.ic_close_medium_thin_outline, it) }
             )
         }
 

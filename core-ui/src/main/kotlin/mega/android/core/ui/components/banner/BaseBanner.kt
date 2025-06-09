@@ -99,7 +99,7 @@ internal fun BaseBanner(
                     modifier = Modifier
                         .size(LocalSpacing.current.x24)
                         .clickable { onCancelButtonClick() },
-                    painter = painterResource(id = R.drawable.ic_close),
+                    painter = painterResource(id = R.drawable.ic_close_medium_thin_outline),
                     tint = DSTokens.colors.icon.primary,
                     contentDescription = "Banner Cancel"
                 )

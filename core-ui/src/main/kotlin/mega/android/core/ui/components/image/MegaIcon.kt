@@ -116,7 +116,7 @@ fun MegaIcon(
 private fun MegaIconPreview() {
     AndroidThemeForPreviews {
         MegaIcon(
-            painter = painterResource(id = R.drawable.ic_close),
+            painter = painterResource(id = R.drawable.ic_close_medium_thin_outline),
             tint = IconColor.Primary
         )
     }
@@ -127,7 +127,7 @@ private fun MegaIconPreview() {
 private fun MegaIconWithSupportTintPreview() {
     AndroidThemeForPreviews {
         MegaIcon(
-            painter = painterResource(id = R.drawable.ic_close),
+            painter = painterResource(id = R.drawable.ic_close_medium_thin_outline),
             supportTint = SupportColor.Success
         )
     }
@@ -138,7 +138,7 @@ private fun MegaIconWithSupportTintPreview() {
 private fun MegaIconWithLinkColorTintPreview() {
     AndroidThemeForPreviews {
         MegaIcon(
-            painter = painterResource(id = R.drawable.ic_close),
+            painter = painterResource(id = R.drawable.ic_close_medium_thin_outline),
             linkColorTint = LinkColor.Primary
         )
     }
@@ -149,7 +149,7 @@ private fun MegaIconWithLinkColorTintPreview() {
 private fun MegaIconPreviewUnspecified() {
     AndroidThemeForPreviews {
         MegaIcon(
-            painter = painterResource(id = R.drawable.ic_close),
+            painter = painterResource(id = R.drawable.ic_close_medium_thin_outline),
         )
     }
 }
@@ -159,7 +159,7 @@ private fun MegaIconPreviewUnspecified() {
 private fun MegaIconWithComponentsTintPreview() {
     AndroidThemeForPreviews {
         MegaIcon(
-            painter = painterResource(id = R.drawable.ic_close),
+            painter = painterResource(id = R.drawable.ic_close_medium_thin_outline),
             componentsColorTint = ComponentsColor.Interactive
         )
     }

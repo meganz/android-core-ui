@@ -122,7 +122,7 @@ fun PromotionalImageSheet(
             MegaTopAppBar(
                 modifier = Modifier,
                 title = "",
-                navigationIcon = if (showCloseButton) painterResource(id = R.drawable.ic_close) else null,
+                navigationIcon = if (showCloseButton) painterResource(id = R.drawable.ic_close_medium_thin_outline) else null,
                 onNavigationIconClicked = {
                     coroutineScope.launch {
                         sheetState.hide()
@@ -269,7 +269,7 @@ fun PromotionalFullImageSheet(
                     contentPadding = PaddingValues(4.dp)
                 ) {
                     MegaIcon(
-                        painter = painterResource(id = R.drawable.ic_close),
+                        painter = painterResource(id = R.drawable.ic_close_medium_thin_outline),
                         tint = IconColor.OnColor
                     )
                 }
@@ -332,7 +332,7 @@ fun PromotionalIllustrationSheet(
             MegaTopAppBar(
                 modifier = Modifier.padding(top = spacing.x8),
                 title = "",
-                navigationIcon = if (showCloseButton) painterResource(id = R.drawable.ic_close) else null,
+                navigationIcon = if (showCloseButton) painterResource(id = R.drawable.ic_close_medium_thin_outline) else null,
                 onNavigationIconClicked = {
                     coroutineScope.launch {
                         sheetState.hide()

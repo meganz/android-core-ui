@@ -155,7 +155,7 @@ private fun RightContent(
         if (needCloseIcon) {
             MegaIcon(
                 modifier = Modifier.clickable(onClick = onCloseClick),
-                painter = painterResource(R.drawable.ic_close),
+                painter = painterResource(R.drawable.ic_close_medium_thin_outline),
                 tint = IconColor.InverseSecondary
             )
         }

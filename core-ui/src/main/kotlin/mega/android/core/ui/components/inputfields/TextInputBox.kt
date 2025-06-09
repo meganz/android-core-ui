@@ -259,7 +259,7 @@ private fun BaseTextInputBox(
                                 .align(Alignment.TopCenter)
                                 .padding(spacing.x16)
                                 .size(16.dp),
-                            painter = painterResource(id = R.drawable.ic_close),
+                            painter = painterResource(id = R.drawable.ic_close_medium_thin_outline),
                             tint = IconColor.Primary
                         )
                     }
