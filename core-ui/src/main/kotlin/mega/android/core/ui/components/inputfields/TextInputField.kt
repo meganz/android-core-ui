@@ -95,6 +95,7 @@ fun ReadOnlyTextInputField(
     trailingIcon: @Composable (() -> Unit)? = null,
     successText: String? = null,
     errorText: String? = null,
+    warningText: String? = null,
     optionalLabelText: String? = null,
     onValueChanged: ((String) -> Unit)? = null,
 ) {
@@ -104,6 +105,7 @@ fun ReadOnlyTextInputField(
         text = text,
         successText = successText,
         errorText = errorText,
+        warningText = warningText,
         inputTextAlign = inputTextAlign,
         isPasswordMode = isPasswordMode,
         optionalLabelText = optionalLabelText,
@@ -132,6 +134,7 @@ fun TextInputField(
     showTrailingIcon: Boolean = true,
     successText: String? = null,
     errorText: String? = null,
+    warningText: String? = null,
     maxCharLimit: Int = Int.MAX_VALUE,
     optionalLabelText: String? = null,
     contentType: ContentType? = null,
@@ -171,6 +174,7 @@ fun TextInputField(
         text = text,
         successText = successText,
         errorText = errorText,
+        warningText = warningText,
         inputTextAlign = inputTextAlign,
         isPasswordMode = false,
         showTrailingIcon = showTrailingIcon,
@@ -197,6 +201,7 @@ fun PasswordTextInputField(
     imeAction: ImeAction = ImeAction.Done,
     successText: String? = null,
     errorText: String? = null,
+    warningText: String? = null,
     keyboardActions: KeyboardActions = KeyboardActions.Default,
     maxCharLimit: Int = Int.MAX_VALUE,
     contentType: ContentType = ContentType.Password,
@@ -221,6 +226,7 @@ fun PasswordTextInputField(
     capitalization = KeyboardCapitalization.None,
     successText = successText,
     errorText = errorText,
+    warningText = warningText,
     inputTextAlign = inputTextAlign,
     isPasswordMode = true,
     showTrailingIcon = showTrailingIcon,
@@ -265,6 +271,7 @@ fun ExpirationDateInputField(
     showTrailingIcon: Boolean = true,
     successText: String? = null,
     errorText: String? = null,
+    warningText: String? = null,
     onValueChanged: ((String) -> Unit)? = null,
     onFocusChanged: ((Boolean) -> Unit)? = null,
 ) {
@@ -294,6 +301,7 @@ fun ExpirationDateInputField(
         text = text,
         successText = successText,
         errorText = errorText,
+        warningText = warningText,
         inputTextAlign = inputTextAlign,
         isPasswordMode = false,
         showTrailingIcon = showTrailingIcon,
@@ -344,6 +352,7 @@ fun AnnotatedLabelTextInputField(
     showTrailingIcon: Boolean = true,
     successText: String? = null,
     errorText: String? = null,
+    warningText: String? = null,
     maxCharLimit: Int = Int.MAX_VALUE,
     contentType: ContentType? = null,
     onValueChanged: ((String) -> Unit)? = null,
@@ -372,6 +381,7 @@ fun AnnotatedLabelTextInputField(
         text = text,
         successText = successText,
         errorText = errorText,
+        warningText = warningText,
         inputTextAlign = inputTextAlign,
         isPasswordMode = false,
         showTrailingIcon = showTrailingIcon,
@@ -423,6 +433,7 @@ fun AnnotatedLabelTextInputField(
     showTrailingIcon: Boolean = true,
     successText: String? = null,
     errorText: String? = null,
+    warningText: String? = null,
     maxCharLimit: Int = Int.MAX_VALUE,
     contentType: ContentType? = null,
     onValueChanged: ((TextFieldValue) -> Unit)? = null,
@@ -451,6 +462,7 @@ fun AnnotatedLabelTextInputField(
         textValue = textValue,
         successText = successText,
         errorText = errorText,
+        warningText = warningText,
         inputTextAlign = inputTextAlign,
         isPasswordMode = false,
         showTrailingIcon = showTrailingIcon,
@@ -472,6 +484,7 @@ internal fun BaseTextField(
     capitalization: KeyboardCapitalization,
     successText: String?,
     errorText: String?,
+    warningText: String?,
     inputTextAlign: TextAlign,
     visualTransformation: VisualTransformation = VisualTransformation.None,
     keyboardActions: KeyboardActions = KeyboardActions.Default,
@@ -490,11 +503,13 @@ internal fun BaseTextField(
     val focusedColor = when {
         successText.isNullOrBlank().not() -> DSTokens.colors.support.success
         errorText != null -> DSTokens.colors.support.error
+        warningText != null -> DSTokens.colors.support.warning
         else -> DSTokens.colors.border.strongSelected
     }
     val unfocusedColor = when {
         successText.isNullOrBlank().not() -> DSTokens.colors.support.success
         errorText != null -> DSTokens.colors.support.error
+        warningText != null -> DSTokens.colors.support.warning
         else -> DSTokens.colors.border.strong
     }
     val colors = OutlinedTextFieldDefaults.colors(
@@ -637,6 +652,13 @@ internal fun BaseTextField(
                     text = errorText
                 )
             }
+
+            !warningText.isNullOrBlank() -> {
+                HelpTextWarning(
+                    modifier = footerModifier,
+                    text = warningText
+                )
+            }
         }
     }
 }
@@ -652,6 +674,7 @@ internal fun BaseTextField(
     capitalization: KeyboardCapitalization,
     successText: String?,
     errorText: String?,
+    warningText: String?,
     inputTextAlign: TextAlign,
     visualTransformation: VisualTransformation = VisualTransformation.None,
     keyboardActions: KeyboardActions = KeyboardActions.Default,
@@ -670,11 +693,13 @@ internal fun BaseTextField(
     val focusedColor = when {
         successText.isNullOrBlank().not() -> DSTokens.colors.support.success
         errorText != null -> DSTokens.colors.support.error
+        warningText != null -> DSTokens.colors.support.warning
         else -> DSTokens.colors.border.strongSelected
     }
     val unfocusedColor = when {
         successText.isNullOrBlank().not() -> DSTokens.colors.support.success
         errorText != null -> DSTokens.colors.support.error
+        warningText != null -> DSTokens.colors.support.warning
         else -> DSTokens.colors.border.strong
     }
     val colors = OutlinedTextFieldDefaults.colors(
@@ -818,6 +843,13 @@ internal fun BaseTextField(
                     text = errorText
                 )
             }
+
+            !warningText.isNullOrBlank() -> {
+                HelpTextWarning(
+                    modifier = footerModifier,
+                    text = warningText
+                )
+            }
         }
     }
 }
@@ -829,6 +861,7 @@ private fun BaseReadOnlyTextField(
     label: String?,
     successText: String?,
     errorText: String?,
+    warningText: String?,
     inputTextAlign: TextAlign,
     modifier: Modifier = Modifier,
     showDefaultTrailingIcon: Boolean = false,
@@ -843,6 +876,7 @@ private fun BaseReadOnlyTextField(
     val focusedColor = when {
         successText.isNullOrBlank().not() -> DSTokens.colors.support.success
         errorText != null -> DSTokens.colors.support.error
+        warningText != null -> DSTokens.colors.support.warning
         else -> DSTokens.colors.border.strong
     }
     val colors = OutlinedTextFieldDefaults.colors(
@@ -964,6 +998,13 @@ private fun BaseReadOnlyTextField(
                 HelpTextError(
                     modifier = footerModifier,
                     text = errorText
+                )
+            }
+
+            !warningText.isNullOrBlank() -> {
+                HelpTextWarning(
+                    modifier = footerModifier,
+                    text = warningText
                 )
             }
         }
