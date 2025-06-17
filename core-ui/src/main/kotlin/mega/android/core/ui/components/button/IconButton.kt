@@ -3,6 +3,7 @@ package mega.android.core.ui.components.button
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.FilledIconButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButtonDefaults
@@ -113,6 +114,29 @@ fun SecondarySmallIconButton(
 }
 
 @Composable
+fun SecondaryNavigationIconButton(
+    icon: Painter,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+    enabled: Boolean = true,
+    contentDescription: String? = null
+) {
+    BaseIconButton(
+        modifier = modifier.size(LocalSpacing.current.x32),
+        icon = icon,
+        shape = RoundedCornerShape(LocalSpacing.current.x8),
+        enabled = enabled,
+        containerColorDefault = DSTokens.colors.button.secondary,
+        containerColorPressed = DSTokens.colors.button.secondary,
+        containerColorDisabled = DSTokens.colors.button.disabled,
+        iconColorDefault = DSTokens.colors.icon.primary,
+        iconColorDisabled = DSTokens.colors.icon.onColorDisabled,
+        contentDescription = contentDescription,
+        onClick = onClick
+    )
+}
+
+@Composable
 fun BaseIconButton(
     icon: Painter,
     shape: Shape,
@@ -195,6 +219,17 @@ private fun SecondaryLargeIconButtonPreview() {
 private fun SecondarySmallIconButtonPreview() {
     AndroidThemeForPreviews {
         SecondarySmallIconButton(
+            icon = painterResource(id = R.drawable.ic_close_medium_thin_outline),
+            onClick = {}
+        )
+    }
+}
+
+@CombinedThemePreviews
+@Composable
+private fun SecondaryNavigationIconButtonPreview() {
+    AndroidThemeForPreviews {
+        SecondaryNavigationIconButton(
             icon = painterResource(id = R.drawable.ic_close_medium_thin_outline),
             onClick = {}
         )
