@@ -86,6 +86,18 @@ megaPublish {
             version = libs.versions.reorderable.get(),
             scope = "runtime"
         ),
+        Dependency(
+            groupId = libs.material3.get().group?:"",
+            artifactId = libs.material3.get().name,
+            version = libs.versions.material3.get(),
+            scope = "runtime"
+        ),
+        Dependency(
+            groupId = libs.androidx.material3.window.get().group?:"",
+            artifactId = libs.androidx.material3.window.get().name,
+            version = libs.versions.material3.get(),
+            scope = "runtime",
+        ),
     )
 }
 
