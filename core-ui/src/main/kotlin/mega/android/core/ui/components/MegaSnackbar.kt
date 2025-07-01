@@ -38,8 +38,8 @@ fun MegaSnackbar(
             modifier = snackbarModifier,
             snackbarData = data,
             containerColor = DSTokens.colors.components.toastBackground,
-            contentColor = DSTokens.colors.background.pageBackground,
-            actionColor = DSTokens.colors.link.primary
+            contentColor = DSTokens.colors.text.inverse,
+            actionColor = DSTokens.colors.link.inverse
         )
     }
 }
