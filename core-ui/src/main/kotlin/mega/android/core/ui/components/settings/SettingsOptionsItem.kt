@@ -25,7 +25,6 @@ import mega.android.core.ui.components.image.MegaIcon
 import mega.android.core.ui.components.list.HeaderTextStyle
 import mega.android.core.ui.components.list.OneLineListItem
 import mega.android.core.ui.components.list.PrimaryHeaderListItem
-import mega.android.core.ui.components.sheets.MegaBottomSheetDragHandler
 import mega.android.core.ui.components.sheets.MegaModalBottomSheet
 import mega.android.core.ui.components.sheets.MegaModalBottomSheetBackground
 import mega.android.core.ui.extensions.composeLet
