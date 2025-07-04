@@ -185,8 +185,8 @@ private fun PrimaryFilledButtonWithIconsPreview() {
     AndroidThemeForPreviews {
         PrimaryFilledButton(modifier = Modifier.wrapContentWidth(),
             text = "Add Item",
-            leadingIcon = painterResource(id = R.drawable.ic_search_large),
-            trailingIcon = painterResource(id = R.drawable.ic_arrow_left),
+            leadingIcon = painterResource(id = R.drawable.ic_search_large_medium_thin_outline),
+            trailingIcon = painterResource(id = R.drawable.ic_arrow_left_medium_thin_outline),
             onClick = { })
     }
 }

@@ -94,7 +94,7 @@ fun ButtonComponentCatalog() {
         Column {
             AccessoryBarButton(
                 button = AccessoryBarButtonContent(
-                    icon = painterResource(id = R.drawable.ic_search_large),
+                    icon = painterResource(id = R.drawable.ic_search_large_medium_thin_outline),
                     text = "Button",
                     onClick = {}
                 ),
@@ -106,7 +106,7 @@ fun ButtonComponentCatalog() {
                     onClick = {}
                 ),
                 secondButton = AccessoryBarButtonContent(
-                    icon = painterResource(id = R.drawable.ic_search_large),
+                    icon = painterResource(id = R.drawable.ic_search_large_medium_thin_outline),
                     text = "Search",
                     onClick = {}
                 ),

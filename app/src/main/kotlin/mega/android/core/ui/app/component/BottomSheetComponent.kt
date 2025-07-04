@@ -102,7 +102,7 @@ fun BottomSheetComponentCatalog() {
                     text = "Item 2",
                     trailingElement = {
                         MegaIcon(
-                            painter = painterResource(id = coreR.drawable.ic_check_filled),
+                            painter = painterResource(id = coreR.drawable.ic_check_medium_thin_outline),
                             contentDescription = null,
                             tint = IconColor.Secondary,
                             modifier = Modifier.size(24.dp)

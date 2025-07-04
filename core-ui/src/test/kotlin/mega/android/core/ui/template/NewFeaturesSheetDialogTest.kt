@@ -36,7 +36,7 @@ class NewFeaturesSheetDialogTest {
                             FeatureListItem(
                                 title = "feature_title",
                                 subtitle = "feature_subtitle",
-                                icon = R.drawable.ic_eye
+                                icon = R.drawable.ic_eye_medium_thin_outline
                             )
                         ),
                         primaryButtonText = "primary_button",
@@ -67,7 +67,7 @@ class NewFeaturesSheetDialogTest {
                             FeatureListItem(
                                 title = "feature_title",
                                 subtitle = "feature_subtitle",
-                                icon = R.drawable.ic_eye
+                                icon = R.drawable.ic_eye_medium_thin_outline
                             )
                         ),
                         primaryButtonText = "primary_button",
@@ -98,7 +98,7 @@ class NewFeaturesSheetDialogTest {
                             FeatureListItem(
                                 title = "feature_title",
                                 subtitle = "feature_subtitle",
-                                icon = R.drawable.ic_eye
+                                icon = R.drawable.ic_eye_medium_thin_outline
                             )
                         ),
                         primaryButtonText = "primary_button",
@@ -129,7 +129,7 @@ class NewFeaturesSheetDialogTest {
                             FeatureListItem(
                                 title = "feature_title",
                                 subtitle = "feature_subtitle",
-                                icon = R.drawable.ic_eye
+                                icon = R.drawable.ic_eye_medium_thin_outline
                             )
                         ),
                         primaryButtonText = "primary_button",
@@ -160,12 +160,12 @@ class NewFeaturesSheetDialogTest {
                             FeatureListItem(
                                 title = "feature_title",
                                 subtitle = "feature_subtitle",
-                                icon = R.drawable.ic_eye
+                                icon = R.drawable.ic_eye_medium_thin_outline
                             )
                         ),
                         primaryButtonText = "primary_button",
                         secondaryButtonText = "secondary_button",
-                        illustration = R.drawable.ic_eye,
+                        illustration = R.drawable.ic_eye_medium_thin_outline,
                         illustrationMode = IllustrationIconSizeMode.Small
                     )
                 )
@@ -192,12 +192,12 @@ class NewFeaturesSheetDialogTest {
                             FeatureListItem(
                                 title = "feature_title",
                                 subtitle = "feature_subtitle",
-                                icon = R.drawable.ic_eye
+                                icon = R.drawable.ic_eye_medium_thin_outline
                             )
                         ),
                         primaryButtonText = "primary_button",
                         secondaryButtonText = "secondary_button",
-                        illustration = R.drawable.ic_eye,
+                        illustration = R.drawable.ic_eye_medium_thin_outline,
                         illustrationMode = IllustrationIconSizeMode.Small
                     )
                 )
@@ -224,7 +224,7 @@ class NewFeaturesSheetDialogTest {
                             FeatureListItem(
                                 title = "feature_title",
                                 subtitle = "feature_subtitle",
-                                icon = R.drawable.ic_eye
+                                icon = R.drawable.ic_eye_medium_thin_outline
                             )
                         ),
                         primaryButtonText = "primary_button",
@@ -254,7 +254,7 @@ class NewFeaturesSheetDialogTest {
                             FeatureListItem(
                                 title = "feature_title",
                                 subtitle = "feature_subtitle",
-                                icon = R.drawable.ic_eye
+                                icon = R.drawable.ic_eye_medium_thin_outline
                             )
                         ),
                         primaryButtonText = "primary_button",

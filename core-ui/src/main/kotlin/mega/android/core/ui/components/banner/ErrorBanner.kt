@@ -118,7 +118,7 @@ private fun ErrorBanner(
         modifier = modifier,
         backgroundColor = DSTokens.colors.notifications.notificationError,
         backgroundShape = backgroundShape,
-        iconResId = R.drawable.ic_alert_triangle,
+        iconResId = R.drawable.ic_alert_triangle_medium_thin_outline,
         iconColor = DSTokens.colors.support.error,
         body = body,
         title = title,

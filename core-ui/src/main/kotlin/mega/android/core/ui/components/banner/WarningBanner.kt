@@ -116,7 +116,7 @@ private fun WarningBanner(
         modifier = modifier,
         backgroundColor = DSTokens.colors.notifications.notificationWarning,
         backgroundShape = backgroundShape,
-        iconResId = R.drawable.ic_alert_circle,
+        iconResId = R.drawable.ic_alert_circle_medium_thin_outline,
         iconColor = DSTokens.colors.support.warning,
         body = body,
         title = title,

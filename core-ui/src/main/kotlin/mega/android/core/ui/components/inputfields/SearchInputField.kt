@@ -212,7 +212,7 @@ private fun BaseSearchInputField(
                                     onValueChange(TextFieldValue(text = ""))
                                 }
                                 .padding(end = spacing.x12),
-                            painter = painterResource(id = R.drawable.ic_x_thin),
+                            painter = painterResource(id = R.drawable.ic_x_medium_thin_outline),
                             tint = DSTokens.colors.icon.primary,
                             contentDescription = "Clear Text")
                     }
@@ -221,7 +221,7 @@ private fun BaseSearchInputField(
                     Icon(
                         modifier = Modifier
                             .padding(start = spacing.x12, end = spacing.x16),
-                        painter = painterResource(id = R.drawable.ic_search_large),
+                        painter = painterResource(id = R.drawable.ic_search_large_medium_thin_outline),
                         tint = DSTokens.colors.icon.secondary,
                         contentDescription = "Search"
                     )

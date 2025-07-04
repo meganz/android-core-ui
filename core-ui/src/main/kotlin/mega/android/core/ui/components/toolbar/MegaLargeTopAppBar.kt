@@ -76,7 +76,7 @@ private fun LargeToolbarPreview() {
 @Composable
 private fun LargeToolbarWithLeadingIconPreview() {
     AndroidThemeForPreviews {
-        MegaLargeTopAppBar(title = "Title", icon = painterResource(id = R.drawable.ic_arrow_left))
+        MegaLargeTopAppBar(title = "Title", icon = painterResource(id = R.drawable.ic_arrow_left_medium_thin_outline))
     }
 }
 
@@ -86,10 +86,10 @@ private fun LargeToolbarWithLeadingIconPreview() {
 private fun LargeToolbarWithBothIconsPreview() {
     AndroidThemeForPreviews {
         MegaLargeTopAppBar(title = "Title",
-            icon = painterResource(id = R.drawable.ic_arrow_left),
+            icon = painterResource(id = R.drawable.ic_arrow_left_medium_thin_outline),
             trailingElement = {
                 Icon(
-                    painter = painterResource(id = R.drawable.ic_check_circle),
+                    painter = painterResource(id = R.drawable.ic_check_circle_medium_thin_outline),
                     contentDescription = null,
                     modifier = Modifier.size(24.dp),
                     tint = DSTokens.colors.icon.primary

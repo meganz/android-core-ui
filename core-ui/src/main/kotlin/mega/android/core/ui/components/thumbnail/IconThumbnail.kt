@@ -38,7 +38,7 @@ private fun IconThumbnailPreview() {
         IconThumbnail(
             content = {
                 MegaIcon(
-                    painter = painterResource(id = R.drawable.ic_eye),
+                    painter = painterResource(id = R.drawable.ic_eye_medium_thin_outline),
                     tint = IconColor.Primary
                 )
             }

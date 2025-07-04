@@ -119,7 +119,7 @@ private fun SuccessBanner(
         modifier = modifier,
         backgroundColor = DSTokens.colors.notifications.notificationSuccess,
         backgroundShape = backgroundShape,
-        iconResId = R.drawable.ic_check_circle,
+        iconResId = R.drawable.ic_check_circle_medium_thin_outline,
         iconColor = DSTokens.colors.support.success,
         body = body,
         title = title,

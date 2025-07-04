@@ -40,7 +40,7 @@ fun HelpTextSuccess(
         iconColor = DSTokens.colors.text.success,
         textColor = textColor,
         textStyle = textStyle,
-        iconResId = R.drawable.ic_check_circle
+        iconResId = R.drawable.ic_check_circle_medium_thin_outline
     )
 }
 
@@ -57,7 +57,7 @@ fun HelpTextError(
         iconColor = DSTokens.colors.text.error,
         textColor = textColor,
         textStyle = textStyle,
-        iconResId = R.drawable.ic_alert_triangle
+        iconResId = R.drawable.ic_alert_triangle_medium_thin_outline
     )
 }
 
@@ -74,7 +74,7 @@ fun HelpTextWarning(
         iconColor = DSTokens.colors.text.warning,
         textColor = textColor,
         textStyle = textStyle,
-        iconResId = R.drawable.ic_alert_circle
+        iconResId = R.drawable.ic_alert_circle_medium_thin_outline
     )
 }
 
@@ -82,7 +82,7 @@ fun HelpTextWarning(
 fun HelpTextInfo(
     text: String,
     modifier: Modifier = Modifier,
-    iconResId: Int = R.drawable.ic_info,
+    iconResId: Int = R.drawable.ic_info_medium_thin_outline,
     textColor: TextColor = TextColor.Secondary,
     textStyle: TextStyle = AppTheme.typography.bodySmall,
 ) {
@@ -100,7 +100,7 @@ fun HelpTextInfo(
 fun HelpTextLink(
     text: String,
     modifier: Modifier = Modifier,
-    iconResId: Int = R.drawable.ic_help,
+    iconResId: Int = R.drawable.ic_help_circle_medium_thin_outline,
     textColor: TextColor = TextColor.Primary,
     textStyle: TextStyle = AppTheme.typography.bodySmall,
     onAnnotationClick: (String) -> Unit,

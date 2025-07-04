@@ -43,9 +43,9 @@ fun Toggle(
             Icon(
                 painter = painterResource(
                     id = if (isChecked) {
-                        R.drawable.ic_check_filled
+                        R.drawable.ic_check_medium_thin_outline
                     } else {
-                        R.drawable.ic_remove_filled
+                        R.drawable.ic_minus_medium_thin_outline
                     }
                 ),
                 contentDescription = null,

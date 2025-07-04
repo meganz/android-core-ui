@@ -46,7 +46,7 @@ sealed class AppBarNavigationType(
      */
     @Immutable
     data class Back(override val onNavigationIconClicked: () -> Unit) :
-        AppBarNavigationType(R.drawable.ic_arrow_left)
+        AppBarNavigationType(R.drawable.ic_arrow_left_medium_thin_outline)
 
     /**
      * Close navigation, represented by a cross icon

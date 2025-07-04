@@ -498,6 +498,6 @@ private val listItemSamples = IntRange(1, 10).map {
     PromotionalListAttributes(
         title = "Title $it",
         subtitle = "Subtitle $it",
-        icon = R.drawable.ic_check_circle
+        icon = R.drawable.ic_check_circle_medium_thin_outline
     )
 }

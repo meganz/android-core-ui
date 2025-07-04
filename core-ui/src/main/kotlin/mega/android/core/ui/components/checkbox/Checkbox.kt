@@ -172,7 +172,7 @@ fun Checkbox(
                     Icon(
                         modifier = Modifier
                             .size(checkMarkSize),
-                        painter = painterResource(id = R.drawable.ic_check_filled),
+                        painter = painterResource(id = R.drawable.ic_check_medium_regular_outline),
                         contentDescription = "check icon",
                         tint = if (enabled) color.checkedCheckmarkColor else color.disabledCheckedCheckmarkColor
                     )

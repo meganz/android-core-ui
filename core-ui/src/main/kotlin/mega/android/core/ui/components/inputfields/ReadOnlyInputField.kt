@@ -204,7 +204,7 @@ fun ReadOnlyPasswordInputFieldItem(
             )
 
             Box(modifier = Modifier.size(spacing.x20)) {
-                val eyeIcon = if (showPassword) R.drawable.ic_eye_off else R.drawable.ic_eye
+                val eyeIcon = if (showPassword) R.drawable.ic_eye_off_medium_thin_outline else R.drawable.ic_eye_medium_thin_outline
                 MegaIcon(
                     modifier = Modifier.clickable { showPassword = !showPassword },
                     painter = painterResource(id = eyeIcon),
@@ -247,14 +247,14 @@ private fun ReadOnlyInputFieldPreview() {
                 showDivider = false,
                 firstTrailingIcon = {
                     MegaIcon(
-                        painter = painterResource(id = R.drawable.ic_alert_circle),
+                        painter = painterResource(id = R.drawable.ic_alert_circle_medium_thin_outline),
                         contentDescription = "Alert",
                         tint = IconColor.Primary
                     )
                 },
                 secondTrailingIcon = {
                     MegaIcon(
-                        painter = painterResource(id = R.drawable.ic_alert_circle),
+                        painter = painterResource(id = R.drawable.ic_alert_circle_medium_thin_outline),
                         contentDescription = "Alert",
                         tint = IconColor.Primary
                     )

@@ -237,7 +237,7 @@ private fun MegaTransparentTopAppBarPreview() {
     AndroidThemeForPreviews {
         Box(modifier = Modifier.background(color = Color.Red)) {
             TransparentTopBar(
-                navigationIcon = painterResource(id = R.drawable.ic_arrow_left),
+                navigationIcon = painterResource(id = R.drawable.ic_arrow_left_medium_thin_outline),
                 trailingIcons = {
                     SecondarySmallIconButton(
                         modifier = Modifier
@@ -256,7 +256,7 @@ private fun MegaTransparentTopAppBarPreview() {
 @Composable
 private fun MegaTopAppBarActionsPreview() {
     val actions =
-        listOf(R.drawable.ic_alert_circle, R.drawable.ic_alert_triangle).mapIndexed { i, iconRes ->
+        listOf(R.drawable.ic_alert_circle_medium_thin_outline, R.drawable.ic_alert_triangle_medium_thin_outline).mapIndexed { i, iconRes ->
             object : TopAppBarAction {
                 @Composable
                 override fun getDescription() = "Action $i"

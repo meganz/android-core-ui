@@ -133,12 +133,12 @@ private fun AccessoryBarButtonPreview() {
     AndroidThemeForPreviews {
         AccessoryBarButtonGroup(
             firstButton = AccessoryBarButtonContent(
-                icon = painterResource(id = R.drawable.ic_search_large),
+                icon = painterResource(id = R.drawable.ic_search_large_medium_thin_outline),
                 text = "Button",
                 onClick = {}
             ),
             secondButton = AccessoryBarButtonContent(
-                icon = painterResource(id = R.drawable.ic_search_large),
+                icon = painterResource(id = R.drawable.ic_search_large_medium_thin_outline),
                 text = "Button",
                 onClick = {}
             )
@@ -152,7 +152,7 @@ private fun AccessoryBarButtonSinglePreview() {
     AndroidThemeForPreviews {
         AccessoryBarButton(
             button = AccessoryBarButtonContent(
-                icon = painterResource(id = R.drawable.ic_search_large),
+                icon = painterResource(id = R.drawable.ic_search_large_medium_thin_outline),
                 text = "Button",
                 onClick = {}
             ),

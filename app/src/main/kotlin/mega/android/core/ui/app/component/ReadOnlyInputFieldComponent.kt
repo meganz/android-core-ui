@@ -51,7 +51,7 @@ fun ReadOnlyInputFieldComponent() {
                 showDivider = true,
                 trailingIcon = {
                     MegaIcon(
-                        painter = painterResource(id = R.drawable.ic_alert_circle),
+                        painter = painterResource(id = R.drawable.ic_alert_circle_medium_thin_outline),
                         contentDescription = "Alert",
                         tint = IconColor.Primary
                     )
@@ -78,14 +78,14 @@ fun ReadOnlyInputFieldComponent() {
                 showDivider = false,
                 firstTrailingIcon = {
                     MegaIcon(
-                        painter = painterResource(id = R.drawable.ic_alert_circle),
+                        painter = painterResource(id = R.drawable.ic_alert_circle_medium_thin_outline),
                         contentDescription = "Alert",
                         tint = IconColor.Primary
                     )
                 },
                 secondTrailingIcon = {
                     MegaIcon(
-                        painter = painterResource(id = R.drawable.ic_alert_circle),
+                        painter = painterResource(id = R.drawable.ic_alert_circle_medium_thin_outline),
                         contentDescription = "Alert",
                         tint = IconColor.Primary
                     )

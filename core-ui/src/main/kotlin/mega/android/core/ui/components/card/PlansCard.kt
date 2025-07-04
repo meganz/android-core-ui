@@ -205,11 +205,11 @@ fun PlansCardPreview() {
             featuresSectionTitle = "Your plan includes",
             features = listOf(
                 PlanFeature(
-                    icon = R.drawable.ic_copy,
+                    icon = R.drawable.ic_copy_01_medium_thin_outline,
                     title = "Feature 1"
                 ),
                 PlanFeature(
-                    icon = R.drawable.ic_copy,
+                    icon = R.drawable.ic_copy_01_medium_thin_outline,
                     title = "Feature 2"
                 ),
             ),

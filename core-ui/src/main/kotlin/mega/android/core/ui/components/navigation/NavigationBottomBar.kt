@@ -28,8 +28,8 @@ private fun NavigationBottomBarPreview(
     AndroidThemeForPreviews {
         NavigationBottomBar {
             NavigationBottomBarItem(
-                defaultIcon = R.drawable.ic_alert_circle,
-                selectedIcon = R.drawable.ic_alert_circle,
+                defaultIcon = R.drawable.ic_alert_circle_medium_thin_outline,
+                selectedIcon = R.drawable.ic_alert_circle_medium_thin_outline,
                 label = "Test",
                 isSelected = isSelected,
                 onClick = {}

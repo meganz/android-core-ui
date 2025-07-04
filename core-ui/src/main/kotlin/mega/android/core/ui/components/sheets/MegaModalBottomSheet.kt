@@ -129,7 +129,7 @@ fun MegaModalBottomSheet(
 private fun MegaBottomSheetDragHandler() {
     MegaIcon(
         modifier = Modifier.padding(vertical = 8.dp),
-        painter = painterResource(id = R.drawable.ic_handlebar),
+        painter = painterResource(id = R.drawable.ic_legacy_handlebar),
         tint = IconColor.Disabled
     )
 }

@@ -88,7 +88,7 @@ fun PasswordGeneratorInputBox(
                     .padding(bottom = spacing.x16, end = spacing.x16)
                     .align(Alignment.End)
                     .clickable(onClick = onCopyClick),
-                painter = painterResource(id = R.drawable.ic_copy),
+                painter = painterResource(id = R.drawable.ic_copy_01_medium_thin_outline),
                 tint = DSTokens.colors.icon.secondary,
                 contentDescription = "Copy Password"
             )
@@ -188,7 +188,7 @@ fun PasswordGeneratorInputField(
             visualTransformation = if (showPassword) ColorsTransformation(annotatedString) else PasswordVisualTransformation(),
             trailingIcon = {
                 if (baseText.isNotEmpty()) {
-                    val eyeIcon = if (showPassword) R.drawable.ic_eye_off else R.drawable.ic_eye
+                    val eyeIcon = if (showPassword) R.drawable.ic_eye_off_medium_thin_outline else R.drawable.ic_eye_medium_thin_outline
                     Icon(
                         modifier = Modifier
                             .padding(horizontal = spacing.x8)

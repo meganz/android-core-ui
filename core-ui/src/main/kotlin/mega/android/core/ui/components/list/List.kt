@@ -407,7 +407,7 @@ private fun OneLineListItemPreviewWithElements() {
             text = "List item",
             leadingElement = {
                 Icon(
-                    painter = painterResource(id = R.drawable.ic_alert_triangle),
+                    painter = painterResource(id = R.drawable.ic_alert_triangle_medium_thin_outline),
                     contentDescription = null,
                     modifier = Modifier
                         .size(24.dp)
@@ -417,7 +417,7 @@ private fun OneLineListItemPreviewWithElements() {
             },
             trailingElement = {
                 Icon(
-                    painter = painterResource(id = R.drawable.ic_check_circle),
+                    painter = painterResource(id = R.drawable.ic_check_circle_medium_thin_outline),
                     contentDescription = null,
                     modifier = Modifier.size(24.dp),
                     tint = DSTokens.colors.icon.primary
@@ -436,7 +436,7 @@ private fun OneLineListItemPreviewWithLargeElements() {
             text = "List item",
             leadingElement = {
                 Icon(
-                    painter = painterResource(id = R.drawable.ic_alert_triangle),
+                    painter = painterResource(id = R.drawable.ic_alert_triangle_medium_thin_outline),
                     contentDescription = null,
                     modifier = Modifier
                         .size(35.dp)
@@ -446,7 +446,7 @@ private fun OneLineListItemPreviewWithLargeElements() {
             },
             trailingElement = {
                 Icon(
-                    painter = painterResource(id = R.drawable.ic_check_circle),
+                    painter = painterResource(id = R.drawable.ic_check_circle_medium_thin_outline),
                     contentDescription = null,
                     modifier = Modifier.size(24.dp),
                     tint = DSTokens.colors.icon.primary
@@ -466,7 +466,7 @@ private fun MultiLineListItemPreviewWithElements() {
             subtitle = "Supporting line text lorem ipsum lorem ipsum",
             leadingElement = {
                 Icon(
-                    painter = painterResource(id = R.drawable.ic_alert_triangle),
+                    painter = painterResource(id = R.drawable.ic_alert_triangle_medium_thin_outline),
                     contentDescription = null,
                     modifier = Modifier
                         .size(24.dp)
@@ -476,7 +476,7 @@ private fun MultiLineListItemPreviewWithElements() {
             },
             trailingElement = {
                 Icon(
-                    painter = painterResource(id = R.drawable.ic_check_circle),
+                    painter = painterResource(id = R.drawable.ic_check_circle_medium_thin_outline),
                     contentDescription = null,
                     modifier = Modifier.size(24.dp),
                     tint = DSTokens.colors.icon.primary
@@ -498,7 +498,7 @@ private fun SecondaryHeaderListItemPreview() {
 @CombinedThemePreviews
 private fun SecondaryHeaderListItemWithIconPreview() {
     AndroidThemeForPreviews {
-        SecondaryHeaderListItem(text = "Header text", rightIconRes = R.drawable.ic_arrow_left)
+        SecondaryHeaderListItem(text = "Header text", rightIconRes = R.drawable.ic_arrow_left_medium_thin_outline)
     }
 }
 
@@ -514,6 +514,6 @@ private fun PrimaryHeaderListItemPreview() {
 @CombinedThemePreviews
 private fun PrimaryHeaderListItemWithIconPreview() {
     AndroidThemeForPreviews {
-        PrimaryHeaderListItem(text = "Header text", rightIconRes = R.drawable.ic_check_filled)
+        PrimaryHeaderListItem(text = "Header text", rightIconRes = R.drawable.ic_check_medium_thin_outline)
     }
 }

@@ -46,7 +46,7 @@ fun LabelledTextInputWithActionCatalog(){
             trailingView = {
                 SecondaryLargeIconButton(
                     modifier = Modifier.padding(start = 8.dp),
-                    icon = painterResource(id = R.drawable.ic_eye),
+                    icon = painterResource(id = R.drawable.ic_eye_medium_thin_outline),
                     onClick = {
                     }
                 )

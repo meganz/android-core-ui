@@ -36,7 +36,7 @@ fun TransparentNavigationComponentCatalog() {
         )
         TransparentTopBar(
             modifier = Modifier.statusBarsPadding(),
-            navigationIcon = painterResource(id = mega.android.core.ui.R.drawable.ic_action_back),
+            navigationIcon = painterResource(id = mega.android.core.ui.R.drawable.ic_chevron_left_medium_thin_outline),
             trailingIcons = {
                 SecondaryTopNavigationButton(
                     modifier = Modifier.padding(end = LocalSpacing.current.x16),
@@ -47,7 +47,7 @@ fun TransparentNavigationComponentCatalog() {
                 SecondarySmallIconButton(modifier = Modifier
                     .padding(end = LocalSpacing.current.x12)
                     .size(32.dp),
-                    icon = painterResource(id = mega.android.core.ui.R.drawable.ic_search_large),
+                    icon = painterResource(id = mega.android.core.ui.R.drawable.ic_search_large_medium_thin_outline),
                     onClick = {})
             }
         )

@@ -252,7 +252,7 @@ private fun LabelledTextInputWithActionPreview() {
                 trailingView = {
                     SecondaryLargeIconButton(
                         modifier = Modifier.padding(start = 8.dp),
-                        icon = painterResource(id = R.drawable.ic_eye),
+                        icon = painterResource(id = R.drawable.ic_eye_medium_thin_outline),
                         onClick = {
                         }
                     )
@@ -299,7 +299,7 @@ private fun LabelledTextInputWithActionPreview() {
                 trailingView = {
                     SecondaryLargeIconButton(
                         modifier = Modifier.padding(start = 8.dp),
-                        icon = painterResource(id = R.drawable.ic_eye),
+                        icon = painterResource(id = R.drawable.ic_eye_medium_thin_outline),
                         onClick = {
                         }
                     )
@@ -334,7 +334,7 @@ private fun LabelledTextInputWithActionPreview() {
 private fun LabelledTextInputActionPreview() {
     AndroidThemeForPreviews {
         LabelledTextInputAction(
-            iconRes = R.drawable.ic_eye
+            iconRes = R.drawable.ic_eye_medium_thin_outline
         )
     }
 }

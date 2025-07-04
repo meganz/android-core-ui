@@ -42,12 +42,12 @@ class AccessoryBarButtonTest {
             setContent {
                 AccessoryBarButtonGroup(
                     firstButton = AccessoryBarButtonContent(
-                        icon = painterResource(id = R.drawable.ic_eye),
+                        icon = painterResource(id = R.drawable.ic_eye_medium_thin_outline),
                         text = "Button 1",
                         onClick = {}
                     ),
                     secondButton = AccessoryBarButtonContent(
-                        icon = painterResource(id = R.drawable.ic_eye),
+                        icon = painterResource(id = R.drawable.ic_eye_medium_thin_outline),
                         text = "Button 2",
                         onClick = {}
                     )

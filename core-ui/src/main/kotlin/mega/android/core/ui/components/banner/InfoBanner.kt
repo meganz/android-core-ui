@@ -119,7 +119,7 @@ private fun InfoBanner(
         modifier = modifier,
         backgroundColor = DSTokens.colors.notifications.notificationInfo,
         backgroundShape = backgroundShape,
-        iconResId = R.drawable.ic_info,
+        iconResId = R.drawable.ic_info_medium_thin_outline,
         iconColor = DSTokens.colors.support.info,
         body = body,
         title = title,
