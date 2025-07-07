@@ -55,7 +55,8 @@ class CCExpiryDateVisualTransformation(private val hintColor: Color) : VisualTra
 
             override fun transformedToOriginal(offset: Int): Int {
                 return when {
-                    offset < 2 -> offset
+                    offset < 3 -> offset
+                    offset == 3 -> 2
                     else -> offset - 3
                 }.coerceIn(0, text.length)
             }
