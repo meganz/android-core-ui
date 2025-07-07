@@ -211,14 +211,16 @@ fun BasicDialog(
                         }
                     }
                 },
-                title = {
-                    LinkSpannedText(
-                        value = title.text.orEmpty(),
-                        spanStyles = title.annotations ?: emptyMap(),
-                        onAnnotationClick = title.onAnnotationClick ?: {},
-                        baseStyle = AppTheme.typography.headlineSmall,
-                        baseTextColor = TextColor.Primary,
-                    )
+                title = title.text?.takeIf { it.isNotEmpty() }?.let {
+                    @Composable {
+                        LinkSpannedText(
+                            value = it,
+                            spanStyles = title.annotations ?: emptyMap(),
+                            onAnnotationClick = title.onAnnotationClick ?: {},
+                            baseStyle = AppTheme.typography.headlineSmall,
+                            baseTextColor = TextColor.Primary,
+                        )
+                    }
                 },
                 text = {
                     description?.let {
@@ -403,6 +405,21 @@ private fun BasicDialogNoDescriptionPreview() {
     AndroidThemeForPreviews {
         BasicDialog(
             title = SpannableText("Basic dialog title"),
+            positiveButtonText = "Action 1",
+            onPositiveButtonClicked = {},
+            negativeButtonText = "Action 2",
+            onNegativeButtonClicked = {},
+        )
+    }
+}
+
+@Composable
+@CombinedThemePreviews
+private fun BasicDialogNoTitlePreview() {
+    AndroidThemeForPreviews {
+        BasicDialog(
+            title = "",
+            description = "Basic dialog description",
             positiveButtonText = "Action 1",
             onPositiveButtonClicked = {},
             negativeButtonText = "Action 2",
