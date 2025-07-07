@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -59,6 +60,8 @@ fun PrimaryHeaderListItem(
     modifier: Modifier = Modifier,
     headerTextStyle: HeaderTextStyle = HeaderTextStyle.Small,
     @DrawableRes rightIconRes: Int? = null,
+    @DrawableRes secondaryRightIconRes: Int? = null,
+    @DrawableRes tertiaryRightIconRes: Int? = null,
     enableClick: Boolean = true,
     onClickListener: () -> Unit = {},
     onLongClickListener: () -> Unit = {},
@@ -68,6 +71,8 @@ fun PrimaryHeaderListItem(
         text = text,
         textColor = TextColor.Primary,
         rightIconRes = rightIconRes,
+        secondaryRightIconRes = secondaryRightIconRes,
+        tertiaryRightIconRes = tertiaryRightIconRes,
         iconColor = IconColor.Primary,
         enableClick = enableClick,
         onClickListener = onClickListener,
@@ -82,6 +87,8 @@ fun SecondaryHeaderListItem(
     modifier: Modifier = Modifier,
     headerTextStyle: HeaderTextStyle = HeaderTextStyle.Small,
     @DrawableRes rightIconRes: Int? = null,
+    @DrawableRes secondaryRightIconRes: Int? = null,
+    @DrawableRes tertiaryRightIconRes: Int? = null,
     enableClick: Boolean = true,
     onClickListener: () -> Unit = {},
     onLongClickListener: () -> Unit = {},
@@ -91,6 +98,8 @@ fun SecondaryHeaderListItem(
         text = text,
         textColor = TextColor.Secondary,
         rightIconRes = rightIconRes,
+        secondaryRightIconRes = secondaryRightIconRes,
+        tertiaryRightIconRes = tertiaryRightIconRes,
         iconColor = IconColor.Secondary,
         enableClick = enableClick,
         onClickListener = onClickListener,
@@ -106,6 +115,8 @@ private fun HeaderListItem(
     modifier: Modifier = Modifier,
     headerTextStyle: HeaderTextStyle = HeaderTextStyle.Small,
     @DrawableRes rightIconRes: Int?,
+    @DrawableRes secondaryRightIconRes: Int?,
+    @DrawableRes tertiaryRightIconRes: Int?,
     iconColor: IconColor,
     enableClick: Boolean = true,
     onClickListener: () -> Unit,
@@ -122,28 +133,48 @@ private fun HeaderListItem(
             ),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        MegaText(
-            text = text,
-            textColor = textColor,
-            style = when (headerTextStyle) {
-                HeaderTextStyle.Small -> AppTheme.typography.titleSmall
-                HeaderTextStyle.Medium -> AppTheme.typography.titleMedium
-            },
-            maxLines = TITLE_MAX_LINES,
-            overflow = TextOverflow.Ellipsis
-        )
-        Spacer(modifier = Modifier.width(8.dp))
-        rightIconRes?.let {
-            MegaIcon(
-                modifier = modifier
-                    .size(16.dp)
-                    .align(Alignment.CenterVertically),
-                painter = painterResource(id = rightIconRes),
-                tint = iconColor,
-                contentDescription = null
+        Row (modifier = Modifier.weight(1f)) {
+            MegaText(
+                text = text,
+                textColor = textColor,
+                style = when (headerTextStyle) {
+                    HeaderTextStyle.Small -> AppTheme.typography.titleSmall
+                    HeaderTextStyle.Medium -> AppTheme.typography.titleMedium
+                },
+                maxLines = TITLE_MAX_LINES,
+                overflow = TextOverflow.Ellipsis
             )
+            Spacer(modifier = Modifier.width(8.dp))
+            rightIconRes?.let {
+                MegaIconRight(modifier, it, iconColor)
+            }
+        }
+        Row {
+            tertiaryRightIconRes?.let {
+                MegaIconRight(modifier, it, iconColor)
+            }
+            Spacer(modifier = Modifier.width(8.dp))
+            secondaryRightIconRes?.let {
+                MegaIconRight(modifier, it, iconColor)
+            }
         }
     }
+}
+
+@Composable
+private fun RowScope.MegaIconRight(
+    modifier: Modifier,
+    rightIconRes: Int,
+    iconColor: IconColor
+) {
+    MegaIcon(
+        modifier = modifier
+            .size(16.dp)
+            .align(Alignment.CenterVertically),
+        painter = painterResource(id = rightIconRes),
+        tint = iconColor,
+        contentDescription = null
+    )
 }
 
 @Composable

@@ -120,6 +120,9 @@ fun ListComponentCatalog() {
     }
     Section(header = "Primary Header With Icon") {
         PrimaryHeaderListItem(text = "Header Text", rightIconRes = R.drawable.ic_chevron_down)
+        PrimaryHeaderListItem(text = "Header Text", rightIconRes = R.drawable.ic_chevron_down, secondaryRightIconRes = mega.android.core.ui.R.drawable.ic_check_circle_medium_thin_outline)
+        PrimaryHeaderListItem(text = "Header Text", rightIconRes = R.drawable.ic_chevron_down, tertiaryRightIconRes = mega.android.core.ui.R.drawable.ic_close_medium_thin_outline, secondaryRightIconRes = mega.android.core.ui.R.drawable.ic_check_circle_medium_thin_outline)
+        PrimaryHeaderListItem(text = "Header Text", secondaryRightIconRes = mega.android.core.ui.R.drawable.ic_check_circle_medium_thin_outline)
     }
     Section(header = "Secondary Header") {
         SecondaryHeaderListItem(text = "Header Text")
@@ -128,5 +131,8 @@ fun ListComponentCatalog() {
         SecondaryHeaderListItem(
             text = "Header Text", rightIconRes = R.drawable.ic_chevron_down
         )
+        SecondaryHeaderListItem(text = "Header Text", rightIconRes = R.drawable.ic_chevron_down, secondaryRightIconRes = mega.android.core.ui.R.drawable.ic_check_circle_medium_thin_outline)
+        SecondaryHeaderListItem(text = "Header Text", rightIconRes = R.drawable.ic_chevron_down, tertiaryRightIconRes = mega.android.core.ui.R.drawable.ic_close_medium_thin_outline, secondaryRightIconRes = mega.android.core.ui.R.drawable.ic_check_circle_medium_thin_outline)
+        SecondaryHeaderListItem(text = "Header Text", secondaryRightIconRes = mega.android.core.ui.R.drawable.ic_check_circle_medium_thin_outline)
     }
 }
