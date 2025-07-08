@@ -7,7 +7,6 @@ import androidx.compose.animation.shrinkOut
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
@@ -23,6 +22,7 @@ import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.layout.Placeable
 import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.fastForEach
@@ -31,6 +31,8 @@ import androidx.compose.ui.window.DialogProperties
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import mega.android.core.ui.components.LinkSpannedText
+import mega.android.core.ui.components.MegaText
+import mega.android.core.ui.components.inputfields.TextInputField
 import mega.android.core.ui.components.text.SpannableText
 import mega.android.core.ui.model.MegaSpanStyle
 import mega.android.core.ui.model.SpanIndicator
@@ -38,9 +40,9 @@ import mega.android.core.ui.model.SpanStyleWithAnnotation
 import mega.android.core.ui.preview.CombinedThemePreviews
 import mega.android.core.ui.theme.AndroidThemeForPreviews
 import mega.android.core.ui.theme.AppTheme
-import mega.android.core.ui.tokens.theme.DSTokens
 import mega.android.core.ui.theme.spacing.LocalSpacing
 import mega.android.core.ui.theme.values.TextColor
+import mega.android.core.ui.tokens.theme.DSTokens
 import kotlin.math.max
 
 @Retention(AnnotationRetention.SOURCE)
@@ -239,12 +241,93 @@ fun BasicDialog(
     }
 }
 
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun BasicInputDialog(
+    title: String,
+    modifier: Modifier = Modifier,
+    description: String? = null,
+    inputLabel: String? = null,
+    inputValue: String,
+    onValueChange: (String) -> Unit,
+    errorText: String? = null,
+    positiveButtonText: String,
+    onPositiveButtonClicked: () -> Unit,
+    negativeButtonText: String? = null,
+    onNegativeButtonClicked: (() -> Unit)? = null,
+    dismissOnClickOutside: Boolean = true,
+    dismissOnBackPress: Boolean = true,
+    isPositiveButtonEnabled: Boolean = true,
+    isNegativeButtonEnabled: Boolean = true,
+    keyboardType: KeyboardType = KeyboardType.Text,
+    onDismiss: () -> Unit = {},
+) {
+    BasicAlertDialog(
+        onDismissRequest = onDismiss,
+        modifier = modifier,
+        properties = DialogProperties(
+            dismissOnBackPress = dismissOnBackPress,
+            dismissOnClickOutside = dismissOnClickOutside
+        )
+    ) {
+        MegaBasicDialogContent(
+            title = {
+                MegaText(
+                    text = title,
+                    style = AppTheme.typography.headlineSmall,
+                    textColor = TextColor.Primary,
+                )
+            },
+            text = {
+                if (!description.isNullOrEmpty()) {
+                    Column(modifier = Modifier.fillMaxWidth()) {
+                        MegaText(
+                            text = description,
+                            style = AppTheme.typography.bodyMedium,
+                            textColor = TextColor.Secondary,
+                        )
+                    }
+                }
+            },
+            buttons = {
+                MegaBasicDialogFlowRow {
+                    if (negativeButtonText != null && onNegativeButtonClicked != null) {
+                        DialogButton(
+                            buttonText = negativeButtonText,
+                            onButtonClicked = onNegativeButtonClicked,
+                            enabled = isNegativeButtonEnabled
+                        )
+                    }
+                    DialogButton(
+                        buttonText = positiveButtonText,
+                        onButtonClicked = onPositiveButtonClicked,
+                        enabled = isPositiveButtonEnabled
+                    )
+                }
+            },
+            inputContent = {
+                TextInputField(
+                    modifier = Modifier.fillMaxWidth(),
+                    label = inputLabel,
+                    text = inputValue,
+                    onValueChanged = onValueChange,
+                    keyboardType = keyboardType,
+                    errorText = errorText
+                )
+            },
+            shape = RoundedCornerShape(28.dp)
+        )
+    }
+}
+
 @Composable
 private fun MegaBasicDialogContent(
     buttons: @Composable () -> Unit,
     modifier: Modifier = Modifier,
     title: (@Composable () -> Unit)?,
     text: @Composable (() -> Unit)?,
+    inputContent: (@Composable () -> Unit)? = null,
     shape: Shape
 ) {
     Surface(
@@ -252,27 +335,26 @@ private fun MegaBasicDialogContent(
         shape = shape,
         color = DSTokens.colors.background.surface1
     ) {
-        Column(modifier = Modifier.padding(DialogPadding)) {
-            title?.let {
-                Box(
-                    modifier = Modifier
-                        .padding(TitlePadding)
-                        .align(Alignment.Start)
-                ) {
-                    title()
-                }
-            }
+        Column(
+            modifier = Modifier.padding(LocalSpacing.current.x24),
+            verticalArrangement = Arrangement.spacedBy(LocalSpacing.current.x16),
+        ) {
+            title?.invoke()
             text?.let {
                 Box(
                     Modifier
                         .weight(weight = 1f, fill = false)
-                        .padding(TextPadding)
                         .align(Alignment.Start)
                 ) {
                     text()
                 }
             }
-            Box(modifier = Modifier.align(Alignment.End)) {
+            inputContent?.invoke()
+            Box(
+                modifier = Modifier
+                    .padding(top = LocalSpacing.current.x8)
+                    .align(Alignment.End)
+            ) {
                 buttons()
             }
         }
@@ -508,10 +590,23 @@ private fun BasicDialogWithVertical3ButtonsPreview() {
     }
 }
 
+@CombinedThemePreviews
+@Composable
+private fun BasicInputDialogPreview() {
+    AndroidThemeForPreviews {
+        BasicInputDialog(
+            title = "Basic input dialog title",
+            description = "Basic input dialog description",
+            inputValue = "",
+            onValueChange = { },
+            inputLabel = "Sample label",
+            positiveButtonText = "Action 1",
+            onPositiveButtonClicked = {},
+            negativeButtonText = "Action 2",
+            onNegativeButtonClicked = {},
+        )
+    }
+}
+
 private val ButtonsMainAxisSpacing = 8.dp
 private val ButtonsCrossAxisSpacing = 12.dp
-
-// Paddings for each of the dialog's parts.
-private val DialogPadding = PaddingValues(all = 24.dp)
-private val TitlePadding = PaddingValues(bottom = 16.dp)
-private val TextPadding = PaddingValues(bottom = 24.dp)
