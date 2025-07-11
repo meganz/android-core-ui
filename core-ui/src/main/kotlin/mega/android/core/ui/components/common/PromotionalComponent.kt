@@ -17,17 +17,18 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
-import coil.compose.AsyncImage
-import coil.request.ImageRequest
+import coil3.compose.AsyncImage
+import coil3.request.ImageRequest
+import coil3.request.crossfade
 import mega.android.core.ui.components.LinkSpannedText
 import mega.android.core.ui.components.MegaText
 import mega.android.core.ui.components.list.IconContentListItem
 import mega.android.core.ui.components.list.ImageContentListItem
 import mega.android.core.ui.components.text.ContentText
 import mega.android.core.ui.theme.AppTheme
-import mega.android.core.ui.tokens.theme.DSTokens
 import mega.android.core.ui.theme.spacing.LocalSpacing
 import mega.android.core.ui.theme.values.TextColor
+import mega.android.core.ui.tokens.theme.DSTokens
 
 @Immutable
 data class PromotionalListAttributes(

@@ -18,13 +18,13 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import coil.compose.AsyncImage
+import coil3.compose.AsyncImage
 import mega.android.core.ui.components.MegaText
 import mega.android.core.ui.preview.CombinedThemePreviews
 import mega.android.core.ui.theme.AndroidThemeForPreviews
 import mega.android.core.ui.theme.AppTheme
-import mega.android.core.ui.tokens.theme.DSTokens
 import mega.android.core.ui.theme.values.TextColor
+import mega.android.core.ui.tokens.theme.DSTokens
 import java.io.File
 
 private val LARGE_PROFILE_PICTURE_SIZE = 56.dp

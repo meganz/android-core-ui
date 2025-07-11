@@ -23,12 +23,12 @@ import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.core.view.ViewCompat
+import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.CoroutineScope
 import mega.android.core.ui.components.list.DragStartType.StartAfterLongPressWithHapticFeedback
 import mega.android.core.ui.components.list.DragStartType.StartImmediately
 import mega.android.core.ui.preview.CombinedThemePreviews
 import mega.android.core.ui.theme.AndroidThemeForPreviews
-import okhttp3.internal.toImmutableList
 import sh.calvin.reorderable.ReorderableItem
 import sh.calvin.reorderable.rememberReorderableLazyListState
 

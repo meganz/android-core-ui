@@ -2,7 +2,7 @@
 agp = "8.7.2"
 activity-compose = "1.10.1"
 appcompat = "1.7.0"
-coil-compose = "2.7.0"
+coil-compose = "3.2.0"
 compose-bom = "2025.04.01"
 compose-compiler = "1.5.14"
 constraintlayout-compose = "1.1.1"
@@ -28,7 +28,7 @@ reorderable = "2.4.3"
 activity-compose = { module = "androidx.activity:activity-compose", version.ref = "activity-compose" }
 androidx-material3-window = { group = "androidx.compose.material3", name = "material3-window-size-class" }
 appcompat = { module = "androidx.appcompat:appcompat", version.ref = "appcompat" }
-coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coil-compose" }
+coil-compose = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coil-compose" }
 compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "compose-bom" }
 compose-compiler = { module = "androidx.compose.compiler:compiler", version.ref = "compose-compiler" }
 compose-junit = { group = "androidx.compose.ui", name = "ui-test-junit4" }
