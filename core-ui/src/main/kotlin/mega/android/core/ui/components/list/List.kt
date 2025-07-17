@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
@@ -317,37 +318,10 @@ private fun ListItem(
     replaceNullSubtitleWithShimmer: Boolean = false,
     titleTextColor: TextColor = TextColor.Primary,
 ) {
-    Row(
-        modifier = modifier
-            .fillMaxWidth()
-            .combinedClickable(
-                enabled = enableClick,
-                onClick = onClickListener,
-                onLongClick = onLongClickListener
-            )
-            .padding(contentPadding),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(LocalSpacing.current.x16)
-    ) {
-        if (leadingElement != null) {
-            CompositionLocalProvider(
-                LocalContentColor provides DSTokens.colors.icon.primary.copy(alpha = 1f)
-            ) {
-                Box(
-                    modifier = Modifier
-                        .size(leadingElementContainerSize)
-                        .align(Alignment.CenterVertically),
-                ) {
-                    leadingElement()
-                }
-            }
-        }
-
-        Column(
-            modifier = Modifier
-                .wrapContentHeight()
-                .weight(1f),
-        ) {
+    GenericListItem(
+        modifier = modifier,
+        contentPadding = contentPadding,
+        title = {
             if (title != null) {
                 MegaText(
                     text = title,
@@ -357,7 +331,8 @@ private fun ListItem(
                     overflow = TextOverflow.Ellipsis
                 )
             }
-
+        },
+        subtitle = {
             if (subtitle != null) {
                 MegaText(
                     text = subtitle,
@@ -374,6 +349,80 @@ private fun ListItem(
                         .shimmerEffect()
                 )
             }
+        },
+        leadingElement = if (leadingElement != null) {
+            {
+                CompositionLocalProvider(
+                    LocalContentColor provides DSTokens.colors.icon.primary.copy(alpha = 1f)
+                ) {
+                    Box(
+                        modifier = Modifier
+                            .size(leadingElementContainerSize)
+                            .align(Alignment.CenterVertically),
+                    ) {
+                        leadingElement()
+                    }
+                }
+            }
+        } else null,
+        trailingElement = trailingElement,
+        enableClick = enableClick,
+        onClickListener = onClickListener,
+        onLongClickListener = onLongClickListener,
+        horizontalArrangement = Arrangement.spacedBy(LocalSpacing.current.x16)
+    )
+}
+
+/**
+ * A generic list item that can be used to create a variety of list items with highly customizable content.
+ *
+ * @param modifier Modifier for the list item.
+ * @param contentPadding Padding values for the content inside the list item.
+ * @param title Composable function for the title of the list item.
+ * @param subtitle Composable function for the subtitle of the list item.
+ * @param leadingElement Optional composable function for a leading element (e.g., an icon).
+ * @param trailingElement Optional composable function for a trailing element (e.g., an icon).
+ * @param enableClick Whether the list item is clickable.
+ * @param onClickListener Click listener for the list item.
+ * @param onLongClickListener Long click listener for the list item, if any.
+ */
+@Composable
+fun GenericListItem(
+    title: (@Composable (ColumnScope.() -> Unit)),
+    subtitle: (@Composable (ColumnScope.() -> Unit)),
+    modifier: Modifier = Modifier,
+    contentPadding: PaddingValues = ListItemToken.defaultContentPadding,
+    leadingElement: (@Composable (RowScope.() -> Unit))? = null,
+    trailingElement: (@Composable (() -> Unit))? = null,
+    enableClick: Boolean = true,
+    onClickListener: () -> Unit = {},
+    onLongClickListener: (() -> Unit)? = null,
+    verticalAlignment: Alignment.Vertical = Alignment.CenterVertically,
+    horizontalArrangement: Arrangement.HorizontalOrVertical = Arrangement.spacedBy(DSTokens.spacings.s4)
+) {
+    Row(
+        modifier = modifier
+            .fillMaxWidth()
+            .combinedClickable(
+                enabled = enableClick,
+                onClick = onClickListener,
+                onLongClick = onLongClickListener
+            )
+            .padding(contentPadding),
+        verticalAlignment = verticalAlignment,
+        horizontalArrangement = horizontalArrangement
+    ) {
+        if (leadingElement != null) {
+            leadingElement()
+        }
+
+        Column(
+            modifier = Modifier
+                .wrapContentHeight()
+                .weight(1f),
+        ) {
+            title()
+            subtitle()
         }
 
         if (trailingElement != null) {
@@ -381,6 +430,97 @@ private fun ListItem(
         }
     }
 }
+
+@Composable
+@CombinedThemePreviews
+private fun GenericListItemPreview() {
+    AndroidThemeForPreviews {
+        GenericListItem(
+            title = {
+                Row {
+                    MegaIcon(
+                        painter = painterResource(id = R.drawable.ic_check_circle_medium_thin_outline),
+                        contentDescription = null,
+                        modifier = Modifier
+                            .size(14.dp)
+                            .align(Alignment.CenterVertically),
+                        tint = IconColor.Primary
+                    )
+                    Spacer(modifier = Modifier.width(8.dp))
+                    MegaText(
+                        text = "List item",
+                        textColor = TextColor.Primary,
+                        style = AppTheme.typography.bodyLarge,
+                        maxLines = TITLE_MAX_LINES,
+                        overflow = TextOverflow.Ellipsis
+                    )
+                }
+            },
+            subtitle = {
+                MegaText(
+                    text = "Supporting line text lorem ipsum lorem ipsum lorem ipsum lorem ipsum",
+                    textColor = TextColor.Secondary,
+                    style = AppTheme.typography.bodyMedium,
+                    maxLines = MULTI_LINE_LIST_SUBTITLE_MAX_LINES,
+                    overflow = TextOverflow.Ellipsis
+                )
+                MegaText(
+                    text = "Line two subtitle",
+                    textColor = TextColor.Secondary,
+                    style = AppTheme.typography.bodyMedium,
+                    maxLines = MULTI_LINE_LIST_SUBTITLE_MAX_LINES,
+                    overflow = TextOverflow.Ellipsis
+                )
+            },
+            leadingElement = {
+                MegaIcon(
+                    painter = painterResource(id = R.drawable.illustration_mega_anniversary),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .size(leadingElementContainerSize)
+                        .align(Alignment.CenterVertically),
+                )
+            },
+            trailingElement = {
+                MegaIcon(
+                    painter = painterResource(id = R.drawable.ic_check_circle_medium_thin_outline),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .size(leadingElementContainerSize),
+                    tint = IconColor.Primary
+                )
+            },
+        )
+    }
+}
+
+@Composable
+@CombinedThemePreviews
+private fun GenericListItemPreview2() {
+    AndroidThemeForPreviews {
+        GenericListItem(
+            title = {
+                MegaText(
+                    text = "List item",
+                    textColor = TextColor.Primary,
+                    style = AppTheme.typography.bodyLarge,
+                    maxLines = TITLE_MAX_LINES,
+                    overflow = TextOverflow.Ellipsis
+                )
+            },
+            subtitle = {
+                MegaText(
+                    text = "Supporting line text lorem ipsum lorem ipsum lorem ipsum lorem ipsum",
+                    textColor = TextColor.Secondary,
+                    style = AppTheme.typography.bodyMedium,
+                    maxLines = MULTI_LINE_LIST_SUBTITLE_MAX_LINES,
+                    overflow = TextOverflow.Ellipsis
+                )
+            },
+        )
+    }
+}
+
 
 @Composable
 @CombinedThemePreviews
@@ -529,7 +669,10 @@ private fun SecondaryHeaderListItemPreview() {
 @CombinedThemePreviews
 private fun SecondaryHeaderListItemWithIconPreview() {
     AndroidThemeForPreviews {
-        SecondaryHeaderListItem(text = "Header text", rightIconRes = R.drawable.ic_arrow_left_medium_thin_outline)
+        SecondaryHeaderListItem(
+            text = "Header text",
+            rightIconRes = R.drawable.ic_arrow_left_medium_thin_outline
+        )
     }
 }
 
@@ -545,6 +688,9 @@ private fun PrimaryHeaderListItemPreview() {
 @CombinedThemePreviews
 private fun PrimaryHeaderListItemWithIconPreview() {
     AndroidThemeForPreviews {
-        PrimaryHeaderListItem(text = "Header text", rightIconRes = R.drawable.ic_check_medium_thin_outline)
+        PrimaryHeaderListItem(
+            text = "Header text",
+            rightIconRes = R.drawable.ic_check_medium_thin_outline
+        )
     }
 }

@@ -5,6 +5,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.res.painterResource
 import mega.android.core.ui.R
 import mega.android.core.ui.preview.CombinedThemePreviews
@@ -14,12 +16,43 @@ import mega.android.core.ui.theme.iconColor
 import mega.android.core.ui.theme.linkColor
 import mega.android.core.ui.theme.supportColor
 import mega.android.core.ui.theme.textColor
-import mega.android.core.ui.tokens.theme.DSTokens
 import mega.android.core.ui.theme.values.ComponentsColor
 import mega.android.core.ui.theme.values.IconColor
 import mega.android.core.ui.theme.values.LinkColor
 import mega.android.core.ui.theme.values.SupportColor
 import mega.android.core.ui.theme.values.TextColor
+import mega.android.core.ui.tokens.theme.DSTokens
+
+
+@Composable
+fun MegaIcon(
+    imageVector: ImageVector,
+    tint: IconColor,
+    modifier: Modifier = Modifier,
+    contentDescription: String? = null,
+) {
+    MegaIcon(
+        painter = rememberVectorPainter(image = imageVector),
+        tint = tint,
+        modifier = modifier,
+        contentDescription = contentDescription
+    )
+}
+
+@Composable
+fun MegaIcon(
+    imageVector: ImageVector,
+    tint: SupportColor,
+    modifier: Modifier = Modifier,
+    contentDescription: String? = null,
+) {
+    MegaIcon(
+        painter = rememberVectorPainter(image = imageVector),
+        supportTint = tint,
+        modifier = modifier,
+        contentDescription = contentDescription
+    )
+}
 
 @Composable
 fun MegaIcon(

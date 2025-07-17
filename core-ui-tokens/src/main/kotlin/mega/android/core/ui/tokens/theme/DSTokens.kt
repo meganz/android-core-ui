@@ -4,6 +4,7 @@ import androidx.compose.material3.Shapes
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.staticCompositionLocalOf
 import mega.android.core.ui.tokens.theme.colors.DSColors
+import mega.android.core.ui.tokens.theme.spacing.Spacings
 import mega.android.core.ui.tokens.theme.tokens.Background
 import mega.android.core.ui.tokens.theme.tokens.Border
 import mega.android.core.ui.tokens.theme.tokens.Brand
@@ -29,6 +30,10 @@ object DSTokens {
     val shapes: Shapes
         @Composable
         get() = mega.android.core.ui.tokens.theme.shape.shapes
+
+    val spacings: Spacings
+        @Composable
+        get() = mega.android.core.ui.tokens.theme.spacing.spacings
 }
 
 val LocalColorPalette = staticCompositionLocalOf {

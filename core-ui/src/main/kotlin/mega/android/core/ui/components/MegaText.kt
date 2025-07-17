@@ -16,9 +16,9 @@ import mega.android.core.ui.preview.CombinedThemePreviews
 import mega.android.core.ui.theme.AndroidThemeForPreviews
 import mega.android.core.ui.theme.linkColor
 import mega.android.core.ui.theme.textColor
-import mega.android.core.ui.tokens.theme.DSTokens
 import mega.android.core.ui.theme.values.LinkColor
 import mega.android.core.ui.theme.values.TextColor
+import mega.android.core.ui.tokens.theme.DSTokens
 
 /**
  * Text
@@ -42,7 +42,7 @@ import mega.android.core.ui.theme.values.TextColor
 @Composable
 fun MegaText(
     text: String,
-    textColor: TextColor,
+    textColor: TextColor = TextColor.Primary,
     modifier: Modifier = Modifier,
     overflow: TextOverflow = TextOverflow.Clip,
     maxLines: Int = Int.MAX_VALUE,
