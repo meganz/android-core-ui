@@ -31,12 +31,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import mega.android.core.ui.R
+import mega.android.core.ui.modifiers.conditional
 import mega.android.core.ui.preview.CombinedThemePreviews
 import mega.android.core.ui.theme.AndroidThemeForPreviews
 import mega.android.core.ui.tokens.theme.DSTokens
 
 private val checkboxContainerSize = 42.dp
-private val checkboxSize = 19.dp
+private val checkboxSize = 20.dp
 private val checkboxBorderStroke = 1.dp
 private val checkMarkSize = 16.dp
 private const val checkboxFocusedCornerRadius = 16f
@@ -95,20 +96,22 @@ fun Checkbox(
     onCheckStateChanged: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
+    clickable: Boolean = true,
+    tapTargetArea: Boolean = true
 ) {
     val mutableInteractionSource = remember { MutableInteractionSource() }
     val focusRequester = remember { FocusRequester() }
     val color = CheckboxColors.default()
-    var isChecked by remember { mutableStateOf(checked) }
+    var isChecked by remember(checked) { mutableStateOf(checked) }
     val focusColor = DSTokens.colors.focus.colorFocus
     val isFocused by mutableInteractionSource.collectIsFocusedAsState()
     val isPressed by mutableInteractionSource.collectIsPressedAsState()
 
     Box(
         modifier = Modifier
-            .size(checkboxContainerSize)
+            .conditional(tapTargetArea) { size(checkboxContainerSize) }
             .then(
-                if (enabled) {
+                if (enabled && clickable) {
                     modifier
                         .clickable(
                             interactionSource = mutableInteractionSource,
