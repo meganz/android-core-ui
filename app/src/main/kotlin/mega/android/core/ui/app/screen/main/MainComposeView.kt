@@ -48,6 +48,7 @@ import mega.android.core.ui.theme.AndroidThemeForPreviews
 internal fun MainComposeView(
     onNavigateToTooltip: () -> Unit,
     onNavigateToReorderableList: () -> Unit,
+    onNavigateToFloatingToolbar: () -> Unit,
 ) {
     var showCloseButton by remember { mutableStateOf(true) }
     var illustrationMode by remember { mutableStateOf(IllustrationIconSizeMode.Small) }
@@ -178,6 +179,13 @@ internal fun MainComposeView(
                 onClicked = { onNavigateToReorderableList() }
             )
         }
+        item(key = 30) {
+            SettingsNavigationItem(
+                key = "floatingToolbar",
+                title = "Floating Toolbar",
+                onClicked = { onNavigateToFloatingToolbar() }
+            )
+        }
     }
 }
 
@@ -188,6 +196,7 @@ private fun MainComposeViewPreview() {
         MainComposeView(
             onNavigateToTooltip = {},
             onNavigateToReorderableList = {},
+            onNavigateToFloatingToolbar = {},
         )
     }
 }

@@ -7,7 +7,9 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.core.view.WindowCompat
 import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import mega.android.core.ui.app.screen.floatingtoolbar.FloatingToolbarScreen
 import mega.android.core.ui.app.screen.main.mainScreen
 import mega.android.core.ui.app.screen.main.mainScreenRoute
 import mega.android.core.ui.app.screen.reorderablelist.navigateToReorderableListScreen
@@ -34,12 +36,19 @@ class MainActivity : ComponentActivity() {
                             },
                             onNavigateToReorderableList = {
                                 navController.navigateToReorderableListScreen()
+                            },
+                            onNavigateToFloatingToolbar = {
+                                navController.navigate("floatingToolbar")
                             }
                         )
 
                         tooltipScreen()
 
                         reorderableListScreen(navController::popBackStack)
+                        
+                        composable("floatingToolbar") {
+                            FloatingToolbarScreen()
+                        }
                     }
                 }
             }

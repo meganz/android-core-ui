@@ -8,11 +8,13 @@ internal const val mainScreenRoute = "mainScreenRoute"
 internal fun NavGraphBuilder.mainScreen(
     onNavigateToTooltip: () -> Unit,
     onNavigateToReorderableList: () -> Unit,
+    onNavigateToFloatingToolbar: () -> Unit,
 ) {
     composable(route = mainScreenRoute) {
         MainComposeView(
             onNavigateToTooltip = onNavigateToTooltip,
             onNavigateToReorderableList = onNavigateToReorderableList,
+            onNavigateToFloatingToolbar = onNavigateToFloatingToolbar,
         )
     }
 }
