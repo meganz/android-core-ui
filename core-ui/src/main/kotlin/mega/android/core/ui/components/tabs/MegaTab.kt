@@ -10,6 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
 import mega.android.core.ui.theme.AppTheme
 import mega.android.core.ui.tokens.theme.DSTokens
 
@@ -23,8 +24,9 @@ internal fun MegaTab(
 ) {
     val interactionSource = remember { MutableInteractionSource() }
     val isTabPressed by interactionSource.collectIsPressedAsState()
-    val textStyle =
-        if (isSelected) AppTheme.typography.titleMedium else AppTheme.typography.bodyLarge
+    val textStyle = AppTheme.typography.titleMedium.copy(
+        fontWeight = if (isSelected) FontWeight.W500 else FontWeight.Normal
+    )
     val textColor = when {
         isTabPressed -> DSTokens.colors.button.primaryPressed
         else -> DSTokens.colors.text.primary
