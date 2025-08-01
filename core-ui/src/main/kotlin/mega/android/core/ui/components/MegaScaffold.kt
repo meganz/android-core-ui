@@ -69,7 +69,8 @@ fun MegaScaffoldWithTopAppBarScrollBehavior(
     scrollBehavior: TopAppBarScrollBehavior? = TopAppBarDefaults.pinnedScrollBehavior(),
     content: @Composable (PaddingValues) -> Unit,
 ) {
-    val snackbarHostState = remember { SnackbarHostState() }
+    // check if the root composable has a LocalSnackBarHostState, if not create a new one
+    val snackbarHostState = LocalSnackBarHostState.current ?: remember { SnackbarHostState() }
     CompositionLocalProvider(
         LocalSnackBarHostState provides snackbarHostState,
         LocalTopAppBarScrollBehavior provides scrollBehavior,
