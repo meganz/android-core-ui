@@ -14,4 +14,10 @@ internal data class JsonGroup(
             it::class == clazz
                     || (it as? JsonGroup)?.hasChildOfType(clazz) == true
         }
+    
+    fun hasChildOfSemanticValueRef(): Boolean =
+        children.any {
+            it is SemanticValueRef
+                    || (it as? JsonGroup)?.hasChildOfSemanticValueRef() == true
+        }
 }

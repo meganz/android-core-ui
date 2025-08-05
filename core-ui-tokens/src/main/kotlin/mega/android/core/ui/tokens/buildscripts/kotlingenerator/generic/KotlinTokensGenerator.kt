@@ -148,7 +148,11 @@ internal class KotlinTokensGenerator<T : JsonCoreUiObject>(
         file: FileSpec.Builder,
         group: JsonGroup
     ) {
-        if (generationType !is TokenGenerationType.ObjectTokenGenerationType || !group.hasChildOfType(type)) return
+        if (generationType !is TokenGenerationType.ObjectTokenGenerationType
+            || !group.hasChildOfType(type)
+        ) {
+            return
+        }
         val mainType = when (generationType) {
             is TokenGenerationType.InterfaceImplementation -> {
                 TypeSpec.objectBuilder(fileName)
@@ -178,7 +182,7 @@ internal class KotlinTokensGenerator<T : JsonCoreUiObject>(
         } else {
             group.children
                 .filterIsInstance<JsonGroup>()
-                .filter { (it as? JsonGroup)?.hasChildOfType(type) == true }
+                .filter { (it as? JsonGroup)?.hasChildOfSemanticValueRef() == true }
                 .mapNotNull { createProperty(it) }
                 .takeIf { it.isNotEmpty() }?.let { properties ->
                     properties.forEach {
@@ -191,7 +195,6 @@ internal class KotlinTokensGenerator<T : JsonCoreUiObject>(
 
     private fun createProperty(child: JsonGroup): PropertySpec? {
         child.children
-            .filter { it::class == type }
             .filterIsInstance<SemanticValueRef>()
             .takeIf { it.isNotEmpty() }?.let { properties ->
                 val className = child.name.jsonNameToKotlinName()

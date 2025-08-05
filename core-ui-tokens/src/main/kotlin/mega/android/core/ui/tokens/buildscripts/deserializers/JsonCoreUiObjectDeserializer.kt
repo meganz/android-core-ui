@@ -49,12 +49,15 @@ internal class JsonCoreUiObjectDeserializer : JsonDeserializer<JsonCoreUiObject>
                 }
 
                 TYPE_COLOR -> {
-                    if (jsonObject.getValue()?.startsWith("{") == true) {
-                        context.deserialize(jsonObject, JsonColorRef::class.java)
-                    } else {
-                        context.deserialize(jsonObject, JsonColor::class.java)
+                    val value = jsonObject.getValue()
+                    when {
+                        value?.startsWith("rgba(") == true || value?.startsWith("{") == true -> {
+                            context.deserialize(jsonObject, JsonColorRef::class.java)
+                        }
+                        else -> {
+                            context.deserialize(jsonObject, JsonColor::class.java)
+                        }
                     }
-
                 }
 
                 TYPE_NUMBER -> context.deserialize(jsonObject, JsonNumber::class.java)

@@ -14,6 +14,7 @@ import mega.android.core.ui.tokens.theme.tokens.Focus
 import mega.android.core.ui.tokens.theme.tokens.Icon
 import mega.android.core.ui.tokens.theme.tokens.Indicator
 import mega.android.core.ui.tokens.theme.tokens.Link
+import mega.android.core.ui.tokens.theme.tokens.Neutral
 import mega.android.core.ui.tokens.theme.tokens.Notifications
 import mega.android.core.ui.tokens.theme.tokens.SemanticTokens
 import mega.android.core.ui.tokens.theme.tokens.Support
@@ -57,6 +58,7 @@ private val testColorPalette = DSColors(
         override val notifications = Notifications()
         override val border = Border()
         override val brand = Brand()
+        override val neutral = Neutral()
     },
     isLight = false,
 )

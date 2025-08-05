@@ -21,7 +21,7 @@ public object AndroidNewSemanticTokensDark : SemanticTokens {
             brand = Colors.Primary.n500,
             brandHover = Colors.Primary.n400,
             brandPressed = Colors.Primary.n300,
-            secondaryPressed = Colors.Neutral.n500,
+            secondaryPressed = Colors.Grey.n300.copy(alpha = 0.4f),
             outline = Colors.Accent.n050,
             outlineHover = Colors.Accent.n300,
             outlineBackgroundHover = Colors.WhiteOpacity.n005,
@@ -30,16 +30,16 @@ public object AndroidNewSemanticTokensDark : SemanticTokens {
             errorHover = Colors.Error.n400,
             errorPressed = Colors.Error.n300,
             disabled = Colors.WhiteOpacity.n010,
-            secondary = Colors.Neutral.n700,
+            secondary = Colors.Grey.n300.copy(alpha = 0.2f),
             primaryHover = Colors.Accent.n300,
-            secondaryHover = Colors.Neutral.n600,
+            secondaryHover = Colors.Grey.n300.copy(alpha = 0.3f),
             )
 
     override val border: Border = Border(
             brand = Colors.Primary.n500,
-            strong = Colors.Neutral.n600,
+            strong = Colors.Grey.n200.copy(alpha = 0.4f),
             strongSelected = Colors.Accent.n050,
-            subtle = Colors.Neutral.n800,
+            subtle = Colors.Grey.n200.copy(alpha = 0.1f),
             subtleSelected = Colors.Accent.n050,
             disabled = Colors.Neutral.n700,
             )
@@ -120,9 +120,20 @@ public object AndroidNewSemanticTokensDark : SemanticTokens {
             hover = Colors.Primary.n400,
             pressed = Colors.Primary.n300,
             onBrand = Colors.Grey.n25,
-            containerDefault = Colors.Primary.n900,
-            containerHover = Colors.Primary.n800,
-            containerPressed = Colors.Primary.n700,
+            containerDefault = Colors.Primary.n500.copy(alpha = 0.3f),
+            containerHover = Colors.Primary.n500.copy(alpha = 0.4f),
+            containerPressed = Colors.Primary.n500.copy(alpha = 0.5f),
             onContainer = Colors.Primary.n050,
+            )
+
+    override val neutral: Neutral = Neutral(
+            default = Colors.Grey.n200,
+            hover = Colors.Grey.n100,
+            pressed = Colors.Grey.n50,
+            onGrey = Colors.Grey.n950,
+            containerDefault = Colors.Grey.n300.copy(alpha = 0.2f),
+            containerHover = Colors.Grey.n300.copy(alpha = 0.3f),
+            containerPressed = Colors.Grey.n300.copy(alpha = 0.4f),
+            onContainer = Colors.Grey.n200,
             )
 }

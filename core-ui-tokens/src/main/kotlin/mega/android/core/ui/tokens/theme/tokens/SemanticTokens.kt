@@ -127,6 +127,17 @@ public data class Brand(
     public val onContainer: Color = Color.Magenta,
 )
 
+public data class Neutral(
+    public val default: Color = Color.Magenta,
+    public val hover: Color = Color.Magenta,
+    public val pressed: Color = Color.Magenta,
+    public val onGrey: Color = Color.Magenta,
+    public val containerDefault: Color = Color.Magenta,
+    public val containerHover: Color = Color.Magenta,
+    public val containerPressed: Color = Color.Magenta,
+    public val onContainer: Color = Color.Magenta,
+)
+
 public interface SemanticTokens {
     public val background: Background
 
@@ -151,4 +162,6 @@ public interface SemanticTokens {
     public val focus: Focus
 
     public val brand: Brand
+
+    public val neutral: Neutral
 }
