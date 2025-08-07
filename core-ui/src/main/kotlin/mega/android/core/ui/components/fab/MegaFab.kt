@@ -22,7 +22,7 @@ fun MegaFab(
 ) {
     FloatingActionButton(
         modifier = modifier,
-        shape = RoundedCornerShape(LocalSpacing.current.x8),
+        shape = RoundedCornerShape(LocalSpacing.current.x16),
         containerColor = DSTokens.colors.button.primary,
         contentColor = DSTokens.colors.icon.inverseAccent,
         onClick = onClick,

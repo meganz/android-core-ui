@@ -1,5 +1,7 @@
 package mega.android.core.ui.components.dialogs
 
+import android.R.attr.negativeButtonText
+import android.R.attr.positiveButtonText
 import androidx.annotation.IntDef
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.expandIn
@@ -23,6 +25,7 @@ import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.layout.Placeable
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.fastForEach
@@ -261,6 +264,9 @@ fun BasicInputDialog(
     isPositiveButtonEnabled: Boolean = true,
     isNegativeButtonEnabled: Boolean = true,
     keyboardType: KeyboardType = KeyboardType.Text,
+    inputTextAlign: TextAlign = TextAlign.Unspecified,
+    placeholder: String? = null,
+    suffix: @Composable (() -> Unit)? = null,
     onDismiss: () -> Unit = {},
 ) {
     BasicAlertDialog(
@@ -313,7 +319,10 @@ fun BasicInputDialog(
                     text = inputValue,
                     onValueChanged = onValueChange,
                     keyboardType = keyboardType,
-                    errorText = errorText
+                    errorText = errorText,
+                    placeholder = placeholder,
+                    suffix = suffix,
+                    inputTextAlign = inputTextAlign
                 )
             },
             shape = RoundedCornerShape(28.dp)
@@ -607,6 +616,48 @@ private fun BasicInputDialogPreview() {
         )
     }
 }
+
+@CombinedThemePreviews
+@Composable
+private fun BasicInputDialogWithPlaceholderPreview() {
+    AndroidThemeForPreviews {
+        BasicInputDialog(
+            title = "Basic input dialog title",
+            inputValue = "",
+            onValueChange = { },
+            placeholder = "Placeholder text",
+            positiveButtonText = "Action 1",
+            onPositiveButtonClicked = {},
+            negativeButtonText = "Action 2",
+            onNegativeButtonClicked = {},
+        )
+    }
+}
+
+@CombinedThemePreviews
+@Composable
+private fun BasicInputDialogWithSuffixPreview() {
+    AndroidThemeForPreviews {
+        BasicInputDialog(
+            title = "Basic input dialog title",
+            inputValue = "Value",
+            onValueChange = { },
+            suffix = {
+                MegaText(
+                    text = "Suffix",
+                    style = AppTheme.typography.bodyLarge,
+                    textColor = TextColor.Placeholder,
+                )
+            },
+            positiveButtonText = "Action 1",
+            onPositiveButtonClicked = {},
+            negativeButtonText = "Action 2",
+            onNegativeButtonClicked = {},
+            inputTextAlign = TextAlign.End,
+        )
+    }
+}
+
 
 private val ButtonsMainAxisSpacing = 8.dp
 private val ButtonsCrossAxisSpacing = 12.dp

@@ -51,6 +51,7 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import mega.android.core.ui.R
+import mega.android.core.ui.components.MegaText
 import mega.android.core.ui.components.inputFieldHeight
 import mega.android.core.ui.components.spannedTextWithAnnotation
 import mega.android.core.ui.components.visualtransformation.CCExpiryDateVisualTransformation
@@ -129,6 +130,7 @@ fun TextInputField(
     imeAction: ImeAction = ImeAction.Done,
     capitalization: KeyboardCapitalization = KeyboardCapitalization.Words,
     text: String = "",
+    placeholder: String? = null,
     label: String? = null,
     inputTextAlign: TextAlign = TextAlign.Unspecified,
     showTrailingIcon: Boolean = true,
@@ -138,6 +140,7 @@ fun TextInputField(
     maxCharLimit: Int = Int.MAX_VALUE,
     optionalLabelText: String? = null,
     contentType: ContentType? = null,
+    suffix: @Composable (() -> Unit)? = null,
     onValueChanged: ((String) -> Unit)? = null,
     onFocusChanged: ((Boolean) -> Unit)? = null,
 ) {
@@ -167,6 +170,8 @@ fun TextInputField(
                 }
             }
         },
+        placeholder = placeholder,
+        suffix = suffix,
         visualTransformation = visualTransformation,
         keyboardType = keyboardType,
         imeAction = imeAction,
@@ -680,7 +685,9 @@ internal fun BaseTextField(
     keyboardActions: KeyboardActions = KeyboardActions.Default,
     maxCharLimit: Int = Int.MAX_VALUE,
     contentType: ContentType? = null,
+    placeholder: String? = null,
     label: @Composable (() -> Unit)? = null,
+    suffix: @Composable (() -> Unit)? = null,
     onValueChanged: ((String) -> Unit)? = null,
     onFocusChanged: ((Boolean) -> Unit)? = null,
     trailingView: @Composable (() -> Unit)? = null,
@@ -771,6 +778,16 @@ internal fun BaseTextField(
                     }
                     onValueChanged?.invoke(baseText)
                 },
+                placeholder = placeholder?.let {
+                    {
+                        MegaText(
+                            text = it,
+                            style = AppTheme.typography.bodyLarge,
+                            textColor = TextColor.Placeholder
+                        )
+                    }
+                },
+                suffix = suffix,
                 colors = colors,
                 shape = RoundedCornerShape(8.dp),
                 interactionSource = interactionSource,
@@ -1147,7 +1164,15 @@ private fun OptionalTextFieldPreview() {
             label = "Username",
             optionalLabelText = "(Optional)",
             onValueChanged = {},
-            keyboardType = KeyboardType.Text
+            keyboardType = KeyboardType.Text,
+            placeholder = "Enter your username",
+            suffix = {
+                MegaText(
+                    text = "Suffix",
+                    textColor = TextColor.Placeholder,
+                )
+            },
+            inputTextAlign = TextAlign.End
         )
     }
 }
