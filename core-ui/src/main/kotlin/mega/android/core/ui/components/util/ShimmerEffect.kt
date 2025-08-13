@@ -19,6 +19,7 @@ import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.unit.IntSize
 import mega.android.core.ui.tokens.theme.DSTokens
 
+@Deprecated("Use the the version from modifiers/ShimmerEffect.kt instead")
 fun Modifier.shimmerEffect(shape: Shape = RectangleShape): Modifier = composed {
     var size by remember {
         mutableStateOf(IntSize.Zero)
