@@ -64,7 +64,41 @@ data class BasicDialogButton(
 
 @Composable
 fun BasicDialog(
-    title: String,
+    positiveButtonText: String,
+    onPositiveButtonClicked: () -> Unit,
+    modifier: Modifier = Modifier,
+    description: String,
+    negativeButtonText: String? = null,
+    onNegativeButtonClicked: (() -> Unit)? = null,
+    dismissOnClickOutside: Boolean = true,
+    dismissOnBackPress: Boolean = true,
+    isPositiveButtonEnabled: Boolean = true,
+    isNegativeButtonEnabled: Boolean = true,
+    isVisible: Boolean = true,
+    @BasicDialogButtonsDirection buttonDirection: Int = HORIZONTAL,
+    onDismiss: () -> Unit = {},
+) {
+    BasicDialog(
+        title = null,
+        positiveButtonText = positiveButtonText,
+        onPositiveButtonClicked = onPositiveButtonClicked,
+        modifier = modifier,
+        description = description?.let { SpannableText(text = it) },
+        negativeButtonText = negativeButtonText,
+        onNegativeButtonClicked = onNegativeButtonClicked,
+        dismissOnClickOutside = dismissOnClickOutside,
+        dismissOnBackPress = dismissOnBackPress,
+        isPositiveButtonEnabled = isPositiveButtonEnabled,
+        isNegativeButtonEnabled = isNegativeButtonEnabled,
+        isVisible = isVisible,
+        buttonDirection = buttonDirection,
+        onDismiss = onDismiss
+    )
+}
+
+@Composable
+fun BasicDialog(
+    title: String?,
     positiveButtonText: String,
     onPositiveButtonClicked: () -> Unit,
     modifier: Modifier = Modifier,
@@ -80,7 +114,7 @@ fun BasicDialog(
     onDismiss: () -> Unit = {},
 ) {
     BasicDialog(
-        title = SpannableText(text = title),
+        title = title?.let { SpannableText(text = it) },
         positiveButtonText = positiveButtonText,
         onPositiveButtonClicked = onPositiveButtonClicked,
         modifier = modifier,
@@ -98,7 +132,7 @@ fun BasicDialog(
 
 @Composable
 fun BasicDialog(
-    title: SpannableText,
+    title: SpannableText?,
     positiveButtonText: String,
     onPositiveButtonClicked: () -> Unit,
     modifier: Modifier = Modifier,
@@ -139,7 +173,7 @@ fun BasicDialog(
 
 @Composable
 fun BasicDialog(
-    title: String,
+    title: String?,
     buttons: ImmutableList<BasicDialogButton>,
     onDismissRequest: () -> Unit,
     modifier: Modifier = Modifier,
@@ -151,10 +185,10 @@ fun BasicDialog(
 ) {
     BasicDialog(
         modifier = modifier,
-        title = SpannableText(title),
+        title = title?.let { SpannableText(it) },
         buttons = buttons,
         onDismissRequest = onDismissRequest,
-        description = SpannableText(description),
+        description = description?.let { SpannableText(it) },
         dismissOnClickOutside = dismissOnClickOutside,
         dismissOnBackPress = dismissOnBackPress,
         isVisible = isVisible,
@@ -165,7 +199,7 @@ fun BasicDialog(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BasicDialog(
-    title: SpannableText,
+    title: SpannableText?,
     buttons: ImmutableList<BasicDialogButton>,
     onDismissRequest: () -> Unit,
     modifier: Modifier = Modifier,
@@ -216,7 +250,7 @@ fun BasicDialog(
                         }
                     }
                 },
-                title = title.text?.takeIf { it.isNotEmpty() }?.let {
+                title = title?.text?.takeIf { it.isNotEmpty() }?.let {
                     @Composable {
                         LinkSpannedText(
                             value = it,
@@ -466,6 +500,20 @@ private fun BasicDialogPreview() {
         BasicDialog(
             title = SpannableText("Basic dialog title"),
             description = SpannableText("A dialog is a type of modal window that appears in front of app content to provide critical information, or prompt for a decision to be made."),
+            positiveButtonText = "Action 1",
+            onPositiveButtonClicked = {},
+            negativeButtonText = "Action 2",
+            onNegativeButtonClicked = {},
+        )
+    }
+}
+
+@Composable
+@CombinedThemePreviews
+private fun BasicDialogOnDescriptionPreview() {
+    AndroidThemeForPreviews {
+        BasicDialog(
+            description = "A dialog is a type of modal window that appears in front of app content to provide critical information, or prompt for a decision to be made.",
             positiveButtonText = "Action 1",
             onPositiveButtonClicked = {},
             negativeButtonText = "Action 2",
