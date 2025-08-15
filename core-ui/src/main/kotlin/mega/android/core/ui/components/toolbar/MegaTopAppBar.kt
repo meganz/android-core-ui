@@ -20,6 +20,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
@@ -186,7 +187,9 @@ private fun DefaultTopAppBar(
             title = {
                 Text(
                     text = title,
-                    style = AppTheme.typography.titleLarge
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                    style = AppTheme.typography.titleLarge,
                 )
             },
             scrollBehavior = scrollBehavior,
