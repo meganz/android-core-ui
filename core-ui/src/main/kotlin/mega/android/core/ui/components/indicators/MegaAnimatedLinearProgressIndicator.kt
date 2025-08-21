@@ -36,6 +36,7 @@ fun MegaAnimatedLinearProgressIndicator(
     modifier: Modifier = Modifier,
     indicatorProgress: Float? = null,
     progressAnimDuration: Int = 500,
+    startProgress: Float = 0f,
     height: Dp = 8.dp,
     clip: RoundedCornerShape = RoundedCornerShape(20.dp),
     strokeCap: StrokeCap = StrokeCap.Square,
@@ -58,7 +59,7 @@ fun MegaAnimatedLinearProgressIndicator(
                 .fillMaxWidth()
                 .height(height)
                 .clip(clip),
-            progress = { progressAnimation },
+            progress = { progressAnimation.coerceAtLeast(startProgress) },
             color = DSTokens.colors.border.brand,
             strokeCap = strokeCap,
             trackColor = DSTokens.colors.background.surface2,
