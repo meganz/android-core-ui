@@ -8,5 +8,5 @@ class MegaSnackBarVisuals(
     override val duration: SnackbarDuration,
     override val message: String,
     override val withDismissAction: Boolean,
-    val attributes: SnackBarAttributes
+    val attributes: SnackbarAttributes
 ) : SnackbarVisuals
