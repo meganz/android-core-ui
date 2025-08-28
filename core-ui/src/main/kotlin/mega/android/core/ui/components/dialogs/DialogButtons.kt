@@ -50,11 +50,7 @@ fun DialogButton(
                 if (enabled) {
                     Modifier.clickable(
                         interactionSource = mutableInteractionSource,
-                        indication = ripple(
-                            bounded = false,
-                            radius = componentWidth / 2,
-                            color = pressedBackgroundColor
-                        )
+                        indication = ripple(color = pressedBackgroundColor),
                     ) {
                         onButtonClicked()
                     }

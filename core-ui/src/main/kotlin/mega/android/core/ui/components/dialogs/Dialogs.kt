@@ -1,7 +1,5 @@
 package mega.android.core.ui.components.dialogs
 
-import android.R.attr.negativeButtonText
-import android.R.attr.positiveButtonText
 import androidx.annotation.IntDef
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.expandIn
@@ -83,7 +81,7 @@ fun BasicDialog(
         positiveButtonText = positiveButtonText,
         onPositiveButtonClicked = onPositiveButtonClicked,
         modifier = modifier,
-        description = description?.let { SpannableText(text = it) },
+        description = SpannableText(text = description),
         negativeButtonText = negativeButtonText,
         onNegativeButtonClicked = onNegativeButtonClicked,
         dismissOnClickOutside = dismissOnClickOutside,
@@ -126,7 +124,8 @@ fun BasicDialog(
         isPositiveButtonEnabled = isPositiveButtonEnabled,
         isNegativeButtonEnabled = isNegativeButtonEnabled,
         isVisible = isVisible,
-        onDismiss = onDismiss
+        onDismiss = onDismiss,
+        buttonDirection = buttonDirection,
     )
 }
 
@@ -637,7 +636,7 @@ private fun BasicDialogWithVertical3ButtonsPreview() {
                     onClick = {}
                 ),
                 BasicDialogButton(
-                    text = "Action 3",
+                    text = "Action a bit longer",
                     onClick = {}
                 )
             ),
