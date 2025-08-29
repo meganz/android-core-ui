@@ -7,6 +7,7 @@ import androidx.compose.animation.shrinkOut
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
@@ -33,7 +34,9 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import mega.android.core.ui.components.LinkSpannedText
 import mega.android.core.ui.components.MegaText
+import mega.android.core.ui.components.button.MegaRadioButton
 import mega.android.core.ui.components.inputfields.TextInputField
+import mega.android.core.ui.components.list.OneLineListItem
 import mega.android.core.ui.components.text.SpannableText
 import mega.android.core.ui.model.MegaSpanStyle
 import mega.android.core.ui.model.SpanIndicator
@@ -57,6 +60,13 @@ const val HORIZONTAL = 1
 data class BasicDialogButton(
     val text: String,
     val onClick: () -> Unit,
+    val enabled: Boolean = true
+)
+
+@Immutable
+data class BasicDialogRadioOption(
+    val ordinal: Int,
+    val text: String,
     val enabled: Boolean = true
 )
 
@@ -489,6 +499,102 @@ private fun MegaBasicDialogFlowRow(content: @Composable () -> Unit) {
                 }
             }
         }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun BasicRadioDialog(
+    title: SpannableText,
+    options: ImmutableList<BasicDialogRadioOption>,
+    buttons: ImmutableList<BasicDialogButton>,
+    onDismissRequest: () -> Unit,
+    onOptionSelected: (BasicDialogRadioOption) -> Unit,
+    modifier: Modifier = Modifier,
+    selectedOption: BasicDialogRadioOption? = null,
+    dialogProperties: DialogProperties = DialogProperties(
+        dismissOnBackPress = true,
+        dismissOnClickOutside = true
+    )
+) {
+    BasicAlertDialog(
+        onDismissRequest = onDismissRequest,
+        modifier = modifier,
+        properties = dialogProperties
+    ) {
+        MegaBasicDialogContent(
+            title = {
+                title.text?.let {
+                    LinkSpannedText(
+                        value = it,
+                        spanStyles = title.annotations ?: emptyMap(),
+                        onAnnotationClick = title.onAnnotationClick ?: {},
+                        baseStyle = AppTheme.typography.headlineSmall,
+                        baseTextColor = TextColor.Primary,
+                    )
+                }
+            },
+            text = null,
+            buttons = {
+                MegaBasicDialogFlowRow {
+                    buttons.forEach {
+                        DialogButton(
+                            buttonText = it.text,
+                            onButtonClicked = { it.onClick() },
+                            enabled = it.enabled
+                        )
+                    }
+                }
+            },
+            inputContent = {
+                options.forEach { option ->
+                    OneLineListItem(
+                        modifier = Modifier.fillMaxWidth(),
+                        text = option.text,
+                        leadingElement = {
+                            MegaRadioButton(
+                                selected = selectedOption == option,
+                                identifier = option.ordinal,
+                                onOptionSelected = {
+                                    onOptionSelected(option)
+                                },
+                                enabled = option.enabled
+                            )
+                        },
+                        contentPadding = PaddingValues(0.dp)
+                    )
+                }
+            },
+            shape = DSTokens.shapes.extraLarge
+        )
+    }
+}
+
+@Composable
+@CombinedThemePreviews
+private fun BasicRadioDialogPreview() {
+    AndroidThemeForPreviews {
+        BasicRadioDialog(
+            title = SpannableText("Basic dialog title"),
+            options = persistentListOf(
+                BasicDialogRadioOption(0, "Option 1"),
+                BasicDialogRadioOption(1, "Option 2"),
+                BasicDialogRadioOption(2, "Option 3"),
+            ),
+            selectedOption = BasicDialogRadioOption(1, "Option 2"),
+            onOptionSelected = {},
+            buttons = persistentListOf(
+                BasicDialogButton(
+                    text = "Cancel",
+                    onClick = {}
+                ),
+                BasicDialogButton(
+                    text = "OK",
+                    onClick = {}
+                )
+            ),
+            onDismissRequest = {}
+        )
     }
 }
 
