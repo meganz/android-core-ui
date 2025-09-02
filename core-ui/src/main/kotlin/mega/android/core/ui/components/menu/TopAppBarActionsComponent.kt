@@ -25,6 +25,7 @@ import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.launch
 import mega.android.core.ui.model.TopAppBarAction
+import mega.android.core.ui.modifiers.infiniteRotation
 import mega.android.core.ui.tokens.theme.DSTokens
 import mega.privacy.android.shared.original.core.ui.model.TopAppBarActionWithClick
 
@@ -44,7 +45,7 @@ internal fun TopAppBarActionsComponent(
             iconPainter = menuAction.getIconPainter(),
             description = menuAction.getDescription(),
             onClick = { onActionClick() },
-            modifier = Modifier.testTag(menuAction.testTag),
+            modifier = menuAction.modifier.testTag(menuAction.testTag),
             enabled = enabled,
             highlightIconColor = menuAction.highlightIcon,
         )
