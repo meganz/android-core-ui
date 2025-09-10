@@ -12,6 +12,7 @@ public object AndroidNewSemanticTokensDark : SemanticTokens {
             surface3 = Colors.Grey.n800,
             surface2 = Colors.Grey.n925,
             blur = Colors.BlackOpacity.n050,
+            surfaceTransparent = Colors.BlackOpacity.n070,
             surfaceInverseAccent = Colors.Accent.n200,
             )
 
@@ -84,6 +85,7 @@ public object AndroidNewSemanticTokensDark : SemanticTokens {
 
     override val components: Components = Components(
             selectionControl = Colors.Accent.n050,
+            selectionControlAlt = Colors.Accent.n500,
             interactive = Colors.Primary.n500,
             toastBackground = Colors.Neutral.n200,
             )

@@ -14,6 +14,7 @@ public enum class BackgroundColor {
     Surface3,
     Surface2,
     Blur,
+    SurfaceTransparent,
     SurfaceInverseAccent,
     ;
 
@@ -24,6 +25,7 @@ public enum class BackgroundColor {
         Surface3 -> background.surface3
         Surface2 -> background.surface2
         Blur -> background.blur
+        SurfaceTransparent -> background.surfaceTransparent
         SurfaceInverseAccent -> background.surfaceInverseAccent
     }
 }
