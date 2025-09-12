@@ -65,6 +65,7 @@ fun MegaTopAppBar(
     modifier: Modifier = Modifier,
     drawBottomLineOnScrolledContent: Boolean = false,
     actionsEnabled: Boolean = true,
+    maxActionsToShow: Int = Int.MAX_VALUE,
 ) {
     @OptIn(ExperimentalMaterial3Api::class)
     DefaultTopAppBar(
@@ -73,7 +74,7 @@ fun MegaTopAppBar(
         navigationIcon = navigationType.navigationIcon(),
         scrollBehavior = LocalTopAppBarScrollBehavior.current,
         actions = {
-            TopAppBarActionsComponent(actions, actionsEnabled)
+            TopAppBarActionsComponent(actions, actionsEnabled, maxActionsToShow)
         },
         drawBottomLineOnScrolledContent = drawBottomLineOnScrolledContent,
     )
@@ -88,6 +89,7 @@ fun MegaTopAppBar(
     modifier: Modifier = Modifier,
     drawBottomLineOnScrolledContent: Boolean = false,
     actionsEnabled: Boolean = true,
+    maxActionsToShow: Int = 4,
 ) = MegaTopAppBar(
     modifier = modifier,
     title = title,
@@ -95,6 +97,7 @@ fun MegaTopAppBar(
     actions = actions.addClick(onActionPressed),
     actionsEnabled = actionsEnabled,
     drawBottomLineOnScrolledContent = drawBottomLineOnScrolledContent,
+    maxActionsToShow = maxActionsToShow,
 )
 
 internal fun List<TopAppBarAction>.addClick(onActionPressed: ((TopAppBarAction) -> Unit)?): List<TopAppBarActionWithClick> =
@@ -277,6 +280,38 @@ private fun MegaTopAppBarActionsPreview() {
             navigationType = AppBarNavigationType.Back {},
             actions = actions.map { TopAppBarActionWithClick(it) {} },
             modifier = Modifier.padding(bottom = 80.dp) //make some space for the tooltip in interactive mode
+        )
+    }
+}
+
+@CombinedThemePreviews
+@Composable
+private fun MegaTopAppBarMaxActionsPreview() {
+    val actions = listOf(
+        R.drawable.ic_alert_circle_medium_thin_outline,
+        R.drawable.ic_alert_triangle_medium_thin_outline,
+        R.drawable.ic_check_medium_thin_outline,
+        R.drawable.ic_close_medium_thin_outline,
+        R.drawable.ic_info_medium_thin_outline,
+        R.drawable.ic_help_circle_medium_thin_outline
+    ).mapIndexed { i, iconRes ->
+        object : TopAppBarAction {
+            @Composable
+            override fun getDescription() = "Action $i"
+
+            override val testTag = getDescription()
+
+            @Composable
+            override fun getIconPainter() = painterResource(id = iconRes)
+        }
+    }
+    AndroidThemeForPreviews {
+        MegaTopAppBar(
+            title = "Max Actions Demo",
+            maxActionsToShow = 2,
+            navigationType = AppBarNavigationType.Back {},
+            actions = actions.map { TopAppBarActionWithClick(it) {} },
+            modifier = Modifier.padding(bottom = 80.dp) //make some space for the dropdown in interactive mode
         )
     }
 }
