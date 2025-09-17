@@ -100,6 +100,79 @@ fun MegaTopAppBar(
     maxActionsToShow = maxActionsToShow,
 )
 
+/**
+ * MegaTopAppBar that admits trailing icons and actions at the same time. Trailing icons will be drawn first and then the actions.
+ * [actions] is the preferred way to add simple actions, trailingIcons should be used for other more complex cases, like animated widgets.
+ * @param title
+ * @param navigationType
+ * @param trailingIcons
+ * @param actions
+ * @param modifier
+ * @param drawBottomLineOnScrolledContent
+ * @param actionsEnabled
+ * @param maxActionsToShow
+ */
+@Composable
+fun MegaTopAppBar(
+    title: String,
+    navigationType: AppBarNavigationType,
+    trailingIcons: @Composable RowScope.() -> Unit,
+    actions: List<MenuActionIconWithClick>,
+    modifier: Modifier = Modifier,
+    drawBottomLineOnScrolledContent: Boolean = false,
+    actionsEnabled: Boolean = true,
+    maxActionsToShow: Int = Int.MAX_VALUE,
+) {
+    @OptIn(ExperimentalMaterial3Api::class)
+    DefaultTopAppBar(
+        modifier = modifier,
+        title = title,
+        navigationIcon = navigationType.navigationIcon(),
+        scrollBehavior = LocalTopAppBarScrollBehavior.current,
+        actions = {
+            trailingIcons()
+            TopAppBarActionsComponent(actions, actionsEnabled, maxActionsToShow)
+        },
+        drawBottomLineOnScrolledContent = drawBottomLineOnScrolledContent,
+    )
+}
+
+
+/**
+ * MegaTopAppBar that admits trailing icons and actions at the same time. Trailing icons will be drawn first and then the actions.
+ * [actions] is the preferred way to add simple actions, trailingIcons should be used for other more complex cases, like animated widgets.
+ * @param title
+ * @param navigationType
+ * @param trailingIcons
+ * @param actions
+ * @param onActionPressed
+ * @param modifier
+ * @param drawBottomLineOnScrolledContent
+ * @param actionsEnabled
+ * @param maxActionsToShow
+ */
+@Composable
+fun MegaTopAppBar(
+    title: String,
+    navigationType: AppBarNavigationType,
+    trailingIcons: @Composable RowScope.() -> Unit,
+    actions: List<MenuActionWithIcon>,
+    onActionPressed: ((MenuActionWithIcon) -> Unit),
+    modifier: Modifier = Modifier,
+    drawBottomLineOnScrolledContent: Boolean = false,
+    actionsEnabled: Boolean = true,
+    maxActionsToShow: Int = 4,
+) = MegaTopAppBar(
+    modifier = modifier,
+    title = title,
+    navigationType = navigationType,
+    actions = actions.addClick(onActionPressed),
+    trailingIcons = trailingIcons,
+    actionsEnabled = actionsEnabled,
+    drawBottomLineOnScrolledContent = drawBottomLineOnScrolledContent,
+    maxActionsToShow = maxActionsToShow,
+)
+
 internal fun List<MenuActionWithIcon>.addClick(onActionPressed: ((MenuActionWithIcon) -> Unit)?): List<MenuActionIconWithClick> =
     this.map { MenuActionIconWithClick(it) { onActionPressed?.invoke(it) } }
 
@@ -312,6 +385,9 @@ private fun MegaTopAppBarMaxActionsPreview() {
             title = "Max Actions Demo",
             maxActionsToShow = 2,
             navigationType = AppBarNavigationType.Back {},
+            trailingIcons = {
+                Icon(painterResource(R.drawable.ic_close_medium_thin_outline), "")
+            },
             actions = actions,
             modifier = Modifier.padding(bottom = 80.dp) //make some space for the dropdown in interactive mode
         )
