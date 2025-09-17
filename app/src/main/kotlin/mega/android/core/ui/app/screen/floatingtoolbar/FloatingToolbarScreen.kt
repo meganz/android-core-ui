@@ -15,10 +15,10 @@ import mega.android.core.ui.R
 import mega.android.core.ui.components.MegaScaffold
 import mega.android.core.ui.components.MegaText
 import mega.android.core.ui.components.toolbar.MegaFloatingToolbar
-import mega.android.core.ui.model.TopAppBarAction
+import mega.android.core.ui.model.menu.MenuActionIconWithClick
+import mega.android.core.ui.model.menu.MenuActionWithIcon
 import mega.android.core.ui.theme.AppTheme
 import mega.android.core.ui.theme.spacing.LocalSpacing
-import mega.privacy.android.shared.original.core.ui.model.TopAppBarActionWithClick
 
 @Composable
 fun FloatingToolbarScreen() {
@@ -29,7 +29,7 @@ fun FloatingToolbarScreen() {
         R.drawable.ic_close_medium_thin_outline,
         R.drawable.ic_help_circle_medium_thin_outline
     ).mapIndexed { i, iconRes ->
-        object : TopAppBarAction {
+        object : MenuActionWithIcon {
             @Composable
             override fun getDescription() = "Action $i"
 
@@ -69,7 +69,7 @@ fun FloatingToolbarScreen() {
 
             // Horizontal floating toolbar at bottom
             MegaFloatingToolbar(
-                actions = horizontalActions.map { TopAppBarActionWithClick(it) {} },
+                actions = horizontalActions.map { MenuActionIconWithClick(it) {} },
                 modifier = Modifier.align(Alignment.BottomCenter)
             )
         }

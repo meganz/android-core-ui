@@ -30,13 +30,13 @@ import mega.android.core.ui.components.OVERLAP_FRACTION_THRESHOLD
 import mega.android.core.ui.components.button.SecondarySmallIconButton
 import mega.android.core.ui.components.divider.StrongDivider
 import mega.android.core.ui.components.menu.TopAppBarActionsComponent
-import mega.android.core.ui.model.TopAppBarAction
+import mega.android.core.ui.model.menu.MenuActionIconWithClick
+import mega.android.core.ui.model.menu.MenuActionWithIcon
 import mega.android.core.ui.preview.CombinedThemePreviews
 import mega.android.core.ui.theme.AndroidThemeForPreviews
 import mega.android.core.ui.theme.AppTheme
 import mega.android.core.ui.theme.spacing.LocalSpacing
 import mega.android.core.ui.tokens.theme.DSTokens
-import mega.privacy.android.shared.original.core.ui.model.TopAppBarActionWithClick
 
 @Composable
 fun MegaTopAppBar(
@@ -61,7 +61,7 @@ fun MegaTopAppBar(
 fun MegaTopAppBar(
     title: String,
     navigationType: AppBarNavigationType,
-    actions: List<TopAppBarActionWithClick>,
+    actions: List<MenuActionIconWithClick>,
     modifier: Modifier = Modifier,
     drawBottomLineOnScrolledContent: Boolean = false,
     actionsEnabled: Boolean = true,
@@ -84,8 +84,8 @@ fun MegaTopAppBar(
 fun MegaTopAppBar(
     title: String,
     navigationType: AppBarNavigationType,
-    actions: List<TopAppBarAction>,
-    onActionPressed: ((TopAppBarAction) -> Unit),
+    actions: List<MenuActionWithIcon>,
+    onActionPressed: ((MenuActionWithIcon) -> Unit),
     modifier: Modifier = Modifier,
     drawBottomLineOnScrolledContent: Boolean = false,
     actionsEnabled: Boolean = true,
@@ -100,8 +100,8 @@ fun MegaTopAppBar(
     maxActionsToShow = maxActionsToShow,
 )
 
-internal fun List<TopAppBarAction>.addClick(onActionPressed: ((TopAppBarAction) -> Unit)?): List<TopAppBarActionWithClick> =
-    this.map { TopAppBarActionWithClick(it) { onActionPressed?.invoke(it) } }
+internal fun List<MenuActionWithIcon>.addClick(onActionPressed: ((MenuActionWithIcon) -> Unit)?): List<MenuActionIconWithClick> =
+    this.map { MenuActionIconWithClick(it) { onActionPressed?.invoke(it) } }
 
 @Deprecated(message = "Please use the version of MegaTopAppBar with AppBarNavigationType instead of injecting the navigation painter.")
 @Composable
@@ -263,7 +263,7 @@ private fun MegaTransparentTopAppBarPreview() {
 private fun MegaTopAppBarActionsPreview() {
     val actions =
         listOf(R.drawable.ic_alert_circle_medium_thin_outline, R.drawable.ic_alert_triangle_medium_thin_outline).mapIndexed { i, iconRes ->
-            object : TopAppBarAction {
+            object : MenuActionWithIcon {
                 @Composable
                 override fun getDescription() = "Action $i"
 
@@ -278,7 +278,7 @@ private fun MegaTopAppBarActionsPreview() {
         MegaTopAppBar(
             title = "Title",
             navigationType = AppBarNavigationType.Back {},
-            actions = actions.map { TopAppBarActionWithClick(it) {} },
+            actions = actions.map { MenuActionIconWithClick(it) {} },
             modifier = Modifier.padding(bottom = 80.dp) //make some space for the tooltip in interactive mode
         )
     }
@@ -295,7 +295,7 @@ private fun MegaTopAppBarMaxActionsPreview() {
         R.drawable.ic_info_medium_thin_outline,
         R.drawable.ic_help_circle_medium_thin_outline
     ).mapIndexed { i, iconRes ->
-        object : TopAppBarAction {
+        val action = object : MenuActionWithIcon {
             @Composable
             override fun getDescription() = "Action $i"
 
@@ -304,13 +304,15 @@ private fun MegaTopAppBarMaxActionsPreview() {
             @Composable
             override fun getIconPainter() = painterResource(id = iconRes)
         }
+
+        MenuActionIconWithClick(action) {}
     }
     AndroidThemeForPreviews {
         MegaTopAppBar(
             title = "Max Actions Demo",
             maxActionsToShow = 2,
             navigationType = AppBarNavigationType.Back {},
-            actions = actions.map { TopAppBarActionWithClick(it) {} },
+            actions = actions,
             modifier = Modifier.padding(bottom = 80.dp) //make some space for the dropdown in interactive mode
         )
     }

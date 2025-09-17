@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.runtime.Composable
@@ -20,13 +19,11 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import mega.android.core.ui.R
 import mega.android.core.ui.components.menu.TopAppBarActionsComponent
-import mega.android.core.ui.model.TopAppBarAction
+import mega.android.core.ui.model.menu.MenuActionIconWithClick
+import mega.android.core.ui.model.menu.MenuActionWithIcon
 import mega.android.core.ui.preview.CombinedThemePreviews
 import mega.android.core.ui.theme.AndroidThemeForPreviews
-import mega.android.core.ui.theme.backgroundColor
-import mega.android.core.ui.theme.values.BackgroundColor
 import mega.android.core.ui.tokens.theme.DSTokens
-import mega.privacy.android.shared.original.core.ui.model.TopAppBarActionWithClick
 
 /**
  * A floating toolbar component that follows Material Design 3 specifications.
@@ -39,7 +36,7 @@ import mega.privacy.android.shared.original.core.ui.model.TopAppBarActionWithCli
  */
 @Composable
 fun MegaFloatingToolbar(
-    actions: List<TopAppBarActionWithClick>,
+    actions: List<MenuActionIconWithClick>,
     modifier: Modifier = Modifier,
     actionsEnabled: Boolean = true,
     elevation: Dp = 6.dp,
@@ -79,8 +76,8 @@ fun MegaFloatingToolbar(
  */
 @Composable
 fun MegaFloatingToolbar(
-    actions: List<TopAppBarAction>,
-    onActionPressed: ((TopAppBarAction) -> Unit),
+    actions: List<MenuActionWithIcon>,
+    onActionPressed: ((MenuActionWithIcon) -> Unit),
     modifier: Modifier = Modifier,
     actionsEnabled: Boolean = true,
     elevation: Dp = 8.dp,
@@ -102,7 +99,7 @@ private fun MegaFloatingToolbarPreview() {
         R.drawable.ic_close_medium_thin_outline,
         R.drawable.ic_help_circle_medium_thin_outline
     ).mapIndexed { i, iconRes ->
-        object : TopAppBarAction {
+        object : MenuActionWithIcon {
             @Composable
             override fun getDescription() = "Action $i"
 
@@ -122,7 +119,7 @@ private fun MegaFloatingToolbarPreview() {
             contentAlignment = Alignment.BottomCenter
         ) {
             MegaFloatingToolbar(
-                actions = actions.map { TopAppBarActionWithClick(it) {} },
+                actions = actions.map { MenuActionIconWithClick(it) {} },
                 modifier = Modifier.align(Alignment.BottomCenter)
             )
         }

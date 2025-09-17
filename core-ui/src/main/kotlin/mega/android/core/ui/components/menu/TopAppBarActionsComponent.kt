@@ -5,7 +5,6 @@ import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.RowScope
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
@@ -39,11 +38,9 @@ import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.launch
 import mega.android.core.ui.R
 import mega.android.core.ui.components.MegaText
-import mega.android.core.ui.model.TopAppBarAction
-import mega.android.core.ui.modifiers.infiniteRotation
+import mega.android.core.ui.model.menu.MenuActionIconWithClick
 import mega.android.core.ui.theme.values.TextColor
 import mega.android.core.ui.tokens.theme.DSTokens
-import mega.privacy.android.shared.original.core.ui.model.TopAppBarActionWithClick
 
 /**
  * Utility function to generate actions for [MegaTopAppBar]
@@ -53,11 +50,11 @@ import mega.privacy.android.shared.original.core.ui.model.TopAppBarActionWithCli
  */
 @Composable
 internal fun RowScope.TopAppBarActionsComponent(
-    actions: List<TopAppBarActionWithClick>,
+    actions: List<MenuActionIconWithClick>,
     enabled: Boolean = true,
     maxActionsToShow: Int = Int.MAX_VALUE,
 ) {
-    val sortedActions = actions.sortedBy { it.topAppBarAction.orderInCategory }
+    val sortedActions = actions.sortedBy { it.menuAction.orderInCategory }
     val visible = sortedActions.take(maxActionsToShow)
     visible.forEach { (menuAction, onActionClick) ->
         IconButtonWithTooltip(
@@ -133,7 +130,7 @@ private fun IconButtonWithTooltip(
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 private fun RowScope.OverflowDropDown(
-    actions: List<TopAppBarActionWithClick>,
+    actions: List<MenuActionIconWithClick>,
     enabled: Boolean = true,
 ) {
     var showMoreMenu by remember {

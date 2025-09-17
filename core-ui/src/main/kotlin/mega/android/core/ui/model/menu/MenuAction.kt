@@ -3,6 +3,7 @@ package mega.android.core.ui.model.menu
 import androidx.annotation.PluralsRes
 import androidx.annotation.StringRes
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
@@ -37,6 +38,12 @@ interface MenuAction {
      * Tag for testing purposes.
      */
     val testTag: String
+
+    /**
+     * Modifier to be applied to the icon of this action (optional)
+     */
+    val modifier: Modifier
+        get() = Modifier
 }
 
 /**
