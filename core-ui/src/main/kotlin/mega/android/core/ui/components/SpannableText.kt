@@ -43,13 +43,15 @@ fun LinkSpannedText(
     onAnnotationClick: (annotation: String) -> Unit,
     modifier: Modifier = Modifier,
     baseStyle: TextStyle = LocalTextStyle.current,
-    baseTextColor: TextColor = TextColor.Primary
+    baseTextColor: TextColor = TextColor.Primary,
+    maxLines: Int = Int.MAX_VALUE
 ) {
     val annotatedLinkString = spannedTextWithAnnotation(value, spanStyles)
     ClickableText(
         modifier = modifier,
         text = annotatedLinkString,
         style = baseStyle.copy(color = DSTokens.textColor(textColor = baseTextColor)),
+        maxLines = maxLines,
         onClick = { position ->
             annotatedLinkString
                 .getStringAnnotations(ANNOTATION_TAG, position, position + 1)
