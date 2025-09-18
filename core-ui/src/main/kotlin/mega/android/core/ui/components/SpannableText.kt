@@ -12,6 +12,7 @@ import androidx.compose.ui.text.ExperimentalTextApi
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.text.withAnnotation
 import androidx.compose.ui.text.withStyle
 import mega.android.core.ui.model.MegaSpanStyle
@@ -44,7 +45,8 @@ fun LinkSpannedText(
     modifier: Modifier = Modifier,
     baseStyle: TextStyle = LocalTextStyle.current,
     baseTextColor: TextColor = TextColor.Primary,
-    maxLines: Int = Int.MAX_VALUE
+    maxLines: Int = Int.MAX_VALUE,
+    overflow: TextOverflow = TextOverflow.Clip,
 ) {
     val annotatedLinkString = spannedTextWithAnnotation(value, spanStyles)
     ClickableText(
@@ -52,6 +54,7 @@ fun LinkSpannedText(
         text = annotatedLinkString,
         style = baseStyle.copy(color = DSTokens.textColor(textColor = baseTextColor)),
         maxLines = maxLines,
+        overflow = overflow,
         onClick = { position ->
             annotatedLinkString
                 .getStringAnnotations(ANNOTATION_TAG, position, position + 1)
