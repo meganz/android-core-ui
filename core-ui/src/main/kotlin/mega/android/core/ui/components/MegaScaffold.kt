@@ -1,11 +1,13 @@
 package mega.android.core.ui.components
 
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FabPosition
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.ScaffoldDefaults
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.TopAppBarScrollBehavior
@@ -35,8 +37,9 @@ fun MegaScaffold(
     floatingActionButton: @Composable () -> Unit = {},
     floatingActionButtonPosition: FabPosition = FabPosition.End,
     fromAutofill: Boolean = false,
+    contentWindowInsets: WindowInsets = ScaffoldDefaults.contentWindowInsets,
     content: @Composable (PaddingValues) -> Unit,
-)  {
+) {
     @OptIn(ExperimentalMaterial3Api::class)
     MegaScaffoldWithTopAppBarScrollBehavior(
         modifier,
@@ -47,6 +50,7 @@ fun MegaScaffold(
         floatingActionButtonPosition,
         fromAutofill,
         null,
+        contentWindowInsets,
         content
     )
 }
@@ -67,6 +71,7 @@ fun MegaScaffoldWithTopAppBarScrollBehavior(
     floatingActionButtonPosition: FabPosition = FabPosition.End,
     fromAutofill: Boolean = false,
     scrollBehavior: TopAppBarScrollBehavior? = TopAppBarDefaults.pinnedScrollBehavior(),
+    contentWindowInsets: WindowInsets = ScaffoldDefaults.contentWindowInsets,
     content: @Composable (PaddingValues) -> Unit,
 ) {
     // check if the root composable has a LocalSnackBarHostState, if not create a new one
@@ -88,6 +93,7 @@ fun MegaScaffoldWithTopAppBarScrollBehavior(
             bottomBar = bottomBar,
             floatingActionButton = floatingActionButton,
             floatingActionButtonPosition = floatingActionButtonPosition,
+            contentWindowInsets = contentWindowInsets,
             content = content,
             containerColor = if (fromAutofill) Color.Transparent else DSTokens.colors.background.pageBackground
         )
