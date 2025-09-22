@@ -80,6 +80,7 @@ fun FastScrollLazyColumn(
                 state = state,
                 itemCount = totalItems,
                 reverseLayout = reverseLayout,
+                contentPadding = contentPadding,
                 modifier = Modifier
                     .fillMaxHeight()
                     .align(Alignment.TopEnd),

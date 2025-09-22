@@ -1,4 +1,5 @@
 package mega.android.core.ui.components.scrollbar.fastscroll
+
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
@@ -9,6 +10,7 @@ import androidx.compose.foundation.gestures.ScrollableState
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.gestures.detectVerticalDragGestures
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
@@ -48,22 +50,27 @@ internal fun TooltipVerticalScrollbar(
     itemCount: Int,
     reverseLayout: Boolean,
     modifier: Modifier = Modifier,
+    contentPadding: PaddingValues = PaddingValues(),
     tooltipText: ((currentIndex: Int) -> String)? = null,
 ) = TooltipVerticalScrollbar(
     tooltipText = tooltipText,
     state = state,
     firstVisibleItemIndex = remember(state) { derivedStateOf { state.firstVisibleItemIndex } },
-    lastVisibleItemIndex = remember(state) {
+    // Fractional progress within the first visible item for smooth thumb movement
+    fractionalOffsetInItem = remember(state) {
         derivedStateOf {
-            state.layoutInfo.visibleItemsInfo.lastOrNull()?.index ?: state.firstVisibleItemIndex
+            val itemSizePx = state.layoutInfo.visibleItemsInfo.firstOrNull()?.size ?: 1
+            if (itemSizePx <= 0) 0f else state.firstVisibleItemScrollOffset.toFloat() / itemSizePx.toFloat()
         }
     },
+    // List advances one item per row
+    fractionalItemScale = remember(state) { derivedStateOf { 1f } },
     scrollToItem = { state.scrollToItem(it) },
     itemCount = itemCount,
     reverseLayout = reverseLayout,
-    modifier = modifier
+    modifier = modifier,
+    contentPadding = contentPadding
 )
-
 
 @Composable
 internal fun TooltipVerticalScrollbar(
@@ -71,22 +78,36 @@ internal fun TooltipVerticalScrollbar(
     itemCount: Int,
     reverseLayout: Boolean,
     modifier: Modifier = Modifier,
+    contentPadding: PaddingValues = PaddingValues(),
     tooltipText: ((currentIndex: Int) -> String)? = null,
 ) = TooltipVerticalScrollbar(
     tooltipText = tooltipText,
     state = state,
     firstVisibleItemIndex = remember(state) { derivedStateOf { state.firstVisibleItemIndex } },
-    lastVisibleItemIndex = remember(state) {
+    // Fractional progress within the first visible grid item (row height) for smooth movement
+    fractionalOffsetInItem = remember(state) {
         derivedStateOf {
-            state.layoutInfo.visibleItemsInfo.lastOrNull()?.index ?: state.firstVisibleItemIndex
+            val itemHeightPx = state.layoutInfo.visibleItemsInfo.firstOrNull()?.size?.height ?: 1
+            if (itemHeightPx <= 0) 0f else state.firstVisibleItemScrollOffset.toFloat() / itemHeightPx.toFloat()
+        }
+    },
+    // Scale the fractional progress by the number of items per row to avoid stepping by full rows
+    fractionalItemScale = remember(state) {
+        derivedStateOf {
+            val infos = state.layoutInfo.visibleItemsInfo
+            if (infos.isEmpty()) 1f else run {
+                val firstRowY = infos.minOf { it.offset.y }
+                val colsInFirstRow = infos.count { it.offset.y == firstRowY }.coerceAtLeast(1)
+                colsInFirstRow.toFloat()
+            }
         }
     },
     scrollToItem = { state.scrollToItem(it) },
     itemCount = itemCount,
     reverseLayout = reverseLayout,
     modifier = modifier,
-
-    )
+    contentPadding = contentPadding
+)
 
 private val thumbHeight = 40.dp
 private const val HIDE_DELAY_MILLIS = 900
@@ -107,45 +128,41 @@ internal const val THUMB_TAG = "fast_scroll_lazy_column:icon_thumb"
 private fun TooltipVerticalScrollbar(
     state: ScrollableState,
     firstVisibleItemIndex: State<Int>,
-    lastVisibleItemIndex: State<Int>,
+    fractionalOffsetInItem: State<Float>,
+    fractionalItemScale: State<Float>,
     scrollToItem: suspend (targetIndex: Int) -> Unit,
     itemCount: Int,
     reverseLayout: Boolean,
     modifier: Modifier = Modifier,
+    contentPadding: PaddingValues,
     tooltipText: ((currentIndex: Int) -> String)? = null,
 ) {
-
     val density = LocalDensity.current
     val coroutineScope = rememberCoroutineScope()
-
     val thumbHeightPixels = with(density) { thumbHeight.toPx() }
-    // scrollableHeight is the scrollbar height minus thumb height
     var scrollableHeightPixels by remember { mutableFloatStateOf(0f) }
     var scrollableHeight by remember { mutableStateOf(0.dp) }
-
     var thumbPressed by remember { mutableStateOf(false) }
-    // scrollableItemsAmount is item count minus visible items, approximately the first visible item when fully scrolled
-    val scrollableItemsAmount by remember(
-        state,
-        itemCount,
-        lastVisibleItemIndex.value,
-        firstVisibleItemIndex.value
-    ) {
-        derivedStateOf {
-            val visibleItems = lastVisibleItemIndex.value - firstVisibleItemIndex.value
-            itemCount - visibleItems - 1
-        }
+
+    // Calculate content padding values once and memoize
+    val (topPaddingPx, bottomPaddingPx) = remember(contentPadding, density) {
+        val topPx = with(density) { contentPadding.calculateTopPadding().toPx() }
+        val bottomPx = with(density) { contentPadding.calculateBottomPadding().toPx() }
+        topPx to bottomPx
     }
 
-    val thumbOffset by remember(itemCount, state) {
+    // Thumb offset from top of the scrollbar area
+    val thumbOffset by remember(itemCount, state, thumbPressed) {
         derivedStateOf {
-            val isScrollToEnd =
-                lastVisibleItemIndex.value == itemCount - 1 || scrollableItemsAmount == 0
-            val scrollProportion = when {
-                isScrollToEnd -> if (reverseLayout) 0f else 1f
-                reverseLayout -> 1 - firstVisibleItemIndex.value.toFloat() / scrollableItemsAmount
-                else -> firstVisibleItemIndex.value.toFloat() / scrollableItemsAmount
-            }
+            // Always follow the actual scroll position for consistent behavior
+            val maxIndex = (itemCount - 1).coerceAtLeast(1)
+            val continuousIndex = firstVisibleItemIndex.value.toFloat() +
+                    fractionalOffsetInItem.value.coerceIn(0f, 1f) *
+                    fractionalItemScale.value.coerceAtLeast(1f)
+            val clampedIndex = continuousIndex.coerceIn(0f, maxIndex.toFloat())
+            val rawProportion =
+                if (reverseLayout) 1 - (clampedIndex / maxIndex) else clampedIndex / maxIndex
+            val scrollProportion = rawProportion.coerceIn(0f, 1f)
             scrollableHeight * scrollProportion
         }
     }
@@ -161,16 +178,20 @@ private fun TooltipVerticalScrollbar(
             tooltipText?.let { it(firstVisibleItemIndex.value) }
         }
     }
+
     // Full height box to capture drags
     Box(
         modifier = modifier
             .onGloballyPositioned { coordinates ->
                 with(density) {
-                    scrollableHeightPixels = coordinates.size.height.toFloat() - thumbHeight.toPx()
+                    // Account for content padding in scrollable height calculation
+                    val totalHeight = coordinates.size.height.toFloat()
+                    val availableHeight = totalHeight - topPaddingPx - bottomPaddingPx
+                    scrollableHeightPixels = availableHeight
                     scrollableHeight = scrollableHeightPixels.toDp()
                 }
             }
-            .pointerInput(Unit) {
+            .pointerInput(itemCount, reverseLayout) {
                 detectVerticalDragGestures(
                     onDragEnd = {
                         thumbPressed = false
@@ -182,15 +203,18 @@ private fun TooltipVerticalScrollbar(
                         val dragPositionY = change.position.y
                         val adjustedY = dragPositionY - thumbHeightPixels / 2
 
+                        // Use total available height for drag calculations
+                        val totalAvailableHeight = scrollableHeightPixels + thumbHeightPixels
+
                         val dragProportion = if (reverseLayout) {
-                            1 - (adjustedY / scrollableHeightPixels)
+                            1 - (adjustedY / totalAvailableHeight)
                         } else {
-                            adjustedY / scrollableHeightPixels
+                            adjustedY / totalAvailableHeight
                         }
 
                         val clampedProportion = dragProportion.coerceIn(0f, 1f)
 
-                        val targetIndex = (clampedProportion * scrollableItemsAmount)
+                        val targetIndex = (clampedProportion * (itemCount - 1))
                             .toInt()
                             .coerceIn(0, itemCount - 1)
 
