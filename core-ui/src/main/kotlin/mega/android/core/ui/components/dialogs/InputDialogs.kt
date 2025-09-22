@@ -6,11 +6,16 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.BasicAlertDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.DialogProperties
+import kotlinx.coroutines.delay
 import mega.android.core.ui.components.MegaText
 import mega.android.core.ui.components.dialogs.internal.MegaBasicDialogContent
 import mega.android.core.ui.components.dialogs.internal.MegaBasicDialogFlowRow
@@ -41,9 +46,20 @@ fun BasicInputDialog(
     keyboardType: KeyboardType = KeyboardType.Text,
     inputTextAlign: TextAlign = TextAlign.Unspecified,
     placeholder: String? = null,
+    isAutoShowKeyboard: Boolean = true,
     suffix: @Composable (() -> Unit)? = null,
     onDismiss: () -> Unit = {},
 ) {
+    val focusRequester = remember { FocusRequester() }
+    if (isAutoShowKeyboard) {
+        LaunchedEffect(Unit) {
+            delay(300L)
+            runCatching {
+                // avoid crash if dialog is dismissed before this is called or view is not attached to window
+                focusRequester.requestFocus()
+            }
+        }
+    }
     BasicAlertDialog(
         onDismissRequest = onDismiss,
         modifier = modifier,
@@ -89,7 +105,9 @@ fun BasicInputDialog(
             },
             inputContent = {
                 TextInputField(
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier
+                        .focusRequester(focusRequester)
+                        .fillMaxWidth(),
                     label = inputLabel,
                     text = inputValue,
                     onValueChanged = onValueChange,
@@ -160,6 +178,7 @@ private fun BasicInputDialogWithSuffixPreview() {
             negativeButtonText = "Action 2",
             onNegativeButtonClicked = {},
             inputTextAlign = TextAlign.End,
+            isAutoShowKeyboard = true
         )
     }
 }
