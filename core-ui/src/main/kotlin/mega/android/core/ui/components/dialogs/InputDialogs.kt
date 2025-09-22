@@ -17,6 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
+import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
@@ -181,6 +182,11 @@ fun BasicInputDialog(
                                 textFieldValue = textFieldValue.copy(
                                     selection = TextRange(0, textFieldValue.text.length)
                                 )
+                            }
+                        }
+                        .onGloballyPositioned {
+                            if (isAutoShowKeyboard) {
+                                focusRequester.requestFocus()
                             }
                         },
                     textFieldValue = textFieldValue,
