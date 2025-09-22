@@ -2,6 +2,7 @@ package mega.android.core.ui.components
 
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material3.LocalTextStyle
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -106,6 +107,38 @@ internal fun spannedTextWithAnnotation(
         }
     }
 
+/**
+ * Non-clickable spanned text component that supports span styles without intercepting touch events.
+ */
+@Composable
+fun SpannedText(
+    value: String,
+    spanStyles: Map<SpanIndicator, MegaSpanStyle>,
+    modifier: Modifier = Modifier,
+    baseStyle: TextStyle = LocalTextStyle.current,
+    baseTextColor: TextColor = TextColor.Primary,
+    maxLines: Int = Int.MAX_VALUE,
+    overflow: TextOverflow = TextOverflow.Clip,
+) {
+    val annotatedString = spannedText(value, spanStyles)
+    Text(
+        modifier = modifier,
+        text = annotatedString,
+        style = baseStyle.copy(color = DSTokens.textColor(textColor = baseTextColor)),
+        maxLines = maxLines,
+        overflow = overflow,
+    )
+}
+
+@Composable
+private fun spannedText(value: String, styles: Map<SpanIndicator, MegaSpanStyle>) =
+    spannedTextWithAnnotation(
+        value,
+        styles.mapValues {
+            SpanStyleWithAnnotation(it.value, null)
+        })
+
+
 private const val ANNOTATION_TAG = "annotationTag"
 
 @CombinedThemePreviews
@@ -143,6 +176,30 @@ private fun LinkTextPreview() {
                     counter += 1
                 }
             },
+            baseStyle = AppTheme.typography.titleSmall,
+            baseTextColor = TextColor.Secondary
+        )
+    }
+}
+
+@CombinedThemePreviews
+@Composable
+private fun SpannedTextPreview() {
+    AndroidThemeForPreviews {
+        SpannedText(
+            value = "Simple Text with span style [A]here[/A] and [R]one more[/R]",
+            spanStyles = hashMapOf(
+                SpanIndicator('A') to
+                        MegaSpanStyle.TextColorStyle(
+                            SpanStyle(),
+                            TextColor.Primary
+                        ),
+                SpanIndicator('R') to
+                        MegaSpanStyle.TextColorStyle(
+                            SpanStyle(),
+                            TextColor.Secondary
+                        )
+            ),
             baseStyle = AppTheme.typography.titleSmall,
             baseTextColor = TextColor.Secondary
         )

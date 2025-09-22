@@ -13,6 +13,7 @@ import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.unit.dp
 import mega.android.core.ui.app.util.Section
 import mega.android.core.ui.components.LinkSpannedText
+import mega.android.core.ui.components.SpannedText
 import mega.android.core.ui.model.MegaSpanStyle
 import mega.android.core.ui.model.SpanIndicator
 import mega.android.core.ui.model.SpanStyleWithAnnotation
@@ -59,6 +60,27 @@ fun TextComponentCatalog() {
             },
             modifier = Modifier.padding(16.dp),
             baseStyle = AppTheme.typography.titleSmall
+        )
+    }
+    Spacer(modifier = Modifier.height(LocalSpacing.current.x16))
+
+    Section(header = "Spanned Text") {
+        SpannedText(
+            value = "Simple Text with span style [A]here[/A] and [R]one more[/R]",
+            spanStyles = hashMapOf(
+                SpanIndicator('A') to
+                        MegaSpanStyle.TextColorStyle(
+                            SpanStyle(),
+                            TextColor.Error
+                        ),
+                SpanIndicator('R') to
+                        MegaSpanStyle.TextColorStyle(
+                            SpanStyle(),
+                            TextColor.Brand
+                        )
+            ),
+            modifier = Modifier.padding(16.dp),
+            baseStyle = AppTheme.typography.titleMedium
         )
     }
 }
