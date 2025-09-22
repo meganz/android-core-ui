@@ -7,15 +7,22 @@ import androidx.compose.material3.BasicAlertDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.SideEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.focus.onFocusChanged
+import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.DialogProperties
-import kotlinx.coroutines.delay
 import mega.android.core.ui.components.MegaText
 import mega.android.core.ui.components.dialogs.internal.MegaBasicDialogContent
 import mega.android.core.ui.components.dialogs.internal.MegaBasicDialogFlowRow
@@ -29,8 +36,62 @@ import mega.android.core.ui.theme.values.TextColor
 @Composable
 fun BasicInputDialog(
     title: String,
-    inputValue: String,
     onValueChange: (String) -> Unit,
+    positiveButtonText: String,
+    onPositiveButtonClicked: () -> Unit,
+    modifier: Modifier = Modifier,
+    inputValue: String = "",
+    description: String? = null,
+    inputLabel: String? = null,
+    errorText: String? = null,
+    negativeButtonText: String? = null,
+    onNegativeButtonClicked: (() -> Unit)? = null,
+    dialogProperties: MegaDialogProperties = MegaDialogProperties.default,
+    keyboardType: KeyboardType = KeyboardType.Text,
+    inputTextAlign: TextAlign = TextAlign.Unspecified,
+    placeholder: String? = null,
+    isAutoShowKeyboard: Boolean = true,
+    suffix: @Composable (() -> Unit)? = null,
+    onDismiss: () -> Unit = {},
+) {
+    var textFieldValue by rememberSaveable(
+        inputs = arrayOf(inputValue),
+        stateSaver = TextFieldValue.Saver
+    ) {
+        mutableStateOf(value = TextFieldValue(inputValue, TextRange(inputValue.length)))
+    }
+
+    BasicInputDialog(
+        title = title,
+        inputValue = textFieldValue,
+        onValueChange = {
+            textFieldValue = it
+            onValueChange.invoke(it.text)
+        },
+        positiveButtonText = positiveButtonText,
+        onPositiveButtonClicked = onPositiveButtonClicked,
+        description = description,
+        inputLabel = inputLabel,
+        errorText = errorText,
+        negativeButtonText = negativeButtonText,
+        onNegativeButtonClicked = onNegativeButtonClicked,
+        dialogProperties = dialogProperties,
+        keyboardType = keyboardType,
+        inputTextAlign = inputTextAlign,
+        placeholder = placeholder,
+        isAutoShowKeyboard = isAutoShowKeyboard,
+        suffix = suffix,
+        onDismiss = onDismiss,
+        modifier = modifier,
+    )
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun BasicInputDialog(
+    title: String,
+    inputValue: TextFieldValue,
+    onValueChange: (TextFieldValue) -> Unit,
     positiveButtonText: String,
     onPositiveButtonClicked: () -> Unit,
     modifier: Modifier = Modifier,
@@ -39,10 +100,7 @@ fun BasicInputDialog(
     errorText: String? = null,
     negativeButtonText: String? = null,
     onNegativeButtonClicked: (() -> Unit)? = null,
-    dismissOnClickOutside: Boolean = true,
-    dismissOnBackPress: Boolean = true,
-    isPositiveButtonEnabled: Boolean = true,
-    isNegativeButtonEnabled: Boolean = true,
+    dialogProperties: MegaDialogProperties = MegaDialogProperties.default,
     keyboardType: KeyboardType = KeyboardType.Text,
     inputTextAlign: TextAlign = TextAlign.Unspecified,
     placeholder: String? = null,
@@ -51,21 +109,31 @@ fun BasicInputDialog(
     onDismiss: () -> Unit = {},
 ) {
     val focusRequester = remember { FocusRequester() }
-    if (isAutoShowKeyboard) {
-        LaunchedEffect(Unit) {
-            delay(300L)
-            runCatching {
-                // avoid crash if dialog is dismissed before this is called or view is not attached to window
-                focusRequester.requestFocus()
-            }
+    var textFieldValue by rememberSaveable(
+        inputs = arrayOf(inputValue),
+        stateSaver = TextFieldValue.Saver
+    ) {
+        mutableStateOf(value = inputValue)
+    }
+
+    // Update textFieldValue when inputValue changes
+    LaunchedEffect(inputValue) {
+        textFieldValue = inputValue
+    }
+
+    // Request focus when dialog opens if auto-show keyboard is enabled
+    SideEffect {
+        if (isAutoShowKeyboard) {
+            focusRequester.requestFocus()
         }
     }
+
     BasicAlertDialog(
         onDismissRequest = onDismiss,
         modifier = modifier,
         properties = DialogProperties(
-            dismissOnBackPress = dismissOnBackPress,
-            dismissOnClickOutside = dismissOnClickOutside
+            dismissOnBackPress = dialogProperties.dismissOnBackPress,
+            dismissOnClickOutside = dialogProperties.dismissOnClickOutside
         )
     ) {
         MegaBasicDialogContent(
@@ -93,23 +161,30 @@ fun BasicInputDialog(
                         DialogButton(
                             buttonText = negativeButtonText,
                             onButtonClicked = onNegativeButtonClicked,
-                            enabled = isNegativeButtonEnabled
+                            enabled = dialogProperties.isNegativeButtonEnabled
                         )
                     }
                     DialogButton(
                         buttonText = positiveButtonText,
                         onButtonClicked = onPositiveButtonClicked,
-                        enabled = isPositiveButtonEnabled
+                        enabled = dialogProperties.isPositiveButtonEnabled
                     )
                 }
             },
             inputContent = {
                 TextInputField(
                     modifier = Modifier
+                        .fillMaxWidth()
                         .focusRequester(focusRequester)
-                        .fillMaxWidth(),
+                        .onFocusChanged {
+                            if (it.isFocused && isAutoShowKeyboard) {
+                                textFieldValue = textFieldValue.copy(
+                                    selection = TextRange(0, textFieldValue.text.length)
+                                )
+                            }
+                        },
+                    textFieldValue = textFieldValue,
                     label = inputLabel,
-                    text = inputValue,
                     onValueChanged = onValueChange,
                     keyboardType = keyboardType,
                     errorText = errorText,

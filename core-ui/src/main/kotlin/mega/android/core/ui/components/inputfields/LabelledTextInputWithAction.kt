@@ -104,7 +104,7 @@ fun LabelledTextInputWithAction(
         keyboardType = keyboardType,
         imeAction = imeAction,
         capitalization = capitalization,
-        text = text,
+        text = TextFieldValue(text),
         successText = successText,
         errorText = errorText,
         warningText = warningText,
@@ -113,7 +113,7 @@ fun LabelledTextInputWithAction(
         showTrailingIcon = showTrailingIcon,
         maxCharLimit = maxCharLimit,
         contentType = contentType,
-        onValueChanged = onValueChanged,
+        onValueChanged = { onValueChanged?.invoke(it.text) },
         onFocusChanged = onFocusChanged,
         trailingView = trailingView,
     )
