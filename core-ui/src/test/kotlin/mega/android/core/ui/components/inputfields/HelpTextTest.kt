@@ -6,12 +6,15 @@ import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.performFirstLinkClick
+import androidx.compose.ui.text.LinkAnnotation
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import mega.android.core.ui.model.MegaSpanStyle
 import mega.android.core.ui.model.SpanIndicator
 import mega.android.core.ui.model.SpanStyleWithAnnotation
 import mega.android.core.ui.theme.AppTheme
 import mega.android.core.ui.theme.values.LinkColor
+import org.junit.Ignore
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -112,8 +115,9 @@ class HelpTextTest {
         // Then
         composeRule.onNodeWithText("Click here to learn more")
             .assertIsDisplayed()
-        composeRule.onNodeWithTag(HELP_TEXT_TEXT_TEST_TAG)
-            .performClick()
+        composeRule.onNodeWithText("Click here to learn more").performFirstLinkClick {
+            it.item is LinkAnnotation.Clickable
+        }
         verify(onClick).invoke(any())
     }
 

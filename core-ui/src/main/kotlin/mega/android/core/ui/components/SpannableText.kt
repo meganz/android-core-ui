@@ -1,6 +1,5 @@
 package mega.android.core.ui.components
 
-import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -9,12 +8,12 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.ExperimentalTextApi
+import androidx.compose.ui.text.LinkAnnotation
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.text.withAnnotation
+import androidx.compose.ui.text.withLink
 import androidx.compose.ui.text.withStyle
 import mega.android.core.ui.model.MegaSpanStyle
 import mega.android.core.ui.model.SpanIndicator
@@ -23,9 +22,9 @@ import mega.android.core.ui.preview.CombinedThemePreviews
 import mega.android.core.ui.theme.AndroidThemeForPreviews
 import mega.android.core.ui.theme.AppTheme
 import mega.android.core.ui.theme.textColor
-import mega.android.core.ui.tokens.theme.DSTokens
 import mega.android.core.ui.theme.values.LinkColor
 import mega.android.core.ui.theme.values.TextColor
+import mega.android.core.ui.tokens.theme.DSTokens
 
 /**
  * Text with link, you can use this component to show text with link
@@ -49,27 +48,21 @@ fun LinkSpannedText(
     maxLines: Int = Int.MAX_VALUE,
     overflow: TextOverflow = TextOverflow.Clip,
 ) {
-    val annotatedLinkString = spannedTextWithAnnotation(value, spanStyles)
-    ClickableText(
+    val annotatedLinkString = spannedTextWithAnnotation(value, spanStyles, onAnnotationClick)
+    Text(
         modifier = modifier,
         text = annotatedLinkString,
         style = baseStyle.copy(color = DSTokens.textColor(textColor = baseTextColor)),
         maxLines = maxLines,
         overflow = overflow,
-        onClick = { position ->
-            annotatedLinkString
-                .getStringAnnotations(ANNOTATION_TAG, position, position + 1)
-                .firstOrNull()
-                ?.let { onAnnotationClick(it.item) }
-        }
     )
 }
 
-@OptIn(ExperimentalTextApi::class)
 @Composable
 internal fun spannedTextWithAnnotation(
     value: String,
     styles: Map<SpanIndicator, SpanStyleWithAnnotation>,
+    onAnnotationClick: (annotation: String) -> Unit = {},
 ) =
     buildAnnotatedString {
         var temp = value
@@ -82,8 +75,14 @@ internal fun spannedTextWithAnnotation(
             val spanStyle = item.value?.megaSpanStyle?.toSpanStyle()
             if (start >= 0 && (start + item.key.openTag.length < end)) {
                 item.value.annotation?.let { annotation ->
+                    val linkAnnotation = LinkAnnotation.Clickable(
+                        tag = annotation,
+                        linkInteractionListener = { 
+                            onAnnotationClick(annotation)
+                        }
+                    )
                     spanStyle?.let {
-                        withAnnotation(ANNOTATION_TAG, annotation) {
+                        withLink(linkAnnotation) {
                             withStyle(spanStyle) {
                                 append(temp.substring(start + item.key.openTag.length, end))
                             }
@@ -133,13 +132,9 @@ fun SpannedText(
 @Composable
 private fun spannedText(value: String, styles: Map<SpanIndicator, MegaSpanStyle>) =
     spannedTextWithAnnotation(
-        value,
-        styles.mapValues {
-            SpanStyleWithAnnotation(it.value, null)
-        })
-
-
-private const val ANNOTATION_TAG = "annotationTag"
+        value = value,
+        styles = styles.mapValues { SpanStyleWithAnnotation(it.value, null) },
+    )
 
 @CombinedThemePreviews
 @Composable
