@@ -24,7 +24,10 @@ import androidx.compose.material3.TabRow
 import androidx.compose.material3.TabRowDefaults
 import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocal
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -365,8 +368,52 @@ class TabsScope {
         )
     )
 
+    /**
+     * Adds a new text tab with its content tied to a LazyListState that can be used to show scrollable content,
+     * the [LazyListState] and the [Modifier] to be used in the scrollable list are provided with [LocalTabContentModifierAndListState]
+     * It's your responsibility to use it in the scrollable list to ensure correct synchronization between the content and the top app bar scroll behaviour
+     * this is a general solution, if a simple LazyColumn is used to show the content, consider using [addLazyListTextTab] instead
+     * @param tabItem Tab definition
+     * @param content the LazyListScope content to show when this tab is selected. IMPORTANT: `listState` and `modifer` should be used to ensure correct synchronization between the content and the top app bar scroll behaviour
+     */
+    @Composable
+    fun addTextTabWithProvidedLazyListState(
+        tabItem: TabItems,
+        content: @Composable (BoxScope.(isActive: Boolean) -> Unit),
+    ): Boolean {
+        val listState = rememberLazyListState()
+        return cells.add(
+            TabContent(
+                tabItem = tabItem,
+                listState = listState,
+                content = { isActive ->
+                    @OptIn(ExperimentalMaterial3Api::class)
+                    CompositionLocalProvider(
+                        LocalTabContentModifierAndListStateInternal.provides(
+                            listState to
+                                    Modifier.then(
+                                        if (LocalTopAppBarScrollBehavior.current == null) Modifier else Modifier.nestedScroll(
+                                            LocalTopAppBarScrollBehavior.current!!.nestedScrollConnection
+                                        )
+                                    )
+                        )
+                    ) {
+                        content(isActive)
+                    }
+                }
+
+            )
+        )
+    }
+
     internal fun build(): ImmutableList<TabContent> = persistentListOf(*cells.toTypedArray())
 }
+
+val LocalTabContentModifierAndListStateInternal =
+    compositionLocalOf<Pair<LazyListState, Modifier>?> { null }
+
+val LocalTabContentModifierAndListState: CompositionLocal<Pair<LazyListState, Modifier>?> =
+    LocalTabContentModifierAndListStateInternal
 
 
 @CombinedThemePreviews

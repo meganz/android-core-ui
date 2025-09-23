@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FabPosition
 import androidx.compose.material3.Scaffold
@@ -19,6 +20,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import mega.android.core.ui.components.list.OneLineListItem
+import mega.android.core.ui.components.tabs.LocalTabContentModifierAndListState
 import mega.android.core.ui.components.tabs.MegaFixedTabRow
 import mega.android.core.ui.components.toolbar.AppBarNavigationType
 import mega.android.core.ui.components.toolbar.MegaTopAppBar
@@ -162,6 +164,46 @@ private fun MegaScaffoldWithTabRowPreview() {
                     }
                 }
             }
+        }
+    }
+}
+
+@CombinedThemePreviews
+@Composable
+private fun MegaScaffoldWithTabRowProvidedPreview() {
+    AndroidThemeForPreviews {
+        @OptIn(ExperimentalMaterial3Api::class)
+        MegaScaffoldWithTopAppBarScrollBehavior(
+            topBar = {
+                MegaTopAppBar(
+                    title = "Top app bar",
+                    navigationType = AppBarNavigationType.Back {},
+                )
+            }
+        ) {
+            MegaFixedTabRow(
+                modifier = Modifier.padding(it),
+            ) {
+                (0..1).forEach { tabIndex ->
+                    addTextTabWithProvidedLazyListState(TabItems("Tab $tabIndex", false)) {
+                        ExampleInnerLazyList()
+                    }
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun ExampleInnerLazyList() {
+    val (listState, modifier) = LocalTabContentModifierAndListState.current
+        ?: (rememberLazyListState() to Modifier)
+    LazyColumn(
+        modifier = modifier,
+        state = listState,
+    ) {
+        items(100) {
+            OneLineListItem("List ${it + 1}")
         }
     }
 }
