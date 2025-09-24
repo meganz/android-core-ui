@@ -243,7 +243,7 @@ private fun MegaTabRowWithContent(
     }
     @OptIn(ExperimentalMaterial3Api::class)
     Column(modifier.fillMaxWidth()) {
-        var selectedTabIndex by remember { mutableIntStateOf(0) }
+        var selectedTabIndex by rememberSaveable { mutableIntStateOf(0) }
         val currentScrollBehaviorState = LocalTopAppBarScrollBehavior.current
         LaunchedEffect(currentScrollBehaviorState?.state?.contentOffset) {
             //save content offset for current tab
