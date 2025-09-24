@@ -2,9 +2,11 @@ package mega.android.core.ui.components
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FabPosition
 import androidx.compose.material3.Scaffold
@@ -20,7 +22,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import mega.android.core.ui.components.list.OneLineListItem
-import mega.android.core.ui.components.tabs.LocalTabContentModifierAndListState
+import mega.android.core.ui.components.tabs.LocalTabContentModifier
 import mega.android.core.ui.components.tabs.MegaFixedTabRow
 import mega.android.core.ui.components.toolbar.AppBarNavigationType
 import mega.android.core.ui.components.toolbar.MegaTopAppBar
@@ -176,7 +178,7 @@ private fun MegaScaffoldWithTabRowProvidedPreview() {
         MegaScaffoldWithTopAppBarScrollBehavior(
             topBar = {
                 MegaTopAppBar(
-                    title = "Top app bar",
+                    title = "Top app bar provided list states",
                     navigationType = AppBarNavigationType.Back {},
                 )
             }
@@ -185,8 +187,8 @@ private fun MegaScaffoldWithTabRowProvidedPreview() {
                 modifier = Modifier.padding(it),
             ) {
                 (0..1).forEach { tabIndex ->
-                    addTextTabWithProvidedLazyListState(TabItems("Tab $tabIndex", false)) {
-                        ExampleInnerLazyList()
+                    addTextTabWithProvidedScrollableModifier(TabItems("Tab $tabIndex", false)) {
+                        ExampleInnerLazyList(Modifier.fillMaxSize())
                     }
                 }
             }
@@ -195,12 +197,14 @@ private fun MegaScaffoldWithTabRowProvidedPreview() {
 }
 
 @Composable
-private fun ExampleInnerLazyList() {
-    val (listState, modifier) = LocalTabContentModifierAndListState.current
-        ?: (rememberLazyListState() to Modifier)
-    LazyColumn(
-        modifier = modifier,
-        state = listState,
+private fun ExampleInnerLazyList(
+    modifier: Modifier = Modifier
+) {
+    val modifierContent = LocalTabContentModifier.current
+        ?:  Modifier
+    LazyVerticalGrid(
+        columns = GridCells.Fixed(3),
+        modifier = modifier.then(modifierContent)
     ) {
         items(100) {
             OneLineListItem("List ${it + 1}")
