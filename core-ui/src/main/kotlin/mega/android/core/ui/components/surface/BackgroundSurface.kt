@@ -8,14 +8,20 @@ import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.dp
 import mega.android.core.ui.components.MegaText
 import mega.android.core.ui.preview.CombinedThemePreviews
 import mega.android.core.ui.theme.AndroidThemeForPreviews
-import mega.android.core.ui.tokens.theme.DSTokens
 import mega.android.core.ui.theme.values.TextColor
+import mega.android.core.ui.tokens.theme.DSTokens
 
 @Composable
 fun BoxSurface(
@@ -57,6 +63,21 @@ fun RowSurface(
 }
 
 @Composable
+fun CardSurface(
+    surfaceColor: SurfaceColor,
+    modifier: Modifier = Modifier,
+    content: @Composable ColumnScope.() -> Unit,
+) {
+    Card(
+        modifier = modifier,
+        colors = CardDefaults.cardColors(
+            containerColor = surfaceColor.toBackgroundColor()
+        ),
+        content = content
+    )
+}
+
+@Composable
 @CombinedThemePreviews
 private fun BackgroundSurfacePreview() {
     AndroidThemeForPreviews {
@@ -65,6 +86,25 @@ private fun BackgroundSurfacePreview() {
             surfaceColor = SurfaceColor.Blur,
         ) {
             MegaText("Hello", textColor = TextColor.Primary)
+        }
+    }
+}
+
+@Composable
+@CombinedThemePreviews
+private fun CardSurfacePreview() {
+    AndroidThemeForPreviews {
+        CardSurface(
+            modifier = Modifier
+                .fillMaxWidth()
+                .wrapContentHeight(),
+            surfaceColor = SurfaceColor.Surface2,
+        ) {
+            MegaText(
+                modifier = Modifier.padding(8.dp),
+                text = "Hello",
+                textColor = TextColor.Primary
+            )
         }
     }
 }
