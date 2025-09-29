@@ -74,8 +74,18 @@ sealed interface LocalizedText {
                 quantity,
                 *formatArgs.toTypedArray()
             )
+
             is Literal -> value
+
+            is Composite -> parts.joinToString(separator = "") { it.get(context) }
         }
+    }
+
+    operator fun plus(other: LocalizedText): LocalizedText = when {
+        this is Composite && other is Composite -> Composite(this.parts + other.parts)
+        this is Composite -> Composite(this.parts + other)
+        other is Composite -> Composite(listOf(this) + other.parts)
+        else -> Composite(listOf(this, other))
     }
 
     /**
@@ -108,4 +118,13 @@ sealed interface LocalizedText {
      * @param value the text.
      */
     data class Literal(val value: String) : LocalizedText
+
+    /**
+     * Represents a composite of multiple [LocalizedText] parts.
+     *
+     * This can be used to concatenate multiple localized texts together.
+     *
+     * @param parts The list of [LocalizedText] parts to concatenate.
+     */
+    data class Composite(val parts: List<LocalizedText>) : LocalizedText
 }
