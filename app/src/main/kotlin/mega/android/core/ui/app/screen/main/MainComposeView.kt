@@ -1,15 +1,26 @@
 package mega.android.core.ui.app.screen.main
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.autofill.ContentType
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.text.TextRange
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.unit.dp
 import mega.android.core.ui.app.component.BottomSheetComponentCatalog
 import mega.android.core.ui.app.component.ButtonComponentCatalog
 import mega.android.core.ui.app.component.CardComponentCatalog
@@ -37,12 +48,21 @@ import mega.android.core.ui.app.component.TextComponentCatalog
 import mega.android.core.ui.app.component.TextThumbnailComponentCatalog
 import mega.android.core.ui.app.component.TransparentNavigationComponentCatalog
 import mega.android.core.ui.app.component.VerificationTextInputFieldCatalog
+import mega.android.core.ui.components.inputfields.AnnotatedLabelTextInputField
+import mega.android.core.ui.components.inputfields.ExpirationDateInputField
+import mega.android.core.ui.components.inputfields.PasswordTextInputField
 import mega.android.core.ui.components.inputfields.TextInputBox
 import mega.android.core.ui.components.inputfields.TextInputField
 import mega.android.core.ui.components.settings.SettingsNavigationItem
 import mega.android.core.ui.model.IllustrationIconSizeMode
+import mega.android.core.ui.model.InputFieldLabelSpanStyle
+import mega.android.core.ui.model.MegaSpanStyle
+import mega.android.core.ui.model.SpanIndicator
+import mega.android.core.ui.model.SpanStyleWithAnnotation
 import mega.android.core.ui.preview.CombinedThemePreviews
 import mega.android.core.ui.theme.AndroidThemeForPreviews
+import mega.android.core.ui.theme.AppTheme
+import mega.android.core.ui.theme.values.TextColor
 
 @Composable
 internal fun MainComposeView(
@@ -56,7 +76,8 @@ internal fun MainComposeView(
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
-            .navigationBarsPadding()
+            .navigationBarsPadding(),
+        verticalArrangement = Arrangement.spacedBy(4.dp)
     ) {
         item(key = -1) {
             TransparentNavigationComponentCatalog()
@@ -184,6 +205,179 @@ internal fun MainComposeView(
                 key = "floatingToolbar",
                 title = "Floating Toolbar",
                 onClicked = { onNavigateToFloatingToolbar() }
+            )
+        }
+        item(key = 31) {
+            val emailRequester = remember { FocusRequester() }
+            var text by remember { mutableStateOf("") }
+
+            TextInputField(
+                modifier = Modifier
+                    .focusRequester(emailRequester)
+                    .padding(start = 16.dp, end = 16.dp),
+                keyboardType = KeyboardType.Email,
+                imeAction = ImeAction.Next,
+                capitalization = KeyboardCapitalization.None,
+                label = "Email",
+                text = text,
+                onValueChanged = {
+                    text = it
+                },
+                contentType = ContentType.EmailAddress
+            )
+        }
+
+        // TextInputField Variants Testing
+        item(key = 32) {
+            var textFieldValue by rememberSaveable(
+                stateSaver = TextFieldValue.Saver
+            ) {
+                mutableStateOf(value = TextFieldValue("", TextRange(0)))
+            }
+
+            TextInputField(
+                modifier = Modifier.padding(start = 16.dp, end = 16.dp),
+                textFieldValue = textFieldValue,
+                keyboardType = KeyboardType.Text,
+                label = "TextFieldValue Version",
+                onValueChanged = { textFieldValue = it }
+            )
+        }
+        
+        item(key = 33) {
+            var passwordText by remember { mutableStateOf("") }
+            
+            PasswordTextInputField(
+                modifier = Modifier.padding(start = 16.dp, end = 16.dp),
+                label = "Password Field",
+                text = passwordText,
+                onValueChanged = { passwordText = it }
+            )
+        }
+        
+        item(key = 34) {
+            var annotatedText by remember { mutableStateOf("") }
+            
+            AnnotatedLabelTextInputField(
+                modifier = Modifier.padding(start = 16.dp, end = 16.dp),
+                text = annotatedText,
+                keyboardType = KeyboardType.Text,
+                onValueChanged = { annotatedText = it },
+                spannedLabel = InputFieldLabelSpanStyle(
+                    value = "Annotated [A](Optional)[/A]",
+                    spanStyles = mapOf(
+                        SpanIndicator('A') to SpanStyleWithAnnotation(
+                            megaSpanStyle = MegaSpanStyle.TextColorStyle(
+                                spanStyle = AppTheme.typography.bodyMedium.toSpanStyle(),
+                                textColor = TextColor.Secondary
+                            ),
+                            annotation = null
+                        )
+                    ),
+                    baseStyle = AppTheme.typography.titleSmall,
+                    baseTextColor = TextColor.Primary
+                ),
+            )
+        }
+
+        item(key = 35) {
+            var annotatedTextFieldValue by rememberSaveable(
+                stateSaver = TextFieldValue.Saver
+            ) {
+                mutableStateOf(value = TextFieldValue("", TextRange(0)))
+            }
+
+            AnnotatedLabelTextInputField(
+                modifier = Modifier.padding(start = 16.dp, end = 16.dp),
+                keyboardType = KeyboardType.Text,
+                textValue = annotatedTextFieldValue,
+                onValueChanged = { annotatedTextFieldValue = it },
+                spannedLabel = InputFieldLabelSpanStyle(
+                    value = "Annotated [A](Optional)[/A]",
+                    spanStyles = mapOf(
+                        SpanIndicator('A') to SpanStyleWithAnnotation(
+                            megaSpanStyle = MegaSpanStyle.TextColorStyle(
+                                spanStyle = AppTheme.typography.bodyMedium.toSpanStyle(),
+                                textColor = TextColor.Secondary
+                            ),
+                            annotation = null
+                        )
+                    ),
+                    baseStyle = AppTheme.typography.titleSmall,
+                    baseTextColor = TextColor.Primary
+                ),
+            )
+        }
+        
+        item(key = 36) {
+            var expiryText by remember { mutableStateOf("") }
+            
+            ExpirationDateInputField(
+                modifier = Modifier.padding(start = 16.dp, end = 16.dp),
+                text = expiryText,
+                onValueChanged = { expiryText = it },
+                spannedLabel = InputFieldLabelSpanStyle(
+                    value = "Annotated [A](Optional)[/A]",
+                    spanStyles = mapOf(
+                        SpanIndicator('A') to SpanStyleWithAnnotation(
+                            megaSpanStyle = MegaSpanStyle.TextColorStyle(
+                                spanStyle = AppTheme.typography.bodyMedium.toSpanStyle(),
+                                textColor = TextColor.Secondary
+                            ),
+                            annotation = null
+                        )
+                    ),
+                    baseStyle = AppTheme.typography.titleSmall,
+                    baseTextColor = TextColor.Primary
+                ),
+            )
+        }
+        
+        item(key = 37) {
+            var numberText by remember { mutableStateOf("") }
+            
+            TextInputField(
+                modifier = Modifier.padding(start = 16.dp, end = 16.dp),
+                keyboardType = KeyboardType.Number,
+                label = "Number Field",
+                text = numberText,
+                onValueChanged = { numberText = it }
+            )
+        }
+        
+        item(key = 38) {
+            var phoneText by remember { mutableStateOf("") }
+            
+            TextInputField(
+                modifier = Modifier.padding(start = 16.dp, end = 16.dp),
+                keyboardType = KeyboardType.Phone,
+                label = "Phone Field",
+                text = phoneText,
+                onValueChanged = { phoneText = it }
+            )
+        }
+        
+        item(key = 39) {
+            var urlText by remember { mutableStateOf("") }
+            
+            TextInputField(
+                modifier = Modifier.padding(start = 16.dp, end = 16.dp),
+                keyboardType = KeyboardType.Uri,
+                label = "URL Field",
+                text = urlText,
+                onValueChanged = { urlText = it }
+            )
+        }
+        
+        item(key = 40) {
+            var multilineText by remember { mutableStateOf("") }
+            
+            TextInputField(
+                modifier = Modifier.padding(start = 16.dp, end = 16.dp),
+                keyboardType = KeyboardType.Text,
+                label = "Multiline Field",
+                text = multilineText,
+                onValueChanged = { multilineText = it }
             )
         }
     }

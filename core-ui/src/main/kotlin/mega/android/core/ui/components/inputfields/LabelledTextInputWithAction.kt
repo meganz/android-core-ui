@@ -12,7 +12,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.autofill.ContentType
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.ImeOptions
 import androidx.compose.ui.text.input.KeyboardCapitalization
@@ -105,7 +104,7 @@ fun LabelledTextInputWithAction(
         keyboardType = keyboardType,
         imeAction = imeAction,
         capitalization = capitalization,
-        text = TextFieldValue(text, TextRange(text.length)),
+        text = text,
         successText = successText,
         errorText = errorText,
         warningText = warningText,
@@ -114,7 +113,7 @@ fun LabelledTextInputWithAction(
         showTrailingIcon = showTrailingIcon,
         maxCharLimit = maxCharLimit,
         contentType = contentType,
-        onValueChanged = { onValueChanged?.invoke(it.text) },
+        onValueChanged = onValueChanged,
         onFocusChanged = onFocusChanged,
         trailingView = trailingView,
     )
@@ -279,7 +278,7 @@ private fun LabelledTextInputWithActionPreview() {
                 onFocusChanged = {}
             )
             LabelledTextInputWithAction(
-                textValue = TextFieldValue("Text", TextRange(4)),
+                textValue = TextFieldValue("Text"),
                 keyboardType = KeyboardType.Text,
                 modifier = Modifier.padding(LocalSpacing.current.x16),
                 imeAction = ImeAction.Done,
@@ -307,7 +306,7 @@ private fun LabelledTextInputWithActionPreview() {
                 }
             )
             LabelledTextInputWithAction(
-                textValue = TextFieldValue("Text", TextRange(4)),
+                textValue = TextFieldValue("Text"),
                 keyboardType = KeyboardType.Text,
                 modifier = Modifier.padding(LocalSpacing.current.x16),
                 imeAction = ImeAction.Done,

@@ -176,7 +176,7 @@ fun TextInputField(
         keyboardType = keyboardType,
         imeAction = imeAction,
         capitalization = capitalization,
-        text = TextFieldValue(text, TextRange(text.length)),
+        text = text,
         successText = successText,
         errorText = errorText,
         warningText = warningText,
@@ -185,37 +185,38 @@ fun TextInputField(
         showTrailingIcon = showTrailingIcon,
         maxCharLimit = maxCharLimit,
         contentType = contentType,
-        onValueChanged = { onValueChanged?.invoke(it.text) },
+        onValueChanged = onValueChanged,
         onFocusChanged = onFocusChanged
     )
 }
 
 /**
- * A composable text input field built on top of Material3 that accepts a [TextFieldValue].
- *
- * This allows not only updating the text but also controlling cursor position
- * and text selection. For a simpler version that only takes a [String],
- * see the other overload of [TextInputField].
+ * Text input field
+ * @param modifier
+ * @param onValueChanged
+ * @param errorText
  */
 @Composable
 fun TextInputField(
     modifier: Modifier,
-    textFieldValue: TextFieldValue,
     keyboardType: KeyboardType,
+    textFieldValue: TextFieldValue,
     visualTransformation: VisualTransformation = VisualTransformation.None,
     imeAction: ImeAction = ImeAction.Done,
     capitalization: KeyboardCapitalization = KeyboardCapitalization.Words,
-    placeholder: String? = null,
     label: String? = null,
     inputTextAlign: TextAlign = TextAlign.Unspecified,
     showTrailingIcon: Boolean = true,
+    trailingView: @Composable (() -> Unit)? = null,
+    suffix: @Composable (() -> Unit)? = null,
+    isPasswordMode: Boolean = false,
     successText: String? = null,
     errorText: String? = null,
     warningText: String? = null,
+    placeholder: String? = null,
     maxCharLimit: Int = Int.MAX_VALUE,
     optionalLabelText: String? = null,
     contentType: ContentType? = null,
-    suffix: @Composable (() -> Unit)? = null,
     onValueChanged: ((TextFieldValue) -> Unit)? = null,
     onFocusChanged: ((Boolean) -> Unit)? = null,
 ) {
@@ -246,23 +247,24 @@ fun TextInputField(
                 }
             }
         },
-        placeholder = placeholder,
-        suffix = suffix,
         visualTransformation = visualTransformation,
         keyboardType = keyboardType,
         imeAction = imeAction,
         capitalization = capitalization,
-        text = textFieldValue,
+        textValue = textFieldValue,
         successText = successText,
         errorText = errorText,
         warningText = warningText,
         inputTextAlign = inputTextAlign,
-        isPasswordMode = false,
+        isPasswordMode = isPasswordMode,
         showTrailingIcon = showTrailingIcon,
         maxCharLimit = maxCharLimit,
         contentType = contentType,
         onValueChanged = onValueChanged,
-        onFocusChanged = onFocusChanged
+        onFocusChanged = onFocusChanged,
+        trailingView = trailingView,
+        placeholder = placeholder,
+        suffix = suffix
     )
 }
 
@@ -300,7 +302,7 @@ fun PasswordTextInputField(
             color = DSTokens.colors.text.primary
         )
     },
-    text = TextFieldValue(text, TextRange(text.length)),
+    text = text,
     keyboardType = KeyboardType.Password,
     keyboardActions = keyboardActions,
     imeAction = imeAction,
@@ -313,7 +315,7 @@ fun PasswordTextInputField(
     showTrailingIcon = showTrailingIcon,
     maxCharLimit = maxCharLimit,
     contentType = contentType,
-    onValueChanged = { onValueChanged?.invoke(it.text) },
+    onValueChanged = onValueChanged,
     onFocusChanged = onFocusChanged,
 )
 
@@ -379,7 +381,7 @@ fun ExpirationDateInputField(
         keyboardType = KeyboardType.Number,
         imeAction = imeAction,
         capitalization = capitalization,
-        text = TextFieldValue(text, TextRange(text.length)),
+        text = text,
         successText = successText,
         errorText = errorText,
         warningText = warningText,
@@ -387,7 +389,7 @@ fun ExpirationDateInputField(
         isPasswordMode = false,
         showTrailingIcon = showTrailingIcon,
         maxCharLimit = 4,
-        onValueChanged = { onValueChanged?.invoke(it.text) },
+        onValueChanged = onValueChanged,
         onFocusChanged = onFocusChanged
     )
 }
@@ -459,7 +461,7 @@ fun AnnotatedLabelTextInputField(
         keyboardType = keyboardType,
         imeAction = imeAction,
         capitalization = capitalization,
-        text = TextFieldValue(text, TextRange(text.length)),
+        text = text,
         successText = successText,
         errorText = errorText,
         warningText = warningText,
@@ -468,7 +470,7 @@ fun AnnotatedLabelTextInputField(
         showTrailingIcon = showTrailingIcon,
         maxCharLimit = maxCharLimit,
         contentType = contentType,
-        onValueChanged = { onValueChanged?.invoke(it.text) },
+        onValueChanged = onValueChanged,
         onFocusChanged = onFocusChanged
     )
 }
@@ -570,8 +572,10 @@ internal fun BaseTextField(
     visualTransformation: VisualTransformation = VisualTransformation.None,
     keyboardActions: KeyboardActions = KeyboardActions.Default,
     maxCharLimit: Int = Int.MAX_VALUE,
+    placeholder: String? = null,
     contentType: ContentType? = null,
     label: @Composable (() -> Unit)? = null,
+    suffix: @Composable (() -> Unit)? = null,
     onValueChanged: ((TextFieldValue) -> Unit)? = null,
     onFocusChanged: ((Boolean) -> Unit)? = null,
     trailingView: @Composable (() -> Unit)? = null,
@@ -639,6 +643,15 @@ internal fun BaseTextField(
                     imeAction = imeAction,
                     capitalization = capitalization
                 ),
+                placeholder = placeholder?.let {
+                    {
+                        MegaText(
+                            text = it,
+                            style = AppTheme.typography.bodyLarge,
+                            textColor = TextColor.Placeholder
+                        )
+                    }
+                },
                 keyboardActions = keyboardActions,
                 value = textValue,
                 onValueChange = { textFieldValue ->
@@ -665,6 +678,7 @@ internal fun BaseTextField(
                 colors = colors,
                 shape = RoundedCornerShape(8.dp),
                 interactionSource = interactionSource,
+                suffix = suffix,
                 singleLine = true,
                 textStyle = AppTheme.typography.bodyLarge.copy(textAlign = inputTextAlign),
                 isError = successText.isNullOrBlank() && errorText != null,
@@ -747,7 +761,7 @@ internal fun BaseTextField(
 @Composable
 internal fun BaseTextField(
     modifier: Modifier,
-    text: TextFieldValue,
+    text: String,
     isPasswordMode: Boolean,
     showTrailingIcon: Boolean,
     keyboardType: KeyboardType,
@@ -764,23 +778,13 @@ internal fun BaseTextField(
     placeholder: String? = null,
     label: @Composable (() -> Unit)? = null,
     suffix: @Composable (() -> Unit)? = null,
-    onValueChanged: ((TextFieldValue) -> Unit)? = null,
+    onValueChanged: ((String) -> Unit)? = null,
     onFocusChanged: ((Boolean) -> Unit)? = null,
     trailingView: @Composable (() -> Unit)? = null,
 ) {
     val spacing = LocalSpacing.current
     val interactionSource: MutableInteractionSource = remember { MutableInteractionSource() }
-    var baseText by rememberSaveable(
-        inputs = arrayOf(text),
-        stateSaver = TextFieldValue.Saver
-    ) {
-        mutableStateOf(value = text)
-    }
-    
-    // Update baseText when external text parameter changes
-    LaunchedEffect(text) {
-        baseText = text
-    }
+    var baseText by rememberSaveable(text) { mutableStateOf(text) }
     var isFocused by remember { mutableStateOf(false) }
     var showPassword by rememberSaveable { mutableStateOf(false) }
     val focusedColor = when {
@@ -843,9 +847,8 @@ internal fun BaseTextField(
                 ),
                 keyboardActions = keyboardActions,
                 value = baseText,
-                onValueChange = { textFieldValue ->
-                    val newValue = textFieldValue.text
-                    val newText = when {
+                onValueChange = { newValue ->
+                    baseText = when {
                         keyboardType == KeyboardType.Number -> {
                             val digits = newValue.filter { it.isDigit() }
                             if (newValue.length > maxCharLimit && digits.isNotBlank()) {
@@ -863,7 +866,6 @@ internal fun BaseTextField(
                             }
                         }
                     }
-                    baseText = baseText.copy(text = newText)
                     onValueChanged?.invoke(baseText)
                 },
                 placeholder = placeholder?.let {
@@ -887,15 +889,15 @@ internal fun BaseTextField(
                 } else {
                     if (showPassword) VisualTransformation.None else PasswordVisualTransformation()
                 },
-                trailingIcon = if (baseText.text.isNotEmpty() && showTrailingIcon) {
+                trailingIcon = if (baseText.isNotEmpty() && showTrailingIcon) {
                     when {
                         isPasswordMode.not() && isFocused -> {
                             {
                                 Icon(
                                     modifier = Modifier
                                         .clickable {
-                                            baseText = baseText.copy(text = "")
-                                            onValueChanged?.invoke(baseText)
+                                            baseText = ""
+                                            onValueChanged?.invoke("")
                                         },
                                     painter = painterResource(id = R.drawable.ic_close_medium_thin_outline),
                                     tint = DSTokens.colors.icon.primary,
