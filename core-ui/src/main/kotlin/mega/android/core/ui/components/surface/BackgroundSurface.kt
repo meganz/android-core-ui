@@ -1,18 +1,21 @@
 package mega.android.core.ui.components.surface
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CardElevation
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -66,6 +69,7 @@ fun RowSurface(
 fun CardSurface(
     surfaceColor: SurfaceColor,
     modifier: Modifier = Modifier,
+    elevation: CardElevation = CardDefaults.cardElevation(),
     content: @Composable ColumnScope.() -> Unit,
 ) {
     Card(
@@ -73,7 +77,8 @@ fun CardSurface(
         colors = CardDefaults.cardColors(
             containerColor = surfaceColor.toBackgroundColor()
         ),
-        content = content
+        content = content,
+        elevation = elevation,
     )
 }
 
@@ -94,17 +99,34 @@ private fun BackgroundSurfacePreview() {
 @CombinedThemePreviews
 private fun CardSurfacePreview() {
     AndroidThemeForPreviews {
-        CardSurface(
-            modifier = Modifier
-                .fillMaxWidth()
-                .wrapContentHeight(),
-            surfaceColor = SurfaceColor.Surface2,
-        ) {
-            MegaText(
-                modifier = Modifier.padding(8.dp),
-                text = "Hello",
-                textColor = TextColor.Primary
-            )
+        Column(
+            modifier = Modifier.padding(4.dp),) {
+            CardSurface(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .wrapContentHeight(),
+                surfaceColor = SurfaceColor.Surface2,
+            ) {
+                MegaText(
+                    modifier = Modifier.padding(8.dp),
+                    text = "Hello",
+                    textColor = TextColor.Primary
+                )
+            }
+            Spacer(modifier = Modifier.padding(4.dp))
+            CardSurface(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .wrapContentHeight(),
+                surfaceColor = SurfaceColor.Surface2,
+                elevation = CardDefaults.cardElevation(defaultElevation = 16.dp)
+            ) {
+                MegaText(
+                    modifier = Modifier.padding(8.dp),
+                    text = "Hello Elevated",
+                    textColor = TextColor.Primary
+                )
+            }
         }
     }
 }
