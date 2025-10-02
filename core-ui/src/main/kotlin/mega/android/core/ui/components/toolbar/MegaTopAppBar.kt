@@ -2,6 +2,7 @@ package mega.android.core.ui.components.toolbar
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -99,6 +100,53 @@ fun MegaTopAppBar(
     drawBottomLineOnScrolledContent = drawBottomLineOnScrolledContent,
     maxActionsToShow = maxActionsToShow,
 )
+
+@Composable
+fun MegaTopAppBar(
+    title: String,
+    subtitle: String?,
+    navigationType: AppBarNavigationType,
+    actions: List<MenuActionWithIcon>,
+    onActionPressed: ((MenuActionWithIcon) -> Unit),
+    modifier: Modifier = Modifier,
+    drawBottomLineOnScrolledContent: Boolean = false,
+    actionsEnabled: Boolean = true,
+    maxActionsToShow: Int = 4,
+) = MegaTopAppBar(
+    modifier = modifier,
+    title = title,
+    subtitle = subtitle,
+    navigationType = navigationType,
+    actions = actions.addClick(onActionPressed),
+    actionsEnabled = actionsEnabled,
+    drawBottomLineOnScrolledContent = drawBottomLineOnScrolledContent,
+    maxActionsToShow = maxActionsToShow,
+)
+
+@Composable
+fun MegaTopAppBar(
+    title: String,
+    subtitle: String?,
+    navigationType: AppBarNavigationType,
+    actions: List<MenuActionIconWithClick>,
+    modifier: Modifier = Modifier,
+    drawBottomLineOnScrolledContent: Boolean = false,
+    actionsEnabled: Boolean = true,
+    maxActionsToShow: Int = Int.MAX_VALUE,
+) {
+    @OptIn(ExperimentalMaterial3Api::class)
+    DefaultTopAppBar(
+        modifier = modifier,
+        title = title,
+        subtitle = subtitle,
+        navigationIcon = navigationType.navigationIcon(),
+        scrollBehavior = LocalTopAppBarScrollBehavior.current,
+        actions = {
+            TopAppBarActionsComponent(actions, actionsEnabled, maxActionsToShow)
+        },
+        drawBottomLineOnScrolledContent = drawBottomLineOnScrolledContent,
+    )
+}
 
 /**
  * MegaTopAppBar that admits trailing icons and actions at the same time. Trailing icons will be drawn first and then the actions.
@@ -252,6 +300,7 @@ fun TransparentTopBar(
 private fun DefaultTopAppBar(
     modifier: Modifier,
     title: String,
+    subtitle: String? = null,
     navigationIcon: @Composable () -> Unit = {},
     actions: @Composable RowScope.() -> Unit = {},
     colors: TopAppBarColors? = null,
@@ -261,12 +310,24 @@ private fun DefaultTopAppBar(
     Box(modifier = modifier) {
         TopAppBar(
             title = {
-                Text(
-                    text = title,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
-                    style = AppTheme.typography.titleLarge,
-                )
+                Column {
+                    Text(
+                        text = title,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                        style = AppTheme.typography.titleLarge,
+                    )
+
+                    subtitle?.let {
+                        Text(
+                            text = it,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
+                            style = AppTheme.typography.bodyMedium,
+                            color = DSTokens.colors.text.secondary
+                        )
+                    }
+                }
             },
             scrollBehavior = scrollBehavior,
             navigationIcon = navigationIcon,
@@ -333,7 +394,9 @@ private fun MegaTransparentTopAppBarPreview() {
 
 @CombinedThemePreviews
 @Composable
-private fun MegaTopAppBarActionsPreview() {
+private fun MegaTopAppBarActionsPreview(
+    @PreviewParameter(SubtitleProvider::class) subtitle: String?
+) {
     val actions =
         listOf(R.drawable.ic_alert_circle_medium_thin_outline, R.drawable.ic_alert_triangle_medium_thin_outline).mapIndexed { i, iconRes ->
             object : MenuActionWithIcon {
@@ -350,6 +413,7 @@ private fun MegaTopAppBarActionsPreview() {
     AndroidThemeForPreviews {
         MegaTopAppBar(
             title = "Title",
+            subtitle = subtitle,
             navigationType = AppBarNavigationType.Back {},
             actions = actions.map { MenuActionIconWithClick(it) {} },
             modifier = Modifier.padding(bottom = 80.dp) //make some space for the tooltip in interactive mode
@@ -402,4 +466,9 @@ private class NavigationTypeProvider : PreviewParameterProvider<AppBarNavigation
             AppBarNavigationType.Close {},
         )
 
+}
+
+private class SubtitleProvider : PreviewParameterProvider<String?> {
+    override val values: Sequence<String?>
+        get() = sequenceOf(null, "Subtitle")
 }
