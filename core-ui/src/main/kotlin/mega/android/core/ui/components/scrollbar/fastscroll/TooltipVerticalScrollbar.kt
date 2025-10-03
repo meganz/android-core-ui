@@ -18,8 +18,10 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.grid.LazyGridState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.State
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
@@ -27,6 +29,7 @@ import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -40,6 +43,7 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.launch
 import mega.android.core.ui.R
+import mega.android.core.ui.components.LocalTopAppBarScrollBehavior
 import mega.android.core.ui.components.image.MegaIcon
 import mega.android.core.ui.theme.values.IconColor
 import mega.android.core.ui.tokens.theme.DSTokens
@@ -137,6 +141,21 @@ private fun TooltipVerticalScrollbar(
     contentPadding: PaddingValues,
     tooltipText: ((currentIndex: Int) -> String)? = null,
 ) {
+    var scrollBehaviorDesynchronized by rememberSaveable { mutableStateOf(false) }
+    @OptIn(ExperimentalMaterial3Api::class)
+    if (scrollBehaviorDesynchronized) {
+        // if programmatically scrolled, LocalTopAppBarScrollBehavior is desynchronized,
+        // as it's a lazy list it's not possible to be sure about its value until fully scrolled again
+        val reset by remember { derivedStateOf { firstVisibleItemIndex.value == 0 && fractionalOffsetInItem.value == 0f } }
+        LocalTopAppBarScrollBehavior.current?.let { scrollBehavior ->
+            LaunchedEffect(reset) {
+                scrollBehavior.state.contentOffset = if (reset) 0f else -(Float.MAX_VALUE - 1)
+                if (reset) {
+                    scrollBehaviorDesynchronized = false
+                }
+            }
+        }
+    }
     val density = LocalDensity.current
     val coroutineScope = rememberCoroutineScope()
     val thumbHeightPixels = with(density) { thumbHeight.toPx() }
@@ -219,6 +238,7 @@ private fun TooltipVerticalScrollbar(
                             .coerceIn(0, itemCount - 1)
 
                         coroutineScope.launch {
+                            scrollBehaviorDesynchronized = true
                             scrollToItem(targetIndex)
                         }
                     }

@@ -5,11 +5,13 @@ import androidx.compose.foundation.gestures.FlingBehavior
 import androidx.compose.foundation.gestures.ScrollableDefaults
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.LazyListState
@@ -61,19 +63,39 @@ fun FastScrollLazyColumn(
     flingBehavior: FlingBehavior = ScrollableDefaults.flingBehavior(),
     userScrollEnabled: Boolean = true,
     content: LazyListScope.() -> Unit,
+) = FastScrollForLazyColumn(
+    totalItems = totalItems,
+    modifier = modifier,
+    tooltipText = tooltipText,
+    state = state,
+    contentPadding = contentPadding,
+    reverseLayout = reverseLayout,
 ) {
-    Box {
-        LazyColumn(
-            modifier = modifier.testTag(LAZY_COLUMN_TAG),
-            state = state,
-            contentPadding = contentPadding,
-            reverseLayout = reverseLayout,
-            verticalArrangement = verticalArrangement,
-            horizontalAlignment = horizontalAlignment,
-            flingBehavior = flingBehavior,
-            userScrollEnabled = userScrollEnabled,
-            content = content
-        )
+    LazyColumn(
+        modifier = Modifier.wrapContentSize().testTag(LAZY_COLUMN_TAG),
+        state = state,
+        contentPadding = contentPadding,
+        reverseLayout = reverseLayout,
+        verticalArrangement = verticalArrangement,
+        horizontalAlignment = horizontalAlignment,
+        flingBehavior = flingBehavior,
+        userScrollEnabled = userScrollEnabled,
+        content = content
+    )
+}
+
+@Composable
+fun FastScrollForLazyColumn(
+    totalItems: Int,
+    modifier: Modifier = Modifier,
+    tooltipText: ((currentIndex: Int) -> String)? = null,
+    state: LazyListState = rememberLazyListState(),
+    contentPadding: PaddingValues = PaddingValues(0.dp),
+    reverseLayout: Boolean = false,
+    lazyColumn: @Composable BoxScope.(LazyListState) -> Unit,
+) {
+    Box(modifier = modifier) {
+        lazyColumn(state)
         if (totalItems > MinimumItemThreshold.SINGLE_COLUMN) {
             TooltipVerticalScrollbar(
                 tooltipText = tooltipText,
