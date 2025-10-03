@@ -54,6 +54,8 @@ import mega.android.core.ui.components.inputfields.PasswordTextInputField
 import mega.android.core.ui.components.inputfields.TextInputBox
 import mega.android.core.ui.components.inputfields.TextInputField
 import mega.android.core.ui.components.settings.SettingsNavigationItem
+import mega.android.core.ui.components.toolbar.AppBarNavigationType
+import mega.android.core.ui.components.toolbar.MegaSearchTopAppBar
 import mega.android.core.ui.model.IllustrationIconSizeMode
 import mega.android.core.ui.model.InputFieldLabelSpanStyle
 import mega.android.core.ui.model.MegaSpanStyle
@@ -378,6 +380,21 @@ internal fun MainComposeView(
                 label = "Multiline Field",
                 text = multilineText,
                 onValueChanged = { multilineText = it }
+            )
+        }
+
+        item(key = 41) {
+            var queryText by remember { mutableStateOf("") }
+            var isSearching by remember { mutableStateOf(false) }
+
+            MegaSearchTopAppBar(
+                title = "Title",
+                navigationType = AppBarNavigationType.Back {},
+                query = queryText,
+                onQueryChanged = { queryText = it },
+                isSearchingMode = isSearching,
+                onSearchingModeChanged = { isSearching = it },
+                searchPlaceholder = "Search placeholder"
             )
         }
     }

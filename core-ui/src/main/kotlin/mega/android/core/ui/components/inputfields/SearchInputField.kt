@@ -26,6 +26,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
+import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
@@ -38,9 +39,9 @@ import mega.android.core.ui.components.MegaText
 import mega.android.core.ui.preview.CombinedThemePreviews
 import mega.android.core.ui.theme.AndroidThemeForPreviews
 import mega.android.core.ui.theme.AppTheme
-import mega.android.core.ui.tokens.theme.DSTokens
 import mega.android.core.ui.theme.spacing.LocalSpacing
 import mega.android.core.ui.theme.values.TextColor
+import mega.android.core.ui.tokens.theme.DSTokens
 
 @Composable
 fun SearchInputField(
@@ -138,7 +139,6 @@ private fun BaseSearchInputField(
 ) {
     val spacing = LocalSpacing.current
     val interactionSource: MutableInteractionSource = remember { MutableInteractionSource() }
-    var isFocused by remember { mutableStateOf(false) }
     val primaryTextSelectionColors = TextSelectionColors(
         handleColor = DSTokens.colors.text.primary,
         backgroundColor = DSTokens.colors.text.primary.copy(alpha = 0.4f),
@@ -157,6 +157,10 @@ private fun BaseSearchInputField(
         disabledTextColor = DSTokens.colors.text.disabled,
         disabledContainerColor = DSTokens.colors.button.disabled,
         disabledBorderColor = DSTokens.colors.border.disabled,
+        selectionColors = TextSelectionColors(
+            handleColor = DSTokens.colors.text.primary,
+            backgroundColor = DSTokens.colors.text.primary.copy(alpha = 0.4f),
+        )
     )
 
     CompositionLocalProvider(
@@ -167,7 +171,6 @@ private fun BaseSearchInputField(
                 .fillMaxWidth()
                 .height(40.dp)
                 .onFocusChanged {
-                    isFocused = it.isFocused
                     onFocusChanged?.invoke(it.isFocused)
                 },
             value = value,
@@ -177,6 +180,7 @@ private fun BaseSearchInputField(
                 // Basic text field requires a color to be set on the text style
                 color = DSTokens.colors.text.primary
             ),
+            cursorBrush = SolidColor(DSTokens.colors.text.primary),
             interactionSource = interactionSource,
             keyboardOptions = KeyboardOptions(
                 capitalization = capitalization,

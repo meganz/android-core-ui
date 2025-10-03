@@ -1,9 +1,18 @@
 package mega.android.core.ui.components.toolbar
 
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
@@ -16,20 +25,32 @@ import androidx.compose.material3.TopAppBarColors
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
+import kotlinx.coroutines.delay
 import mega.android.core.ui.R
 import mega.android.core.ui.components.LocalTopAppBarScrollBehavior
+import mega.android.core.ui.components.MegaText
 import mega.android.core.ui.components.OVERLAP_FRACTION_THRESHOLD
 import mega.android.core.ui.components.button.SecondarySmallIconButton
 import mega.android.core.ui.components.divider.StrongDivider
+import mega.android.core.ui.components.image.MegaIcon
+import mega.android.core.ui.components.inputfields.SearchInputField
 import mega.android.core.ui.components.menu.TopAppBarActionsComponent
 import mega.android.core.ui.model.menu.MenuActionIconWithClick
 import mega.android.core.ui.model.menu.MenuActionWithIcon
@@ -37,6 +58,7 @@ import mega.android.core.ui.preview.CombinedThemePreviews
 import mega.android.core.ui.theme.AndroidThemeForPreviews
 import mega.android.core.ui.theme.AppTheme
 import mega.android.core.ui.theme.spacing.LocalSpacing
+import mega.android.core.ui.theme.values.IconColor
 import mega.android.core.ui.tokens.theme.DSTokens
 
 @Composable
@@ -350,6 +372,121 @@ private fun DefaultTopAppBar(
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun MegaSearchTopAppBar(
+    navigationType: AppBarNavigationType,
+    title: String,
+    modifier: Modifier = Modifier,
+    query: String? = null,
+    onQueryChanged: ((String) -> Unit)? = null,
+    isSearchingMode: Boolean = false,
+    onSearchingModeChanged: ((Boolean) -> Unit)? = null,
+    searchPlaceholder: String? = null,
+    onSearchAction: ((String) -> Unit)? = null,
+    actions: List<MenuActionIconWithClick>? = null,
+) {
+    val focusRequester = remember { FocusRequester() }
+    val focusManager = LocalFocusManager.current
+    
+    // Clear focus when exiting search mode with a delay to ensure it happens after UI updates
+    LaunchedEffect(isSearchingMode) {
+        if (!isSearchingMode) {
+            delay(100)
+            focusManager.clearFocus()
+        }
+    }
+    
+    TopAppBar(
+        modifier = modifier,
+        navigationIcon = {
+            val navigation = if (isSearchingMode) {
+                // In searching mode, we need to override the navigation to a back action that
+                // exits the searching mode and clears the query
+                AppBarNavigationType.Back(
+                    onNavigationIconClicked = {
+                        focusManager.clearFocus()
+                        onSearchingModeChanged?.invoke(false)
+                        onQueryChanged?.invoke("")
+                    }
+                )
+            } else {
+                navigationType
+            }
+
+            navigation.navigationIcon().invoke()
+        },
+        title = {
+            AnimatedContent(
+                targetState = isSearchingMode,
+                transitionSpec = {
+                    // Use only fade animation to avoid size-related issues
+                    fadeIn(animationSpec = tween(300)) togetherWith
+                    fadeOut(animationSpec = tween(300))
+                }
+            ) { searching ->
+                Box(
+                    modifier = Modifier.fillMaxWidth(),
+                    contentAlignment = Alignment.CenterStart
+                ) {
+                    if (searching) {
+                        LaunchedEffect(Unit) { focusRequester.requestFocus() }
+
+                        SearchInputField(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .focusRequester(focusRequester),
+                            text = query.orEmpty(),
+                            onValueChanged = onQueryChanged,
+                            placeHolderText = searchPlaceholder.orEmpty(),
+                            onKeyboardAction = { onSearchAction?.invoke(query.orEmpty()) }
+                        )
+                    } else {
+                        MegaText(
+                            text = title,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
+                            style = AppTheme.typography.titleLarge,
+                        )
+                    }
+                }
+            }
+        },
+        actions = {
+            AnimatedVisibility(
+                visible = (isSearchingMode && actions != null) || !isSearchingMode,
+                enter = fadeIn(animationSpec = tween(50)),
+                exit = fadeOut(animationSpec = tween(50))
+            ) {
+                Row {
+                    if (!isSearchingMode) {
+                        IconButton(onClick = { onSearchingModeChanged?.invoke(!isSearchingMode) }) {
+                            MegaIcon(
+                                painter = painterResource(
+                                    id = R.drawable.ic_search_large_medium_thin_outline
+                                ),
+                                tint = IconColor.Primary,
+                                contentDescription = "Search"
+                            )
+                        }
+                    }
+                    
+                    if (actions != null && isSearchingMode) {
+                        TopAppBarActionsComponent(actions, true, 3)
+                    }
+                }
+            }
+        },
+        colors = TopAppBarDefaults.topAppBarColors(
+            containerColor = DSTokens.colors.background.pageBackground,
+            scrolledContainerColor = DSTokens.colors.background.surface1,
+            navigationIconContentColor = DSTokens.colors.icon.primary,
+            titleContentColor = DSTokens.colors.text.primary,
+            actionIconContentColor = DSTokens.colors.icon.primary
+        )
+    )
+}
+
 @CombinedThemePreviews
 @Composable
 private fun MegaTopAppBarTypePreview(
@@ -398,7 +535,10 @@ private fun MegaTopAppBarActionsPreview(
     @PreviewParameter(SubtitleProvider::class) subtitle: String?
 ) {
     val actions =
-        listOf(R.drawable.ic_alert_circle_medium_thin_outline, R.drawable.ic_alert_triangle_medium_thin_outline).mapIndexed { i, iconRes ->
+        listOf(
+            R.drawable.ic_alert_circle_medium_thin_outline,
+            R.drawable.ic_alert_triangle_medium_thin_outline
+        ).mapIndexed { i, iconRes ->
             object : MenuActionWithIcon {
                 @Composable
                 override fun getDescription() = "Action $i"
@@ -455,6 +595,27 @@ private fun MegaTopAppBarMaxActionsPreview() {
             actions = actions,
             modifier = Modifier.padding(bottom = 80.dp) //make some space for the dropdown in interactive mode
         )
+    }
+}
+
+@CombinedThemePreviews
+@Composable
+private fun MegaSearchTopAppBarPreview() {
+    AndroidThemeForPreviews {
+        var queryText by remember { mutableStateOf("") }
+        var isSearching by remember { mutableStateOf(false) }
+
+        Box(Modifier.fillMaxSize()) {
+            MegaSearchTopAppBar(
+                title = "Title",
+                navigationType = AppBarNavigationType.Back {},
+                query = queryText,
+                onQueryChanged = { queryText = it },
+                isSearchingMode = isSearching,
+                onSearchingModeChanged = { isSearching = it },
+                searchPlaceholder = "Search placeholder"
+            )
+        }
     }
 }
 
