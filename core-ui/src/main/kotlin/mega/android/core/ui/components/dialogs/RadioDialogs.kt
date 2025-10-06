@@ -1,5 +1,6 @@
 package mega.android.core.ui.components.dialogs
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -12,6 +13,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.DialogProperties
 import kotlinx.collections.immutable.ImmutableList
@@ -81,7 +83,11 @@ fun BasicRadioDialog(
                     options.forEach { option ->
                         OneLineListItem(
                             modifier = Modifier
-                                .fillMaxWidth(),
+                                .fillMaxWidth()
+                                .clip(DSTokens.shapes.small)
+                                .clickable(option.enabled) {
+                                    onOptionSelected(option)
+                                },
                             text = option.text,
                             leadingElement = {
                                 MegaRadioButton(
@@ -93,7 +99,8 @@ fun BasicRadioDialog(
                                     enabled = option.enabled
                                 )
                             },
-                            contentPadding = PaddingValues(0.dp)
+                            contentPadding = PaddingValues(0.dp),
+                            enableClick = option.enabled,
                         )
                     }
                 }
