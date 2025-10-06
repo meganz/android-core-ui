@@ -1,11 +1,16 @@
 package mega.android.core.ui.components.dialogs
 
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.BasicAlertDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.DialogProperties
@@ -13,7 +18,6 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import mega.android.core.ui.components.LinkSpannedText
 import mega.android.core.ui.components.button.MegaRadioButton
-import mega.android.core.ui.components.dialogs.internal.MegaBasicDialogContent
 import mega.android.core.ui.components.dialogs.internal.MegaBasicDialogFlowRow
 import mega.android.core.ui.components.list.OneLineListItem
 import mega.android.core.ui.components.text.SpannableText
@@ -51,8 +55,15 @@ fun BasicRadioDialog(
         modifier = modifier,
         properties = dialogProperties
     ) {
-        MegaBasicDialogContent(
-            title = {
+        Surface(
+            modifier = modifier,
+            shape = DSTokens.shapes.extraLarge,
+            color = DSTokens.colors.background.surface1
+        ) {
+            Column(
+                modifier = Modifier
+                    .padding(DSTokens.spacings.s7)
+            ) {
                 title.text?.let {
                     LinkSpannedText(
                         value = it,
@@ -62,40 +73,48 @@ fun BasicRadioDialog(
                         baseTextColor = TextColor.Primary,
                     )
                 }
-            },
-            text = null,
-            buttons = {
-                MegaBasicDialogFlowRow {
-                    buttons.forEach {
-                        DialogButton(
-                            buttonText = it.text,
-                            onButtonClicked = { it.onClick() },
-                            enabled = it.enabled
+
+                Column(
+                    modifier = Modifier
+                        .padding(top = DSTokens.spacings.s5)
+                ) {
+                    options.forEach { option ->
+                        OneLineListItem(
+                            modifier = Modifier
+                                .fillMaxWidth(),
+                            text = option.text,
+                            leadingElement = {
+                                MegaRadioButton(
+                                    selected = selectedOption == option,
+                                    identifier = option.ordinal,
+                                    onOptionSelected = {
+                                        onOptionSelected(option)
+                                    },
+                                    enabled = option.enabled
+                                )
+                            },
+                            contentPadding = PaddingValues(0.dp)
                         )
                     }
                 }
-            },
-            inputContent = {
-                options.forEach { option ->
-                    OneLineListItem(
-                        modifier = Modifier.fillMaxWidth(),
-                        text = option.text,
-                        leadingElement = {
-                            MegaRadioButton(
-                                selected = selectedOption == option,
-                                identifier = option.ordinal,
-                                onOptionSelected = {
-                                    onOptionSelected(option)
-                                },
-                                enabled = option.enabled
+
+                Box(
+                    modifier = Modifier.Companion
+                        .padding(top = DSTokens.spacings.s3)
+                        .align(Alignment.End)
+                ) {
+                    MegaBasicDialogFlowRow {
+                        buttons.forEach {
+                            DialogButton(
+                                buttonText = it.text,
+                                onButtonClicked = { it.onClick() },
+                                enabled = it.enabled
                             )
-                        },
-                        contentPadding = PaddingValues(0.dp)
-                    )
+                        }
+                    }
                 }
-            },
-            shape = DSTokens.shapes.extraLarge
-        )
+            }
+        }
     }
 }
 
