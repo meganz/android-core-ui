@@ -66,14 +66,14 @@ fun TextComponentCatalog() {
 
     Section(header = "Spanned Text") {
         SpannedText(
-            value = "Simple Text with span style [A]here[/A] and [R]one more[/R]",
+            value = "Simple Text with span style [A]here[/A] and [B]one more[/B] and [A]again[/A] and [B]one more[/B]",
             spanStyles = hashMapOf(
                 SpanIndicator('A') to
                         MegaSpanStyle.TextColorStyle(
                             SpanStyle(),
                             TextColor.Error
                         ),
-                SpanIndicator('R') to
+                SpanIndicator('B') to
                         MegaSpanStyle.TextColorStyle(
                             SpanStyle(),
                             TextColor.Brand

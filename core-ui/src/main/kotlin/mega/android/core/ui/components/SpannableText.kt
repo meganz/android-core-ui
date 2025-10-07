@@ -65,44 +65,63 @@ internal fun spannedTextWithAnnotation(
     onAnnotationClick: (annotation: String) -> Unit = {},
 ) =
     buildAnnotatedString {
-        var temp = value
-        styles.toSortedMap(compareBy { value.indexOf(it.openTag) }).forEach { item ->
-            val start = temp.indexOf(string = item.key.openTag)
-            val end = temp.indexOf(string = item.key.closeTag, startIndex = start)
-            if (start > 0) {
-                append(temp.substring(0, start))
+        val temp = value
+        var lastProcessedIndex = 0
+        
+        // Find all span positions first, then process them in order
+        val allSpanPositions = mutableListOf<Triple<Int, SpanIndicator, SpanStyleWithAnnotation>>()
+        
+        styles.forEach { (indicator, style) ->
+            var searchStart = 0
+            while (true) {
+                val start = temp.indexOf(indicator.openTag, searchStart)
+                if (start == -1) break
+                val end = temp.indexOf(indicator.closeTag, start + indicator.openTag.length)
+                if (end == -1) break
+                
+                allSpanPositions.add(Triple(start, indicator, style))
+                searchStart = end + indicator.closeTag.length
             }
-            val spanStyle = item.value?.megaSpanStyle?.toSpanStyle()
-            if (start >= 0 && (start + item.key.openTag.length < end)) {
-                item.value.annotation?.let { annotation ->
+        }
+        
+        // Sort by position
+        allSpanPositions.sortBy { it.first }
+        
+        // Process spans in order
+        allSpanPositions.forEach { (start, indicator, style) ->
+            val end = temp.indexOf(indicator.closeTag, start + indicator.openTag.length)
+            
+            // Add text before this span
+            if (start > lastProcessedIndex) {
+                append(temp.substring(lastProcessedIndex, start))
+            }
+            
+            val spanStyle = style.megaSpanStyle.toSpanStyle()
+            if (start >= 0 && (start + indicator.openTag.length < end)) {
+                style.annotation?.let { annotation ->
                     val linkAnnotation = LinkAnnotation.Clickable(
                         tag = annotation,
                         linkInteractionListener = { 
                             onAnnotationClick(annotation)
                         }
                     )
-                    spanStyle?.let {
-                        withLink(linkAnnotation) {
-                            withStyle(spanStyle) {
-                                append(temp.substring(start + item.key.openTag.length, end))
-                            }
+                    withLink(linkAnnotation) {
+                        withStyle(spanStyle) {
+                            append(temp.substring(start + indicator.openTag.length, end))
                         }
                     }
                 } ?: run {
-                    spanStyle?.let {
-                        withStyle(spanStyle) {
-                            append(temp.substring(start + item.key.openTag.length, end))
-                        }
+                    withStyle(spanStyle) {
+                        append(temp.substring(start + indicator.openTag.length, end))
                     }
                 }
-                val index = end + item.key.closeTag.length
-                if (index < temp.length + 1) {
-                    temp = temp.substring(index)
-                }
+                lastProcessedIndex = end + indicator.closeTag.length
             }
         }
-        if (temp.isNotEmpty()) {
-            append(temp)
+        
+        // Add remaining text
+        if (lastProcessedIndex < temp.length) {
+            append(temp.substring(lastProcessedIndex))
         }
     }
 
