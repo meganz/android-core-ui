@@ -1,11 +1,10 @@
 package mega.android.core.ui.components.toolbar
 
-import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
-import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -16,6 +15,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -27,6 +27,7 @@ import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -35,6 +36,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
@@ -42,15 +44,14 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
-import kotlinx.coroutines.delay
 import mega.android.core.ui.R
 import mega.android.core.ui.components.LocalTopAppBarScrollBehavior
 import mega.android.core.ui.components.MegaText
 import mega.android.core.ui.components.OVERLAP_FRACTION_THRESHOLD
 import mega.android.core.ui.components.button.SecondarySmallIconButton
 import mega.android.core.ui.components.divider.StrongDivider
-import mega.android.core.ui.components.image.MegaIcon
 import mega.android.core.ui.components.inputfields.SearchInputField
+import mega.android.core.ui.components.menu.IconButtonWithTooltip
 import mega.android.core.ui.components.menu.TopAppBarActionsComponent
 import mega.android.core.ui.model.menu.MenuActionIconWithClick
 import mega.android.core.ui.model.menu.MenuActionWithIcon
@@ -58,7 +59,6 @@ import mega.android.core.ui.preview.CombinedThemePreviews
 import mega.android.core.ui.theme.AndroidThemeForPreviews
 import mega.android.core.ui.theme.AppTheme
 import mega.android.core.ui.theme.spacing.LocalSpacing
-import mega.android.core.ui.theme.values.IconColor
 import mega.android.core.ui.tokens.theme.DSTokens
 
 @Composable
@@ -388,15 +388,23 @@ fun MegaSearchTopAppBar(
 ) {
     val focusRequester = remember { FocusRequester() }
     val focusManager = LocalFocusManager.current
-    
-    // Clear focus when exiting search mode with a delay to ensure it happens after UI updates
+    var targetAlpha by remember { mutableFloatStateOf(0f) }
+    val searchAlpha by animateFloatAsState(
+        targetValue = targetAlpha,
+        animationSpec = tween(300),
+        label = "searchAlpha"
+    )
+
     LaunchedEffect(isSearchingMode) {
-        if (!isSearchingMode) {
-            delay(100)
+        if (isSearchingMode) {
+            targetAlpha = 1f
+            focusRequester.requestFocus()
+        } else {
+            targetAlpha = 0f
             focusManager.clearFocus()
         }
     }
-    
+
     TopAppBar(
         modifier = modifier,
         navigationIcon = {
@@ -417,62 +425,53 @@ fun MegaSearchTopAppBar(
             navigation.navigationIcon().invoke()
         },
         title = {
-            AnimatedContent(
-                targetState = isSearchingMode,
-                transitionSpec = {
-                    // Use only fade animation to avoid size-related issues
-                    fadeIn(animationSpec = tween(300)) togetherWith
-                    fadeOut(animationSpec = tween(300))
-                }
-            ) { searching ->
-                Box(
-                    modifier = Modifier.fillMaxWidth(),
-                    contentAlignment = Alignment.CenterStart
-                ) {
-                    if (searching) {
-                        LaunchedEffect(Unit) { focusRequester.requestFocus() }
+            Box(
+                modifier = Modifier.fillMaxWidth(),
+                contentAlignment = Alignment.CenterStart
+            ) {
+                SearchInputField(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .graphicsLayer { alpha = searchAlpha }
+                        .focusRequester(focusRequester),
+                    text = query.orEmpty(),
+                    onValueChanged = onQueryChanged,
+                    placeHolderText = searchPlaceholder.orEmpty(),
+                    onKeyboardAction = { onSearchAction?.invoke(query.orEmpty()) },
+                )
 
-                        SearchInputField(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .focusRequester(focusRequester),
-                            text = query.orEmpty(),
-                            onValueChanged = onQueryChanged,
-                            placeHolderText = searchPlaceholder.orEmpty(),
-                            onKeyboardAction = { onSearchAction?.invoke(query.orEmpty()) }
-                        )
-                    } else {
-                        MegaText(
-                            text = title,
-                            maxLines = 1,
-                            overflow = TextOverflow.Ellipsis,
-                            style = AppTheme.typography.titleLarge,
-                        )
-                    }
-                }
+                MegaText(
+                    text = title,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                    style = AppTheme.typography.titleLarge,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .graphicsLayer { alpha = 1f - searchAlpha }
+                    ,
+                )
             }
         },
         actions = {
             AnimatedVisibility(
-                visible = (isSearchingMode && actions != null) || !isSearchingMode,
+                visible = !isSearchingMode || actions != null,
                 enter = fadeIn(animationSpec = tween(50)),
                 exit = fadeOut(animationSpec = tween(50))
             ) {
                 Row {
                     if (!isSearchingMode) {
-                        IconButton(onClick = { onSearchingModeChanged?.invoke(!isSearchingMode) }) {
-                            MegaIcon(
-                                painter = painterResource(
-                                    id = R.drawable.ic_search_large_medium_thin_outline
-                                ),
-                                tint = IconColor.Primary,
-                                contentDescription = "Search"
-                            )
-                        }
+                        IconButtonWithTooltip(
+                            modifier = Modifier.wrapContentSize(),
+                            iconPainter = painterResource(
+                                id = R.drawable.ic_search_large_medium_thin_outline
+                            ),
+                            description = "Search",
+                            onClick = { onSearchingModeChanged?.invoke(!isSearchingMode) }
+                        )
                     }
-                    
-                    if (actions != null && isSearchingMode) {
-                        TopAppBarActionsComponent(actions, true, 3)
+
+                    if (actions != null) {
+                        TopAppBarActionsComponent(actions, true, 2)
                     }
                 }
             }

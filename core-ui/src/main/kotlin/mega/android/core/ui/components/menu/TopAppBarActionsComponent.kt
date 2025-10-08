@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
 import androidx.compose.material3.PlainTooltip
 import androidx.compose.material3.Text
 import androidx.compose.material3.TooltipBox
@@ -38,7 +37,9 @@ import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.launch
 import mega.android.core.ui.R
 import mega.android.core.ui.components.MegaText
+import mega.android.core.ui.components.image.MegaIcon
 import mega.android.core.ui.model.menu.MenuActionIconWithClick
+import mega.android.core.ui.theme.values.IconColor
 import mega.android.core.ui.theme.values.TextColor
 import mega.android.core.ui.tokens.theme.DSTokens
 
@@ -79,7 +80,7 @@ internal fun RowScope.TopAppBarActionsComponent(
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun IconButtonWithTooltip(
+internal fun IconButtonWithTooltip(
     iconPainter: Painter,
     description: String,
     onClick: () -> Unit,
@@ -113,14 +114,15 @@ private fun IconButtonWithTooltip(
                     },
                 )
         ) {
-            Icon(
-                modifier = Modifier.align(Alignment.Center),
+            MegaIcon(
+                modifier = Modifier
+                    .align(Alignment.Center),
                 painter = iconPainter,
                 contentDescription = description,
                 tint = when {
-                    enabled && highlightIconColor -> DSTokens.colors.icon.accent
-                    enabled -> DSTokens.colors.icon.primary
-                    else -> DSTokens.colors.icon.disabled
+                    enabled && highlightIconColor -> IconColor.Accent
+                    enabled -> IconColor.Primary
+                    else -> IconColor.Disabled
                 }
             )
         }
