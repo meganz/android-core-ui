@@ -134,7 +134,7 @@ private fun HeaderListItem(
             ),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        Row (modifier = Modifier.weight(1f)) {
+        Row(modifier = Modifier.weight(1f)) {
             MegaText(
                 text = text,
                 textColor = textColor,
@@ -188,6 +188,7 @@ fun OneLineListItem(
     contentPadding: PaddingValues = ListItemToken.defaultContentPadding,
     onClickListener: () -> Unit = {},
     onLongClickListener: (() -> Unit)? = null,
+    titleTrailingElement: (@Composable (() -> Unit))? = null,
 ) = ListItem(
     modifier = modifier
         .defaultMinSize(minHeight = listItemMinHeight),
@@ -199,6 +200,7 @@ fun OneLineListItem(
     enableClick = enableClick,
     onClickListener = onClickListener,
     onLongClickListener = onLongClickListener,
+    titleTrailingElement = titleTrailingElement,
 )
 
 @Composable
@@ -214,6 +216,7 @@ fun TwoLineListItem(
     onClickListener: () -> Unit = {},
     onLongClickListener: () -> Unit = {},
     replaceNullSubtitleWithShimmer: Boolean = false,
+    titleTrailingElement: (@Composable (() -> Unit))? = null,
 ) = ListItem(
     modifier = modifier
         .defaultMinSize(minHeight = listItemMinHeight),
@@ -228,6 +231,7 @@ fun TwoLineListItem(
     onLongClickListener = onLongClickListener,
     subtitleMaxLines = TWO_LINE_LIST_SUBTITLE_MAX_LINES,
     replaceNullSubtitleWithShimmer = replaceNullSubtitleWithShimmer,
+    titleTrailingElement = titleTrailingElement,
 )
 
 @Deprecated(
@@ -249,6 +253,7 @@ fun MultiLineListItem(
     enableClick: Boolean = true,
     onClickListener: () -> Unit = {},
     onLongClickListener: () -> Unit = {},
+    titleTrailingElement: (@Composable (() -> Unit))? = null,
 ) = ListItem(
     modifier = modifier
         .defaultMinSize(minHeight = listItemMinHeight),
@@ -261,7 +266,8 @@ fun MultiLineListItem(
     enableClick = enableClick,
     onClickListener = onClickListener,
     onLongClickListener = onLongClickListener,
-    subtitleMaxLines = Int.MAX_VALUE
+    subtitleMaxLines = Int.MAX_VALUE,
+    titleTrailingElement = titleTrailingElement,
 )
 
 @Composable
@@ -281,6 +287,7 @@ fun FlexibleLineListItem(
     minHeight: Dp = listItemMinHeight,
     replaceNullSubtitleWithShimmer: Boolean = false,
     titleTextColor: TextColor = TextColor.Primary,
+    titleTrailingElement: (@Composable (() -> Unit))? = null,
 ) {
     ListItem(
         modifier = modifier
@@ -298,6 +305,7 @@ fun FlexibleLineListItem(
         subtitleMaxLines = subtitleMaxLines,
         replaceNullSubtitleWithShimmer = replaceNullSubtitleWithShimmer,
         titleTextColor = titleTextColor,
+        titleTrailingElement = titleTrailingElement,
     )
 }
 
@@ -317,19 +325,26 @@ private fun ListItem(
     subtitleMaxLines: Int = MULTI_LINE_LIST_SUBTITLE_MAX_LINES,
     replaceNullSubtitleWithShimmer: Boolean = false,
     titleTextColor: TextColor = TextColor.Primary,
+    titleTrailingElement: (@Composable (() -> Unit))? = null,
 ) {
     GenericListItem(
         modifier = modifier,
         contentPadding = contentPadding,
         title = {
             if (title != null) {
-                MegaText(
-                    text = title,
-                    textColor = titleTextColor,
-                    style = AppTheme.typography.bodyLarge,
-                    maxLines = titleMaxLines,
-                    overflow = TextOverflow.Ellipsis
-                )
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    MegaText(
+                        text = title,
+                        textColor = titleTextColor,
+                        style = AppTheme.typography.bodyLarge,
+                        maxLines = titleMaxLines,
+                        overflow = TextOverflow.Ellipsis
+                    )
+                    titleTrailingElement?.invoke()
+                }
             }
         },
         subtitle = {
@@ -623,6 +638,14 @@ private fun OneLineListItemPreviewWithLargeElements() {
                     tint = DSTokens.colors.icon.primary
                 )
             },
+            titleTrailingElement = {
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_check_circle_medium_thin_outline),
+                    contentDescription = null,
+                    modifier = Modifier.size(24.dp),
+                    tint = DSTokens.colors.icon.brand
+                )
+            }
         )
     }
 }
@@ -651,6 +674,14 @@ private fun MultiLineListItemPreviewWithElements() {
                     contentDescription = null,
                     modifier = Modifier.size(24.dp),
                     tint = DSTokens.colors.icon.primary
+                )
+            },
+            titleTrailingElement = {
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_check_circle_medium_thin_outline),
+                    contentDescription = null,
+                    modifier = Modifier.size(24.dp),
+                    tint = DSTokens.colors.icon.brand
                 )
             }
         )
