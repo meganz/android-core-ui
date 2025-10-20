@@ -21,7 +21,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.semantics.contentDescription
@@ -30,6 +32,7 @@ import androidx.compose.ui.unit.dp
 import mega.android.core.ui.preview.CombinedThemePreviews
 import mega.android.core.ui.theme.AndroidTheme
 import mega.android.core.ui.tokens.theme.DSTokens
+import mega.android.core.ui.R
 
 /**
  * Chip to filter lists based on user interaction
@@ -52,6 +55,99 @@ fun MegaChip(
     @DrawableRes trailingIcon: Int? = null,
     onClick: () -> Unit = {},
 ) {
+    MegaChipContent(
+        selected = selected,
+        text = text,
+        modifier = modifier,
+        style = style,
+        enabled = enabled,
+        leadingIcon = leadingIcon?.let {
+            {
+                Icon(
+                    modifier = Modifier.size(16.dp),
+                    imageVector = ImageVector.vectorResource(id = it),
+                    contentDescription = "Leading icon",
+                )
+            }
+        },
+        trailingIcon = trailingIcon?.let {
+            {
+                Icon(
+                    modifier = Modifier.size(16.dp),
+                    imageVector = ImageVector.vectorResource(id = it),
+                    contentDescription = "Trailing icon",
+                )
+            }
+        },
+        onClick = onClick
+    )
+}
+
+/**
+ * Chip to filter lists based on user interaction with painter icons
+ *
+ * @param selected if chip is selected or not
+ * @param content text of chip
+ * @param modifier optional modifier
+ * @param style style of chip
+ * @param onClick callback this chip is clicked
+ * @param enabled if chip is enabled or grayed out
+ * @param leadingPainter painter for leading icon
+ * @param trailingPainter painter for trailing icon
+ */
+@Composable
+fun MegaChip(
+    selected: Boolean,
+    content: String,
+    modifier: Modifier = Modifier,
+    style: ChipStyle = DefaultChipStyle,
+    enabled: Boolean = true,
+    leadingPainter: Painter? = null,
+    trailingPainter: Painter? = null,
+    onClick: () -> Unit = {},
+) {
+    MegaChipContent(
+        selected = selected,
+        text = content,
+        modifier = modifier,
+        style = style,
+        enabled = enabled,
+        leadingIcon = leadingPainter?.let {
+            {
+                Icon(
+                    modifier = Modifier.size(16.dp),
+                    painter = it,
+                    contentDescription = "Leading icon",
+                )
+            }
+        },
+        trailingIcon = trailingPainter?.let {
+            {
+                Icon(
+                    modifier = Modifier.size(16.dp),
+                    painter = it,
+                    contentDescription = "Trailing icon"
+                )
+            }
+        },
+        onClick = onClick
+    )
+}
+
+/**
+ * Shared implementation for MegaChip with different icon types
+ */
+@Composable
+private fun MegaChipContent(
+    selected: Boolean,
+    text: String,
+    modifier: Modifier = Modifier,
+    style: ChipStyle = DefaultChipStyle,
+    enabled: Boolean = true,
+    leadingIcon: (@Composable () -> Unit)? = null,
+    trailingIcon: (@Composable () -> Unit)? = null,
+    onClick: () -> Unit = {},
+) {
     val interactionSource = remember { MutableInteractionSource() }
     val isFocused by interactionSource.collectIsFocusedAsState()
     FilterChip(
@@ -72,25 +168,8 @@ fun MegaChip(
             borderColor = Color.Transparent,
             selectedBorderColor = DSTokens.colors.focus.colorFocus
         ),
-        leadingIcon = leadingIcon?.let {
-            {
-                Icon(
-                    modifier = Modifier
-                        .size(16.dp),
-                    imageVector = ImageVector.vectorResource(id = it),
-                    contentDescription = "Leading icon",
-                )
-            }
-        },
-        trailingIcon = trailingIcon?.let {
-            {
-                Icon(
-                    modifier = Modifier.size(16.dp),
-                    imageVector = ImageVector.vectorResource(id = it),
-                    contentDescription = "Trailing icon",
-                )
-            }
-        },
+        leadingIcon = leadingIcon,
+        trailingIcon = trailingIcon,
         shape = RoundedCornerShape(16.dp),
         label = {
             Text(
@@ -116,6 +195,27 @@ private fun ChipPreview() {
                 MegaChip(
                     selected = it == 0,
                     text = "Type",
+                )
+            }
+        }
+    }
+}
+
+@CombinedThemePreviews
+@Composable
+private fun ChipPreviewWithPainter() {
+    AndroidTheme(isDark = isSystemInDarkTheme()) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp),
+            horizontalArrangement = Arrangement.spacedBy(12.dp)
+        ) {
+            repeat(3) {
+                MegaChip(
+                    selected = it == 0,
+                    content = "Painter",
+                    leadingPainter = painterResource(R.drawable.ic_check_circle_medium_thin_outline),
                 )
             }
         }
