@@ -15,7 +15,7 @@ import mega.android.core.ui.R
 import mega.android.core.ui.components.MegaScaffold
 import mega.android.core.ui.components.MegaText
 import mega.android.core.ui.components.toolbar.MegaFloatingToolbar
-import mega.android.core.ui.model.menu.MenuActionIconWithClick
+import mega.android.core.ui.model.menu.MenuActionWithClick
 import mega.android.core.ui.model.menu.MenuActionWithIcon
 import mega.android.core.ui.theme.AppTheme
 import mega.android.core.ui.theme.spacing.LocalSpacing
@@ -69,7 +69,7 @@ fun FloatingToolbarScreen() {
 
             // Horizontal floating toolbar at bottom
             MegaFloatingToolbar(
-                actions = horizontalActions.map { MenuActionIconWithClick(it) {} },
+                actions = horizontalActions.map { MenuActionWithClick(it) {} },
                 modifier = Modifier.align(Alignment.BottomCenter)
             )
         }

@@ -53,7 +53,8 @@ import mega.android.core.ui.components.divider.StrongDivider
 import mega.android.core.ui.components.inputfields.SearchInputField
 import mega.android.core.ui.components.menu.IconButtonWithTooltip
 import mega.android.core.ui.components.menu.TopAppBarActionsComponent
-import mega.android.core.ui.model.menu.MenuActionIconWithClick
+import mega.android.core.ui.model.menu.MenuAction
+import mega.android.core.ui.model.menu.MenuActionWithClick
 import mega.android.core.ui.model.menu.MenuActionWithIcon
 import mega.android.core.ui.preview.CombinedThemePreviews
 import mega.android.core.ui.theme.AndroidThemeForPreviews
@@ -84,7 +85,7 @@ fun MegaTopAppBar(
 fun MegaTopAppBar(
     title: String,
     navigationType: AppBarNavigationType,
-    actions: List<MenuActionIconWithClick>,
+    actions: List<MenuActionWithClick>,
     modifier: Modifier = Modifier,
     drawBottomLineOnScrolledContent: Boolean = false,
     actionsEnabled: Boolean = true,
@@ -107,50 +108,68 @@ fun MegaTopAppBar(
 fun MegaTopAppBar(
     title: String,
     navigationType: AppBarNavigationType,
-    actions: List<MenuActionWithIcon>,
-    onActionPressed: ((MenuActionWithIcon) -> Unit),
+    actions: List<MenuAction>,
+    onActionPressed: ((MenuAction) -> Unit),
     modifier: Modifier = Modifier,
     drawBottomLineOnScrolledContent: Boolean = false,
     actionsEnabled: Boolean = true,
     maxActionsToShow: Int = 4,
-) = MegaTopAppBar(
-    modifier = modifier,
-    title = title,
-    navigationType = navigationType,
-    actions = actions.addClick(onActionPressed),
-    actionsEnabled = actionsEnabled,
-    drawBottomLineOnScrolledContent = drawBottomLineOnScrolledContent,
-    maxActionsToShow = maxActionsToShow,
-)
+) {
+    val actionsWithClick = remember(actions, onActionPressed) {
+        actions.map { action -> 
+            MenuActionWithClick(action) { onActionPressed(action) }
+        }
+    }
+    @OptIn(ExperimentalMaterial3Api::class)
+    DefaultTopAppBar(
+        modifier = modifier,
+        title = title,
+        navigationIcon = navigationType.navigationIcon(),
+        scrollBehavior = LocalTopAppBarScrollBehavior.current,
+        actions = {
+            TopAppBarActionsComponent(actionsWithClick, actionsEnabled, maxActionsToShow)
+        },
+        drawBottomLineOnScrolledContent = drawBottomLineOnScrolledContent,
+    )
+}
 
 @Composable
 fun MegaTopAppBar(
     title: String,
     subtitle: String?,
     navigationType: AppBarNavigationType,
-    actions: List<MenuActionWithIcon>,
-    onActionPressed: ((MenuActionWithIcon) -> Unit),
+    actions: List<MenuAction>,
+    onActionPressed: ((MenuAction) -> Unit),
     modifier: Modifier = Modifier,
     drawBottomLineOnScrolledContent: Boolean = false,
     actionsEnabled: Boolean = true,
     maxActionsToShow: Int = 4,
-) = MegaTopAppBar(
-    modifier = modifier,
-    title = title,
-    subtitle = subtitle,
-    navigationType = navigationType,
-    actions = actions.addClick(onActionPressed),
-    actionsEnabled = actionsEnabled,
-    drawBottomLineOnScrolledContent = drawBottomLineOnScrolledContent,
-    maxActionsToShow = maxActionsToShow,
-)
+) {
+    val actionsWithClick = remember(actions, onActionPressed) {
+        actions.map { action -> 
+            MenuActionWithClick(action) { onActionPressed(action) }
+        }
+    }
+    @OptIn(ExperimentalMaterial3Api::class)
+    DefaultTopAppBar(
+        modifier = modifier,
+        title = title,
+        subtitle = subtitle,
+        navigationIcon = navigationType.navigationIcon(),
+        scrollBehavior = LocalTopAppBarScrollBehavior.current,
+        actions = {
+            TopAppBarActionsComponent(actionsWithClick, actionsEnabled, maxActionsToShow)
+        },
+        drawBottomLineOnScrolledContent = drawBottomLineOnScrolledContent,
+    )
+}
 
 @Composable
 fun MegaTopAppBar(
     title: String,
     subtitle: String?,
     navigationType: AppBarNavigationType,
-    actions: List<MenuActionIconWithClick>,
+    actions: List<MenuActionWithClick>,
     modifier: Modifier = Modifier,
     drawBottomLineOnScrolledContent: Boolean = false,
     actionsEnabled: Boolean = true,
@@ -187,7 +206,7 @@ fun MegaTopAppBar(
     title: String,
     navigationType: AppBarNavigationType,
     trailingIcons: @Composable RowScope.() -> Unit,
-    actions: List<MenuActionIconWithClick>,
+    actions: List<MenuActionWithClick>,
     modifier: Modifier = Modifier,
     drawBottomLineOnScrolledContent: Boolean = false,
     actionsEnabled: Boolean = true,
@@ -226,25 +245,34 @@ fun MegaTopAppBar(
     title: String,
     navigationType: AppBarNavigationType,
     trailingIcons: @Composable RowScope.() -> Unit,
-    actions: List<MenuActionWithIcon>,
-    onActionPressed: ((MenuActionWithIcon) -> Unit),
+    actions: List<MenuAction>,
+    onActionPressed: ((MenuAction) -> Unit),
     modifier: Modifier = Modifier,
     drawBottomLineOnScrolledContent: Boolean = false,
     actionsEnabled: Boolean = true,
     maxActionsToShow: Int = 4,
-) = MegaTopAppBar(
-    modifier = modifier,
-    title = title,
-    navigationType = navigationType,
-    actions = actions.addClick(onActionPressed),
-    trailingIcons = trailingIcons,
-    actionsEnabled = actionsEnabled,
-    drawBottomLineOnScrolledContent = drawBottomLineOnScrolledContent,
-    maxActionsToShow = maxActionsToShow,
-)
+) {
+    val actionsWithClick = remember(actions, onActionPressed) {
+        actions.map { action -> 
+            MenuActionWithClick(action) { onActionPressed(action) }
+        }
+    }
+    @OptIn(ExperimentalMaterial3Api::class)
+    DefaultTopAppBar(
+        modifier = modifier,
+        title = title,
+        navigationIcon = navigationType.navigationIcon(),
+        scrollBehavior = LocalTopAppBarScrollBehavior.current,
+        actions = {
+            trailingIcons()
+            TopAppBarActionsComponent(actionsWithClick, actionsEnabled, maxActionsToShow)
+        },
+        drawBottomLineOnScrolledContent = drawBottomLineOnScrolledContent,
+    )
+}
 
-internal fun List<MenuActionWithIcon>.addClick(onActionPressed: ((MenuActionWithIcon) -> Unit)?): List<MenuActionIconWithClick> =
-    this.map { MenuActionIconWithClick(it) { onActionPressed?.invoke(it) } }
+internal fun List<MenuActionWithIcon>.addClick(onActionPressed: ((MenuActionWithIcon) -> Unit)?): List<MenuActionWithClick> =
+    this.map { MenuActionWithClick(it) { onActionPressed?.invoke(it) } }
 
 @Deprecated(message = "Please use the version of MegaTopAppBar with AppBarNavigationType instead of injecting the navigation painter.")
 @Composable
@@ -384,7 +412,7 @@ fun MegaSearchTopAppBar(
     onSearchingModeChanged: ((Boolean) -> Unit)? = null,
     searchPlaceholder: String? = null,
     onSearchAction: ((String) -> Unit)? = null,
-    actions: List<MenuActionIconWithClick>? = null,
+    actions: List<MenuActionWithClick>? = null,
 ) {
     val focusRequester = remember { FocusRequester() }
     val focusManager = LocalFocusManager.current
@@ -554,7 +582,7 @@ private fun MegaTopAppBarActionsPreview(
             title = "Title",
             subtitle = subtitle,
             navigationType = AppBarNavigationType.Back {},
-            actions = actions.map { MenuActionIconWithClick(it) {} },
+            actions = actions.map { MenuActionWithClick(it) {} },
             modifier = Modifier.padding(bottom = 80.dp) //make some space for the tooltip in interactive mode
         )
     }
@@ -581,7 +609,7 @@ private fun MegaTopAppBarMaxActionsPreview() {
             override fun getIconPainter() = painterResource(id = iconRes)
         }
 
-        MenuActionIconWithClick(action) {}
+        MenuActionWithClick(action) {}
     }
     AndroidThemeForPreviews {
         MegaTopAppBar(
@@ -631,4 +659,63 @@ private class NavigationTypeProvider : PreviewParameterProvider<AppBarNavigation
 private class SubtitleProvider : PreviewParameterProvider<String?> {
     override val values: Sequence<String?>
         get() = sequenceOf(null, "Subtitle")
+}
+
+@CombinedThemePreviews
+@Composable
+private fun MegaTopAppBarMixedActionsPreview() {
+    AndroidThemeForPreviews {
+        // Create mixed actions with both icon and non-icon actions
+        val iconAction1 = object : MenuActionWithIcon {
+            @Composable
+            override fun getDescription() = "Download"
+
+            override val testTag = "download_action"
+
+            @Composable
+            override fun getIconPainter() = painterResource(id = R.drawable.ic_alert_circle_medium_thin_outline)
+        }
+
+        val iconAction2 = object : MenuActionWithIcon {
+            @Composable
+            override fun getDescription() = "Share"
+
+            override val testTag = "share_action"
+
+            @Composable
+            override fun getIconPainter() = painterResource(id = R.drawable.ic_alert_triangle_medium_thin_outline)
+        }
+
+        val textOnlyAction1 = object : MenuAction {
+            @Composable
+            override fun getDescription() = "Settings"
+
+            override val testTag = "settings_action"
+        }
+
+        val textOnlyAction2 = object : MenuAction {
+            @Composable
+            override fun getDescription() = "Help"
+
+            override val testTag = "help_action"
+        }
+
+        // Demonstrate mixed actions: icons show in toolbar, text-only in dropdown
+        val mixedActions: List<MenuAction> = listOf(
+            iconAction1,
+            iconAction2,
+            textOnlyAction1,
+            textOnlyAction2
+        )
+
+        MegaTopAppBar(
+            title = "Mixed Actions Demo",
+            subtitle = "2 icon + 2 text-only actions",
+            navigationType = AppBarNavigationType.Back {},
+            actions = mixedActions,
+            onActionPressed = { /* handle action */ },
+            maxActionsToShow = 2, // Only 2 icons in toolbar, rest in dropdown
+            modifier = Modifier.padding(bottom = 80.dp) //make some space for the dropdown in interactive mode
+        )
+    }
 }

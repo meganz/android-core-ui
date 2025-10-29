@@ -38,45 +38,112 @@ import kotlinx.coroutines.launch
 import mega.android.core.ui.R
 import mega.android.core.ui.components.MegaText
 import mega.android.core.ui.components.image.MegaIcon
-import mega.android.core.ui.model.menu.MenuActionIconWithClick
+import mega.android.core.ui.model.menu.MenuActionWithClick
+import mega.android.core.ui.model.menu.MenuActionWithIcon
 import mega.android.core.ui.theme.values.IconColor
 import mega.android.core.ui.theme.values.TextColor
 import mega.android.core.ui.tokens.theme.DSTokens
 
+
 /**
- * Utility function to generate actions for [MegaTopAppBar]
- * @param actions the actions to be added
- * @param enabled if false, all actions will be disabled, if true each [TopAppBarAction.enabled] will be used to check if the action is enabled or not
- * @param maxActionsToShow if there are more actions than that the extra actions will be shown in a drop down menu
+ * Main component that renders top app bar actions with intelligent overflow handling.
+ *
+ * This component efficiently manages menu actions by:
+ * 1. Sorting actions by their orderInCategory property
+ * 2. Separating icon actions from non-icon actions
+ * 3. Displaying icon actions as toolbar buttons (up to maxActionsToShow limit)
+ * 4. Moving overflow actions to a dropdown menu
+ *
+ * @param actions List of menu actions to display
+ * @param enabled Whether all actions should be enabled/disabled globally
+ * @param maxActionsToShow Maximum number of icon actions to show in the toolbar before overflow
  */
 @Composable
 internal fun RowScope.TopAppBarActionsComponent(
-    actions: List<MenuActionIconWithClick>,
-    enabled: Boolean = true,
-    maxActionsToShow: Int = Int.MAX_VALUE,
+    actions: List<MenuActionWithClick>,
+    enabled: Boolean,
+    maxActionsToShow: Int,
 ) {
-    val sortedActions = actions.sortedBy { it.menuAction.orderInCategory }
-    val visible = sortedActions.take(maxActionsToShow)
-    visible.forEach { (menuAction, onActionClick) ->
-        IconButtonWithTooltip(
-            iconPainter = menuAction.getIconPainter(),
-            description = menuAction.getDescription(),
-            onClick = { onActionClick() },
-            modifier = menuAction.modifier.testTag(menuAction.testTag),
-            enabled = enabled && menuAction.enabled,
-            highlightIconColor = menuAction.highlightIcon,
-        )
+    // Sort actions once by their category order for consistent display
+    val sortedActions = remember(actions) {
+        actions.sortedBy { it.menuAction.orderInCategory }
     }
-    sortedActions.filterNot { visible.contains(it) }.takeIf { it.isNotEmpty() }?.let { notVisible ->
+
+    // Partition actions into icon and non-icon categories for efficient processing
+    val (iconActions, nonIconActions) = remember(sortedActions) {
+        sortedActions.partition { it.menuAction is MenuActionWithIcon }
+    }
+
+    // Determine which icon actions can be displayed in the toolbar
+    val (visibleIconActions, overflowIconActions) = remember(iconActions, maxActionsToShow) {
+        iconActions.take(maxActionsToShow) to iconActions.drop(maxActionsToShow)
+    }
+
+    // Render visible icon actions as toolbar buttons
+    RenderVisibleIconActions(
+        actions = visibleIconActions,
+        enabled = enabled
+    )
+
+    // Combine overflow icon actions with non-icon actions for dropdown menu
+    val allOverflowActions = remember(overflowIconActions, nonIconActions) {
+        overflowIconActions + nonIconActions
+    }
+
+    // Show overflow dropdown only if there are actions to display
+    if (allOverflowActions.isNotEmpty()) {
         OverflowDropDown(
-            actions = notVisible,
+            actions = allOverflowActions,
             enabled = enabled,
         )
     }
 }
 
 /**
- * IconButton with a tooltip that shows the [description] when long clicked
+ * Renders visible icon actions as individual icon buttons in the toolbar.
+ *
+ * This function is extracted to improve readability and enable better composition.
+ * Each action is rendered as an IconButtonWithTooltip with proper accessibility support.
+ *
+ * @param actions List of icon actions to render in the toolbar
+ * @param enabled Global enabled state for all actions
+ */
+@Composable
+private fun RenderVisibleIconActions(
+    actions: List<MenuActionWithClick>,
+    enabled: Boolean
+) {
+    actions.forEach { action ->
+        // Safe cast since we know these are MenuActionWithIcon from partitioning
+        val menuAction = action.menuAction as MenuActionWithIcon
+
+        IconButtonWithTooltip(
+            iconPainter = menuAction.getIconPainter(),
+            description = menuAction.getDescription(),
+            onClick = { action.onClick() },
+            modifier = menuAction.modifier.testTag(menuAction.testTag),
+            enabled = enabled && menuAction.enabled,
+            highlightIconColor = menuAction.highlightIcon,
+        )
+    }
+}
+
+/**
+ * Reusable icon button component with integrated tooltip functionality.
+ *
+ * Features:
+ * - Material 3 tooltip that appears on long press
+ * - Haptic feedback for better user experience
+ * - Proper accessibility support with content descriptions
+ * - Theme-aware icon coloring based on enabled/highlight state
+ * - Standard 48dp minimum touch target for accessibility
+ *
+ * @param iconPainter The painter for the icon to display
+ * @param description Accessible description and tooltip text
+ * @param onClick Callback when the button is clicked
+ * @param modifier Modifier for additional customization
+ * @param enabled Whether the button is enabled and clickable
+ * @param highlightIconColor Whether to use accent color for the icon
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -91,6 +158,7 @@ internal fun IconButtonWithTooltip(
     val tooltipState = rememberTooltipState()
     val scope = rememberCoroutineScope()
     val haptic = LocalHapticFeedback.current
+
     TooltipBox(
         modifier = modifier,
         positionProvider = TooltipDefaults.rememberPlainTooltipPositionProvider(),
@@ -101,6 +169,7 @@ internal fun IconButtonWithTooltip(
     ) {
         Box(
             modifier = Modifier
+                // Ensure minimum touch target size for accessibility
                 .sizeIn(minWidth = 48.dp, minHeight = 48.dp)
                 .combinedClickable(
                     interactionSource = remember { MutableInteractionSource() },
@@ -115,8 +184,7 @@ internal fun IconButtonWithTooltip(
                 )
         ) {
             MegaIcon(
-                modifier = Modifier
-                    .align(Alignment.Center),
+                modifier = Modifier.align(Alignment.Center),
                 painter = iconPainter,
                 contentDescription = description,
                 tint = when {
@@ -129,15 +197,31 @@ internal fun IconButtonWithTooltip(
     }
 }
 
+/**
+ * Overflow dropdown menu component for actions that don't fit in the toolbar.
+ *
+ * This component handles:
+ * - Three-dot menu button with accessibility support
+ * - Dropdown menu positioned above the toolbar icons
+ * - Automatic menu dismissal on item selection
+ * - Proper theming and disabled state handling
+ *
+ * The dropdown is positioned using a zero-height Box aligned to the top to ensure
+ * it appears above the toolbar icons rather than below them.
+ *
+ * @param actions List of overflow actions to display in the dropdown
+ * @param enabled Global enabled state for the overflow menu and its items
+ */
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 private fun RowScope.OverflowDropDown(
-    actions: List<MenuActionIconWithClick>,
+    actions: List<MenuActionWithClick>,
     enabled: Boolean = true,
 ) {
-    var showMoreMenu by remember {
-        mutableStateOf(false)
-    }
+    // State to control dropdown menu visibility
+    var showMoreMenu by remember { mutableStateOf(false) }
+
+    // Three-dot overflow button container
     Box(contentAlignment = Alignment.BottomEnd) {
         IconButtonWithTooltip(
             iconPainter = painterResource(id = R.drawable.ic_more_vertical_medium_thin_outline),
@@ -147,27 +231,33 @@ private fun RowScope.OverflowDropDown(
             enabled = enabled,
         )
     }
-    // Overflow menu, as opposed to an ordinary DropdownMenu, is show on top of the icons. With this top 0 size box we do the trick
+
+    // Dropdown menu positioned above the toolbar using zero-height top-aligned Box
+    // This ensures the menu appears above the icons rather than below them
     Box(modifier = Modifier.align(Alignment.Top)) {
         DropdownMenu(
             modifier = Modifier
                 .semantics { testTagsAsResourceId = true }
                 .background(DSTokens.colors.background.surface1),
             expanded = showMoreMenu,
-            onDismissRequest = {
-                showMoreMenu = false
-            }
+            onDismissRequest = { showMoreMenu = false }
         ) {
+            // Render each overflow action as a dropdown menu item
             actions.forEach { (menuAction, onActionClick) ->
                 DropdownMenuItem(
                     onClick = {
                         onActionClick()
-                        showMoreMenu = false
+                        showMoreMenu = false // Auto-dismiss menu after selection
                     },
                     modifier = Modifier.testTag(menuAction.testTag),
                     text = {
-                        MegaText(text = menuAction.getDescription(), textColor = TextColor.Primary)
-                    }
+                        MegaText(
+                            text = menuAction.getDescription(),
+                            textColor = TextColor.Primary
+                        )
+                    },
+                    // Respect both global and individual action enabled states
+                    enabled = enabled && menuAction.enabled
                 )
             }
         }
@@ -175,6 +265,6 @@ private fun RowScope.OverflowDropDown(
 }
 
 /**
- * test tag for the "Show more" top app bar actions button
+ * Test tag for the "Show more" top app bar actions button.
  */
 const val TAG_TOP_APP_BAR_ACTIONS_SHOW_MORE = "top_app_bar_actions:show_more"

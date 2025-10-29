@@ -19,7 +19,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import mega.android.core.ui.R
 import mega.android.core.ui.components.menu.TopAppBarActionsComponent
-import mega.android.core.ui.model.menu.MenuActionIconWithClick
+import mega.android.core.ui.model.menu.MenuActionWithClick
 import mega.android.core.ui.model.menu.MenuActionWithIcon
 import mega.android.core.ui.preview.CombinedThemePreviews
 import mega.android.core.ui.theme.AndroidThemeForPreviews
@@ -36,7 +36,7 @@ import mega.android.core.ui.tokens.theme.DSTokens
  */
 @Composable
 fun MegaFloatingToolbar(
-    actions: List<MenuActionIconWithClick>,
+    actions: List<MenuActionWithClick>,
     modifier: Modifier = Modifier,
     actionsEnabled: Boolean = true,
     elevation: Dp = 6.dp,
@@ -58,7 +58,8 @@ fun MegaFloatingToolbar(
         ) {
             TopAppBarActionsComponent(
                 actions = actions,
-                enabled = actionsEnabled
+                enabled = actionsEnabled,
+                maxActionsToShow = Int.MAX_VALUE
             )
         }
     }
@@ -119,7 +120,7 @@ private fun MegaFloatingToolbarPreview() {
             contentAlignment = Alignment.BottomCenter
         ) {
             MegaFloatingToolbar(
-                actions = actions.map { MenuActionIconWithClick(it) {} },
+                actions = actions.map { MenuActionWithClick(it) {} },
                 modifier = Modifier.align(Alignment.BottomCenter)
             )
         }
