@@ -55,3 +55,19 @@ data object TransparentChipStyle : ChipStyle {
         disabledSelectedContainerColor = Color.Transparent
     )
 }
+
+/**
+ * Transparent style for chips
+ */
+data object SelectionChipStyle : ChipStyle {
+
+    @Composable
+    override fun selectableChipColors(): SelectableChipColors = FilterChipDefaults.filterChipColors(
+        selectedContainerColor = DSTokens.colors.components.selectionControl,
+        selectedLabelColor = DSTokens.colors.text.inverseAccent,
+        selectedLeadingIconColor = DSTokens.colors.icon.inverseAccent,
+        containerColor = DSTokens.colors.background.surface1,
+        labelColor = DSTokens.colors.text.primary,
+        iconColor = DSTokens.colors.icon.primary
+    )
+}
