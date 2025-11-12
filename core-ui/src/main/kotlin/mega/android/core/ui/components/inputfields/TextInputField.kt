@@ -277,7 +277,7 @@ fun TextInputField(
 @Composable
 fun PasswordTextInputField(
     modifier: Modifier,
-    label: String,
+    label: String?,
     text: String = "",
     inputTextAlign: TextAlign = TextAlign.Unspecified,
     showTrailingIcon: Boolean = true,
@@ -292,15 +292,17 @@ fun PasswordTextInputField(
     onFocusChanged: ((Boolean) -> Unit)? = null,
 ) = BaseTextField(
     modifier = modifier,
-    label = {
-        Text(
-            modifier = Modifier
-                .wrapContentWidth()
-                .padding(bottom = LocalSpacing.current.x4),
-            text = label,
-            style = AppTheme.typography.titleSmall,
-            color = DSTokens.colors.text.primary
-        )
+    label = label?.let {
+        {
+            Text(
+                modifier = Modifier
+                    .wrapContentWidth()
+                    .padding(bottom = LocalSpacing.current.x4),
+                text = label,
+                style = AppTheme.typography.titleSmall,
+                color = DSTokens.colors.text.primary
+            )
+        }
     },
     text = text,
     keyboardType = KeyboardType.Password,
@@ -1066,7 +1068,8 @@ private fun BaseReadOnlyTextField(
                     }
 
                     isPasswordMode -> {
-                        val eyeIcon = if (showPassword) R.drawable.ic_eye_off_medium_thin_outline else R.drawable.ic_eye_medium_thin_outline
+                        val eyeIcon =
+                            if (showPassword) R.drawable.ic_eye_off_medium_thin_outline else R.drawable.ic_eye_medium_thin_outline
                         {
                             Icon(
                                 modifier = Modifier

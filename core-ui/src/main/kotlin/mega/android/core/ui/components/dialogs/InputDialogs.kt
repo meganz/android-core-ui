@@ -7,6 +7,7 @@ import androidx.compose.material3.BasicAlertDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -27,13 +28,13 @@ import androidx.compose.ui.window.DialogProperties
 import mega.android.core.ui.components.MegaText
 import mega.android.core.ui.components.dialogs.internal.MegaBasicDialogContent
 import mega.android.core.ui.components.dialogs.internal.MegaBasicDialogFlowRow
+import mega.android.core.ui.components.inputfields.PasswordTextInputField
 import mega.android.core.ui.components.inputfields.TextInputField
 import mega.android.core.ui.preview.CombinedThemePreviews
 import mega.android.core.ui.theme.AndroidThemeForPreviews
 import mega.android.core.ui.theme.AppTheme
 import mega.android.core.ui.theme.values.TextColor
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BasicInputDialog(
     title: String,
@@ -87,7 +88,55 @@ fun BasicInputDialog(
     )
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun PasswordInputDialog(
+    title: String,
+    onValueChange: (String) -> Unit,
+    positiveButtonText: String,
+    onPositiveButtonClicked: () -> Unit,
+    modifier: Modifier = Modifier,
+    inputLabel: String? = null,
+    inputValue: String = "",
+    description: String? = null,
+    errorText: String? = null,
+    negativeButtonText: String? = null,
+    onNegativeButtonClicked: (() -> Unit)? = null,
+    dialogProperties: MegaDialogProperties = MegaDialogProperties.default,
+    isAutoShowKeyboard: Boolean = true,
+    onDismiss: () -> Unit = {},
+) {
+    val textFieldValue = rememberSaveable(
+        inputs = arrayOf(inputValue),
+        stateSaver = TextFieldValue.Saver
+    ) {
+        mutableStateOf(value = TextFieldValue(inputValue, TextRange(inputValue.length)))
+    }
+
+    BasicInputDialog(
+        title = title,
+        inputValue = textFieldValue.value,
+        positiveButtonText = positiveButtonText,
+        onPositiveButtonClicked = onPositiveButtonClicked,
+        modifier = modifier,
+        description = description,
+        negativeButtonText = negativeButtonText,
+        onNegativeButtonClicked = onNegativeButtonClicked,
+        dialogProperties = dialogProperties,
+        isAutoShowKeyboard = isAutoShowKeyboard,
+        onDismiss = onDismiss
+    ) { inputContentModifier, textFieldValueState ->
+        PasswordTextInputField(
+            modifier = inputContentModifier,
+            label = inputLabel,
+            text = textFieldValueState.value.text,
+            errorText = errorText,
+            onValueChanged = {
+                onValueChange.invoke(it)
+            },
+        )
+    }
+}
+
 @Composable
 fun BasicInputDialog(
     title: String,
@@ -109,17 +158,75 @@ fun BasicInputDialog(
     suffix: @Composable (() -> Unit)? = null,
     onDismiss: () -> Unit = {},
 ) {
+    BasicInputDialog(
+        title = title,
+        inputValue = inputValue,
+        positiveButtonText = positiveButtonText,
+        onPositiveButtonClicked = onPositiveButtonClicked,
+        modifier = modifier,
+        description = description,
+        negativeButtonText = negativeButtonText,
+        onNegativeButtonClicked = onNegativeButtonClicked,
+        dialogProperties = dialogProperties,
+        isAutoShowKeyboard = isAutoShowKeyboard,
+        onDismiss = onDismiss
+    ) { inputContentModifier, textFieldValueState ->
+        TextInputField(
+            modifier = inputContentModifier,
+            textFieldValue = textFieldValueState.value,
+            label = inputLabel,
+            onValueChanged = onValueChange,
+            keyboardType = keyboardType,
+            errorText = errorText,
+            placeholder = placeholder,
+            suffix = suffix,
+            inputTextAlign = inputTextAlign
+        )
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun BasicInputDialog(
+    title: String,
+    inputValue: TextFieldValue,
+    positiveButtonText: String,
+    onPositiveButtonClicked: () -> Unit,
+    modifier: Modifier = Modifier,
+    description: String? = null,
+    negativeButtonText: String? = null,
+    onNegativeButtonClicked: (() -> Unit)? = null,
+    dialogProperties: MegaDialogProperties = MegaDialogProperties.default,
+    isAutoShowKeyboard: Boolean = true,
+    onDismiss: () -> Unit = {},
+    inputContent: @Composable (Modifier, MutableState<TextFieldValue>) -> Unit,
+) {
     val focusRequester = remember { FocusRequester() }
-    var textFieldValue by rememberSaveable(
+    val textFieldValueState = rememberSaveable(
         inputs = arrayOf(inputValue),
         stateSaver = TextFieldValue.Saver
     ) {
         mutableStateOf(value = inputValue)
     }
+    val inputContentModifier = Modifier
+        .fillMaxWidth()
+        .focusRequester(focusRequester)
+        .onFocusChanged {
+            if (it.isFocused && isAutoShowKeyboard) {
+                textFieldValueState.value = textFieldValueState.value.copy(
+                    selection = TextRange(0, textFieldValueState.value.text.length)
+                )
+            }
+        }
+        .onGloballyPositioned {
+            if (isAutoShowKeyboard) {
+                focusRequester.requestFocus()
+            }
+        }
 
     // Update textFieldValue when inputValue changes
     LaunchedEffect(inputValue) {
-        textFieldValue = inputValue
+        textFieldValueState.value = inputValue
     }
 
     // Request focus when dialog opens if auto-show keyboard is enabled
@@ -172,33 +279,7 @@ fun BasicInputDialog(
                     )
                 }
             },
-            inputContent = {
-                TextInputField(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .focusRequester(focusRequester)
-                        .onFocusChanged {
-                            if (it.isFocused && isAutoShowKeyboard) {
-                                textFieldValue = textFieldValue.copy(
-                                    selection = TextRange(0, textFieldValue.text.length)
-                                )
-                            }
-                        }
-                        .onGloballyPositioned {
-                            if (isAutoShowKeyboard) {
-                                focusRequester.requestFocus()
-                            }
-                        },
-                    textFieldValue = textFieldValue,
-                    label = inputLabel,
-                    onValueChanged = onValueChange,
-                    keyboardType = keyboardType,
-                    errorText = errorText,
-                    placeholder = placeholder,
-                    suffix = suffix,
-                    inputTextAlign = inputTextAlign
-                )
-            },
+            inputContent = { inputContent(inputContentModifier, textFieldValueState) },
             shape = RoundedCornerShape(28.dp)
         )
     }
@@ -260,6 +341,22 @@ private fun BasicInputDialogWithSuffixPreview() {
             onNegativeButtonClicked = {},
             inputTextAlign = TextAlign.End,
             isAutoShowKeyboard = true
+        )
+    }
+}
+
+@CombinedThemePreviews
+@Composable
+private fun PasswordInputDialogWithPlaceholderPreview() {
+    AndroidThemeForPreviews {
+        PasswordInputDialog(
+            title = "Password input dialog",
+            inputValue = "",
+            onValueChange = { },
+            positiveButtonText = "Action 1",
+            onPositiveButtonClicked = {},
+            negativeButtonText = "Action 2",
+            onNegativeButtonClicked = {},
         )
     }
 }
