@@ -23,7 +23,7 @@ import mega.android.core.ui.model.Button
 import mega.android.core.ui.theme.spacing.LocalSpacing
 
 @Composable
-fun ButtonComponentCatalog() {
+fun ButtonComponentCatalog(onClick: (String) -> Unit = {}) {
     Spacer(modifier = Modifier.height(LocalSpacing.current.x16))
 
     Section(header = "Filled Buttons") {
@@ -32,7 +32,7 @@ fun ButtonComponentCatalog() {
                 .fillMaxWidth()
                 .padding(all = 16.dp),
             text = "Primary",
-            onClick = {}
+            onClick = {onClick("Primary button clicked")},
         )
 
         SecondaryFilledButton(
@@ -40,7 +40,7 @@ fun ButtonComponentCatalog() {
                 .fillMaxWidth()
                 .padding(all = 16.dp),
             text = "Secondary",
-            onClick = {}
+            onClick = {onClick("Secondary button clicked")},
         )
     }
 
@@ -50,7 +50,7 @@ fun ButtonComponentCatalog() {
                 .fillMaxWidth()
                 .padding(all = 16.dp),
             text = "Text Only",
-            onClick = {})
+            onClick = {onClick("Text Only button clicked")},)
     }
 
     Section(header = "Outlined Button") {
@@ -59,7 +59,7 @@ fun ButtonComponentCatalog() {
                 .fillMaxWidth()
                 .padding(all = 16.dp),
             text = "Outlined Button",
-            onClick = {}
+            onClick = {onClick("Outlined button clicked")},
         )
     }
 
@@ -71,19 +71,22 @@ fun ButtonComponentCatalog() {
                 {
                     Button.PrimaryButton(
                         text = "Primary",
-                        modifier = Modifier.fillMaxWidth()
+                        modifier = Modifier.fillMaxWidth(),
+                        onClick = {onClick("Anchored primary button clicked")},
                     )
                 },
                 {
                     Button.SecondaryButton(
                         text = "Secondary",
-                        modifier = Modifier.fillMaxWidth()
+                        modifier = Modifier.fillMaxWidth(),
+                        onClick = {onClick("Anchored secondary button clicked")},
                     )
                 },
                 {
                     Button.TextOnlyButton(
                         text = "Text Only",
-                        modifier = Modifier.fillMaxWidth()
+                        modifier = Modifier.fillMaxWidth(),
+                        onClick = {onClick("Anchored text only button clicked")},
                     )
                 }
             ),
