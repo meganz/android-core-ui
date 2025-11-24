@@ -19,14 +19,18 @@ import androidx.compose.material3.ModalBottomSheetProperties
 import androidx.compose.material3.SheetState
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.DialogWindowProvider
+import androidx.core.view.WindowCompat
 import mega.android.core.ui.R
 import mega.android.core.ui.components.button.MegaOutlinedButton
 import mega.android.core.ui.components.image.MegaIcon
@@ -34,6 +38,7 @@ import mega.android.core.ui.components.list.OneLineListItem
 import mega.android.core.ui.preview.CombinedThemePreviews
 import mega.android.core.ui.theme.AndroidThemeForPreviews
 import mega.android.core.ui.theme.spacing.LocalSpacing
+import mega.android.core.ui.theme.thememode.LocalIsDark
 import mega.android.core.ui.theme.values.IconColor
 import mega.android.core.ui.tokens.theme.DSTokens
 
@@ -80,7 +85,17 @@ fun MegaModalBottomSheet(
             windowInsets ?: BottomSheetDefaults.windowInsets.only(WindowInsetsSides.Bottom)
         },
         properties = properties,
-        content = content
+        content = {
+            val view = LocalView.current
+            val isDarkMode = LocalIsDark.current
+            (view.parent as? DialogWindowProvider)?.window?.let { window ->
+                SideEffect {
+                    WindowCompat.getInsetsController(window, view).isAppearanceLightNavigationBars =
+                        !isDarkMode
+                }
+            }
+            content()
+        }
     )
 }
 

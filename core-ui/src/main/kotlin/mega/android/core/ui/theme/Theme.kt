@@ -28,6 +28,7 @@ import mega.android.core.ui.theme.AppTheme.typography
 import mega.android.core.ui.theme.activity.LocalActivity
 import mega.android.core.ui.theme.devicetype.DeviceType
 import mega.android.core.ui.theme.devicetype.LocalDeviceType
+import mega.android.core.ui.theme.thememode.LocalIsDark
 import mega.android.core.ui.tokens.theme.shape.shapes
 import mega.android.core.ui.theme.spacing.Dimensions
 import mega.android.core.ui.theme.spacing.LocalSpacing
@@ -109,6 +110,7 @@ fun AndroidTheme(
         LocalColorPalette provides colorPalette,
         LocalSpacing provides Dimensions(),
         LocalDeviceType provides deviceType,
+        LocalIsDark provides isDark,
         LocalActivity provides activity
     ) {
         MaterialTheme(
