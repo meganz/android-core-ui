@@ -98,6 +98,12 @@ megaPublish {
             version = libs.versions.material3.get(),
             scope = "runtime",
         ),
+        Dependency(
+            groupId = libs.kotlinx.collections.immutable.get().group?:"",
+            artifactId = libs.kotlinx.collections.immutable.get().name,
+            version = libs.versions.kotlinx.collections.immutable.get(),
+            scope = "runtime"
+        ),
     )
 }
 
