@@ -16,11 +16,44 @@ import androidx.compose.runtime.Immutable
 @Immutable
 data class SnackbarAttributes(
     val message: String? = null,
-    val duration: SnackbarDuration = SnackbarDuration.Short,
+    val duration: SnackbarDuration,
     val withDismissAction: Boolean = false,
     val action: String? = null,
     val actionClick: (() -> Unit)? = null,
-)
+) {
+    /**
+     * Secondary constructor for [SnackbarAttributes] that automatically determines the duration.
+     *
+     * The duration is set to [SnackbarDuration.Long] if the message is longer than 50 characters
+     * or if an action is present, otherwise it's set to [SnackbarDuration.Short].
+     *
+     * @param message The message to be displayed in the Snackbar.
+     * @param withDismissAction Whether the Snackbar should have a dismiss action.
+     * @param action The text for the action button in the Snackbar, if any.
+     * @param actionClick The callback to be invoked when the action button is clicked.
+     */
+    constructor(
+        message: String? = null,
+        withDismissAction: Boolean = false,
+        action: String? = null,
+        actionClick: (() -> Unit)? = null,
+    ) : this(
+        message = message,
+        duration = determineDuration(message, action),
+        withDismissAction = withDismissAction,
+        action = action,
+        actionClick = actionClick,
+    )
+
+    companion object {
+        fun determineDuration(message: String?, action: String?): SnackbarDuration =
+            if ((message?.length ?: 0) > 50 || action != null) {
+                SnackbarDuration.Long
+            } else {
+                SnackbarDuration.Short
+            }
+    }
+}
 
 enum class SnackbarDuration {
     Short,
