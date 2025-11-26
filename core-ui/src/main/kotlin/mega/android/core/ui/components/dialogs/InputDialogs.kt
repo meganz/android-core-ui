@@ -2,7 +2,6 @@ package mega.android.core.ui.components.dialogs
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.BasicAlertDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
@@ -23,7 +22,6 @@ import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.DialogProperties
 import mega.android.core.ui.components.MegaText
 import mega.android.core.ui.components.dialogs.internal.MegaBasicDialogContent
@@ -279,8 +277,7 @@ private fun BasicInputDialog(
                     )
                 }
             },
-            inputContent = { inputContent(inputContentModifier, textFieldValueState) },
-            shape = RoundedCornerShape(28.dp)
+            content = { inputContent(inputContentModifier, textFieldValueState) },
         )
     }
 }

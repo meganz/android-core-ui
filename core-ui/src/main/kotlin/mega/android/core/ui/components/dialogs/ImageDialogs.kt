@@ -4,7 +4,6 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.BasicAlertDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
@@ -13,7 +12,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.DialogProperties
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
@@ -98,7 +96,6 @@ fun BasicImageDialog(
                     contentScale = contentScale
                 )
             },
-            shape = RoundedCornerShape(28.dp),
         )
     }
 }
@@ -170,7 +167,6 @@ fun BasicImageDialog(
                     contentScale = contentScale
                 )
             },
-            shape = RoundedCornerShape(28.dp),
         )
     }
 }
@@ -251,7 +247,6 @@ fun BasicImageDialog(
                     contentScale = contentScale
                 )
             },
-            shape = RoundedCornerShape(28.dp),
         )
     }
 }

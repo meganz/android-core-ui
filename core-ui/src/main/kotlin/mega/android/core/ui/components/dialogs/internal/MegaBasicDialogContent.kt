@@ -5,11 +5,12 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.unit.dp
 import mega.android.core.ui.theme.spacing.LocalSpacing
 import mega.android.core.ui.tokens.theme.DSTokens
 
@@ -18,14 +19,13 @@ internal fun MegaBasicDialogContent(
     buttons: @Composable () -> Unit,
     title: (@Composable () -> Unit)?,
     text: @Composable (() -> Unit)?,
-    shape: Shape,
     modifier: Modifier = Modifier,
-    inputContent: (@Composable () -> Unit)? = null,
+    content: (@Composable () -> Unit)? = null,
     imageContent: (@Composable () -> Unit)? = null,
 ) {
     Surface(
         modifier = modifier,
-        shape = shape,
+        shape = RoundedCornerShape(28.dp),
         color = DSTokens.colors.background.surface1
     ) {
         Column(
@@ -35,17 +35,17 @@ internal fun MegaBasicDialogContent(
             title?.invoke()
             text?.let {
                 Box(
-                    Modifier.Companion
+                    Modifier
                         .weight(weight = 1f, fill = false)
                         .align(Alignment.Start)
                 ) {
                     text()
                 }
             }
-            inputContent?.invoke()
+            content?.invoke()
             imageContent?.let {
                 Box(
-                    Modifier.Companion
+                    Modifier
                         .fillMaxWidth()
                         .align(Alignment.CenterHorizontally)
                 ) {
@@ -53,7 +53,7 @@ internal fun MegaBasicDialogContent(
                 }
             }
             Box(
-                modifier = Modifier.Companion
+                modifier = Modifier
                     .padding(top = LocalSpacing.current.x8)
                     .align(Alignment.End)
             ) {
