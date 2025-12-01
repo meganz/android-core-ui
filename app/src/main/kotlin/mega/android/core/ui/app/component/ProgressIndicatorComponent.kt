@@ -10,6 +10,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import mega.android.core.ui.app.util.Section
+import mega.android.core.ui.components.indicators.InfiniteProgressBarIndicator
 import mega.android.core.ui.components.indicators.LargeHUD
 import mega.android.core.ui.components.indicators.LargeInfiniteSpinnerIndicator
 import mega.android.core.ui.components.indicators.LargeSpinnerIndicator
@@ -26,6 +27,7 @@ fun ProgressIndicatorCatalog() {
     Section(header = "Progress Bar Indicator") {
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
             ProgressBarIndicator(modifier = Modifier.padding(16.dp), progressPercentage = 50f)
+            InfiniteProgressBarIndicator(modifier = Modifier.padding(16.dp))
             TimerRadialProgressBarComponent()
         }
     }

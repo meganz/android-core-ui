@@ -69,6 +69,21 @@ fun ProgressBarIndicator(
 }
 
 @Composable
+fun InfiniteProgressBarIndicator(
+    modifier: Modifier = Modifier,
+) {
+    LinearProgressIndicator(
+        modifier = modifier
+            .wrapContentHeight()
+            .fillMaxWidth(),
+        color = DSTokens.colors.icon.accent,
+        strokeCap = StrokeCap.Square,
+        trackColor = DSTokens.colors.background.surface1,
+    )
+}
+
+
+@Composable
 fun SmallSpinnerIndicator(
     modifier: Modifier = Modifier,
     progressPercentage: Float = 0f,
@@ -206,6 +221,16 @@ private fun ProgressBarIndicatorSupportColorPreview(
     AndroidThemeForPreviews {
         Box(modifier = Modifier.padding(16.dp)) {
             ProgressBarIndicator(progressPercentage = 50f, supportColor = supportColor)
+        }
+    }
+}
+
+@CombinedThemePreviews
+@Composable
+private fun InfiniteProgressBarIndicatorPreview() {
+    AndroidThemeForPreviews {
+        Box(modifier = Modifier.padding(16.dp)) {
+            InfiniteProgressBarIndicator()
         }
     }
 }
