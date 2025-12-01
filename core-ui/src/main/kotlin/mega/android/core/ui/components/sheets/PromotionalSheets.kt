@@ -25,7 +25,7 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.SheetState
-import androidx.compose.material3.SheetValue
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
@@ -38,7 +38,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.launch
@@ -92,14 +91,9 @@ fun PromotionalImageSheet(
 ) {
     val coroutineScope = rememberCoroutineScope()
     val spacing = LocalSpacing.current
-    val density = LocalDensity.current
-    val sheetState = remember {
-        SheetState(
-            skipPartiallyExpanded = true,
-            density = density,
-            initialValue = SheetValue.Expanded
-        )
-    }
+    val sheetState = rememberModalBottomSheetState(
+        skipPartiallyExpanded = true,
+    )
     val scrollState = rememberScrollState()
     val isScrollable by remember {
         derivedStateOf { scrollState.canScrollForward || scrollState.canScrollBackward }
@@ -188,15 +182,10 @@ fun PromotionalFullImageSheet(
     isVisible: Boolean = false,
 ) {
     val spacing = LocalSpacing.current
-    val density = LocalDensity.current
     val coroutineScope = rememberCoroutineScope()
-    val sheetState = remember {
-        SheetState(
-            skipPartiallyExpanded = true,
-            density = density,
-            initialValue = SheetValue.Expanded
-        )
-    }
+    val sheetState = rememberModalBottomSheetState(
+        skipPartiallyExpanded = true,
+    )
     val scrollState = rememberScrollState()
     val isScrollable by remember {
         derivedStateOf { scrollState.canScrollForward || scrollState.canScrollBackward }
@@ -303,14 +292,9 @@ fun PromotionalIllustrationSheet(
 ) {
     val coroutineScope = rememberCoroutineScope()
     val spacing = LocalSpacing.current
-    val density = LocalDensity.current
-    val sheetState = remember {
-        SheetState(
-            skipPartiallyExpanded = true,
-            density = density,
-            initialValue = SheetValue.Expanded
-        )
-    }
+    val sheetState = rememberModalBottomSheetState(
+        skipPartiallyExpanded = true,
+    )
     val scrollState = rememberScrollState()
     val isScrollable by remember {
         derivedStateOf { scrollState.canScrollForward || scrollState.canScrollBackward }
