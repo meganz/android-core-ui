@@ -4,6 +4,8 @@ import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
@@ -18,17 +20,20 @@ import androidx.compose.ui.unit.dp
 import mega.android.core.ui.components.LinkSpannedText
 import mega.android.core.ui.components.MegaText
 import mega.android.core.ui.components.button.PrimaryFilledButton
+import mega.android.core.ui.components.button.SecondaryFilledButton
+import mega.android.core.ui.components.text.SpannableText
 import mega.android.core.ui.model.MegaSpanStyle
 import mega.android.core.ui.model.SpanIndicator
 import mega.android.core.ui.model.SpanStyleWithAnnotation
 import mega.android.core.ui.preview.CombinedThemePreviews
 import mega.android.core.ui.theme.AndroidThemeForPreviews
 import mega.android.core.ui.theme.AppTheme
-import mega.android.core.ui.tokens.theme.DSTokens
 import mega.android.core.ui.theme.spacing.LocalSpacing
 import mega.android.core.ui.theme.values.LinkColor
 import mega.android.core.ui.theme.values.TextColor
+import mega.android.core.ui.tokens.theme.DSTokens
 
+@Deprecated("Use EmptyStateView instead")
 @Composable
 fun EmptyStateView(
     modifier: Modifier = Modifier,
@@ -39,6 +44,36 @@ fun EmptyStateView(
     buttonText: String? = null,
     onDescriptionAnnotationClick: (String) -> Unit = {},
     onButtonClick: () -> Unit = {}
+) {
+    EmptyStateView(
+        modifier = modifier,
+        illustration = illustration,
+        title = title,
+        description = SpannableText(
+            text = description,
+            annotations = descriptionSpanStyles,
+            onAnnotationClick = onDescriptionAnnotationClick
+        ),
+        actions = {
+            buttonText?.let {
+                PrimaryFilledButton(
+                    modifier = Modifier
+                        .wrapContentSize(),
+                    text = it,
+                    onClick = onButtonClick
+                )
+            }
+        }
+    )
+}
+
+@Composable
+fun EmptyStateView(
+    modifier: Modifier = Modifier,
+    @DrawableRes illustration: Int? = null,
+    title: String? = null,
+    description: SpannableText? = null,
+    actions: (@Composable ColumnScope.() -> Unit)? = null
 ) {
     Column(
         modifier = modifier.padding(LocalSpacing.current.x16),
@@ -78,29 +113,30 @@ fun EmptyStateView(
             }
             LinkSpannedText(
                 modifier = descriptionModifier,
-                value = description,
-                spanStyles = descriptionSpanStyles,
+                value = it.text.orEmpty(),
+                spanStyles = it.annotations ?: emptyMap(),
                 baseTextColor = TextColor.Secondary,
                 baseStyle = AppTheme.typography.bodyLarge.copy(
                     textAlign = TextAlign.Center
                 ),
-                onAnnotationClick = onDescriptionAnnotationClick
+                onAnnotationClick = it.onAnnotationClick ?: {}
             )
         }
 
-        buttonText?.let {
+        actions?.let {
             val buttonModifier = if (description != null || illustration != null || title != null) {
                 Modifier.padding(top = LocalSpacing.current.x24)
             } else {
                 Modifier
             }
-            PrimaryFilledButton(
+
+            Column(
                 modifier = buttonModifier
-                    .wrapContentSize()
                     .padding(horizontal = LocalSpacing.current.x24),
-                text = buttonText,
-                onClick = onButtonClick
-            )
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                it()
+            }
         }
     }
 }
@@ -110,6 +146,7 @@ fun EmptyStateView(
 private fun EmptyStatePreview() {
     AndroidThemeForPreviews {
         EmptyStateView(
+            modifier = Modifier.fillMaxSize(),
             illustration = android.R.drawable.ic_delete,
             title = " A short and concise explanation. If possible in positive way",
             description = "Explain clearly the next action to populate the space. You may also explain why the space is empty and include the benefit of taking this step. Please contact [A]support.email.com[/A]",
@@ -126,6 +163,45 @@ private fun EmptyStatePreview() {
             ),
             buttonText = "Primary Button",
             onButtonClick = { }
+        )
+    }
+}
+
+@CombinedThemePreviews
+@Composable
+private fun EmptyStatePreview2() {
+    AndroidThemeForPreviews {
+        EmptyStateView(
+            modifier = Modifier.fillMaxSize(),
+            illustration = android.R.drawable.ic_delete,
+            title = " A short and concise explanation. If possible in positive way",
+            description = SpannableText(
+                text = "Explain clearly the next action to populate the space. You may also explain why the space is empty and include the benefit of taking this step. Please contact [A]support.email.com[/A]",
+                annotations = mapOf(
+                    SpanIndicator('A') to SpanStyleWithAnnotation(
+                        megaSpanStyle = MegaSpanStyle.LinkColorStyle(
+                            spanStyle = SpanStyle(),
+                            linkColor = LinkColor.Primary
+                        ),
+                        annotation = "support.email.com"
+                            .substringAfter("[A]")
+                            .substringBefore("[/A]")
+                    )
+                ),
+                onAnnotationClick = {}
+            ),
+            actions = {
+                PrimaryFilledButton(
+                    modifier = Modifier,
+                    text = "Primary Button",
+                    onClick = { }
+                )
+                SecondaryFilledButton(
+                    modifier = Modifier.padding(top = 8.dp),
+                    text = "Secondary Button",
+                    onClick = { }
+                )
+            }
         )
     }
 }
