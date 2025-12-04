@@ -19,10 +19,9 @@ import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.ScrollableTabRow
-import androidx.compose.material3.TabRow
+import androidx.compose.material3.SecondaryScrollableTabRow
+import androidx.compose.material3.SecondaryTabRow
 import androidx.compose.material3.TabRowDefaults
-import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocal
 import androidx.compose.runtime.CompositionLocalProvider
@@ -44,15 +43,14 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.launch
 import mega.android.core.ui.components.LocalTopAppBarScrollBehavior
-import mega.android.core.ui.components.MegaText
 import mega.android.core.ui.components.button.MegaOutlinedButton
 import mega.android.core.ui.components.divider.StrongDivider
+import mega.android.core.ui.components.prompt.ErrorPrompt
 import mega.android.core.ui.model.TabItems
 import mega.android.core.ui.modifiers.scrolledTopAppBarBackgroundColor
 import mega.android.core.ui.preview.CombinedThemePreviews
 import mega.android.core.ui.theme.AndroidThemeForPreviews
 import mega.android.core.ui.theme.spacing.LocalSpacing
-import mega.android.core.ui.theme.values.TextColor
 import mega.android.core.ui.tokens.theme.DSTokens
 
 @Composable
@@ -62,14 +60,14 @@ fun MegaFixedTabRow(
     onClick: (Int) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    TabRow(
+    SecondaryTabRow(
         modifier = modifier.fillMaxWidth(),
         selectedTabIndex = tabIndex,
         divider = { StrongDivider() },
         containerColor = Color.Transparent,
-        indicator = { tabPositions ->
+        indicator = {
             TabRowDefaults.SecondaryIndicator(
-                Modifier.tabIndicatorOffset(tabPositions[tabIndex]),
+                Modifier.tabIndicatorOffset(tabIndex),
                 color = DSTokens.colors.border.brand
             )
         }
@@ -93,7 +91,7 @@ fun MegaScrollableTabRow(
     modifier: Modifier = Modifier,
     withDivider: Boolean = true
 ) {
-    ScrollableTabRow(
+    SecondaryScrollableTabRow(
         modifier = modifier.fillMaxWidth(),
         selectedTabIndex = tabIndex,
         divider = {
@@ -103,9 +101,9 @@ fun MegaScrollableTabRow(
         },
         containerColor = Color.Transparent,
         edgePadding = LocalSpacing.current.x16,
-        indicator = { tabPositions ->
+        indicator = {
             TabRowDefaults.SecondaryIndicator(
-                Modifier.tabIndicatorOffset(tabPositions[tabIndex]),
+                Modifier.tabIndicatorOffset(tabIndex),
                 color = DSTokens.colors.border.brand
             )
         }
@@ -141,6 +139,7 @@ fun MegaFixedTabRow(
     onTabSelected: (Int) -> Boolean = { true },
     pagerScrollEnabled: Boolean = true,
     hideTabs: Boolean = false,
+    fixedHeader: (@Composable () -> Unit)? = null,
     cells: @Composable TabsScope.() -> Unit,
 ) = MegaTabRowWithContent(
     modifier = modifier,
@@ -149,6 +148,7 @@ fun MegaFixedTabRow(
     onTabSelected = onTabSelected,
     pagerScrollEnabled = pagerScrollEnabled,
     cells = cells,
+    fixedHeader = fixedHeader,
     tabRow = { pagerState, tabs, onClick ->
         AnimatedVisibility(
             enter = enterTabsAnimation(),
@@ -174,7 +174,7 @@ fun MegaFixedTabRow(
  * @param onTabSelected
  * @param pagerScrollEnabled Whether scrolls in the pager change the tab or not
  * @param hideTabs Tabs will be hidden if true. In some situation we need to temporarily hide the tabs to avoid changing current tab. Considering set [pagerScrollEnabled] to false in this case
- *
+ * @param fixedHeader View that will be displayed below the tabs and divider, above the content. Typically a prompt.
  */
 @Composable
 fun MegaScrollableTabRow(
@@ -185,6 +185,7 @@ fun MegaScrollableTabRow(
     onTabSelected: (Int) -> Boolean = { true },
     pagerScrollEnabled: Boolean = true,
     hideTabs: Boolean = false,
+    fixedHeader: (@Composable () -> Unit)? = null,
     cells: @Composable TabsScope.() -> Unit,
 ) = MegaTabRowWithContent(
     modifier = modifier,
@@ -193,6 +194,7 @@ fun MegaScrollableTabRow(
     onTabSelected = onTabSelected,
     pagerScrollEnabled = pagerScrollEnabled,
     cells = cells,
+    fixedHeader = fixedHeader,
     tabRow = { pagerState, tabs, onClick ->
         AnimatedVisibility(
             enter = enterTabsAnimation(),
@@ -224,6 +226,7 @@ private fun MegaTabRowWithContent(
     onTabSelected: (Int) -> Boolean = { true },
     pagerScrollEnabled: Boolean = true,
     tabRow: @Composable (pagerState: PagerState, items: List<TabItems>, onClick: (Int) -> Unit) -> Unit,
+    fixedHeader: (@Composable () -> Unit)? = null,
     cells: @Composable TabsScope.() -> Unit,
 ) {
     val tabsScope = TabsScope()
@@ -263,6 +266,7 @@ private fun MegaTabRowWithContent(
                 }
             }
         }
+        fixedHeader?.invoke()
         HorizontalPager(
             state = pagerState,
             userScrollEnabled = pagerScrollEnabled,
@@ -442,10 +446,20 @@ private fun MegaScrollableTabRowPreview() {
 private fun MegaFixedTabRowWithContentPreview() {
     AndroidThemeForPreviews {
         var hideTabs by remember { mutableStateOf(false) }
+        var showError by remember { mutableStateOf(false) }
         MegaFixedTabRow(
             modifier = Modifier.height(260.dp),
             hideTabs = hideTabs,
-            pagerScrollEnabled = !hideTabs
+            pagerScrollEnabled = !hideTabs,
+            fixedHeader = {
+                AnimatedVisibility(
+                    showError,
+                    enter = enterTabsAnimation(),
+                    exit = exitTabsAnimation(),
+                ) {
+                    ErrorPrompt(Modifier, "Error")
+                }
+            }
         ) {
             addTextTab(TabItems("Tab A", false)) {
                 MegaOutlinedButton(
@@ -457,10 +471,12 @@ private fun MegaFixedTabRowWithContentPreview() {
                 )
             }
             addTextTab(TabItems("Tab B", false)) {
-                MegaText(
-                    "Tab 2 content",
-                    textColor = TextColor.Primary,
+                MegaOutlinedButton(
+                    text = if (!showError) "Show Error" else "Hide error",
                     modifier = Modifier.align(Alignment.Center),
+                    onClick = {
+                        showError = !showError
+                    },
                 )
             }
         }
@@ -472,10 +488,20 @@ private fun MegaFixedTabRowWithContentPreview() {
 private fun MegaScrollableTabRowWithContentPreview() {
     AndroidThemeForPreviews {
         var hideTabs by remember { mutableStateOf(false) }
+        var showError by remember { mutableStateOf(false) }
         MegaScrollableTabRow(
             modifier = Modifier.height(260.dp),
             hideTabs = hideTabs,
             pagerScrollEnabled = !hideTabs,
+            fixedHeader = {
+                AnimatedVisibility(
+                    showError,
+                    enter = enterTabsAnimation(),
+                    exit = exitTabsAnimation(),
+                ) {
+                    ErrorPrompt(Modifier, "Error")
+                }
+            }
         ) {
             addTextTab(TabItems("Tab A", false)) {
                 MegaOutlinedButton(
@@ -485,12 +511,15 @@ private fun MegaScrollableTabRowWithContentPreview() {
                         hideTabs = !hideTabs
                     },
                 )
+
             }
             addTextTab(TabItems("Tab B", false)) {
-                MegaText(
-                    "Tab 2 content",
-                    textColor = TextColor.Primary,
+                MegaOutlinedButton(
+                    text = if (!showError) "Show Error" else "Hide error",
                     modifier = Modifier.align(Alignment.Center),
+                    onClick = {
+                        showError = !showError
+                    },
                 )
             }
         }
