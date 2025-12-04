@@ -35,6 +35,7 @@ import mega.android.core.ui.tokens.theme.DSTokens
  * @param overflow Overflow option
  * @param textAlign Text alignment
  */
+@Deprecated("Replace with MegaText instead")
 @Composable
 fun HighlightedText(
     text: String,
@@ -76,6 +77,7 @@ fun HighlightedText(
  * @param overflow Overflow option
  * @param textAlign Text alignment
  */
+@Deprecated("Replace with MegaText instead")
 @Composable
 fun HighlightedText(
     text: AnnotatedString,

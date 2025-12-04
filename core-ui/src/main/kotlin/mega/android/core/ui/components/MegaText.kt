@@ -1,6 +1,8 @@
 package mega.android.core.ui.components
 
+import androidx.compose.foundation.basicMarquee
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.text.InlineTextContent
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -12,6 +14,9 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
+import mega.android.core.ui.extensions.toAnnotatedString
+import mega.android.core.ui.model.HighlightedText
+import mega.android.core.ui.modifiers.conditional
 import mega.android.core.ui.preview.CombinedThemePreviews
 import mega.android.core.ui.theme.AndroidThemeForPreviews
 import mega.android.core.ui.theme.linkColor
@@ -42,8 +47,8 @@ import mega.android.core.ui.tokens.theme.DSTokens
 @Composable
 fun MegaText(
     text: String,
-    textColor: TextColor = TextColor.Primary,
     modifier: Modifier = Modifier,
+    textColor: TextColor = TextColor.Primary,
     overflow: TextOverflow = TextOverflow.Clip,
     maxLines: Int = Int.MAX_VALUE,
     minLines: Int = 1,
@@ -85,6 +90,39 @@ fun MegaText(
     textAlign = textAlign,
 )
 
+@Composable
+fun MegaText(
+    text: HighlightedText,
+    modifier: Modifier = Modifier,
+    textColor: TextColor = TextColor.Primary,
+    overflow: TextOverflow = TextOverflow.Clip,
+    maxLines: Int = Int.MAX_VALUE,
+    minLines: Int = 1,
+    style: TextStyle = LocalTextStyle.current,
+    textAlign: TextAlign? = null,
+    softWrap: Boolean = true,
+    applyMarqueEffect: Boolean = true,
+    inlineContent: Map<String, InlineTextContent> = mapOf(),
+    onTextLayout: ((TextLayoutResult) -> Unit) = {},
+) {
+    Text(
+        text = text.toAnnotatedString(),
+        modifier = modifier
+            .conditional(applyMarqueEffect) {
+                basicMarquee()
+            },
+        color = DSTokens.textColor(textColor = textColor),
+        overflow = overflow,
+        maxLines = maxLines,
+        minLines = minLines,
+        style = style,
+        textAlign = textAlign,
+        softWrap = softWrap,
+        onTextLayout = onTextLayout,
+        inlineContent = inlineContent
+    )
+}
+
 @CombinedThemePreviews
 @Composable
 private fun MegaTextPreview(
@@ -110,6 +148,14 @@ private fun MegaTextPreview(
             linkColor = linkColor,
             modifier = Modifier.padding(horizontal = 16.dp, vertical = 4.dp)
         )
+    }
+}
+
+@CombinedThemePreviews
+@Composable
+private fun MegaTextHighlightedPreview() {
+    AndroidThemeForPreviews {
+        MegaText(text = HighlightedText("Hello World", "World"))
     }
 }
 

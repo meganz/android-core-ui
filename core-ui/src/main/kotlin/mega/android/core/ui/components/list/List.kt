@@ -32,6 +32,7 @@ import mega.android.core.ui.R
 import mega.android.core.ui.components.MegaText
 import mega.android.core.ui.components.image.MegaIcon
 import mega.android.core.ui.components.util.shimmerEffect
+import mega.android.core.ui.model.HighlightedText
 import mega.android.core.ui.preview.CombinedThemePreviews
 import mega.android.core.ui.theme.AndroidThemeForPreviews
 import mega.android.core.ui.theme.AppTheme
@@ -58,6 +59,33 @@ enum class HeaderTextStyle {
 @Composable
 fun PrimaryHeaderListItem(
     text: String,
+    modifier: Modifier = Modifier,
+    headerTextStyle: HeaderTextStyle = HeaderTextStyle.Small,
+    @DrawableRes rightIconRes: Int? = null,
+    @DrawableRes secondaryRightIconRes: Int? = null,
+    @DrawableRes tertiaryRightIconRes: Int? = null,
+    enableClick: Boolean = true,
+    onClickListener: () -> Unit = {},
+    onLongClickListener: () -> Unit = {},
+) {
+    HeaderListItem(
+        modifier = modifier,
+        text = HighlightedText(text),
+        textColor = TextColor.Primary,
+        rightIconRes = rightIconRes,
+        secondaryRightIconRes = secondaryRightIconRes,
+        tertiaryRightIconRes = tertiaryRightIconRes,
+        iconColor = IconColor.Primary,
+        enableClick = enableClick,
+        onClickListener = onClickListener,
+        onLongClickListener = onLongClickListener,
+        headerTextStyle = headerTextStyle,
+    )
+}
+
+@Composable
+fun PrimaryHeaderListItem(
+    text: HighlightedText,
     modifier: Modifier = Modifier,
     headerTextStyle: HeaderTextStyle = HeaderTextStyle.Small,
     @DrawableRes rightIconRes: Int? = null,
@@ -96,6 +124,33 @@ fun SecondaryHeaderListItem(
 ) {
     HeaderListItem(
         modifier = modifier,
+        text = HighlightedText(text),
+        textColor = TextColor.Secondary,
+        rightIconRes = rightIconRes,
+        secondaryRightIconRes = secondaryRightIconRes,
+        tertiaryRightIconRes = tertiaryRightIconRes,
+        iconColor = IconColor.Secondary,
+        enableClick = enableClick,
+        onClickListener = onClickListener,
+        onLongClickListener = onLongClickListener,
+        headerTextStyle = headerTextStyle,
+    )
+}
+
+@Composable
+fun SecondaryHeaderListItem(
+    text: HighlightedText,
+    modifier: Modifier = Modifier,
+    headerTextStyle: HeaderTextStyle = HeaderTextStyle.Small,
+    @DrawableRes rightIconRes: Int? = null,
+    @DrawableRes secondaryRightIconRes: Int? = null,
+    @DrawableRes tertiaryRightIconRes: Int? = null,
+    enableClick: Boolean = true,
+    onClickListener: () -> Unit = {},
+    onLongClickListener: () -> Unit = {},
+) {
+    HeaderListItem(
+        modifier = modifier,
         text = text,
         textColor = TextColor.Secondary,
         rightIconRes = rightIconRes,
@@ -111,7 +166,7 @@ fun SecondaryHeaderListItem(
 
 @Composable
 private fun HeaderListItem(
-    text: String,
+    text: HighlightedText,
     textColor: TextColor,
     modifier: Modifier = Modifier,
     headerTextStyle: HeaderTextStyle = HeaderTextStyle.Small,
@@ -192,8 +247,7 @@ fun OneLineListItem(
 ) = ListItem(
     modifier = modifier
         .defaultMinSize(minHeight = listItemMinHeight),
-    title = text,
-    subtitle = null,
+    title = HighlightedText(text),
     leadingElement = leadingElement,
     trailingElement = trailingElement,
     contentPadding = contentPadding,
@@ -203,6 +257,37 @@ fun OneLineListItem(
     titleTrailingElement = titleTrailingElement,
 )
 
+@Composable
+fun OneLineListItem(
+    text: HighlightedText,
+    modifier: Modifier = Modifier,
+    leadingElement: (@Composable (BoxScope.() -> Unit))? = null,
+    trailingElement: (@Composable (() -> Unit))? = null,
+    enableClick: Boolean = true,
+    contentPadding: PaddingValues = ListItemToken.defaultContentPadding,
+    onClickListener: () -> Unit = {},
+    onLongClickListener: (() -> Unit)? = null,
+    titleTrailingElement: (@Composable (() -> Unit))? = null,
+) = ListItem(
+    modifier = modifier
+        .defaultMinSize(minHeight = listItemMinHeight),
+    title = text,
+    leadingElement = leadingElement,
+    trailingElement = trailingElement,
+    contentPadding = contentPadding,
+    enableClick = enableClick,
+    onClickListener = onClickListener,
+    onLongClickListener = onLongClickListener,
+    titleTrailingElement = titleTrailingElement,
+)
+
+@Deprecated(
+    message = "Use FlexibleLineListItem instead",
+    replaceWith = ReplaceWith(
+        "FlexibleLineListItem",
+        "mega.android.core.ui.components.list.FlexibleLineListItem"
+    ),
+)
 @Composable
 fun TwoLineListItem(
     title: String,
@@ -220,8 +305,8 @@ fun TwoLineListItem(
 ) = ListItem(
     modifier = modifier
         .defaultMinSize(minHeight = listItemMinHeight),
-    title = title,
-    subtitle = subtitle,
+    title = HighlightedText(title),
+    subtitle = HighlightedText(subtitle),
     leadingElement = leadingElement,
     trailingElement = trailingElement,
     subtitleOverflow = subtitleOverflow,
@@ -234,18 +319,13 @@ fun TwoLineListItem(
     titleTrailingElement = titleTrailingElement,
 )
 
-@Deprecated(
-    message = "Use FlexibleLineListItem instead",
-    replaceWith = ReplaceWith(
-        "FlexibleLineListItem",
-        "mega.android.core.ui.components.list.FlexibleLineListItem"
-    ),
-)
 @Composable
-fun MultiLineListItem(
-    title: String,
-    subtitle: String,
+fun FlexibleLineListItem(
     modifier: Modifier = Modifier,
+    title: String? = null,
+    subtitle: String? = null,
+    titleMaxLines: Int = Int.MAX_VALUE,
+    subtitleMaxLines: Int = Int.MAX_VALUE,
     leadingElement: (@Composable (BoxScope.() -> Unit))? = null,
     trailingElement: (@Composable (() -> Unit))? = null,
     subtitleOverflow: TextOverflow = TextOverflow.Ellipsis,
@@ -253,28 +333,36 @@ fun MultiLineListItem(
     enableClick: Boolean = true,
     onClickListener: () -> Unit = {},
     onLongClickListener: () -> Unit = {},
+    minHeight: Dp = listItemMinHeight,
+    replaceNullSubtitleWithShimmer: Boolean = false,
+    titleTextColor: TextColor = TextColor.Primary,
     titleTrailingElement: (@Composable (() -> Unit))? = null,
-) = ListItem(
-    modifier = modifier
-        .defaultMinSize(minHeight = listItemMinHeight),
-    title = title,
-    subtitle = subtitle,
-    leadingElement = leadingElement,
-    trailingElement = trailingElement,
-    subtitleOverflow = subtitleOverflow,
-    contentPadding = contentPadding,
-    enableClick = enableClick,
-    onClickListener = onClickListener,
-    onLongClickListener = onLongClickListener,
-    subtitleMaxLines = Int.MAX_VALUE,
-    titleTrailingElement = titleTrailingElement,
-)
+) {
+    ListItem(
+        modifier = modifier
+            .defaultMinSize(minHeight = minHeight),
+        title = title?.let { HighlightedText(it) },
+        subtitle = subtitle?.let { HighlightedText(it) },
+        leadingElement = leadingElement,
+        trailingElement = trailingElement,
+        subtitleOverflow = subtitleOverflow,
+        contentPadding = contentPadding,
+        enableClick = enableClick,
+        onClickListener = onClickListener,
+        onLongClickListener = onLongClickListener,
+        titleMaxLines = titleMaxLines,
+        subtitleMaxLines = subtitleMaxLines,
+        replaceNullSubtitleWithShimmer = replaceNullSubtitleWithShimmer,
+        titleTextColor = titleTextColor,
+        titleTrailingElement = titleTrailingElement,
+    )
+}
 
 @Composable
 fun FlexibleLineListItem(
     modifier: Modifier = Modifier,
-    title: String? = null,
-    subtitle: String? = null,
+    title: HighlightedText? = null,
+    subtitle: HighlightedText? = null,
     titleMaxLines: Int = Int.MAX_VALUE,
     subtitleMaxLines: Int = Int.MAX_VALUE,
     leadingElement: (@Composable (BoxScope.() -> Unit))? = null,
@@ -313,8 +401,8 @@ fun FlexibleLineListItem(
 private fun ListItem(
     modifier: Modifier,
     contentPadding: PaddingValues,
-    title: String? = null,
-    subtitle: String? = null,
+    title: HighlightedText? = null,
+    subtitle: HighlightedText? = null,
     leadingElement: (@Composable (BoxScope.() -> Unit))? = null,
     trailingElement: (@Composable (() -> Unit))? = null,
     subtitleOverflow: TextOverflow = TextOverflow.Ellipsis,
@@ -615,6 +703,35 @@ private fun OneLineListItemPreviewWithElements() {
 
 @Composable
 @CombinedThemePreviews
+private fun OneLineListItemPreviewWithElementsAndHighlights() {
+    AndroidThemeForPreviews {
+        OneLineListItem(
+            modifier = Modifier,
+            text = HighlightedText("List item", "item"),
+            leadingElement = {
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_alert_triangle_medium_thin_outline),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .size(24.dp)
+                        .align(Alignment.Center),
+                    tint = DSTokens.colors.icon.primary
+                )
+            },
+            trailingElement = {
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_check_circle_medium_thin_outline),
+                    contentDescription = null,
+                    modifier = Modifier.size(24.dp),
+                    tint = DSTokens.colors.icon.primary
+                )
+            },
+        )
+    }
+}
+
+@Composable
+@CombinedThemePreviews
 private fun OneLineListItemPreviewWithLargeElements() {
     AndroidThemeForPreviews {
         OneLineListItem(
@@ -690,6 +807,44 @@ private fun MultiLineListItemPreviewWithElements() {
 
 @Composable
 @CombinedThemePreviews
+private fun MultiLineListItemPreviewWithElementsAndHighlights() {
+    AndroidThemeForPreviews {
+        FlexibleLineListItem(
+            modifier = Modifier,
+            title = HighlightedText("List item", "item"),
+            subtitle = HighlightedText("Supporting line text lorem ipsum lorem ipsum", "lorem ipsum"),
+            leadingElement = {
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_alert_triangle_medium_thin_outline),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .size(24.dp)
+                        .align(Alignment.Center),
+                    tint = DSTokens.colors.icon.primary
+                )
+            },
+            trailingElement = {
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_check_circle_medium_thin_outline),
+                    contentDescription = null,
+                    modifier = Modifier.size(24.dp),
+                    tint = DSTokens.colors.icon.primary
+                )
+            },
+            titleTrailingElement = {
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_check_circle_medium_thin_outline),
+                    contentDescription = null,
+                    modifier = Modifier.size(24.dp),
+                    tint = DSTokens.colors.icon.brand
+                )
+            }
+        )
+    }
+}
+
+@Composable
+@CombinedThemePreviews
 private fun SecondaryHeaderListItemPreview() {
     AndroidThemeForPreviews {
         SecondaryHeaderListItem(text = "Header text")
@@ -721,6 +876,17 @@ private fun PrimaryHeaderListItemWithIconPreview() {
     AndroidThemeForPreviews {
         PrimaryHeaderListItem(
             text = "Header text",
+            rightIconRes = R.drawable.ic_check_medium_thin_outline
+        )
+    }
+}
+
+@Composable
+@CombinedThemePreviews
+private fun PrimaryHeaderListItemHighlightedPreview() {
+    AndroidThemeForPreviews {
+        PrimaryHeaderListItem(
+            text = HighlightedText("Header text", "text"),
             rightIconRes = R.drawable.ic_check_medium_thin_outline
         )
     }
