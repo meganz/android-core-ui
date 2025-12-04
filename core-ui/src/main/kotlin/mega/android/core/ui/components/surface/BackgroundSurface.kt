@@ -1,7 +1,6 @@
 package mega.android.core.ui.components.surface
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Column
@@ -137,7 +136,9 @@ enum class SurfaceColor {
     Surface3,
     PageBackground,
     Blur,
-    Inverse
+    Inverse,
+    SurfaceTransparent,
+    SurfaceInverseAccent,
 }
 
 @Composable
@@ -149,5 +150,7 @@ internal fun SurfaceColor.toBackgroundColor(): Color {
         SurfaceColor.PageBackground -> DSTokens.colors.background.pageBackground
         SurfaceColor.Blur -> DSTokens.colors.background.blur
         SurfaceColor.Inverse -> DSTokens.colors.background.inverse
+        SurfaceColor.SurfaceTransparent -> DSTokens.colors.background.surfaceTransparent
+        SurfaceColor.SurfaceInverseAccent -> DSTokens.colors.background.surfaceInverseAccent
     }
 }
