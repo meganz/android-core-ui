@@ -1,5 +1,11 @@
 package mega.android.core.ui.components
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.shrinkVertically
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
@@ -14,12 +20,19 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.MutableIntState
 import androidx.compose.runtime.compositionLocalOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import mega.android.core.ui.components.button.MegaOutlinedButton
 import mega.android.core.ui.components.list.OneLineListItem
+import mega.android.core.ui.components.prompt.ErrorPrompt
 import mega.android.core.ui.components.scrollbar.fastscroll.FastScrollLazyColumn
 import mega.android.core.ui.components.tabs.LocalTabContentModifier
 import mega.android.core.ui.components.tabs.MegaFixedTabRow
@@ -79,9 +92,11 @@ fun MegaScaffoldWithTopAppBarScrollBehavior(
 ) {
     // check if the root composable has a LocalSnackBarHostState, if not create a new one
     val snackbarHostState = LocalSnackBarHostState.current ?: remember { SnackbarHostState() }
+    val forceRaisedTopAppBar = remember { mutableIntStateOf(0) }
     CompositionLocalProvider(
         LocalSnackBarHostState provides snackbarHostState,
         LocalTopAppBarScrollBehavior provides scrollBehavior,
+        LocalForceRaiseTopAppBar provides forceRaisedTopAppBar
     ) {
         Scaffold(
             modifier = modifier.then(
@@ -114,6 +129,12 @@ internal val LocalTopAppBarScrollBehavior =
     @OptIn(ExperimentalMaterial3Api::class)
     compositionLocalOf<TopAppBarScrollBehavior?> { null }
 
+/**
+ * Used to force raised top app bar when there's a banner under the top app bar, check ForceRiceTopAppBarEffect
+ */
+internal val LocalForceRaiseTopAppBar =
+    compositionLocalOf<MutableIntState?> { null }
+
 internal const val OVERLAP_FRACTION_THRESHOLD = 0.01f
 
 
@@ -121,6 +142,7 @@ internal const val OVERLAP_FRACTION_THRESHOLD = 0.01f
 @Composable
 private fun MegaScaffoldPreview() {
     AndroidThemeForPreviews {
+        var showBanner by remember { mutableStateOf(false) }
         @OptIn(ExperimentalMaterial3Api::class)
         MegaScaffoldWithTopAppBarScrollBehavior(
             topBar = {
@@ -128,12 +150,29 @@ private fun MegaScaffoldPreview() {
                     title = "Top app bar",
                     navigationType = AppBarNavigationType.Back {},
                     drawBottomLineOnScrolledContent = true,
+                    trailingIcons = {
+                        MegaOutlinedButton(
+                            Modifier,
+                            if (showBanner) "Hide Banner" else "Show Banner",
+                            onClick = {
+                                showBanner = !showBanner
+                            })
+                    }
                 )
             }
         ) {
-            LazyColumn(modifier = Modifier.padding(it)) {
-                items(100) {
-                    OneLineListItem("List ${it + 1}")
+            Column(modifier = Modifier.padding(it)) {
+                AnimatedVisibility(
+                    showBanner,
+                    enter = enterAnimation(),
+                    exit = exitAnimation(),
+                ) {
+                    ErrorPrompt("Error", forceRiceTopAppBar = true)
+                }
+                LazyColumn {
+                    items(100) {
+                        OneLineListItem("List ${it + 1}")
+                    }
                 }
             }
         }
@@ -173,17 +212,35 @@ private fun MegaScaffoldWithTabRowPreview() {
 @Composable
 private fun MegaScaffoldWithTabRowProvidedPreview() {
     AndroidThemeForPreviews {
+        var showBanner by remember { mutableStateOf(false) }
         @OptIn(ExperimentalMaterial3Api::class)
         MegaScaffoldWithTopAppBarScrollBehavior(
             topBar = {
                 MegaTopAppBar(
                     title = "Top app bar provided list states",
                     navigationType = AppBarNavigationType.Back {},
+                    trailingIcons = {
+                        MegaOutlinedButton(
+                            Modifier,
+                            if (showBanner) "Hide Banner" else "Show Banner",
+                            onClick = {
+                                showBanner = !showBanner
+                            })
+                    }
                 )
             }
         ) {
             MegaFixedTabRow(
                 modifier = Modifier.padding(it),
+                fixedHeader = {
+                    AnimatedVisibility(
+                        showBanner,
+                        enter = enterAnimation(),
+                        exit = exitAnimation(),
+                    ) {
+                        ErrorPrompt("Error", forceRiceTopAppBar = true)
+                    }
+                }
             ) {
                 (0..1).forEach { tabIndex ->
                     addTextTabWithProvidedScrollableModifier(TabItems("Tab $tabIndex", false)) {
@@ -194,6 +251,9 @@ private fun MegaScaffoldWithTabRowProvidedPreview() {
         }
     }
 }
+
+private fun enterAnimation() = fadeIn() + expandVertically()
+private fun exitAnimation() = fadeOut() + shrinkVertically()
 
 @Composable
 private fun ExampleInnerLazyList(

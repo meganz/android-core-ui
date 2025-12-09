@@ -8,6 +8,7 @@ import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.font.FontStyle
 import mega.android.core.ui.R
 import mega.android.core.ui.components.text.SpannableText
+import mega.android.core.ui.components.toolbar.ForceRiceTopAppBarEffect
 import mega.android.core.ui.model.MegaSpanStyle
 import mega.android.core.ui.model.SpanIndicator
 import mega.android.core.ui.model.SpanStyleWithAnnotation
@@ -17,114 +18,128 @@ import mega.android.core.ui.tokens.theme.DSTokens
 
 @Composable
 fun InlineErrorBanner(
-    modifier: Modifier,
     body: SpannableText?,
     showCancelButton: Boolean,
+    modifier: Modifier = Modifier,
     title: SpannableText? = null,
     actionButtonText: String? = null,
     onActionButtonClick: () -> Unit = {},
     onCancelButtonClick: () -> Unit = {},
 ) {
     ErrorBanner(
-        modifier = modifier,
         backgroundShape = DSTokens.shapes.small,
         body = body,
+        showCancelButton = showCancelButton,
+        modifier = modifier,
         title = title,
         actionButtonText = actionButtonText,
         onActionButtonClick = onActionButtonClick,
-        showCancelButton = showCancelButton,
         onCancelButtonClick = onCancelButtonClick
     )
 }
 
 @Composable
 fun InlineErrorBanner(
-    modifier: Modifier,
     body: String?,
     showCancelButton: Boolean,
+    modifier: Modifier = Modifier,
     title: String? = null,
     actionButtonText: String? = null,
     onActionButtonClick: () -> Unit = {},
     onCancelButtonClick: () -> Unit = {},
 ) {
     ErrorBanner(
-        modifier = modifier,
         backgroundShape = DSTokens.shapes.small,
         body = body?.let { SpannableText(it) },
+        showCancelButton = showCancelButton,
+        modifier = modifier,
         title = title?.let { SpannableText(title) },
         actionButtonText = actionButtonText,
         onActionButtonClick = onActionButtonClick,
-        showCancelButton = showCancelButton,
         onCancelButtonClick = onCancelButtonClick
     )
 }
 
+/**
+ * @param forceRiceTopAppBar if true, the [ForceRiceTopAppBarEffect] will be applied, causing the top app bar to be raised while the banner is in the composition.
+ * It should be true if the banner is sticky under the TopAppBar or TabRows
+ */
 @Composable
 fun TopErrorBanner(
-    modifier: Modifier,
     body: SpannableText?,
     showCancelButton: Boolean,
+    modifier: Modifier = Modifier,
     title: SpannableText? = null,
     actionButtonText: String? = null,
+    forceRiceTopAppBar: Boolean = false,
     onActionButtonClick: () -> Unit = {},
     onCancelButtonClick: () -> Unit = {},
 ) {
     ErrorBanner(
-        modifier = modifier,
         backgroundShape = RectangleShape,
         body = body,
+        showCancelButton = showCancelButton,
+        modifier = modifier,
         title = title,
         actionButtonText = actionButtonText,
+        forceRiceTopAppBar = forceRiceTopAppBar,
         onActionButtonClick = onActionButtonClick,
-        showCancelButton = showCancelButton,
         onCancelButtonClick = onCancelButtonClick
     )
 }
 
+/**
+ * @param forceRiceTopAppBar if true, the [ForceRiceTopAppBarEffect] will be applied, causing the top app bar to be raised while the banner is in the composition.
+ * It should be true if the banner is sticky under the TopAppBar or TabRows
+ */
 @Composable
 fun TopErrorBanner(
-    modifier: Modifier,
     body: String?,
     showCancelButton: Boolean,
+    modifier: Modifier = Modifier,
     title: String? = null,
     actionButtonText: String? = null,
+    forceRiceTopAppBar: Boolean = false,
     onActionButtonClick: () -> Unit = {},
     onCancelButtonClick: () -> Unit = {},
 ) {
     ErrorBanner(
-        modifier = modifier,
         backgroundShape = RectangleShape,
         body = body?.let { SpannableText(it) },
+        showCancelButton = showCancelButton,
+        modifier = modifier,
         title = title?.let { SpannableText(title) },
         actionButtonText = actionButtonText,
+        forceRiceTopAppBar = forceRiceTopAppBar,
         onActionButtonClick = onActionButtonClick,
-        showCancelButton = showCancelButton,
         onCancelButtonClick = onCancelButtonClick
     )
 }
 
 @Composable
 private fun ErrorBanner(
-    modifier: Modifier,
     backgroundShape: Shape,
     body: SpannableText?,
     showCancelButton: Boolean,
+    modifier: Modifier = Modifier,
     title: SpannableText? = null,
     actionButtonText: String? = null,
+    forceRiceTopAppBar: Boolean = false,
     onActionButtonClick: () -> Unit = {},
     onCancelButtonClick: () -> Unit = {},
 ) {
     BaseBanner(
-        modifier = modifier,
         backgroundColor = DSTokens.colors.notifications.notificationError,
         backgroundShape = backgroundShape,
         iconResId = R.drawable.ic_alert_triangle_medium_thin_outline,
         iconColor = DSTokens.colors.support.error,
         body = body,
+        showCancelButton = showCancelButton,
+        modifier = modifier,
         title = title,
         buttonText = actionButtonText,
+        forceRiceTopAppBar = forceRiceTopAppBar,
         onButtonClick = onActionButtonClick,
-        showCancelButton = showCancelButton,
         onCancelButtonClick = onCancelButtonClick
     )
 }
@@ -134,11 +149,10 @@ private fun ErrorBanner(
 private fun InlineErrorBannerPreview() {
     AndroidThemeForPreviews {
         InlineErrorBanner(
-            modifier = Modifier,
             body = "Error Body",
+            showCancelButton = true,
             title = "Error Title",
-            actionButtonText = "Action Button",
-            showCancelButton = true
+            actionButtonText = "Action Button"
         )
     }
 }
@@ -148,11 +162,10 @@ private fun InlineErrorBannerPreview() {
 private fun TopErrorBannerPreview() {
     AndroidThemeForPreviews {
         TopErrorBanner(
-            modifier = Modifier,
             body = "Error Body",
+            showCancelButton = true,
             title = "Error Title",
-            actionButtonText = "Action Button",
-            showCancelButton = true
+            actionButtonText = "Action Button"
         )
     }
 }
@@ -162,7 +175,6 @@ private fun TopErrorBannerPreview() {
 private fun SpannableInlineErrorBannerPreview() {
     AndroidThemeForPreviews {
         InlineErrorBanner(
-            modifier = Modifier,
             body = SpannableText(
                 text = "[A]Banner[/A] Body",
                 annotations = mapOf(

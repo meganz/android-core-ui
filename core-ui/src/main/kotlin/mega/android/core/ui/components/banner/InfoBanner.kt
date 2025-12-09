@@ -8,6 +8,7 @@ import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.font.FontStyle
 import mega.android.core.ui.R
 import mega.android.core.ui.components.text.SpannableText
+import mega.android.core.ui.components.toolbar.ForceRiceTopAppBarEffect
 import mega.android.core.ui.model.MegaSpanStyle
 import mega.android.core.ui.model.SpanIndicator
 import mega.android.core.ui.model.SpanStyleWithAnnotation
@@ -17,22 +18,22 @@ import mega.android.core.ui.tokens.theme.DSTokens
 
 @Composable
 fun InlineInfoBanner(
-    modifier: Modifier,
     body: SpannableText?,
     showCancelButton: Boolean,
+    modifier: Modifier = Modifier,
     title: SpannableText? = null,
     actionButtonText: String? = null,
     onActionButtonClick: () -> Unit = {},
     onCancelButtonClick: () -> Unit = {},
 ) {
     InfoBanner(
-        modifier = modifier,
         backgroundShape = DSTokens.shapes.small,
         body = body,
+        showCancelButton = showCancelButton,
+        modifier = modifier,
         title = title,
         actionButtonText = actionButtonText,
         onActionButtonClick = onActionButtonClick,
-        showCancelButton = showCancelButton,
         onCancelButtonClick = onCancelButtonClick
     )
 }
@@ -40,92 +41,106 @@ fun InlineInfoBanner(
 
 @Composable
 fun InlineInfoBanner(
-    modifier: Modifier,
     body: String?,
     showCancelButton: Boolean,
+    modifier: Modifier = Modifier,
     title: String? = null,
     actionButtonText: String? = null,
     onActionButtonClick: () -> Unit = {},
     onCancelButtonClick: () -> Unit = {},
 ) {
     InfoBanner(
-        modifier = modifier,
         backgroundShape = DSTokens.shapes.small,
         body = body?.let { SpannableText(it) },
+        showCancelButton = showCancelButton,
+        modifier = modifier,
         title = title?.let { SpannableText(title) },
         actionButtonText = actionButtonText,
         onActionButtonClick = onActionButtonClick,
-        showCancelButton = showCancelButton,
         onCancelButtonClick = onCancelButtonClick
     )
 }
 
+/**
+ * @param forceRiceTopAppBar if true, the [ForceRiceTopAppBarEffect] will be applied, causing the top app bar to be raised while the banner is in the composition.
+ * It should be true if the banner is sticky under the TopAppBar or TabRows
+ */
 @Composable
 fun TopInfoBanner(
-    modifier: Modifier,
     body: SpannableText?,
     showCancelButton: Boolean,
+    modifier: Modifier = Modifier,
     title: SpannableText? = null,
     actionButtonText: String? = null,
+    forceRiceTopAppBar: Boolean = false,
     onActionButtonClick: () -> Unit = {},
     onCancelButtonClick: () -> Unit = {},
 ) {
     InfoBanner(
-        modifier = modifier,
         backgroundShape = RectangleShape,
         body = body,
+        showCancelButton = showCancelButton,
+        modifier = modifier,
         title = title,
         actionButtonText = actionButtonText,
+        forceRiceTopAppBar = forceRiceTopAppBar,
         onActionButtonClick = onActionButtonClick,
-        showCancelButton = showCancelButton,
         onCancelButtonClick = onCancelButtonClick
     )
 }
 
+/**
+ * @param forceRiceTopAppBar if true, the [ForceRiceTopAppBarEffect] will be applied, causing the top app bar to be raised while the banner is in the composition.
+ * It should be true if the banner is sticky under the TopAppBar or TabRows
+ */
 @Composable
 fun TopInfoBanner(
-    modifier: Modifier,
     body: String?,
     showCancelButton: Boolean,
+    modifier: Modifier = Modifier,
     title: String? = null,
     actionButtonText: String? = null,
+    forceRiceTopAppBar: Boolean = false,
     onActionButtonClick: () -> Unit = {},
     onCancelButtonClick: () -> Unit = {},
 ) {
     InfoBanner(
-        modifier = modifier,
         backgroundShape = RectangleShape,
         body = body?.let { SpannableText(it) },
+        showCancelButton = showCancelButton,
+        modifier = modifier,
         title = title?.let { SpannableText(title) },
         actionButtonText = actionButtonText,
+        forceRiceTopAppBar = forceRiceTopAppBar,
         onActionButtonClick = onActionButtonClick,
-        showCancelButton = showCancelButton,
         onCancelButtonClick = onCancelButtonClick
     )
 }
 
 @Composable
 private fun InfoBanner(
-    modifier: Modifier,
     backgroundShape: Shape,
     body: SpannableText?,
     showCancelButton: Boolean,
+    modifier: Modifier = Modifier,
     title: SpannableText? = null,
     actionButtonText: String? = null,
+    forceRiceTopAppBar: Boolean = false,
     onActionButtonClick: () -> Unit = {},
     onCancelButtonClick: () -> Unit = {},
 ) {
     BaseBanner(
-        modifier = modifier,
         backgroundColor = DSTokens.colors.notifications.notificationInfo,
         backgroundShape = backgroundShape,
         iconResId = R.drawable.ic_info_medium_thin_outline,
         iconColor = DSTokens.colors.support.info,
         body = body,
+        showCancelButton = showCancelButton,
+        modifier = modifier,
         title = title,
         buttonText = actionButtonText,
+        forceRiceTopAppBar = forceRiceTopAppBar,
         onButtonClick = onActionButtonClick,
-        showCancelButton = showCancelButton,
         onCancelButtonClick = onCancelButtonClick
     )
 }
@@ -135,11 +150,10 @@ private fun InfoBanner(
 private fun TopInfoBannerPreview() {
     AndroidThemeForPreviews {
         TopInfoBanner(
-            modifier = Modifier,
             body = "Info Body",
+            showCancelButton = true,
             title = "Info Title",
-            actionButtonText = "Action Button",
-            showCancelButton = true
+            actionButtonText = "Action Button"
         )
     }
 }
@@ -149,11 +163,10 @@ private fun TopInfoBannerPreview() {
 private fun InlineInfoBannerPreview() {
     AndroidThemeForPreviews {
         InlineInfoBanner(
-            modifier = Modifier,
             body = "Info Body",
+            showCancelButton = false,
             title = "Info Title",
-            actionButtonText = "Action Button",
-            showCancelButton = false
+            actionButtonText = "Action Button"
         )
     }
 }
@@ -163,7 +176,6 @@ private fun InlineInfoBannerPreview() {
 private fun SpannableInlineInfoBannerPreview() {
     AndroidThemeForPreviews {
         InlineInfoBanner(
-            modifier = Modifier,
             body = SpannableText(
                 text = "[A]Banner[/A] Body",
                 annotations = mapOf(

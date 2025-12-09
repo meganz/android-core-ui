@@ -18,17 +18,14 @@ fun PromptCatalog() {
     Section(header = "Prompt") {
         Column {
             SuccessPrompt(
-                modifier = Modifier,
                 message = "This is Success prompt",
             )
             Spacer(modifier = Modifier.height(LocalSpacing.current.x8))
             ErrorPrompt(
-                modifier = Modifier,
                 message = "This is Error prompt",
             )
             Spacer(modifier = Modifier.height(LocalSpacing.current.x8))
             TransparentPrompt(
-                modifier = Modifier,
                 message = "This is Transparent prompt",
             )
         }

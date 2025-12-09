@@ -45,6 +45,7 @@ import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
 import mega.android.core.ui.R
+import mega.android.core.ui.components.LocalForceRaiseTopAppBar
 import mega.android.core.ui.components.LocalTopAppBarScrollBehavior
 import mega.android.core.ui.components.MegaText
 import mega.android.core.ui.components.OVERLAP_FRACTION_THRESHOLD
@@ -116,7 +117,7 @@ fun MegaTopAppBar(
     maxActionsToShow: Int = 4,
 ) {
     val actionsWithClick = remember(actions, onActionPressed) {
-        actions.map { action -> 
+        actions.map { action ->
             MenuActionWithClick(action) { onActionPressed(action) }
         }
     }
@@ -146,7 +147,7 @@ fun MegaTopAppBar(
     maxActionsToShow: Int = 4,
 ) {
     val actionsWithClick = remember(actions, onActionPressed) {
-        actions.map { action -> 
+        actions.map { action ->
             MenuActionWithClick(action) { onActionPressed(action) }
         }
     }
@@ -253,7 +254,7 @@ fun MegaTopAppBar(
     maxActionsToShow: Int = 4,
 ) {
     val actionsWithClick = remember(actions, onActionPressed) {
-        actions.map { action -> 
+        actions.map { action ->
             MenuActionWithClick(action) { onActionPressed(action) }
         }
     }
@@ -358,6 +359,7 @@ private fun DefaultTopAppBar(
     scrollBehavior: TopAppBarScrollBehavior? = null,
 ) {
     Box(modifier = modifier) {
+        val forceRaised = (LocalForceRaiseTopAppBar.current?.intValue ?: 0) > 0
         TopAppBar(
             title = {
                 Column {
@@ -383,15 +385,15 @@ private fun DefaultTopAppBar(
             navigationIcon = navigationIcon,
             actions = actions,
             colors = colors ?: TopAppBarDefaults.topAppBarColors(
-                containerColor = DSTokens.colors.background.pageBackground,
+                containerColor = if (forceRaised) DSTokens.colors.background.surface1 else DSTokens.colors.background.pageBackground,
                 scrolledContainerColor = DSTokens.colors.background.surface1,
                 navigationIconContentColor = DSTokens.colors.icon.primary,
                 titleContentColor = DSTokens.colors.text.primary,
                 actionIconContentColor = DSTokens.colors.icon.primary
             )
         )
-        // Bottom line if scroll behavior is overlapped
-        if (drawBottomLineOnScrolledContent &&
+        // Bottom line if scroll behavior is overlapped and there's no banner
+        if (!forceRaised && drawBottomLineOnScrolledContent &&
             (LocalTopAppBarScrollBehavior.current?.state?.overlappedFraction ?: 0f)
             > OVERLAP_FRACTION_THRESHOLD
         ) {
@@ -475,8 +477,7 @@ fun MegaSearchTopAppBar(
                     style = AppTheme.typography.titleLarge,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .graphicsLayer { alpha = 1f - searchAlpha }
-                    ,
+                        .graphicsLayer { alpha = 1f - searchAlpha },
                 )
             }
         },
@@ -673,7 +674,8 @@ private fun MegaTopAppBarMixedActionsPreview() {
             override val testTag = "download_action"
 
             @Composable
-            override fun getIconPainter() = painterResource(id = R.drawable.ic_alert_circle_medium_thin_outline)
+            override fun getIconPainter() =
+                painterResource(id = R.drawable.ic_alert_circle_medium_thin_outline)
         }
 
         val iconAction2 = object : MenuActionWithIcon {
@@ -683,7 +685,8 @@ private fun MegaTopAppBarMixedActionsPreview() {
             override val testTag = "share_action"
 
             @Composable
-            override fun getIconPainter() = painterResource(id = R.drawable.ic_alert_triangle_medium_thin_outline)
+            override fun getIconPainter() =
+                painterResource(id = R.drawable.ic_alert_triangle_medium_thin_outline)
         }
 
         val textOnlyAction1 = object : MenuAction {

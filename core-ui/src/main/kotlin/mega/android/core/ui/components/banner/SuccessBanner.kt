@@ -8,6 +8,7 @@ import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.font.FontStyle
 import mega.android.core.ui.R
 import mega.android.core.ui.components.text.SpannableText
+import mega.android.core.ui.components.toolbar.ForceRiceTopAppBarEffect
 import mega.android.core.ui.model.MegaSpanStyle
 import mega.android.core.ui.model.SpanIndicator
 import mega.android.core.ui.model.SpanStyleWithAnnotation
@@ -17,22 +18,22 @@ import mega.android.core.ui.tokens.theme.DSTokens
 
 @Composable
 fun InlineSuccessBanner(
-    modifier: Modifier,
     body: SpannableText?,
     showCancelButton: Boolean,
+    modifier: Modifier = Modifier,
     title: SpannableText? = null,
     actionButtonText: String? = null,
     onActionButtonClick: () -> Unit = {},
     onCancelButtonClick: () -> Unit = {},
 ) {
     SuccessBanner(
-        modifier = modifier,
         backgroundShape = DSTokens.shapes.small,
         body = body,
+        showCancelButton = showCancelButton,
+        modifier = modifier,
         title = title,
         actionButtonText = actionButtonText,
         onActionButtonClick = onActionButtonClick,
-        showCancelButton = showCancelButton,
         onCancelButtonClick = onCancelButtonClick
     )
 }
@@ -40,92 +41,106 @@ fun InlineSuccessBanner(
 
 @Composable
 fun InlineSuccessBanner(
-    modifier: Modifier,
     body: String?,
     showCancelButton: Boolean,
+    modifier: Modifier = Modifier,
     title: String? = null,
     actionButtonText: String? = null,
     onActionButtonClick: () -> Unit = {},
     onCancelButtonClick: () -> Unit = {},
 ) {
     SuccessBanner(
-        modifier = modifier,
         backgroundShape = DSTokens.shapes.small,
         body = body?.let { SpannableText(it) },
+        showCancelButton = showCancelButton,
+        modifier = modifier,
         title = title?.let { SpannableText(title) },
         actionButtonText = actionButtonText,
         onActionButtonClick = onActionButtonClick,
-        showCancelButton = showCancelButton,
         onCancelButtonClick = onCancelButtonClick
     )
 }
 
+/**
+ * @param forceRiceTopAppBar if true, the [ForceRiceTopAppBarEffect] will be applied, causing the top app bar to be raised while the banner is in the composition.
+ * It should be true if the banner is sticky under the TopAppBar or TabRows
+ */
 @Composable
 fun TopSuccessBanner(
-    modifier: Modifier,
     body: SpannableText?,
     showCancelButton: Boolean,
+    modifier: Modifier = Modifier,
     title: SpannableText? = null,
     actionButtonText: String? = null,
+    forceRiceTopAppBar: Boolean = false,
     onActionButtonClick: () -> Unit = {},
     onCancelButtonClick: () -> Unit = {},
 ) {
     SuccessBanner(
-        modifier = modifier,
         backgroundShape = RectangleShape,
         body = body,
+        showCancelButton = showCancelButton,
+        modifier = modifier,
         title = title,
         actionButtonText = actionButtonText,
+        forceRiceTopAppBar = forceRiceTopAppBar,
         onActionButtonClick = onActionButtonClick,
-        showCancelButton = showCancelButton,
         onCancelButtonClick = onCancelButtonClick
     )
 }
 
+/**
+ * @param forceRiceTopAppBar if true, the [ForceRiceTopAppBarEffect] will be applied, causing the top app bar to be raised while the banner is in the composition.
+ * It should be true if the banner is sticky under the TopAppBar or TabRows
+ */
 @Composable
 fun TopSuccessBanner(
-    modifier: Modifier,
     body: String?,
     showCancelButton: Boolean,
+    modifier: Modifier = Modifier,
     title: String? = null,
     actionButtonText: String? = null,
+    forceRiceTopAppBar: Boolean = false,
     onActionButtonClick: () -> Unit = {},
     onCancelButtonClick: () -> Unit = {},
 ) {
     SuccessBanner(
-        modifier = modifier,
         backgroundShape = RectangleShape,
         body = body?.let { SpannableText(it) },
+        showCancelButton = showCancelButton,
+        modifier = modifier,
         title = title?.let { SpannableText(title) },
         actionButtonText = actionButtonText,
+        forceRiceTopAppBar = forceRiceTopAppBar,
         onActionButtonClick = onActionButtonClick,
-        showCancelButton = showCancelButton,
         onCancelButtonClick = onCancelButtonClick
     )
 }
 
 @Composable
 private fun SuccessBanner(
-    modifier: Modifier,
     backgroundShape: Shape,
     body: SpannableText?,
     showCancelButton: Boolean,
+    modifier: Modifier = Modifier,
     title: SpannableText? = null,
     actionButtonText: String? = null,
+    forceRiceTopAppBar: Boolean = false,
     onActionButtonClick: () -> Unit = {},
     onCancelButtonClick: () -> Unit = {},
 ) {
     BaseBanner(
-        modifier = modifier,
         backgroundColor = DSTokens.colors.notifications.notificationSuccess,
         backgroundShape = backgroundShape,
         iconResId = R.drawable.ic_check_circle_medium_thin_outline,
         iconColor = DSTokens.colors.support.success,
         body = body,
+        showCancelButton = showCancelButton,
+        modifier = modifier,
         title = title,
         buttonText = actionButtonText,
+        forceRiceTopAppBar = forceRiceTopAppBar,
         onButtonClick = onActionButtonClick,
-        showCancelButton = showCancelButton,
         onCancelButtonClick = onCancelButtonClick
     )
 }
@@ -135,11 +150,10 @@ private fun SuccessBanner(
 private fun InlineSuccessBannerPreview() {
     AndroidThemeForPreviews {
         InlineSuccessBanner(
-            modifier = Modifier,
             body = "Success Body",
+            showCancelButton = true,
             title = "Success Title",
-            actionButtonText = "Action Button",
-            showCancelButton = true
+            actionButtonText = "Action Button"
         )
     }
 }
@@ -149,11 +163,10 @@ private fun InlineSuccessBannerPreview() {
 private fun TopSuccessBannerPreview() {
     AndroidThemeForPreviews {
         TopSuccessBanner(
-            modifier = Modifier,
             body = "Success Body",
+            showCancelButton = true,
             title = "Success Title",
-            actionButtonText = "Action Button",
-            showCancelButton = true
+            actionButtonText = "Action Button"
         )
     }
 }
@@ -163,7 +176,6 @@ private fun TopSuccessBannerPreview() {
 private fun SpannableInlineSuccessBannerPreview() {
     AndroidThemeForPreviews {
         InlineSuccessBanner(
-            modifier = Modifier,
             body = SpannableText(
                 text = "[A]Banner[/A] Body",
                 annotations = mapOf(

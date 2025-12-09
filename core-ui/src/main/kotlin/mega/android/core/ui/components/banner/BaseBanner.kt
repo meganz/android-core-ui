@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.compositionLocalOf
@@ -24,25 +25,35 @@ import mega.android.core.ui.R
 import mega.android.core.ui.components.LinkSpannedText
 import mega.android.core.ui.components.MegaClickableText
 import mega.android.core.ui.components.text.SpannableText
+import mega.android.core.ui.components.toolbar.ForceRiceTopAppBarEffect
 import mega.android.core.ui.theme.AppTheme
 import mega.android.core.ui.theme.spacing.LocalSpacing
 import mega.android.core.ui.theme.values.TextColor
 import mega.android.core.ui.tokens.theme.DSTokens
 
+/**
+ * @param forceRiceTopAppBar if true, the [ForceRiceTopAppBarEffect] will be applied, causing the top app bar to be raised while the banner is in the composition.
+ * It should be true if the banner is sticky under the TopAppBar or TabRows
+ */
 @Composable
 internal fun BaseBanner(
-    modifier: Modifier,
     backgroundColor: Color,
     backgroundShape: Shape,
     @DrawableRes iconResId: Int,
     iconColor: Color,
     body: SpannableText?,
     showCancelButton: Boolean,
+    modifier: Modifier = Modifier,
     title: SpannableText? = null,
     buttonText: String? = null,
+    forceRiceTopAppBar: Boolean = false,
     onButtonClick: () -> Unit = {},
     onCancelButtonClick: () -> Unit = {},
 ) {
+    if (forceRiceTopAppBar) {
+        @OptIn(ExperimentalMaterial3Api::class)
+        ForceRiceTopAppBarEffect()
+    }
     Box(
         modifier = modifier
             .fillMaxWidth()

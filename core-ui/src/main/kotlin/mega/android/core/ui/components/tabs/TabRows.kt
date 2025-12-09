@@ -457,7 +457,7 @@ private fun MegaFixedTabRowWithContentPreview() {
                     enter = enterTabsAnimation(),
                     exit = exitTabsAnimation(),
                 ) {
-                    ErrorPrompt(Modifier, "Error")
+                    ErrorPrompt("Error")
                 }
             }
         ) {
@@ -499,7 +499,7 @@ private fun MegaScrollableTabRowWithContentPreview() {
                     enter = enterTabsAnimation(),
                     exit = exitTabsAnimation(),
                 ) {
-                    ErrorPrompt(Modifier, "Error")
+                    ErrorPrompt("Error")
                 }
             }
         ) {

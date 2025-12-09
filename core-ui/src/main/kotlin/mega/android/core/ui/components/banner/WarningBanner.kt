@@ -8,6 +8,7 @@ import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.style.TextDecoration
 import mega.android.core.ui.R
 import mega.android.core.ui.components.text.SpannableText
+import mega.android.core.ui.components.toolbar.ForceRiceTopAppBarEffect
 import mega.android.core.ui.model.MegaSpanStyle
 import mega.android.core.ui.model.SpanIndicator
 import mega.android.core.ui.model.SpanStyleWithAnnotation
@@ -17,112 +18,126 @@ import mega.android.core.ui.tokens.theme.DSTokens
 
 @Composable
 fun InlineWarningBanner(
-    modifier: Modifier,
     body: String?,
     showCancelButton: Boolean,
+    modifier: Modifier = Modifier,
     title: String? = null,
     actionButtonText: String? = null,
     onActionButtonClick: () -> Unit = {},
     onCancelButtonClick: () -> Unit = {},
 ) {
     InlineWarningBanner(
-        modifier = modifier,
         body = body?.let { SpannableText(it) },
+        showCancelButton = showCancelButton,
+        modifier = modifier,
         title = title?.let { SpannableText(title) },
         actionButtonText = actionButtonText,
         onActionButtonClick = onActionButtonClick,
-        showCancelButton = showCancelButton,
         onCancelButtonClick = onCancelButtonClick
     )
 }
 
+/**
+ * @param forceRiceTopAppBar if true, the [ForceRiceTopAppBarEffect] will be applied, causing the top app bar to be raised while the banner is in the composition.
+ * It should be true if the banner is sticky under the TopAppBar or TabRows
+ */
 @Composable
 fun TopWarningBanner(
-    modifier: Modifier,
     body: String?,
     showCancelButton: Boolean,
+    modifier: Modifier = Modifier,
     title: String? = null,
     actionButtonText: String? = null,
+    forceRiceTopAppBar: Boolean = false,
     onActionButtonClick: () -> Unit = {},
     onCancelButtonClick: () -> Unit = {},
 ) {
     TopWarningBanner(
-        modifier = modifier,
         body = body?.let { SpannableText(it) },
+        showCancelButton = showCancelButton,
+        modifier = modifier,
         title = title?.let { SpannableText(title) },
         actionButtonText = actionButtonText,
+        forceRiceTopAppBar = forceRiceTopAppBar,
         onActionButtonClick = onActionButtonClick,
-        showCancelButton = showCancelButton,
         onCancelButtonClick = onCancelButtonClick
     )
 }
 
 @Composable
 fun InlineWarningBanner(
-    modifier: Modifier,
     body: SpannableText?,
     showCancelButton: Boolean,
+    modifier: Modifier = Modifier,
     title: SpannableText? = null,
     actionButtonText: String? = null,
     onActionButtonClick: () -> Unit = {},
     onCancelButtonClick: () -> Unit = {},
 ) {
     WarningBanner(
-        modifier = modifier,
         backgroundShape = DSTokens.shapes.small,
         body = body,
+        showCancelButton = showCancelButton,
+        modifier = modifier,
         title = title,
         actionButtonText = actionButtonText,
         onActionButtonClick = onActionButtonClick,
-        showCancelButton = showCancelButton,
         onCancelButtonClick = onCancelButtonClick
     )
 }
 
+/**
+ * @param forceRiceTopAppBar if true, the [ForceRiceTopAppBarEffect] will be applied, causing the top app bar to be raised while the banner is in the composition.
+ * It should be true if the banner is sticky under the TopAppBar or TabRows
+ */
 @Composable
 fun TopWarningBanner(
-    modifier: Modifier,
     body: SpannableText?,
     showCancelButton: Boolean,
+    modifier: Modifier = Modifier,
     title: SpannableText? = null,
     actionButtonText: String? = null,
+    forceRiceTopAppBar: Boolean = false,
     onActionButtonClick: () -> Unit = {},
     onCancelButtonClick: () -> Unit = {},
 ) {
     WarningBanner(
-        modifier = modifier,
         backgroundShape = RectangleShape,
         body = body,
+        showCancelButton = showCancelButton,
+        modifier = modifier,
         title = title,
         actionButtonText = actionButtonText,
+        forceRiceTopAppBar = forceRiceTopAppBar,
         onActionButtonClick = onActionButtonClick,
-        showCancelButton = showCancelButton,
         onCancelButtonClick = onCancelButtonClick
     )
 }
 
 @Composable
 private fun WarningBanner(
-    modifier: Modifier,
     backgroundShape: Shape,
     body: SpannableText?,
     showCancelButton: Boolean,
+    modifier: Modifier = Modifier,
     title: SpannableText? = null,
     actionButtonText: String? = null,
+    forceRiceTopAppBar: Boolean = false,
     onActionButtonClick: () -> Unit = {},
     onCancelButtonClick: () -> Unit = {},
 ) {
     BaseBanner(
-        modifier = modifier,
         backgroundColor = DSTokens.colors.notifications.notificationWarning,
         backgroundShape = backgroundShape,
         iconResId = R.drawable.ic_alert_circle_medium_thin_outline,
         iconColor = DSTokens.colors.support.warning,
         body = body,
+        showCancelButton = showCancelButton,
+        modifier = modifier,
         title = title,
         buttonText = actionButtonText,
+        forceRiceTopAppBar = forceRiceTopAppBar,
         onButtonClick = onActionButtonClick,
-        showCancelButton = showCancelButton,
         onCancelButtonClick = onCancelButtonClick
     )
 }
@@ -133,11 +148,10 @@ private fun WarningBanner(
 private fun InlineWarningBannerPreview() {
     AndroidThemeForPreviews {
         InlineWarningBanner(
-            modifier = Modifier,
             body = SpannableText("Warning Body"),
+            showCancelButton = true,
             title = SpannableText("Warning Title"),
-            actionButtonText = "Action Button",
-            showCancelButton = true
+            actionButtonText = "Action Button"
         )
     }
 }
@@ -147,11 +161,10 @@ private fun InlineWarningBannerPreview() {
 private fun TopWarningBannerPreview() {
     AndroidThemeForPreviews {
         TopWarningBanner(
-            modifier = Modifier,
             body = SpannableText("Warning Body"),
+            showCancelButton = true,
             title = SpannableText("Warning Title"),
-            actionButtonText = "Action Button",
-            showCancelButton = true
+            actionButtonText = "Action Button"
         )
     }
 }
@@ -161,11 +174,10 @@ private fun TopWarningBannerPreview() {
 private fun TopWarningBannerWithoutBodyPreview() {
     AndroidThemeForPreviews {
         TopWarningBanner(
-            modifier = Modifier,
-            title = SpannableText("Warning Title"),
             body = null,
-            actionButtonText = "Action Button",
-            showCancelButton = true
+            showCancelButton = true,
+            title = SpannableText("Warning Title"),
+            actionButtonText = "Action Button"
         )
     }
 }
@@ -175,7 +187,6 @@ private fun TopWarningBannerWithoutBodyPreview() {
 private fun SpannableWarningBannerPreview() {
     AndroidThemeForPreviews {
         InlineWarningBanner(
-            modifier = Modifier,
             title = SpannableText(
                 text = "[A]Warning Title[/A] with spannable text",
                 annotations = mapOf(
