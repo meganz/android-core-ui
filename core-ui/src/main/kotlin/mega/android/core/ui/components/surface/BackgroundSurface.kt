@@ -12,12 +12,14 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CardElevation
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.dp
 import mega.android.core.ui.components.MegaText
 import mega.android.core.ui.preview.CombinedThemePreviews
@@ -69,6 +71,7 @@ fun CardSurface(
     surfaceColor: SurfaceColor,
     modifier: Modifier = Modifier,
     elevation: CardElevation = CardDefaults.cardElevation(),
+    shape: Shape = RoundedCornerShape(8.dp),
     content: @Composable ColumnScope.() -> Unit,
 ) {
     Card(
@@ -78,6 +81,7 @@ fun CardSurface(
         ),
         content = content,
         elevation = elevation,
+        shape = shape,
     )
 }
 
@@ -99,7 +103,8 @@ private fun BackgroundSurfacePreview() {
 private fun CardSurfacePreview() {
     AndroidThemeForPreviews {
         Column(
-            modifier = Modifier.padding(4.dp),) {
+            modifier = Modifier.padding(4.dp),
+        ) {
             CardSurface(
                 modifier = Modifier
                     .fillMaxWidth()
