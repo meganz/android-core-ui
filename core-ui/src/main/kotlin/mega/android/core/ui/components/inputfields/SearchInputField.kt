@@ -21,6 +21,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
@@ -28,6 +29,7 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
@@ -57,13 +59,37 @@ fun SearchInputField(
     isError: Boolean = false,
     autoCorrect: Boolean = true,
 ) {
-    // Holds the latest internal TextFieldValue state. We need to keep it to have the correct value
-    // of the composition.
-    var textFieldValueState by remember { mutableStateOf(TextFieldValue(text = text)) }
-    // Last String value that either text field was recomposed with or updated in the onValueChange
-    // callback. We keep track of it to prevent calling onValueChange(String) for same String when
-    // BaseSearchInputField's onValueChange is called multiple times without recomposition in between.
-    var lastTextValue by remember(text) { mutableStateOf(text) }
+    // Internal TextFieldValue holding text + selection
+    var textFieldValueState by rememberSaveable(stateSaver = TextFieldValue.Saver) {
+        mutableStateOf(TextFieldValue(text = text))
+    }
+
+    // Last external String we notified about
+    var lastTextValue by rememberSaveable { mutableStateOf(text) }
+
+    // Sync external text changes without changing selection
+    LaunchedEffect(text) {
+        if (text != textFieldValueState.text) {
+            val oldText = textFieldValueState.text
+            val oldSelection = textFieldValueState.selection
+            val shouldMoveToEnd =
+                oldText.isEmpty() || (oldSelection.start == 0 && oldSelection.end == 0)
+
+            val newSelection = if (shouldMoveToEnd) {
+                TextRange(text.length)
+            } else {
+                val newStart = oldSelection.start.coerceAtMost(text.length)
+                val newEnd = oldSelection.end.coerceAtMost(text.length)
+                TextRange(newStart, newEnd)
+            }
+
+            textFieldValueState = textFieldValueState.copy(
+                text = text,
+                selection = newSelection,
+            )
+            lastTextValue = text
+        }
+    }
 
     BaseSearchInputField(
         modifier = modifier,
@@ -72,10 +98,8 @@ fun SearchInputField(
         onValueChange = { newTextFieldValueState ->
             textFieldValueState = newTextFieldValueState
 
-            val stringChangedSinceLastInvocation = lastTextValue != newTextFieldValueState.text
-            lastTextValue = newTextFieldValueState.text
-
-            if (stringChangedSinceLastInvocation) {
+            if (lastTextValue != newTextFieldValueState.text) {
+                lastTextValue = newTextFieldValueState.text
                 onValueChanged?.invoke(newTextFieldValueState.text)
             }
         },
@@ -85,7 +109,7 @@ fun SearchInputField(
         onFocusChanged = onFocusChanged,
         enabled = enabled,
         isError = isError,
-        autoCorrect = autoCorrect
+        autoCorrect = autoCorrect,
     )
 }
 
