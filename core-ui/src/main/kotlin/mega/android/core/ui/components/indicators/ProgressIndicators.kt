@@ -18,6 +18,8 @@ import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import mega.android.core.ui.components.surface.SurfaceColor
+import mega.android.core.ui.components.surface.toBackgroundColor
 import mega.android.core.ui.components.util.blurShadow
 import mega.android.core.ui.preview.CombinedThemePreviews
 import mega.android.core.ui.theme.AndroidThemeForPreviews
@@ -54,7 +56,8 @@ fun ProgressBarIndicator(
 fun ProgressBarIndicator(
     modifier: Modifier = Modifier,
     progressPercentage: Float = 0f,
-    supportColor: SupportColor
+    supportColor: SupportColor,
+    surfaceColor: SurfaceColor = SurfaceColor.Surface1
 ) {
     LinearProgressIndicator(
         modifier = modifier
@@ -63,7 +66,7 @@ fun ProgressBarIndicator(
         progress = { progressPercentage / 100f },
         color = DSTokens.supportColor(supportColor),
         strokeCap = StrokeCap.Square,
-        trackColor = DSTokens.colors.background.surface1,
+        trackColor = surfaceColor.toBackgroundColor(),
         drawStopIndicator = {}
     )
 }
@@ -290,4 +293,3 @@ private fun HUDLargePreview() {
 private class SupportColorProvider : PreviewParameterProvider<SupportColor> {
     override val values = SupportColor.entries.asSequence()
 }
-
