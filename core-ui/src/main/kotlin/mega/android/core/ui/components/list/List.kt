@@ -181,12 +181,12 @@ private fun HeaderListItem(
     Row(
         modifier = modifier
             .defaultMinSize(minHeight = headerListItemMinHeight)
-            .padding(horizontal = LocalSpacing.current.x16, vertical = LocalSpacing.current.x8)
             .combinedClickable(
                 enabled = enableClick,
                 onClick = onClickListener,
                 onLongClick = onLongClickListener
-            ),
+            )
+            .padding(horizontal = LocalSpacing.current.x16, vertical = LocalSpacing.current.x8),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Row(modifier = Modifier.weight(1f)) {
