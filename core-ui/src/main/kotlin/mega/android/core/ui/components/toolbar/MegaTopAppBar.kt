@@ -68,6 +68,7 @@ fun MegaTopAppBar(
     title: String,
     navigationType: AppBarNavigationType,
     modifier: Modifier = Modifier,
+    subtitle: String? = null,
     drawBottomLineOnScrolledContent: Boolean = false,
     trailingIcons: @Composable RowScope.() -> Unit = {},
 ) {
@@ -75,6 +76,7 @@ fun MegaTopAppBar(
     DefaultTopAppBar(
         modifier = modifier,
         title = title,
+        subtitle = subtitle,
         navigationIcon = navigationType.navigationIcon(),
         actions = trailingIcons,
         scrollBehavior = LocalTopAppBarScrollBehavior.current,
@@ -209,6 +211,7 @@ fun MegaTopAppBar(
     trailingIcons: @Composable RowScope.() -> Unit,
     actions: List<MenuActionWithClick>,
     modifier: Modifier = Modifier,
+    subtitle: String? = null,
     drawBottomLineOnScrolledContent: Boolean = false,
     actionsEnabled: Boolean = true,
     maxActionsToShow: Int = Int.MAX_VALUE,
@@ -217,6 +220,7 @@ fun MegaTopAppBar(
     DefaultTopAppBar(
         modifier = modifier,
         title = title,
+        subtitle = subtitle,
         navigationIcon = navigationType.navigationIcon(),
         scrollBehavior = LocalTopAppBarScrollBehavior.current,
         actions = {
@@ -249,6 +253,7 @@ fun MegaTopAppBar(
     actions: List<MenuAction>,
     onActionPressed: ((MenuAction) -> Unit),
     modifier: Modifier = Modifier,
+    subtitle: String? = null,
     drawBottomLineOnScrolledContent: Boolean = false,
     actionsEnabled: Boolean = true,
     maxActionsToShow: Int = 4,
@@ -262,6 +267,7 @@ fun MegaTopAppBar(
     DefaultTopAppBar(
         modifier = modifier,
         title = title,
+        subtitle = subtitle,
         navigationIcon = navigationType.navigationIcon(),
         scrollBehavior = LocalTopAppBarScrollBehavior.current,
         actions = {
@@ -719,6 +725,27 @@ private fun MegaTopAppBarMixedActionsPreview() {
             onActionPressed = { /* handle action */ },
             maxActionsToShow = 2, // Only 2 icons in toolbar, rest in dropdown
             modifier = Modifier.padding(bottom = 80.dp) //make some space for the dropdown in interactive mode
+        )
+    }
+}
+
+@CombinedThemePreviews
+@Composable
+private fun MegaTopAppBarWithTrailingIconsAndSubtitlePreview() {
+    AndroidThemeForPreviews {
+        MegaTopAppBar(
+            title = "Title",
+            subtitle = "Subtitle",
+            navigationType = AppBarNavigationType.Back {},
+            trailingIcons = {
+                IconButton(modifier = Modifier.wrapContentHeight(), onClick = {}) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_alert_triangle_medium_thin_outline),
+                        contentDescription = null
+
+                    )
+                }
+            },
         )
     }
 }
