@@ -44,6 +44,7 @@ import mega.android.core.ui.app.component.SearchFieldComponent
 import mega.android.core.ui.app.component.SettingsCatalog
 import mega.android.core.ui.app.component.ShimmerListItem
 import mega.android.core.ui.app.component.SliderComponentCatalog
+import mega.android.core.ui.app.component.SpinnerDialogComponent
 import mega.android.core.ui.app.component.StateViewCatalog
 import mega.android.core.ui.app.component.TabsComponentCatalog
 import mega.android.core.ui.app.component.TextComponentCatalog
@@ -52,6 +53,7 @@ import mega.android.core.ui.app.component.TransparentNavigationComponentCatalog
 import mega.android.core.ui.app.component.VerificationTextInputFieldCatalog
 import mega.android.core.ui.components.LocalSnackBarHostState
 import mega.android.core.ui.components.MegaScaffold
+import mega.android.core.ui.components.dialogs.BasicSpinnerDialog
 import mega.android.core.ui.components.inputfields.AnnotatedLabelTextInputField
 import mega.android.core.ui.components.inputfields.ExpirationDateInputField
 import mega.android.core.ui.components.inputfields.PasswordTextInputField
@@ -410,6 +412,10 @@ internal fun MainComposeView(
                     onSearchingModeChanged = { isSearching = it },
                     searchPlaceholder = "Search placeholder"
                 )
+            }
+
+            item(key = 42) {
+                SpinnerDialogComponent()
             }
         }
     }
