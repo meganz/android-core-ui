@@ -18,7 +18,6 @@ import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.offset
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.selection.toggleable
 import androidx.compose.foundation.shape.CircleShape
@@ -115,7 +114,6 @@ fun Toggle(
                     )
                 } else Modifier
             )
-            .padding((rippleSize - trackHeight) / 2)
             .size(width = trackWidth, height = trackHeight)
             .background(trackColor, CircleShape)
             .border(borderWidth, borderColor, CircleShape),
