@@ -17,6 +17,7 @@ public enum class TextColor {
     InverseAccent,
     InverseSecondary,
     OnColor,
+    OnColorInverse,
     OnColorDisabled,
     Error,
     Success,
@@ -35,6 +36,7 @@ public enum class TextColor {
         InverseAccent -> text.inverseAccent
         InverseSecondary -> text.inverseSecondary
         OnColor -> text.onColor
+        OnColorInverse -> text.onColorInverse
         OnColorDisabled -> text.onColorDisabled
         Error -> text.error
         Success -> text.success
