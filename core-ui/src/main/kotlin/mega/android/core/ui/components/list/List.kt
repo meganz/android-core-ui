@@ -337,6 +337,7 @@ fun FlexibleLineListItem(
     replaceNullSubtitleWithShimmer: Boolean = false,
     titleTextColor: TextColor = TextColor.Primary,
     titleTrailingElement: (@Composable (() -> Unit))? = null,
+    enable: Boolean = true,
 ) {
     ListItem(
         modifier = modifier
@@ -355,6 +356,7 @@ fun FlexibleLineListItem(
         replaceNullSubtitleWithShimmer = replaceNullSubtitleWithShimmer,
         titleTextColor = titleTextColor,
         titleTrailingElement = titleTrailingElement,
+        enable = enable,
     )
 }
 
@@ -376,6 +378,7 @@ fun FlexibleLineListItem(
     replaceNullSubtitleWithShimmer: Boolean = false,
     titleTextColor: TextColor = TextColor.Primary,
     titleTrailingElement: (@Composable (() -> Unit))? = null,
+    enable: Boolean = true,
 ) {
     ListItem(
         modifier = modifier
@@ -394,6 +397,7 @@ fun FlexibleLineListItem(
         replaceNullSubtitleWithShimmer = replaceNullSubtitleWithShimmer,
         titleTextColor = titleTextColor,
         titleTrailingElement = titleTrailingElement,
+        enable = enable,
     )
 }
 
@@ -414,7 +418,12 @@ private fun ListItem(
     replaceNullSubtitleWithShimmer: Boolean = false,
     titleTextColor: TextColor = TextColor.Primary,
     titleTrailingElement: (@Composable (() -> Unit))? = null,
+    enable: Boolean = true,
 ) {
+    val effectiveTitleTextColor = if (enable) titleTextColor else TextColor.Disabled
+    val effectiveSubtitleTextColor = if (enable) TextColor.Secondary else TextColor.Disabled
+    val effectiveIconColor = if (enable) DSTokens.colors.icon.primary else DSTokens.colors.icon.disabled
+
     GenericListItem(
         modifier = modifier,
         contentPadding = contentPadding,
@@ -426,7 +435,7 @@ private fun ListItem(
                 ) {
                     MegaText(
                         text = title,
-                        textColor = titleTextColor,
+                        textColor = effectiveTitleTextColor,
                         style = AppTheme.typography.bodyLarge,
                         maxLines = titleMaxLines,
                         overflow = TextOverflow.Ellipsis
@@ -439,7 +448,7 @@ private fun ListItem(
             if (subtitle != null) {
                 MegaText(
                     text = subtitle,
-                    textColor = TextColor.Secondary,
+                    textColor = effectiveSubtitleTextColor,
                     style = AppTheme.typography.bodyMedium,
                     maxLines = subtitleMaxLines,
                     overflow = subtitleOverflow,
@@ -456,7 +465,7 @@ private fun ListItem(
         leadingElement = if (leadingElement != null) {
             {
                 CompositionLocalProvider(
-                    LocalContentColor provides DSTokens.colors.icon.primary.copy(alpha = 1f)
+                    LocalContentColor provides effectiveIconColor.copy(alpha = 1f)
                 ) {
                     Box(
                         modifier = Modifier
@@ -839,6 +848,28 @@ private fun MultiLineListItemPreviewWithElementsAndHighlights() {
                     tint = DSTokens.colors.icon.brand
                 )
             }
+        )
+    }
+}
+
+@Composable
+@CombinedThemePreviews
+private fun FlexibleLineListItemDisabledPreview() {
+    AndroidThemeForPreviews {
+        FlexibleLineListItem(
+            modifier = Modifier,
+            title = "List item",
+            subtitle = "Supporting line text lorem ipsum lorem ipsum",
+            leadingElement = {
+                MegaIcon(
+                    painter = painterResource(id = R.drawable.ic_alert_triangle_medium_thin_outline),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .size(24.dp)
+                        .align(Alignment.Center),
+                )
+            },
+            enable = false,
         )
     }
 }
