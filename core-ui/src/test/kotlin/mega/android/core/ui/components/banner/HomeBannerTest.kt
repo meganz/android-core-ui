@@ -18,7 +18,7 @@ import org.mockito.kotlin.verify
 import org.mockito.kotlin.verifyNoInteractions
 
 @RunWith(AndroidJUnit4::class)
-class PromoBannerTest {
+class HomeBannerTest {
 
     @get:Rule
     val composeRule = createComposeRule()
@@ -116,7 +116,7 @@ class PromoBannerTest {
 
     ) {
         composeRule.setContent {
-            PromoBanner(
+            HomeBanner(
                 modifier = Modifier,
                 backgroundImageUrl = null,
                 imageUrl = null,
