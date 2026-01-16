@@ -47,6 +47,7 @@ fun ProgressBarIndicator(
         progress = { progressPercentage / 100f },
         color = DSTokens.colors.icon.accent,
         strokeCap = StrokeCap.Square,
+        gapSize = 0.dp,
         trackColor = DSTokens.colors.background.surface1,
         drawStopIndicator = {}
     )
@@ -66,6 +67,7 @@ fun ProgressBarIndicator(
         progress = { progressPercentage / 100f },
         color = DSTokens.supportColor(supportColor),
         strokeCap = StrokeCap.Square,
+        gapSize = 0.dp,
         trackColor = surfaceColor.toBackgroundColor(),
         drawStopIndicator = {}
     )
@@ -81,6 +83,7 @@ fun InfiniteProgressBarIndicator(
             .fillMaxWidth(),
         color = DSTokens.colors.icon.accent,
         strokeCap = StrokeCap.Square,
+        gapSize = 0.dp,
         trackColor = DSTokens.colors.background.surface1,
     )
 }
