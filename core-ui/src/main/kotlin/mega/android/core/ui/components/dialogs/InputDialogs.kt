@@ -28,6 +28,7 @@ import mega.android.core.ui.components.dialogs.internal.MegaBasicDialogContent
 import mega.android.core.ui.components.dialogs.internal.MegaBasicDialogFlowRow
 import mega.android.core.ui.components.inputfields.PasswordTextInputField
 import mega.android.core.ui.components.inputfields.TextInputField
+import mega.android.core.ui.components.util.replaceNewlinesWithSpaces
 import mega.android.core.ui.preview.CombinedThemePreviews
 import mega.android.core.ui.theme.AndroidThemeForPreviews
 import mega.android.core.ui.theme.AppTheme
@@ -65,8 +66,9 @@ fun BasicInputDialog(
         title = title,
         inputValue = textFieldValue,
         onValueChange = {
-            textFieldValue = it
-            onValueChange.invoke(it.text)
+            val newValue = it.copy(text = it.text.replaceNewlinesWithSpaces())
+            textFieldValue = newValue
+            onValueChange.invoke(newValue.text)
         },
         positiveButtonText = positiveButtonText,
         onPositiveButtonClicked = onPositiveButtonClicked,
