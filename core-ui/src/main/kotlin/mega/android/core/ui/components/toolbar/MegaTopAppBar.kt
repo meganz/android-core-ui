@@ -40,6 +40,7 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
@@ -321,7 +322,7 @@ fun TransparentTopBar(
     navigationIcon: Painter? = null,
     trailingIcons: @Composable RowScope.() -> Unit = {},
     onNavigationIconClicked: () -> Unit = {},
-    backgroundAlpha: Float = 0f
+    backgroundAlpha: Float = 0f,
 ) {
     @OptIn(ExperimentalMaterial3Api::class)
     DefaultTopAppBar(
@@ -421,8 +422,9 @@ fun MegaSearchTopAppBar(
     searchPlaceholder: String? = null,
     onSearchAction: ((String) -> Unit)? = null,
     actions: List<MenuActionWithClick>? = null,
+    focusRequester: FocusRequester = remember { FocusRequester() },
+    capitalization: KeyboardCapitalization = KeyboardCapitalization.None,
 ) {
-    val focusRequester = remember { FocusRequester() }
     val focusManager = LocalFocusManager.current
     var targetAlpha by remember { mutableFloatStateOf(0f) }
     val searchAlpha by animateFloatAsState(
@@ -443,6 +445,7 @@ fun MegaSearchTopAppBar(
 
     TopAppBar(
         modifier = modifier,
+        scrollBehavior = LocalTopAppBarScrollBehavior.current,
         navigationIcon = {
             val navigation = if (isSearchingMode) {
                 // In searching mode, we need to override the navigation to a back action that
@@ -462,7 +465,7 @@ fun MegaSearchTopAppBar(
         },
         title = {
             Box(
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier.fillMaxWidth().padding(end = 8.dp),
                 contentAlignment = Alignment.CenterStart
             ) {
                 SearchInputField(
@@ -474,6 +477,7 @@ fun MegaSearchTopAppBar(
                     onValueChanged = onQueryChanged,
                     placeHolderText = searchPlaceholder.orEmpty(),
                     onKeyboardAction = { onSearchAction?.invoke(query.orEmpty()) },
+                    capitalization = capitalization
                 )
 
                 MegaText(
@@ -524,7 +528,7 @@ fun MegaSearchTopAppBar(
 @CombinedThemePreviews
 @Composable
 private fun MegaTopAppBarTypePreview(
-    @PreviewParameter(NavigationTypeProvider::class) navigationType: AppBarNavigationType
+    @PreviewParameter(NavigationTypeProvider::class) navigationType: AppBarNavigationType,
 ) {
     AndroidThemeForPreviews {
         MegaTopAppBar(
@@ -566,7 +570,7 @@ private fun MegaTransparentTopAppBarPreview() {
 @CombinedThemePreviews
 @Composable
 private fun MegaTopAppBarActionsPreview(
-    @PreviewParameter(SubtitleProvider::class) subtitle: String?
+    @PreviewParameter(SubtitleProvider::class) subtitle: String?,
 ) {
     val actions =
         listOf(
@@ -650,6 +654,18 @@ private fun MegaSearchTopAppBarPreview() {
                 searchPlaceholder = "Search placeholder"
             )
         }
+    }
+}
+
+@CombinedThemePreviews
+@Composable
+private fun MegaSearchTopAppBarSearchModePreview() {
+    AndroidThemeForPreviews {
+        MegaSearchTopAppBar(
+            title = "",
+            navigationType = AppBarNavigationType.Back { },
+            isSearchingMode = true
+        )
     }
 }
 

@@ -5,7 +5,7 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
@@ -35,13 +35,13 @@ import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import mega.android.core.ui.R
 import mega.android.core.ui.components.MegaText
 import mega.android.core.ui.preview.CombinedThemePreviews
 import mega.android.core.ui.theme.AndroidThemeForPreviews
 import mega.android.core.ui.theme.AppTheme
-import mega.android.core.ui.theme.spacing.LocalSpacing
 import mega.android.core.ui.theme.values.TextColor
 import mega.android.core.ui.tokens.theme.DSTokens
 
@@ -161,7 +161,6 @@ private fun BaseSearchInputField(
     isError: Boolean = false,
     autoCorrect: Boolean = true,
 ) {
-    val spacing = LocalSpacing.current
     val interactionSource: MutableInteractionSource = remember { MutableInteractionSource() }
     val primaryTextSelectionColors = TextSelectionColors(
         handleColor = DSTokens.colors.text.primary,
@@ -184,7 +183,10 @@ private fun BaseSearchInputField(
         selectionColors = TextSelectionColors(
             handleColor = DSTokens.colors.text.primary,
             backgroundColor = DSTokens.colors.text.primary.copy(alpha = 0.4f),
-        )
+        ),
+        focusedContainerColor = DSTokens.colors.background.pageBackground,
+        unfocusedContainerColor = DSTokens.colors.background.pageBackground,
+        errorContainerColor = DSTokens.colors.background.pageBackground,
     )
 
     CompositionLocalProvider(
@@ -215,6 +217,7 @@ private fun BaseSearchInputField(
             keyboardActions = KeyboardActions {
                 onKeyboardAction?.invoke()
             },
+            singleLine = true,
         ) { innerTextField ->
             OutlinedTextFieldDefaults.DecorationBox(
                 value = value.text,
@@ -226,7 +229,8 @@ private fun BaseSearchInputField(
                     MegaText(
                         text = placeHolderText,
                         style = AppTheme.typography.bodyLarge,
-                        textColor = TextColor.Placeholder
+                        textColor = TextColor.Placeholder,
+                        overflow = TextOverflow.Ellipsis
                     )
                 },
                 colors = colors,
@@ -239,7 +243,7 @@ private fun BaseSearchInputField(
                                 .clickable {
                                     onValueChange(TextFieldValue(text = ""))
                                 }
-                                .padding(end = spacing.x12),
+                                .size(20.dp),
                             painter = painterResource(id = R.drawable.ic_x_medium_thin_outline),
                             tint = DSTokens.colors.icon.primary,
                             contentDescription = "Clear Text")
@@ -248,7 +252,7 @@ private fun BaseSearchInputField(
                 leadingIcon = {
                     Icon(
                         modifier = Modifier
-                            .padding(start = spacing.x12, end = spacing.x16),
+                            .size(20.dp),
                         painter = painterResource(id = R.drawable.ic_search_large_medium_thin_outline),
                         tint = DSTokens.colors.icon.secondary,
                         contentDescription = "Search"
