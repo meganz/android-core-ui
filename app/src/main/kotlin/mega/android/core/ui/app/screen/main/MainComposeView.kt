@@ -2,6 +2,7 @@ package mega.android.core.ui.app.screen.main
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -54,6 +55,8 @@ import mega.android.core.ui.app.component.VerificationTextInputFieldCatalog
 import mega.android.core.ui.components.LocalSnackBarHostState
 import mega.android.core.ui.components.MegaScaffold
 import mega.android.core.ui.components.dialogs.BasicSpinnerDialog
+import mega.android.core.ui.components.MegaText
+import mega.android.core.ui.components.card.RoundCard
 import mega.android.core.ui.components.inputfields.AnnotatedLabelTextInputField
 import mega.android.core.ui.components.inputfields.ExpirationDateInputField
 import mega.android.core.ui.components.inputfields.PasswordTextInputField
@@ -417,6 +420,21 @@ internal fun MainComposeView(
             item(key = 42) {
                 SpinnerDialogComponent()
             }
+
+            item(key = 43) {
+                RoundCard(
+                    modifier = Modifier.padding(16.dp),
+                    borderWidth = 1.dp,
+                ) {
+                    MegaText(
+                        modifier = Modifier.fillMaxWidth().padding(16.dp),
+                        text = "RoundCard",
+                        textColor = TextColor.Primary,
+                        style = AppTheme.typography.titleSmall
+                    )
+                }
+            }
+
         }
     }
 }
