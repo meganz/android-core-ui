@@ -13,8 +13,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.LinkAnnotation
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.TextLinkStyles
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.withLink
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -39,7 +42,12 @@ fun MegaClickableText(
 ) {
     val linkAnnotation = LinkAnnotation.Clickable(
         tag = "clickable_text",
-        linkInteractionListener = { onClick() }
+        linkInteractionListener = { onClick() },
+        styles = TextLinkStyles(
+            style = SpanStyle(
+                color = DSTokens.colors.link.primary,
+            )
+        )
     )
 
     val annotatedLinkString = buildAnnotatedString {
