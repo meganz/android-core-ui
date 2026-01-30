@@ -38,6 +38,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
@@ -289,6 +290,7 @@ private fun MegaTabRowWithContent(
 internal data class TabContent(
     val tabItem: TabItems,
     val content: @Composable (BoxScope.(isActive: Boolean) -> Unit)? = null,
+    val modifier: Modifier = Modifier,
 )
 
 /**
@@ -350,6 +352,7 @@ class TabsScope {
     ) = cells.add(
         TabContent(
             tabItem = tabItem,
+            modifier = if (tabItem.testTag.isNullOrBlank()) Modifier else Modifier.testTag(tabItem.testTag),
             content = { isActive ->
                 @OptIn(ExperimentalMaterial3Api::class)
                 content(
