@@ -1,7 +1,9 @@
 package mega.android.core.ui.components.button
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsPressedAsState
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -106,7 +108,6 @@ private fun FilledButton(
     val interactionSource = remember { MutableInteractionSource() }
     val isButtonPressed by interactionSource.collectIsPressedAsState()
     val containerColor = when {
-        enabled.not() -> containerColorDisabled
         isButtonPressed -> containerColorPressed
         else -> containerColorDefault
     }
@@ -118,6 +119,7 @@ private fun FilledButton(
         onClick = { if (!isLoading) onClick() },
         colors = ButtonDefaults.buttonColors(
             containerColor = containerColor,
+            disabledContainerColor = containerColorDisabled
         ),
         enabled = enabled
     ) {
@@ -162,7 +164,8 @@ private fun FilledButton(
 @Composable
 private fun PrimaryFilledButtonPreview() {
     AndroidThemeForPreviews {
-        PrimaryFilledButton(modifier = Modifier.wrapContentWidth(),
+        PrimaryFilledButton(
+            modifier = Modifier.wrapContentWidth(),
             text = "Filled Button",
             onClick = { })
     }
@@ -172,7 +175,8 @@ private fun PrimaryFilledButtonPreview() {
 @Composable
 private fun PrimaryFilledButtonLoadingPreview() {
     AndroidThemeForPreviews {
-        PrimaryFilledButton(modifier = Modifier.wrapContentWidth(),
+        PrimaryFilledButton(
+            modifier = Modifier.wrapContentWidth(),
             text = "Filled Button",
             isLoading = true,
             onClick = { })
@@ -183,10 +187,30 @@ private fun PrimaryFilledButtonLoadingPreview() {
 @Composable
 private fun PrimaryFilledButtonWithIconsPreview() {
     AndroidThemeForPreviews {
-        PrimaryFilledButton(modifier = Modifier.wrapContentWidth(),
+        PrimaryFilledButton(
+            modifier = Modifier.wrapContentWidth(),
             text = "Add Item",
             leadingIcon = painterResource(id = R.drawable.ic_search_large_medium_thin_outline),
             trailingIcon = painterResource(id = R.drawable.ic_arrow_left_medium_thin_outline),
             onClick = { })
+    }
+}
+
+// preview for button in disabled state
+@CombinedThemePreviews
+@Composable
+private fun PrimaryFilledButtonDisabledPreview() {
+    AndroidThemeForPreviews {
+        Box(
+            modifier = Modifier
+                .padding(20.dp)
+                .background(DSTokens.colors.background.pageBackground)
+        ) {
+            PrimaryFilledButton(
+                modifier = Modifier.wrapContentWidth(),
+                text = "Filled Button",
+                enabled = false,
+                onClick = { })
+        }
     }
 }
