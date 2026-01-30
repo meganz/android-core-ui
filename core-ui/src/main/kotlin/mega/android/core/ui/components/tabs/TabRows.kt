@@ -382,6 +382,7 @@ class TabsScope {
         return cells.add(
             TabContent(
                 tabItem = tabItem,
+                modifier = if (tabItem.testTag.isNullOrBlank()) Modifier else Modifier.testTag(tabItem.testTag),
                 content = { isActive ->
                     @OptIn(ExperimentalMaterial3Api::class)
                     CompositionLocalProvider(
