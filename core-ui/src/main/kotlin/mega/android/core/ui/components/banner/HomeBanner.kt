@@ -29,6 +29,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -71,6 +72,7 @@ fun HomeBanner(
         modifier = modifier
             .fillMaxWidth()
             .height(90.dp)
+            .testTag(HOME_BANNER_TEST_TAG)
     ) {
         // Inner Box with background and rounded corners
         Box(
@@ -87,7 +89,9 @@ fun HomeBanner(
                     .data(backgroundImageUrl)
                     .crossfade(true)
                     .build(),
-                modifier = Modifier.fillMaxSize(),
+                modifier = Modifier
+                    .fillMaxSize()
+                    .testTag(HOME_BANNER_BACKGROUND_IMAGE_TEST_TAG),
                 contentDescription = "Banner background image",
                 contentScale = ContentScale.Crop
             )
@@ -119,12 +123,13 @@ fun HomeBanner(
                             fontWeight = FontWeight.SemiBold
                         ),
                         color = DSTokens.colors.text.onColor,
-                        maxLines = 2
+                        maxLines = 2,
+                        modifier = Modifier.testTag(HOME_BANNER_TITLE_TEST_TAG)
                     )
 
                     BannerButton(
                         text = buttonText,
-                        onClick = onClick
+                        onClick = onClick,
                     )
                 }
 
@@ -144,7 +149,9 @@ fun HomeBanner(
                             .data(imageUrl)
                             .crossfade(true)
                             .build(),
-                        modifier = Modifier.size(50.dp),
+                        modifier = Modifier
+                            .size(50.dp)
+                            .testTag(HOME_BANNER_MAIN_IMAGE_TEST_TAG),
                         contentDescription = "Banner item image",
                         contentScale = ContentScale.Fit
                     )
@@ -160,7 +167,8 @@ fun HomeBanner(
                             top = 4.dp
                         )
                         .size(spacing.x24)
-                        .clickable { onDismissClick() },
+                        .clickable { onDismissClick() }
+                        .testTag(HOME_BANNER_DISMISS_BUTTON_TEST_TAG),
                     painter = painterResource(id = R.drawable.ic_close_medium_thin_outline),
                     contentDescription = "Dismiss",
                     tint = DSTokens.colors.text.onColor
@@ -181,7 +189,8 @@ private fun BannerButton(text: String, onClick: () -> Unit, modifier: Modifier =
     Button(
         modifier = modifier
             .padding(top = 10.dp)
-            .height(24.dp),
+            .height(24.dp)
+            .testTag(HOME_BANNER_BUTTON_TEST_TAG),
         shape = RoundedCornerShape(4.dp),
         colors = ButtonDefaults.buttonColors(
             containerColor = containerColor,
@@ -232,3 +241,10 @@ private fun HomeBannerWithoutDismissPreview() {
         )
     }
 }
+
+internal const val HOME_BANNER_TEST_TAG = "home_banner"
+internal const val HOME_BANNER_TITLE_TEST_TAG = "${HOME_BANNER_TEST_TAG}:title"
+internal const val HOME_BANNER_BUTTON_TEST_TAG = "${HOME_BANNER_TEST_TAG}:button"
+internal const val HOME_BANNER_DISMISS_BUTTON_TEST_TAG = "${HOME_BANNER_TEST_TAG}:dismiss_button"
+internal const val HOME_BANNER_BACKGROUND_IMAGE_TEST_TAG = "${HOME_BANNER_TEST_TAG}:background_image"
+internal const val HOME_BANNER_MAIN_IMAGE_TEST_TAG = "${HOME_BANNER_TEST_TAG}:main_image"
