@@ -1,7 +1,6 @@
 package mega.android.core.ui.components.card
 
 import androidx.annotation.DrawableRes
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -15,7 +14,6 @@ import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
@@ -28,7 +26,6 @@ import mega.android.core.ui.components.list.FlexibleLineListItem
 import mega.android.core.ui.preview.CombinedThemePreviews
 import mega.android.core.ui.theme.AndroidThemeForPreviews
 import mega.android.core.ui.theme.AppTheme
-import mega.android.core.ui.tokens.theme.DSTokens
 import mega.android.core.ui.tokens.theme.shape.shapes
 import mega.android.core.ui.theme.spacing.LocalSpacing
 import mega.android.core.ui.theme.values.IconColor
@@ -57,135 +54,135 @@ fun PlansCard(
     onSecondaryButtonClick: (() -> Unit)? = null,
     footerText: String? = null
 ) {
-    val shape = remember { shapes.small }
     val spacing = LocalSpacing.current
 
-    Column(
-        modifier = modifier
-            .clip(shape)
-            .border(1.dp, DSTokens.colors.border.strong, shape)
-            .padding(spacing.x16)
+    RoundCard(
+        modifier = modifier,
     ) {
-        MegaText(
-            modifier = Modifier
-                .fillMaxWidth()
-                .testTag(PlansCardTestTags.TITLE),
-            text = title,
-            textColor = TextColor.Primary,
-            style = AppTheme.typography.titleMedium
-        )
-
-        subtitle?.let {
+        Column(
+            modifier = Modifier.padding(spacing.x16),
+        ) {
             MegaText(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .testTag(PlansCardTestTags.SUBTITLE),
-                text = it,
+                    .testTag(PlansCardTestTags.TITLE),
+                text = title,
                 textColor = TextColor.Primary,
-                style = AppTheme.typography.bodyMedium
-            )
-        }
-
-        price?.let {
-            MegaText(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .testTag(PlansCardTestTags.PRICING),
-                text = it,
-                textColor = TextColor.Secondary,
-                style = AppTheme.typography.bodyMedium
-            )
-        }
-
-        if (features.isNotEmpty()) {
-            MegaText(
-                modifier = Modifier
-                    .padding(top = spacing.x24)
-                    .testTag(PlansCardTestTags.FEATURES_SECTION_TITLE),
-                text = featuresSectionTitle.orEmpty(),
-                textColor = TextColor.Primary,
-                style = AppTheme.typography.titleSmall
+                style = AppTheme.typography.titleMedium
             )
 
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .wrapContentHeight()
-                    .padding(top = spacing.x8)
-                    .testTag(PlansCardTestTags.FEATURES),
-                verticalArrangement = Arrangement.spacedBy(spacing.x8)
-            ) {
-                features.forEachIndexed { index, feature ->
-                    FlexibleLineListItem(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .wrapContentHeight()
-                            .testTag("${PlansCardTestTags.FEATURE_ITEM}_$index"),
-                        contentPadding = PaddingValues(0.dp),
-                        subtitle = feature.title,
-                        leadingElement = {
-                            MegaIcon(
-                                modifier = Modifier
-                                    .size(24.dp)
-                                    .align(Alignment.Center),
-                                painter = painterResource(id = feature.icon),
-                                tint = IconColor.Primary
-                            )
-                        },
-                        minHeight = 0.dp,
-                        enableClick = false
-                    )
+            subtitle?.let {
+                MegaText(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .testTag(PlansCardTestTags.SUBTITLE),
+                    text = it,
+                    textColor = TextColor.Primary,
+                    style = AppTheme.typography.bodyMedium
+                )
+            }
+
+            price?.let {
+                MegaText(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .testTag(PlansCardTestTags.PRICING),
+                    text = it,
+                    textColor = TextColor.Secondary,
+                    style = AppTheme.typography.bodyMedium
+                )
+            }
+
+            if (features.isNotEmpty()) {
+                MegaText(
+                    modifier = Modifier
+                        .padding(top = spacing.x24)
+                        .testTag(PlansCardTestTags.FEATURES_SECTION_TITLE),
+                    text = featuresSectionTitle.orEmpty(),
+                    textColor = TextColor.Primary,
+                    style = AppTheme.typography.titleSmall
+                )
+
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .wrapContentHeight()
+                        .padding(top = spacing.x8)
+                        .testTag(PlansCardTestTags.FEATURES),
+                    verticalArrangement = Arrangement.spacedBy(spacing.x8)
+                ) {
+                    features.forEachIndexed { index, feature ->
+                        FlexibleLineListItem(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .wrapContentHeight()
+                                .testTag("${PlansCardTestTags.FEATURE_ITEM}_$index"),
+                            contentPadding = PaddingValues(0.dp),
+                            subtitle = feature.title,
+                            leadingElement = {
+                                MegaIcon(
+                                    modifier = Modifier
+                                        .size(24.dp)
+                                        .align(Alignment.Center),
+                                    painter = painterResource(id = feature.icon),
+                                    tint = IconColor.Primary
+                                )
+                            },
+                            minHeight = 0.dp,
+                            enableClick = false
+                        )
+                    }
                 }
             }
-        }
 
-        linkText?.let {
-            MegaText(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = spacing.x24)
-                    .clickable { onLinkClickListener?.invoke() }
-                    .testTag(PlansCardTestTags.LINK),
-                text = it,
-                linkColor = LinkColor.Primary,
-                style = AppTheme.typography.bodyMedium,
-            )
-        }
+            linkText?.let {
+                MegaText(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = spacing.x24)
+                        .clickable { onLinkClickListener?.invoke() }
+                        .testTag(PlansCardTestTags.LINK),
+                    text = it,
+                    linkColor = LinkColor.Primary,
+                    style = AppTheme.typography.bodyMedium,
+                )
+            }
 
-        primaryButtonText?.let {
-            PrimaryFilledButton(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = spacing.x24)
-                    .testTag(PlansCardTestTags.PRIMARY_BUTTON),
-                text = it,
-                onClick = {
-                    onPrimaryButtonClick?.invoke()
-                }
-            )
-        }
+            primaryButtonText?.let {
+                PrimaryFilledButton(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = spacing.x24)
+                        .testTag(PlansCardTestTags.PRIMARY_BUTTON),
+                    text = it,
+                    onClick = {
+                        onPrimaryButtonClick?.invoke()
+                    }
+                )
+            }
 
-        secondaryButtonText?.let {
-            SecondaryFilledButton(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = spacing.x8)
-                    .testTag(PlansCardTestTags.SECONDARY_BUTTON),
-                text = it,
-                onClick = { onSecondaryButtonClick?.invoke() }
-            )
-        }
+            secondaryButtonText?.let {
+                SecondaryFilledButton(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = spacing.x8)
+                        .testTag(PlansCardTestTags.SECONDARY_BUTTON),
+                    text = it,
+                    onClick = { onSecondaryButtonClick?.invoke() }
+                )
+            }
 
-        footerText?.let {
-            MegaText(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = spacing.x16)
-                    .testTag(PlansCardTestTags.FOOTER),
-                text = it,
-                textColor = TextColor.Primary,
-                style = AppTheme.typography.bodySmall
-            )
+            footerText?.let {
+                MegaText(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = spacing.x16)
+                        .testTag(PlansCardTestTags.FOOTER),
+                    text = it,
+                    textColor = TextColor.Primary,
+                    style = AppTheme.typography.bodySmall
+                )
+            }
         }
     }
 }
