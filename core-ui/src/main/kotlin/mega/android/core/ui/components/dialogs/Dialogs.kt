@@ -201,6 +201,13 @@ fun BasicDialog(
         enter = expandIn(),
         exit = shrinkOut()
     ) {
+        val finalButtons = buttons.mapNotNull {
+            if (it.text.isEmpty()) {
+                null
+            } else {
+                it
+            }
+        }
         BasicAlertDialog(
             onDismissRequest = onDismissRequest,
             modifier = modifier,
@@ -213,7 +220,7 @@ fun BasicDialog(
                 buttons = {
                     if (buttonDirection == HORIZONTAL) {
                         MegaBasicDialogFlowRow {
-                            buttons.forEach {
+                            finalButtons.forEach {
                                 DialogButton(
                                     buttonText = it.text,
                                     onButtonClicked = { it.onClick() },
@@ -227,7 +234,7 @@ fun BasicDialog(
                             horizontalAlignment = Alignment.End,
                             verticalArrangement = Arrangement.spacedBy(LocalSpacing.current.x8)
                         ) {
-                            buttons.forEach {
+                            finalButtons.forEach {
                                 DialogButton(
                                     buttonText = it.text,
                                     onButtonClicked = { it.onClick() },
