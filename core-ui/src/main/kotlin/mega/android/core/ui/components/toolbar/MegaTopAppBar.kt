@@ -424,6 +424,7 @@ fun MegaSearchTopAppBar(
     actions: List<MenuActionWithClick>? = null,
     focusRequester: FocusRequester = remember { FocusRequester() },
     capitalization: KeyboardCapitalization = KeyboardCapitalization.None,
+    trailingIcons: @Composable RowScope.() -> Unit = {},
 ) {
     val focusManager = LocalFocusManager.current
     var targetAlpha by remember { mutableFloatStateOf(0f) }
@@ -493,22 +494,20 @@ fun MegaSearchTopAppBar(
         },
         actions = {
             AnimatedVisibility(
-                visible = !isSearchingMode || actions != null,
+                visible = !isSearchingMode,
                 enter = fadeIn(animationSpec = tween(50)),
                 exit = fadeOut(animationSpec = tween(50))
             ) {
                 Row {
-                    if (!isSearchingMode) {
-                        IconButtonWithTooltip(
-                            modifier = Modifier.wrapContentSize(),
-                            iconPainter = painterResource(
-                                id = R.drawable.ic_search_large_medium_thin_outline
-                            ),
-                            description = "Search",
-                            onClick = { onSearchingModeChanged?.invoke(!isSearchingMode) }
-                        )
-                    }
-
+                    trailingIcons()
+                    IconButtonWithTooltip(
+                        modifier = Modifier.wrapContentSize(),
+                        iconPainter = painterResource(
+                            id = R.drawable.ic_search_large_medium_thin_outline
+                        ),
+                        description = "Search",
+                        onClick = { onSearchingModeChanged?.invoke(!isSearchingMode) }
+                    )
                     if (actions != null) {
                         TopAppBarActionsComponent(actions, true, 2)
                     }
@@ -651,7 +650,16 @@ private fun MegaSearchTopAppBarPreview() {
                 onQueryChanged = { queryText = it },
                 isSearchingMode = isSearching,
                 onSearchingModeChanged = { isSearching = it },
-                searchPlaceholder = "Search placeholder"
+                searchPlaceholder = "Search placeholder",
+                trailingIcons = {
+                    IconButton(modifier = Modifier.wrapContentHeight(), onClick = {}) {
+                        Icon(
+                            painter = painterResource(id = R.drawable.ic_alert_triangle_medium_thin_outline),
+                            contentDescription = null
+
+                        )
+                    }
+                },
             )
         }
     }
