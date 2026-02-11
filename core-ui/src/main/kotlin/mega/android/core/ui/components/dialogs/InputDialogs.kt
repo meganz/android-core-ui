@@ -18,6 +18,7 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
@@ -238,7 +239,7 @@ private fun BasicInputDialog(
 
     BasicAlertDialog(
         onDismissRequest = onDismiss,
-        modifier = modifier,
+        modifier = modifier.testTag(BASIC_INPUT_DIALOG_BASIC_ALERT_DIALOG_TAG),
         properties = DialogProperties(
             dismissOnBackPress = dialogProperties.dismissOnBackPress,
             dismissOnClickOutside = dialogProperties.dismissOnClickOutside
@@ -247,6 +248,7 @@ private fun BasicInputDialog(
         MegaBasicDialogContent(
             title = {
                 MegaText(
+                    modifier = Modifier.testTag(BASIC_INPUT_DIALOG_TITLE_TAG),
                     text = title,
                     style = AppTheme.typography.headlineSmall,
                     textColor = TextColor.Primary,
@@ -256,6 +258,7 @@ private fun BasicInputDialog(
                 if (!description.isNullOrEmpty()) {
                     Column(modifier = Modifier.fillMaxWidth()) {
                         MegaText(
+                            modifier = Modifier.testTag(BASIC_INPUT_DIALOG_DESCRIPTION_TAG),
                             text = description,
                             style = AppTheme.typography.bodyMedium,
                             textColor = TextColor.Secondary,
@@ -267,12 +270,14 @@ private fun BasicInputDialog(
                 MegaBasicDialogFlowRow {
                     if (negativeButtonText != null && onNegativeButtonClicked != null) {
                         DialogButton(
+                            modifier = Modifier.testTag(BASIC_INPUT_DIALOG_NEGATIVE_BUTTON_TAG),
                             buttonText = negativeButtonText,
                             onButtonClicked = onNegativeButtonClicked,
                             enabled = dialogProperties.isNegativeButtonEnabled
                         )
                     }
                     DialogButton(
+                        modifier = Modifier.testTag(BASIC_INPUT_DIALOG_POSITIVE_BUTTON_TAG),
                         buttonText = positiveButtonText,
                         onButtonClicked = onPositiveButtonClicked,
                         enabled = dialogProperties.isPositiveButtonEnabled
@@ -359,3 +364,9 @@ private fun PasswordInputDialogWithPlaceholderPreview() {
         )
     }
 }
+
+internal const val BASIC_INPUT_DIALOG_BASIC_ALERT_DIALOG_TAG = "basic_input_dialog:alert_dialog"
+internal const val BASIC_INPUT_DIALOG_TITLE_TAG = "basic_input_dialog:text_title"
+internal const val BASIC_INPUT_DIALOG_DESCRIPTION_TAG = "basic_input_dialog:text_description"
+internal const val BASIC_INPUT_DIALOG_NEGATIVE_BUTTON_TAG = "basic_input_dialog:button_negative"
+internal const val BASIC_INPUT_DIALOG_POSITIVE_BUTTON_TAG = "basic_input_dialog:button_positive"

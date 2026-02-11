@@ -14,6 +14,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
@@ -210,7 +211,7 @@ fun BasicDialog(
         }
         BasicAlertDialog(
             onDismissRequest = onDismissRequest,
-            modifier = modifier,
+            modifier = modifier.testTag(BASIC_DIALOG_BASIC_ALERT_DIALOG_TAG),
             properties = DialogProperties(
                 dismissOnBackPress = dismissOnBackPress,
                 dismissOnClickOutside = dismissOnClickOutside
@@ -222,6 +223,7 @@ fun BasicDialog(
                         MegaBasicDialogFlowRow {
                             finalButtons.forEach {
                                 DialogButton(
+                                    modifier = Modifier.testTag("${BASIC_DIALOG_DIALOG_BUTTON_BASE_TAG}_${it.text}"),
                                     buttonText = it.text,
                                     onButtonClicked = { it.onClick() },
                                     enabled = it.enabled
@@ -236,6 +238,7 @@ fun BasicDialog(
                         ) {
                             finalButtons.forEach {
                                 DialogButton(
+                                    modifier = Modifier.testTag("${BASIC_DIALOG_DIALOG_BUTTON_BASE_TAG}_${it.text}"),
                                     buttonText = it.text,
                                     onButtonClicked = { it.onClick() },
                                     enabled = it.enabled
@@ -247,6 +250,7 @@ fun BasicDialog(
                 title = title?.text?.takeIf { it.isNotEmpty() }?.let {
                     @Composable {
                         LinkSpannedText(
+                            modifier = Modifier.testTag(BASIC_DIALOG_TITLE_TAG),
                             value = it,
                             spanStyles = title.annotations ?: emptyMap(),
                             onAnnotationClick = title.onAnnotationClick ?: {},
@@ -258,6 +262,7 @@ fun BasicDialog(
                 text = {
                     description?.let {
                         LinkSpannedText(
+                            modifier = Modifier.testTag(BASIC_DIALOG_DESCRIPTION_TAG),
                             value = it.text.orEmpty(),
                             spanStyles = it.annotations ?: emptyMap(),
                             onAnnotationClick = it.onAnnotationClick ?: {},
@@ -425,4 +430,9 @@ private fun BasicDialogWithVertical3ButtonsPreview() {
         )
     }
 }
+
+internal const val BASIC_DIALOG_BASIC_ALERT_DIALOG_TAG = "basic_dialog:basic_alert_dialog"
+internal const val BASIC_DIALOG_DIALOG_BUTTON_BASE_TAG = "basic_dialog:dialog_button"
+internal const val BASIC_DIALOG_TITLE_TAG = "basic_dialog:text_title"
+internal const val BASIC_DIALOG_DESCRIPTION_TAG = "basic_dialog:text_description"
 

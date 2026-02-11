@@ -36,6 +36,7 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.semantics.contentType
 import androidx.compose.ui.semantics.semantics
@@ -155,13 +156,16 @@ fun TextInputField(
                         .padding(bottom = spacing.x4)
                 ) {
                     Text(
+                        modifier = Modifier.testTag(TEXT_INPUT_FIELD_LABEL_TAG),
                         text = label,
                         style = AppTheme.typography.titleSmall,
                         color = DSTokens.colors.text.primary
                     )
                     optionalLabelText?.let {
                         Text(
-                            modifier = Modifier.padding(start = spacing.x8),
+                            modifier = Modifier
+                                .padding(start = spacing.x8)
+                                .testTag(TEXT_INPUT_FIELD_OPTIONAL_LABEL_TAG),
                             text = optionalLabelText,
                             style = AppTheme.typography.bodyMedium,
                             color = DSTokens.colors.text.secondary
@@ -232,13 +236,16 @@ fun TextInputField(
                         .padding(bottom = spacing.x4)
                 ) {
                     Text(
+                        modifier = Modifier.testTag(TEXT_INPUT_FIELD_LABEL_TAG),
                         text = label,
                         style = AppTheme.typography.titleSmall,
                         color = DSTokens.colors.text.primary
                     )
                     optionalLabelText?.let {
                         Text(
-                            modifier = Modifier.padding(start = spacing.x8),
+                            modifier = Modifier
+                                .padding(start = spacing.x8)
+                                .testTag(TEXT_INPUT_FIELD_OPTIONAL_LABEL_TAG),
                             text = optionalLabelText,
                             style = AppTheme.typography.bodyMedium,
                             color = DSTokens.colors.text.secondary
@@ -297,7 +304,8 @@ fun PasswordTextInputField(
             Text(
                 modifier = Modifier
                     .wrapContentWidth()
-                    .padding(bottom = LocalSpacing.current.x4),
+                    .padding(bottom = LocalSpacing.current.x4)
+                    .testTag(PASSWORD_TEXT_INPUT_FIELD_LABEL_TAG),
                 text = label,
                 style = AppTheme.typography.titleSmall,
                 color = DSTokens.colors.text.primary
@@ -369,7 +377,9 @@ fun ExpirationDateInputField(
                     it.spanStyles
                 )
                 Text(
-                    modifier = Modifier.padding(bottom = LocalSpacing.current.x4),
+                    modifier = Modifier
+                        .padding(bottom = LocalSpacing.current.x4)
+                        .testTag(EXPIRATION_DATE_INPUT_FIELD_LABEL_TAG),
                     text = annotatedLabelString,
                     style = it.baseStyle.copy(
                         color = DSTokens.textColor(textColor = it.baseTextColor)
@@ -452,7 +462,9 @@ fun AnnotatedLabelTextInputField(
                     it.spanStyles
                 )
                 Text(
-                    modifier = Modifier.padding(bottom = LocalSpacing.current.x4),
+                    modifier = Modifier
+                        .padding(bottom = LocalSpacing.current.x4)
+                        .testTag(ANNOTATED_LABEL_TEXT_INPUT_FIELD_LABEL_TAG),
                     text = annotatedLabelString,
                     style = it.baseStyle.copy(
                         color = DSTokens.textColor(textColor = it.baseTextColor)
@@ -533,7 +545,9 @@ fun AnnotatedLabelTextInputField(
                     it.spanStyles
                 )
                 Text(
-                    modifier = Modifier.padding(bottom = LocalSpacing.current.x4),
+                    modifier = Modifier
+                        .padding(bottom = LocalSpacing.current.x4)
+                        .testTag(ANNOTATED_LABEL_TEXT_INPUT_FIELD_LABEL_TAG),
                     text = annotatedLabelString,
                     style = it.baseStyle.copy(
                         color = DSTokens.textColor(textColor = it.baseTextColor)
@@ -638,7 +652,8 @@ internal fun BaseTextField(
                         contentType?.let {
                             this.contentType = it
                         }
-                    },
+                    }
+                    .testTag(BASE_TEXT_FIELD_OUTLINED_TEXT_FIELD_TAG),
                 keyboardOptions = KeyboardOptions(
                     keyboardType = keyboardType,
                     autoCorrectEnabled = isPasswordMode.not(),
@@ -648,6 +663,9 @@ internal fun BaseTextField(
                 placeholder = placeholder?.let {
                     {
                         MegaText(
+                            modifier = Modifier.testTag(
+                                BASE_TEXT_FIELD_OUTLINED_TEXT_FIELD_PLACEHOLDER_TAG
+                            ),
                             text = it,
                             style = AppTheme.typography.bodyLarge,
                             textColor = TextColor.Placeholder
@@ -697,7 +715,8 @@ internal fun BaseTextField(
                                     modifier = Modifier
                                         .clickable {
                                             onValueChanged?.invoke(TextFieldValue(""))
-                                        },
+                                        }
+                                        .testTag(BASE_TEXT_FIELD_CLEAR_TEXT_ICON_TAG),
                                     painter = painterResource(id = R.drawable.ic_close_medium_thin_outline),
                                     tint = DSTokens.colors.icon.primary,
                                     contentDescription = "Clear Text"
@@ -712,7 +731,8 @@ internal fun BaseTextField(
                                 Icon(
                                     modifier = Modifier
                                         .padding(horizontal = spacing.x8)
-                                        .clickable { showPassword = !showPassword },
+                                        .clickable { showPassword = !showPassword }
+                                        .testTag(BASE_TEXT_FIELD_PASSWORD_VISIBILITY_ICON_TAG),
                                     painter = painterResource(id = eyeIcon),
                                     tint = DSTokens.colors.icon.secondary,
                                     contentDescription = "Show Password"
@@ -738,21 +758,21 @@ internal fun BaseTextField(
         when {
             !successText.isNullOrBlank() -> {
                 HelpTextSuccess(
-                    modifier = footerModifier,
+                    modifier = footerModifier.testTag(BASE_TEXT_FIELD_SUCCESS_HELP_TEXT_TAG),
                     text = successText
                 )
             }
 
             !errorText.isNullOrBlank() -> {
                 HelpTextError(
-                    modifier = footerModifier,
+                    modifier = footerModifier.testTag(BASE_TEXT_FIELD_ERROR_HELP_TEXT_TAG),
                     text = errorText
                 )
             }
 
             !warningText.isNullOrBlank() -> {
                 HelpTextWarning(
-                    modifier = footerModifier,
+                    modifier = footerModifier.testTag(BASE_TEXT_FIELD_WARNING_HELP_TEXT_TAG),
                     text = warningText
                 )
             }
@@ -840,7 +860,8 @@ internal fun BaseTextField(
                         contentType?.let {
                             this.contentType = it
                         }
-                    },
+                    }
+                    .testTag(BASE_TEXT_FIELD_OUTLINED_TEXT_FIELD_TAG),
                 keyboardOptions = KeyboardOptions(
                     keyboardType = keyboardType,
                     autoCorrectEnabled = isPasswordMode.not(),
@@ -873,6 +894,9 @@ internal fun BaseTextField(
                 placeholder = placeholder?.let {
                     {
                         MegaText(
+                            modifier = Modifier.testTag(
+                                BASE_TEXT_FIELD_OUTLINED_TEXT_FIELD_PLACEHOLDER_TAG
+                            ),
                             text = it,
                             style = AppTheme.typography.bodyLarge,
                             textColor = TextColor.Placeholder
@@ -900,7 +924,8 @@ internal fun BaseTextField(
                                         .clickable {
                                             baseText = ""
                                             onValueChanged?.invoke("")
-                                        },
+                                        }
+                                        .testTag(BASE_TEXT_FIELD_CLEAR_TEXT_ICON_TAG),
                                     painter = painterResource(id = R.drawable.ic_close_medium_thin_outline),
                                     tint = DSTokens.colors.icon.primary,
                                     contentDescription = "Clear Text"
@@ -915,7 +940,8 @@ internal fun BaseTextField(
                                 Icon(
                                     modifier = Modifier
                                         .padding(horizontal = spacing.x8)
-                                        .clickable { showPassword = !showPassword },
+                                        .clickable { showPassword = !showPassword }
+                                        .testTag(BASE_TEXT_FIELD_PASSWORD_VISIBILITY_ICON_TAG),
                                     painter = painterResource(id = eyeIcon),
                                     tint = DSTokens.colors.icon.secondary,
                                     contentDescription = "Show Password"
@@ -941,21 +967,21 @@ internal fun BaseTextField(
         when {
             !successText.isNullOrBlank() -> {
                 HelpTextSuccess(
-                    modifier = footerModifier,
+                    modifier = footerModifier.testTag(BASE_TEXT_FIELD_SUCCESS_HELP_TEXT_TAG),
                     text = successText
                 )
             }
 
             !errorText.isNullOrBlank() -> {
                 HelpTextError(
-                    modifier = footerModifier,
+                    modifier = footerModifier.testTag(BASE_TEXT_FIELD_ERROR_HELP_TEXT_TAG),
                     text = errorText
                 )
             }
 
             !warningText.isNullOrBlank() -> {
                 HelpTextWarning(
-                    modifier = footerModifier,
+                    modifier = footerModifier.testTag(BASE_TEXT_FIELD_WARNING_HELP_TEXT_TAG),
                     text = warningText
                 )
             }
@@ -1019,13 +1045,16 @@ private fun BaseReadOnlyTextField(
                     .padding(bottom = spacing.x4)
             ) {
                 Text(
+                    modifier = Modifier.testTag(BASE_READ_ONLY_TEXT_FIELD_LABEL_TAG),
                     text = label,
                     style = AppTheme.typography.titleSmall,
                     color = DSTokens.colors.text.primary
                 )
                 optionalLabelText?.let {
                     Text(
-                        modifier = Modifier.padding(start = spacing.x8),
+                        modifier = Modifier
+                            .padding(start = spacing.x8)
+                            .testTag(BASE_READ_ONLY_TEXT_FIELD_OPTIONAL_LABEL_TAG),
                         text = optionalLabelText,
                         style = AppTheme.typography.bodyMedium,
                         color = DSTokens.colors.text.secondary
@@ -1037,7 +1066,8 @@ private fun BaseReadOnlyTextField(
         ReadOnlyOutlinedTextField(
             modifier = Modifier
                 .fillMaxWidth()
-                .heightIn(min = inputFieldHeight),
+                .heightIn(min = inputFieldHeight)
+                .testTag(BASE_READ_ONLY_TEXT_FIELD_OUTLINED_TEXT_FIELD_TAG),
             value = baseText,
             colors = colors,
             shape = RoundedCornerShape(8.dp),
@@ -1059,7 +1089,8 @@ private fun BaseReadOnlyTextField(
                                     .clickable {
                                         baseText = ""
                                         onValueChanged?.invoke("")
-                                    },
+                                    }
+                                    .testTag(BASE_READ_ONLY_TEXT_FIELD_CLEAR_TEXT_ICON_TAG),
                                 painter = painterResource(id = R.drawable.ic_close_medium_thin_outline),
                                 tint = DSTokens.colors.icon.primary,
                                 contentDescription = "Clear Text"
@@ -1074,7 +1105,8 @@ private fun BaseReadOnlyTextField(
                             Icon(
                                 modifier = Modifier
                                     .padding(horizontal = spacing.x8)
-                                    .clickable { showPassword = !showPassword },
+                                    .clickable { showPassword = !showPassword }
+                                    .testTag(BASE_READ_ONLY_TEXT_FIELD_PASSWORD_VISIBILITY_ICON_TAG),
                                 painter = painterResource(id = eyeIcon),
                                 tint = DSTokens.colors.icon.secondary,
                                 contentDescription = "Show Password"
@@ -1098,7 +1130,9 @@ private fun BaseReadOnlyTextField(
         when {
             !successText.isNullOrBlank() -> {
                 HelpTextSuccess(
-                    modifier = footerModifier,
+                    modifier = footerModifier.testTag(
+                        BASE_READ_ONLY_TEXT_FIELD_SUCCESS_HELP_TEXT_TAG
+                    ),
                     text = successText,
                     textColor = TextColor.Primary
                 )
@@ -1106,14 +1140,16 @@ private fun BaseReadOnlyTextField(
 
             !errorText.isNullOrBlank() -> {
                 HelpTextError(
-                    modifier = footerModifier,
+                    modifier = footerModifier.testTag(BASE_READ_ONLY_TEXT_FIELD_ERROR_HELP_TEXT_TAG),
                     text = errorText
                 )
             }
 
             !warningText.isNullOrBlank() -> {
                 HelpTextWarning(
-                    modifier = footerModifier,
+                    modifier = footerModifier.testTag(
+                        BASE_READ_ONLY_TEXT_FIELD_WARNING_HELP_TEXT_TAG
+                    ),
                     text = warningText
                 )
             }
@@ -1436,3 +1472,34 @@ private fun AnnotatedLabelTextInputFieldWithASuccessTextPreview() {
         )
     }
 }
+
+internal const val PASSWORD_TEXT_INPUT_FIELD_LABEL_TAG = "password_text_input_field:text_label"
+internal const val TEXT_INPUT_FIELD_LABEL_TAG = "text_input_field:text_label"
+internal const val TEXT_INPUT_FIELD_OPTIONAL_LABEL_TAG = "text_input_field:text_optional_label"
+internal const val EXPIRATION_DATE_INPUT_FIELD_LABEL_TAG = "expiration_date_input_field:text_label"
+internal const val ANNOTATED_LABEL_TEXT_INPUT_FIELD_LABEL_TAG =
+    "annotated_label_text_input_field:text_label"
+internal const val BASE_TEXT_FIELD_OUTLINED_TEXT_FIELD_TAG = "base_text_field:outlined_text_field"
+internal const val BASE_TEXT_FIELD_OUTLINED_TEXT_FIELD_PLACEHOLDER_TAG =
+    "base_text_field:text_placeholder"
+internal const val BASE_TEXT_FIELD_CLEAR_TEXT_ICON_TAG = "base_text_field:icon_clear_text"
+internal const val BASE_TEXT_FIELD_PASSWORD_VISIBILITY_ICON_TAG =
+    "base_text_field:icon_password_visibility"
+internal const val BASE_TEXT_FIELD_SUCCESS_HELP_TEXT_TAG = "base_text_field:help_text_success"
+internal const val BASE_TEXT_FIELD_ERROR_HELP_TEXT_TAG = "base_text_field:help_text_error"
+internal const val BASE_TEXT_FIELD_WARNING_HELP_TEXT_TAG = "base_text_field:help_text_warning"
+internal const val BASE_READ_ONLY_TEXT_FIELD_LABEL_TAG = "base_read_only_text_field:text_label"
+internal const val BASE_READ_ONLY_TEXT_FIELD_OPTIONAL_LABEL_TAG =
+    "base_read_only_text_field:text_optional_label"
+internal const val BASE_READ_ONLY_TEXT_FIELD_OUTLINED_TEXT_FIELD_TAG =
+    "base_read_only_text_field:text_field_read_only"
+internal const val BASE_READ_ONLY_TEXT_FIELD_CLEAR_TEXT_ICON_TAG =
+    "base_read_only_text_field:icon_clear_text"
+internal const val BASE_READ_ONLY_TEXT_FIELD_PASSWORD_VISIBILITY_ICON_TAG =
+    "base_read_only_text_field:icon_password_visibility"
+internal const val BASE_READ_ONLY_TEXT_FIELD_SUCCESS_HELP_TEXT_TAG =
+    "base_read_only_text_field:help_text_success"
+internal const val BASE_READ_ONLY_TEXT_FIELD_ERROR_HELP_TEXT_TAG =
+    "base_read_only_text_field:help_text_error"
+internal const val BASE_READ_ONLY_TEXT_FIELD_WARNING_HELP_TEXT_TAG =
+    "base_read_only_text_field:help_text_warning"

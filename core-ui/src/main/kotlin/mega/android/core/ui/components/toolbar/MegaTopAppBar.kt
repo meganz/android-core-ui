@@ -39,6 +39,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.style.TextOverflow
@@ -371,6 +372,7 @@ private fun DefaultTopAppBar(
             title = {
                 Column {
                     Text(
+                        modifier = Modifier.testTag(DEFAULT_TOP_APP_BAR_TITLE_TAG),
                         text = title,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis,
@@ -379,6 +381,7 @@ private fun DefaultTopAppBar(
 
                     subtitle?.let {
                         Text(
+                            modifier = Modifier.testTag(DEFAULT_TOP_APP_BAR_SUBTITLE_TAG),
                             text = it,
                             maxLines = 1,
                             overflow = TextOverflow.Ellipsis,
@@ -466,7 +469,9 @@ fun MegaSearchTopAppBar(
         },
         title = {
             Box(
-                modifier = Modifier.fillMaxWidth().padding(end = 8.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(end = 8.dp),
                 contentAlignment = Alignment.CenterStart
             ) {
                 SearchInputField(
@@ -773,3 +778,6 @@ private fun MegaTopAppBarWithTrailingIconsAndSubtitlePreview() {
         )
     }
 }
+
+internal const val DEFAULT_TOP_APP_BAR_TITLE_TAG = "default_top_app_bar:text_title"
+internal const val DEFAULT_TOP_APP_BAR_SUBTITLE_TAG = "default_top_app_bar:text_subtitle"

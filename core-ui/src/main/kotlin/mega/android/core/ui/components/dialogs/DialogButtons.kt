@@ -29,6 +29,7 @@ import mega.android.core.ui.tokens.theme.DSTokens
 @Composable
 fun DialogButton(
     buttonText: String,
+    modifier: Modifier = Modifier,
     onButtonClicked: () -> Unit = {},
     enabled: Boolean = true
 ) {
@@ -39,7 +40,7 @@ fun DialogButton(
     val pressedBackgroundColor = DSTokens.colors.button.primaryPressed
 
     Box(
-        modifier = Modifier
+        modifier = modifier
             .wrapContentSize()
             .focusRequester(focusRequester)
             .clip(RoundedCornerShape(8.dp))
