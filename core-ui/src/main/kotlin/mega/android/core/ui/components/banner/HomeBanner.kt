@@ -10,9 +10,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
@@ -22,6 +21,7 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -29,11 +29,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
 import coil3.request.ImageRequest
 import coil3.request.crossfade
@@ -71,13 +72,16 @@ fun HomeBanner(
     Box(
         modifier = modifier
             .fillMaxWidth()
-            .height(90.dp)
+            .wrapContentHeight()
+            .heightIn(min = HOME_BANNER_MIN_HEIGHT_DP.dp)
             .testTag(HOME_BANNER_TEST_TAG)
     ) {
         // Inner Box with background and rounded corners
         Box(
             modifier = Modifier
-                .fillMaxSize()
+                .fillMaxWidth()
+                .wrapContentHeight()
+                .heightIn(min = HOME_BANNER_MIN_HEIGHT_DP.dp)
                 .clip(RoundedCornerShape(10.dp))
                 .background(
                     color = DSTokens.colors.background.surface3,
@@ -90,7 +94,7 @@ fun HomeBanner(
                     .crossfade(true)
                     .build(),
                 modifier = Modifier
-                    .fillMaxSize()
+                    .matchParentSize()
                     .testTag(HOME_BANNER_BACKGROUND_IMAGE_TEST_TAG),
                 contentDescription = "Banner background image",
                 contentScale = ContentScale.Crop
@@ -98,7 +102,9 @@ fun HomeBanner(
 
             Row(
                 modifier = Modifier
-                    .fillMaxSize()
+                    .fillMaxWidth()
+                    .wrapContentHeight()
+                    .heightIn(min = HOME_BANNER_MIN_HEIGHT_DP.dp)
                     .padding(
                         horizontal = spacing.x8,
                         vertical = spacing.x12
@@ -189,22 +195,19 @@ private fun BannerButton(text: String, onClick: () -> Unit, modifier: Modifier =
     Button(
         modifier = modifier
             .padding(top = 10.dp)
-            .height(24.dp)
+            .heightIn(min = 24.dp)
             .testTag(HOME_BANNER_BUTTON_TEST_TAG),
         shape = RoundedCornerShape(4.dp),
         colors = ButtonDefaults.buttonColors(
             containerColor = containerColor,
         ),
-        contentPadding = PaddingValues(horizontal = 12.dp, vertical = 0.dp),
+        contentPadding = PaddingValues(horizontal = 12.dp, vertical = 4.dp),
         onClick = onClick,
         interactionSource = interactionSource
     ) {
         Text(
             text = text,
-            style = AppTheme.typography.labelMedium.copy(
-                fontSize = 10.sp,
-                lineHeight = 10.sp
-            ),
+            style = AppTheme.typography.labelMedium,
             color = DSTokens.colors.text.onColorInverse,
         )
     }
@@ -241,6 +244,30 @@ private fun HomeBannerWithoutDismissPreview() {
         )
     }
 }
+
+@CombinedThemePreviews
+@Composable
+private fun HomeBannerLargeFontPreview() {
+    val density = LocalDensity.current
+    CompositionLocalProvider(
+        LocalDensity provides Density(density.density, fontScale = 1.5f)
+    ) {
+        AndroidThemeForPreviews {
+            HomeBanner(
+                modifier = Modifier.padding(16.dp),
+                backgroundImageUrl = "https://eu.static.mega.co.nz/banners/transferit_background@2x.png",
+                imageUrl = "https://eu.static.mega.co.nz/banners/transferit_image@2x.png",
+                title = "Get 5GB extra with our password manager",
+                buttonText = "Try it now",
+                showDismissButton = true,
+                onDismissClick = {}
+            )
+        }
+    }
+}
+
+/** Minimum height of the banner. Use the same value for shimmer/placeholder to keep alignment when font size changes. */
+const val HOME_BANNER_MIN_HEIGHT_DP = 90
 
 internal const val HOME_BANNER_TEST_TAG = "home_banner"
 internal const val HOME_BANNER_TITLE_TEST_TAG = "${HOME_BANNER_TEST_TAG}:title"
