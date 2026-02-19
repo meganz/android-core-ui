@@ -130,7 +130,9 @@ fun HomeBanner(
                         ),
                         color = DSTokens.colors.text.onColor,
                         maxLines = 2,
-                        modifier = Modifier.testTag(HOME_BANNER_TITLE_TEST_TAG)
+                        modifier = Modifier
+                            .heightIn(min = 32.dp)
+                            .testTag(HOME_BANNER_TITLE_TEST_TAG)
                     )
 
                     BannerButton(
@@ -273,5 +275,6 @@ internal const val HOME_BANNER_TEST_TAG = "home_banner"
 internal const val HOME_BANNER_TITLE_TEST_TAG = "${HOME_BANNER_TEST_TAG}:title"
 internal const val HOME_BANNER_BUTTON_TEST_TAG = "${HOME_BANNER_TEST_TAG}:button"
 internal const val HOME_BANNER_DISMISS_BUTTON_TEST_TAG = "${HOME_BANNER_TEST_TAG}:dismiss_button"
-internal const val HOME_BANNER_BACKGROUND_IMAGE_TEST_TAG = "${HOME_BANNER_TEST_TAG}:background_image"
+internal const val HOME_BANNER_BACKGROUND_IMAGE_TEST_TAG =
+    "${HOME_BANNER_TEST_TAG}:background_image"
 internal const val HOME_BANNER_MAIN_IMAGE_TEST_TAG = "${HOME_BANNER_TEST_TAG}:main_image"
