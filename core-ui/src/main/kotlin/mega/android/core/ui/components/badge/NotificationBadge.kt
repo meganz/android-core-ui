@@ -1,6 +1,5 @@
 package mega.android.core.ui.components.badge
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
@@ -10,7 +9,6 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.PreviewParameter
@@ -35,7 +33,7 @@ fun NotificationBadge(
 ) {
     MegaIcon(
         imageVector,
-        tint = IconColor.InverseAccent,
+        tint = IconColor.OnColor,
         modifier = modifier
             .size(if (small) 10.dp else 16.dp)
             .background(DSTokens.colors.components.interactive, shape = CircleShape)
@@ -60,7 +58,7 @@ fun NotificationBadge(
 ) {
     MegaText(
         text,
-        textColor = TextColor.Inverse,
+        textColor = TextColor.OnColor,
         textAlign = TextAlign.Center,
         style = AppTheme.typography.bodySmall,
         modifier = modifier
@@ -69,7 +67,6 @@ fun NotificationBadge(
             .padding(horizontal = 5.dp)
     )
 }
-
 
 
 @Composable
