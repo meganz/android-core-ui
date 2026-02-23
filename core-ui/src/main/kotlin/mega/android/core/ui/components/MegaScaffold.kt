@@ -5,10 +5,13 @@ import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkVertically
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -30,7 +33,13 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import mega.android.core.ui.R
 import mega.android.core.ui.components.button.MegaOutlinedButton
+import mega.android.core.ui.components.fab.MegaFab
 import mega.android.core.ui.components.list.OneLineListItem
 import mega.android.core.ui.components.prompt.ErrorPrompt
 import mega.android.core.ui.components.scrollbar.fastscroll.FastScrollLazyColumn
@@ -39,8 +48,13 @@ import mega.android.core.ui.components.tabs.MegaFixedTabRow
 import mega.android.core.ui.components.toolbar.AppBarNavigationType
 import mega.android.core.ui.components.toolbar.MegaTopAppBar
 import mega.android.core.ui.model.TabItems
+import mega.android.core.ui.modifiers.ScrollToHideBehavior
+import mega.android.core.ui.modifiers.applyScrollToHideBehavior
+import mega.android.core.ui.modifiers.applyScrollToHideFabBehavior
+import mega.android.core.ui.modifiers.rememberScrollToHideBehavior
 import mega.android.core.ui.preview.CombinedThemePreviews
 import mega.android.core.ui.theme.AndroidThemeForPreviews
+import mega.android.core.ui.theme.values.TextColor
 import mega.android.core.ui.tokens.theme.DSTokens
 
 
@@ -66,6 +80,7 @@ fun MegaScaffold(
         floatingActionButtonPosition,
         fromAutofill,
         null,
+        null,
         contentWindowInsets,
         content
     )
@@ -87,6 +102,7 @@ fun MegaScaffoldWithTopAppBarScrollBehavior(
     floatingActionButtonPosition: FabPosition = FabPosition.End,
     fromAutofill: Boolean = false,
     scrollBehavior: TopAppBarScrollBehavior? = TopAppBarDefaults.pinnedScrollBehavior(),
+    scrollToHideBehavior: ScrollToHideBehavior? = rememberScrollToHideBehavior(),
     contentWindowInsets: WindowInsets = ScaffoldDefaults.contentWindowInsets,
     content: @Composable (PaddingValues) -> Unit,
 ) {
@@ -96,16 +112,21 @@ fun MegaScaffoldWithTopAppBarScrollBehavior(
     CompositionLocalProvider(
         LocalSnackBarHostState provides snackbarHostState,
         LocalTopAppBarScrollBehavior provides scrollBehavior,
-        LocalForceRaiseTopAppBar provides forceRaisedTopAppBar
+        LocalForceRaiseTopAppBar provides forceRaisedTopAppBar,
+        LocalScrollToHideBehavior provides scrollToHideBehavior
     ) {
         Scaffold(
-            modifier = modifier.then(
-                if (scrollBehavior == null) {
-                    Modifier
-                } else {
-                    Modifier.nestedScroll(scrollBehavior.nestedScrollConnection)
+            modifier = modifier
+                .run {
+                    if (scrollToHideBehavior != null) {
+                        nestedScroll(scrollToHideBehavior.nestedScrollConnection)
+                    } else this
                 }
-            ),
+                .run {
+                    if (scrollBehavior != null) {
+                        nestedScroll(scrollBehavior.nestedScrollConnection)
+                    } else this
+                },
             snackbarHost = { snackbarHost(snackbarHostState) },
             topBar = topBar,
             bottomBar = bottomBar,
@@ -128,6 +149,11 @@ val LocalSnackBarHostState = compositionLocalOf<SnackbarHostState?> { null }
 internal val LocalTopAppBarScrollBehavior =
     @OptIn(ExperimentalMaterial3Api::class)
     compositionLocalOf<TopAppBarScrollBehavior?> { null }
+
+/**
+ * Behavior used to hide UI components like FAB and tabs when scrolling.
+ */
+internal val LocalScrollToHideBehavior = compositionLocalOf<ScrollToHideBehavior?> { null }
 
 /**
  * Used to force raised top app bar when there's a banner under the top app bar, check ForceRiceTopAppBarEffect
@@ -169,6 +195,50 @@ private fun MegaScaffoldPreview() {
                 ) {
                     ErrorPrompt("Error", forceRiceTopAppBar = true)
                 }
+                LazyColumn {
+                    items(100) {
+                        OneLineListItem("List ${it + 1}")
+                    }
+                }
+            }
+        }
+    }
+}
+
+
+@Preview
+@Composable
+private fun MegaScaffoldCollapsibleHeaderPreview() {
+    AndroidThemeForPreviews {
+        @OptIn(ExperimentalMaterial3Api::class)
+        MegaScaffoldWithTopAppBarScrollBehavior(
+            topBar = {
+                MegaTopAppBar(
+                    title = "Scaffold with Collapsible Header",
+                    navigationType = AppBarNavigationType.Back {},
+                )
+            },
+            floatingActionButton = {
+                MegaFab(
+                    modifier = Modifier.applyScrollToHideFabBehavior(),
+                    onClick = {},
+                    painter = painterResource(R.drawable.ic_arrow_left_medium_thin_outline),
+                )
+            },
+            scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
+        ) { paddingValues ->
+            Column(modifier = Modifier.padding(paddingValues)) {
+                MegaText(
+                    "Collapsible component",
+                    modifier = Modifier
+                        .applyScrollToHideBehavior()
+                        .fillMaxWidth()
+                        .background(Color.Gray)
+                        .height(100.dp),
+                    textColor = TextColor.Primary,
+                    textAlign = TextAlign.Center
+                )
+
                 LazyColumn {
                     items(100) {
                         OneLineListItem("List ${it + 1}")
@@ -257,7 +327,7 @@ private fun exitAnimation() = fadeOut() + shrinkVertically()
 
 @Composable
 private fun ExampleInnerLazyList(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     val modifierContent = LocalTabContentModifier.current ?: Modifier
     FastScrollLazyColumn(

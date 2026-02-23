@@ -43,11 +43,14 @@ import androidx.compose.ui.unit.dp
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.launch
+import mega.android.core.ui.components.LocalScrollToHideBehavior
 import mega.android.core.ui.components.LocalTopAppBarScrollBehavior
 import mega.android.core.ui.components.button.MegaOutlinedButton
 import mega.android.core.ui.components.divider.StrongDivider
 import mega.android.core.ui.components.prompt.ErrorPrompt
 import mega.android.core.ui.model.TabItems
+import mega.android.core.ui.modifiers.ScrollToHideBehavior
+import mega.android.core.ui.modifiers.applyScrollToHideBehavior
 import mega.android.core.ui.modifiers.scrolledTopAppBarBackgroundColor
 import mega.android.core.ui.preview.CombinedThemePreviews
 import mega.android.core.ui.theme.AndroidThemeForPreviews
@@ -90,7 +93,7 @@ fun MegaScrollableTabRow(
     items: List<TabItems>,
     onClick: (Int) -> Unit,
     modifier: Modifier = Modifier,
-    withDivider: Boolean = true
+    withDivider: Boolean = true,
 ) {
     SecondaryScrollableTabRow(
         modifier = modifier.fillMaxWidth(),
@@ -167,6 +170,43 @@ fun MegaFixedTabRow(
 )
 
 /**
+ * Collapsible tab row with a linked horizontal pager to show the content.
+ * @param modifier to be applied to the whole component
+ * @param applyScrolledBackgroundColor Whether to apply scrolled background color to tabs when content is scrolled or not.
+ * @param initialSelectedIndex Please notice that as content is shown in a pager selected index is stored in an internal pager state
+ * @param beyondViewportPageCount Pages to compose and layout before and after the list of visible pages.
+ * @param onTabSelected
+ * @param pagerScrollEnabled Whether scrolls in the pager change the tab or not
+ * @param hideTabs Tabs will be hidden if true. In some situation we need to temporarily hide the tabs to avoid changing current tab. Considering set [pagerScrollEnabled] to false in this case
+ * @param fixedHeader View that will be displayed below the tabs and divider, above the content. Typically a prompt.
+ * @param scrollToHideBehavior behavior to hide tabs on scroll
+ */
+@Composable
+fun MegaCollapsibleTabRow(
+    modifier: Modifier = Modifier,
+    applyScrolledBackgroundColor: Boolean = true,
+    initialSelectedIndex: Int = 0,
+    beyondViewportPageCount: Int = 0,
+    onTabSelected: (Int) -> Boolean = { true },
+    pagerScrollEnabled: Boolean = true,
+    hideTabs: Boolean = false,
+    fixedHeader: (@Composable () -> Unit)? = null,
+    scrollToHideBehavior: ScrollToHideBehavior? = LocalScrollToHideBehavior.current,
+    cells: @Composable TabsScope.() -> Unit,
+) = MegaScrollableTabRow(
+    modifier = modifier,
+    applyScrolledBackgroundColor = applyScrolledBackgroundColor,
+    initialSelectedIndex = initialSelectedIndex,
+    beyondViewportPageCount = beyondViewportPageCount,
+    onTabSelected = onTabSelected,
+    pagerScrollEnabled = pagerScrollEnabled,
+    hideTabs = hideTabs,
+    fixedHeader = fixedHeader,
+    scrollToHideBehavior = scrollToHideBehavior,
+    cells = cells,
+)
+
+/**
  * Scrollable tab row with a linked horizontal pager to show the content.
  * @param modifier to be applied to the whole component
  * @param applyScrolledBackgroundColor Whether to apply scrolled background color to tabs when content is scrolled or not.
@@ -188,11 +228,50 @@ fun MegaScrollableTabRow(
     hideTabs: Boolean = false,
     fixedHeader: (@Composable () -> Unit)? = null,
     cells: @Composable TabsScope.() -> Unit,
+) = MegaScrollableTabRow(
+    modifier = modifier,
+    applyScrolledBackgroundColor = applyScrolledBackgroundColor,
+    initialSelectedIndex = initialSelectedIndex,
+    beyondViewportPageCount = beyondViewportPageCount,
+    onTabSelected = onTabSelected,
+    pagerScrollEnabled = pagerScrollEnabled,
+    hideTabs = hideTabs,
+    fixedHeader = fixedHeader,
+    scrollToHideBehavior = null,
+    cells = cells,
+)
+
+/**
+ * Scrollable tab row with a linked horizontal pager to show the content.
+ * @param modifier to be applied to the whole component
+ * @param applyScrolledBackgroundColor Whether to apply scrolled background color to tabs when content is scrolled or not.
+ * @param initialSelectedIndex Please notice that as content is shown in a pager selected index is stored in an internal pager state
+ * @param beyondViewportPageCount Pages to compose and layout before and after the list of visible pages.
+ * @param onTabSelected
+ * @param pagerScrollEnabled Whether scrolls in the pager change the tab or not
+ * @param hideTabs Tabs will be hidden if true. In some situation we need to temporarily hide the tabs to avoid changing current tab. Considering set [pagerScrollEnabled] to false in this case
+ * @param fixedHeader View that will be displayed below the tabs and divider, above the content. Typically a prompt.
+ */
+@Composable
+private fun MegaScrollableTabRow(
+    modifier: Modifier = Modifier,
+    applyScrolledBackgroundColor: Boolean = true,
+    initialSelectedIndex: Int = 0,
+    beyondViewportPageCount: Int = 0,
+    onTabSelected: (Int) -> Boolean = { true },
+    pagerScrollEnabled: Boolean = true,
+    hideTabs: Boolean = false,
+    fixedHeader: (@Composable () -> Unit)? = null,
+    scrollToHideBehavior: ScrollToHideBehavior? = LocalScrollToHideBehavior.current,
+    cells: @Composable TabsScope.() -> Unit,
 ) = MegaTabRowWithContent(
     modifier = modifier,
     initialSelectedIndex = initialSelectedIndex,
     beyondViewportPageCount = beyondViewportPageCount,
-    onTabSelected = onTabSelected,
+    onTabSelected = {
+        scrollToHideBehavior?.reset()
+        onTabSelected(it)
+    },
     pagerScrollEnabled = pagerScrollEnabled,
     cells = cells,
     fixedHeader = fixedHeader,
@@ -202,7 +281,9 @@ fun MegaScrollableTabRow(
             exit = exitTabsAnimation(),
             visible = !hideTabs
         ) {
-            Column {
+            Column(
+                modifier = Modifier.applyScrollToHideBehavior(scrollToHideBehavior)
+            ) {
                 MegaScrollableTabRow(
                     tabIndex = pagerState.currentPage,
                     items = tabs,
@@ -281,8 +362,10 @@ private fun MegaTabRowWithContent(
         }
 
         LaunchedEffect(pagerState.currentPage) {
-            selectedTabIndex = pagerState.currentPage
-            onTabSelected(pagerState.currentPage)
+            if (selectedTabIndex != pagerState.currentPage) {
+                selectedTabIndex = pagerState.currentPage
+                onTabSelected(pagerState.currentPage)
+            }
         }
     }
 }
