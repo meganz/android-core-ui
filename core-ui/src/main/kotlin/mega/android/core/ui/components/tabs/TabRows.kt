@@ -8,9 +8,13 @@ import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.calculateEndPadding
+import androidx.compose.foundation.layout.calculateStartPadding
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.LazyListState
@@ -38,6 +42,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import kotlinx.collections.immutable.ImmutableList
@@ -63,11 +68,16 @@ fun MegaFixedTabRow(
     items: List<TabItems>,
     onClick: (Int) -> Unit,
     modifier: Modifier = Modifier,
+    withDivider: Boolean = true,
 ) {
     SecondaryTabRow(
         modifier = modifier.fillMaxWidth(),
         selectedTabIndex = tabIndex,
-        divider = { StrongDivider() },
+        divider = {
+            if (withDivider) {
+                StrongDivider()
+            }
+        },
         containerColor = Color.Transparent,
         indicator = {
             TabRowDefaults.SecondaryIndicator(
@@ -137,6 +147,7 @@ fun MegaScrollableTabRow(
 @Composable
 fun MegaFixedTabRow(
     modifier: Modifier = Modifier,
+    contentPadding: PaddingValues = PaddingValues.Zero,
     applyScrolledBackgroundColor: Boolean = true,
     initialSelectedIndex: Int = 0,
     beyondViewportPageCount: Int = 0,
@@ -147,6 +158,7 @@ fun MegaFixedTabRow(
     cells: @Composable TabsScope.() -> Unit,
 ) = MegaTabRowWithContent(
     modifier = modifier,
+    contentPadding = contentPadding,
     initialSelectedIndex = initialSelectedIndex,
     beyondViewportPageCount = beyondViewportPageCount,
     onTabSelected = onTabSelected,
@@ -159,12 +171,22 @@ fun MegaFixedTabRow(
             exit = exitTabsAnimation(),
             visible = !hideTabs
         ) {
-            MegaFixedTabRow(
-                tabIndex = pagerState.currentPage,
-                items = tabs,
-                onClick = onClick,
-                modifier = if (applyScrolledBackgroundColor) Modifier.scrolledTopAppBarBackgroundColor() else Modifier,
-            )
+            Column(
+                modifier = (if (applyScrolledBackgroundColor) Modifier.scrolledTopAppBarBackgroundColor() else Modifier)
+            ) {
+                val layoutDirection = LocalLayoutDirection.current
+                MegaFixedTabRow(
+                    tabIndex = pagerState.currentPage,
+                    items = tabs,
+                    withDivider = false, //we add it manually to fill width (including contentPadding)
+                    onClick = onClick,
+                    modifier = Modifier.padding(
+                        start = contentPadding.calculateStartPadding(layoutDirection),
+                        end = contentPadding.calculateEndPadding(layoutDirection),
+                    ),
+                )
+                StrongDivider()
+            }
         }
     },
 )
@@ -184,6 +206,7 @@ fun MegaFixedTabRow(
 @Composable
 fun MegaCollapsibleTabRow(
     modifier: Modifier = Modifier,
+    contentPadding: PaddingValues = PaddingValues.Zero,
     applyScrolledBackgroundColor: Boolean = true,
     initialSelectedIndex: Int = 0,
     beyondViewportPageCount: Int = 0,
@@ -194,6 +217,7 @@ fun MegaCollapsibleTabRow(
     scrollToHideBehavior: ScrollToHideBehavior? = LocalScrollToHideBehavior.current,
     cells: @Composable TabsScope.() -> Unit,
 ) = MegaScrollableTabRow(
+    contentPadding = contentPadding,
     modifier = modifier,
     applyScrolledBackgroundColor = applyScrolledBackgroundColor,
     initialSelectedIndex = initialSelectedIndex,
@@ -220,6 +244,7 @@ fun MegaCollapsibleTabRow(
 @Composable
 fun MegaScrollableTabRow(
     modifier: Modifier = Modifier,
+    contentPadding: PaddingValues = PaddingValues.Zero,
     applyScrolledBackgroundColor: Boolean = true,
     initialSelectedIndex: Int = 0,
     beyondViewportPageCount: Int = 0,
@@ -229,6 +254,7 @@ fun MegaScrollableTabRow(
     fixedHeader: (@Composable () -> Unit)? = null,
     cells: @Composable TabsScope.() -> Unit,
 ) = MegaScrollableTabRow(
+    contentPadding = contentPadding,
     modifier = modifier,
     applyScrolledBackgroundColor = applyScrolledBackgroundColor,
     initialSelectedIndex = initialSelectedIndex,
@@ -254,6 +280,7 @@ fun MegaScrollableTabRow(
  */
 @Composable
 private fun MegaScrollableTabRow(
+    contentPadding: PaddingValues,
     modifier: Modifier = Modifier,
     applyScrolledBackgroundColor: Boolean = true,
     initialSelectedIndex: Int = 0,
@@ -266,6 +293,7 @@ private fun MegaScrollableTabRow(
     cells: @Composable TabsScope.() -> Unit,
 ) = MegaTabRowWithContent(
     modifier = modifier,
+    contentPadding = contentPadding,
     initialSelectedIndex = initialSelectedIndex,
     beyondViewportPageCount = beyondViewportPageCount,
     onTabSelected = {
@@ -282,14 +310,19 @@ private fun MegaScrollableTabRow(
             visible = !hideTabs
         ) {
             Column(
-                modifier = Modifier.applyScrollToHideBehavior(scrollToHideBehavior)
+                modifier = (if (applyScrolledBackgroundColor) Modifier.scrolledTopAppBarBackgroundColor() else Modifier)
+                    .applyScrollToHideBehavior(scrollToHideBehavior)
             ) {
+                val layoutDirection = LocalLayoutDirection.current
                 MegaScrollableTabRow(
                     tabIndex = pagerState.currentPage,
                     items = tabs,
                     withDivider = false, //we add it manually to fill width
                     onClick = onClick,
-                    modifier = if (applyScrolledBackgroundColor) Modifier.scrolledTopAppBarBackgroundColor() else Modifier,
+                    modifier = Modifier.padding(
+                        start = contentPadding.calculateStartPadding(layoutDirection),
+                        end = contentPadding.calculateEndPadding(layoutDirection),
+                    ),
                 )
                 StrongDivider()
             }
@@ -303,6 +336,7 @@ private fun exitTabsAnimation() = fadeOut() + shrinkVertically()
 @Composable
 private fun MegaTabRowWithContent(
     modifier: Modifier = Modifier,
+    contentPadding: PaddingValues,
     initialSelectedIndex: Int = 0,
     beyondViewportPageCount: Int = 0,
     onTabSelected: (Int) -> Boolean = { true },
@@ -326,8 +360,18 @@ private fun MegaTabRowWithContent(
     var scrollOffsets by rememberSaveable {
         mutableStateOf(mapOf<Int, Float>())
     }
+    val layoutDirection = LocalLayoutDirection.current
+    val startPadding = contentPadding.calculateStartPadding(layoutDirection)
+    val endPadding = contentPadding.calculateEndPadding(layoutDirection)
     @OptIn(ExperimentalMaterial3Api::class)
-    Column(modifier.fillMaxWidth()) {
+    Column(
+        modifier
+            .fillMaxWidth()
+            .padding(
+                top = contentPadding.calculateTopPadding(),
+                bottom = contentPadding.calculateBottomPadding()
+            )
+    ) {
         var selectedTabIndex by rememberSaveable { mutableIntStateOf(0) }
         val currentScrollBehaviorState = LocalTopAppBarScrollBehavior.current
         LaunchedEffect(currentScrollBehaviorState?.state?.contentOffset) {
@@ -350,6 +394,10 @@ private fun MegaTabRowWithContent(
         }
         fixedHeader?.invoke()
         HorizontalPager(
+            modifier = Modifier.padding(
+                start = startPadding,
+                end = endPadding,
+            ),
             state = pagerState,
             userScrollEnabled = pagerScrollEnabled,
             beyondViewportPageCount = beyondViewportPageCount,
@@ -465,7 +513,9 @@ class TabsScope {
         return cells.add(
             TabContent(
                 tabItem = tabItem,
-                modifier = if (tabItem.testTag.isNullOrBlank()) Modifier else Modifier.testTag(tabItem.testTag),
+                modifier = if (tabItem.testTag.isNullOrBlank()) Modifier else Modifier.testTag(
+                    tabItem.testTag
+                ),
                 content = { isActive ->
                     @OptIn(ExperimentalMaterial3Api::class)
                     CompositionLocalProvider(

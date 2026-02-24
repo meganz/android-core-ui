@@ -44,6 +44,7 @@ import mega.android.core.ui.components.list.OneLineListItem
 import mega.android.core.ui.components.prompt.ErrorPrompt
 import mega.android.core.ui.components.scrollbar.fastscroll.FastScrollLazyColumn
 import mega.android.core.ui.components.tabs.LocalTabContentModifier
+import mega.android.core.ui.components.tabs.MegaCollapsibleTabRow
 import mega.android.core.ui.components.tabs.MegaFixedTabRow
 import mega.android.core.ui.components.toolbar.AppBarNavigationType
 import mega.android.core.ui.components.toolbar.MegaTopAppBar
@@ -252,7 +253,7 @@ private fun MegaScaffoldCollapsibleHeaderPreview() {
 
 @CombinedThemePreviews
 @Composable
-private fun MegaScaffoldWithTabRowPreview() {
+fun MegaScaffoldWithTabRowPreview() {
     AndroidThemeForPreviews {
         @OptIn(ExperimentalMaterial3Api::class)
         MegaScaffoldWithTopAppBarScrollBehavior(
@@ -263,8 +264,8 @@ private fun MegaScaffoldWithTabRowPreview() {
                 )
             }
         ) {
-            MegaFixedTabRow(
-                modifier = Modifier.padding(it),
+            MegaCollapsibleTabRow(
+                contentPadding = it,
             ) {
                 (0..1).forEach { tabIndex ->
                     addLazyListTextTab(TabItems("Tab $tabIndex", false)) {
@@ -301,7 +302,7 @@ private fun MegaScaffoldWithTabRowProvidedPreview() {
             }
         ) {
             MegaFixedTabRow(
-                modifier = Modifier.padding(it),
+                contentPadding = it,
                 fixedHeader = {
                     AnimatedVisibility(
                         showBanner,
