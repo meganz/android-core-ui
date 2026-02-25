@@ -7,11 +7,15 @@ import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.infiniteRepeatable
 import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.calculateEndPadding
+import androidx.compose.foundation.layout.calculateStartPadding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
 import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.platform.LocalLayoutDirection
 
 /**
  * Conditional execution wrapper for the Modifier class
@@ -42,4 +46,30 @@ fun Modifier.infiniteRotation(
         label = "rotation"
     )
     this.rotate(rotation)
+}
+
+/**
+ * Extension function to exclude top padding from PaddingValues
+ */
+@Composable
+fun PaddingValues.excludeTopPadding(): PaddingValues {
+    val layoutDirection = LocalLayoutDirection.current
+    return PaddingValues(
+        bottom = calculateBottomPadding(),
+        start = calculateStartPadding(layoutDirection),
+        end = calculateEndPadding(layoutDirection)
+    )
+}
+
+/**
+ * Extension function to exclude bottom padding from PaddingValues
+ */
+@Composable
+fun PaddingValues.excludingBottomPadding(): PaddingValues {
+    val layoutDirection = LocalLayoutDirection.current
+    return PaddingValues(
+        top = calculateTopPadding(),
+        start = calculateStartPadding(layoutDirection),
+        end = calculateEndPadding(layoutDirection)
+    )
 }

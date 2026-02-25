@@ -43,6 +43,7 @@ import mega.android.core.ui.components.fab.MegaFab
 import mega.android.core.ui.components.list.OneLineListItem
 import mega.android.core.ui.components.prompt.ErrorPrompt
 import mega.android.core.ui.components.scrollbar.fastscroll.FastScrollLazyColumn
+import mega.android.core.ui.components.snackbar.MegaSnackbar
 import mega.android.core.ui.components.tabs.LocalTabContentModifier
 import mega.android.core.ui.components.tabs.MegaCollapsibleTabRow
 import mega.android.core.ui.components.tabs.MegaFixedTabRow
