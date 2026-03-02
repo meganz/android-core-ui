@@ -10,12 +10,14 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.calculateEndPadding
 import androidx.compose.foundation.layout.calculateStartPadding
+import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.platform.LocalLayoutDirection
+import androidx.compose.ui.unit.dp
 
 /**
  * Conditional execution wrapper for the Modifier class
@@ -33,7 +35,7 @@ fun Modifier.conditional(
 
 
 fun Modifier.infiniteRotation(
-    durationMillis: Int = 1000
+    durationMillis: Int = 1000,
 ): Modifier = composed {
     val infiniteTransition = rememberInfiniteTransition(label = "infinite-rotation")
     val rotation by infiniteTransition.animateFloat(
@@ -73,3 +75,30 @@ fun PaddingValues.excludingBottomPadding(): PaddingValues {
         end = calculateEndPadding(layoutDirection)
     )
 }
+
+/**
+ * Apply additional bottom space to follow our design system for lists content. Please notice that usually PaddingValues are preferable.
+ */
+fun Modifier.safeBottomPadding() = this.padding(bottom = BOTTOM_PADDING_DP.dp)
+
+/**
+ * Creates a new Padding values with additional bottom space to follow our design system for lists content.
+ */
+@Composable
+fun PaddingValues.plusSafeBottom(): PaddingValues {
+    val layoutDirection = LocalLayoutDirection.current
+    return PaddingValues(
+        bottom = calculateBottomPadding() + BOTTOM_PADDING_DP.dp,
+        top = calculateTopPadding(),
+        start = calculateStartPadding(layoutDirection),
+        end = calculateEndPadding(layoutDirection)
+    )
+}
+
+/**
+ * The bottom padding with additional bottom space to follow our design system for lists content.
+ */
+fun PaddingValues.calculateSafeBottomPadding() =
+    this.calculateBottomPadding() + BOTTOM_PADDING_DP.dp
+
+private const val BOTTOM_PADDING_DP = 58
