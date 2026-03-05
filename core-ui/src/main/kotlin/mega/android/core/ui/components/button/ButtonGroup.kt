@@ -1,5 +1,6 @@
 package mega.android.core.ui.components.button
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -23,6 +24,7 @@ import mega.android.core.ui.theme.AndroidThemeForPreviews
 import mega.android.core.ui.theme.AppTheme
 import mega.android.core.ui.theme.spacing.LocalSpacing
 import mega.android.core.ui.theme.values.TextColor
+import mega.android.core.ui.tokens.theme.DSTokens
 
 @Composable
 fun HorizontalAnchoredButtonGroup(
@@ -107,6 +109,67 @@ fun AnchoredButtonGroup(
     }
 }
 
+@Composable
+fun InlineAnchoredButtonGroup(
+    primaryButtonText: String,
+    textOnlyButtonText: String,
+    onPrimaryButtonClick: () -> Unit,
+    onTextOnlyButtonClick: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    InlineAnchoredButtonGroup(
+        modifier = modifier,
+        buttonGroup = listOf(
+            {
+                Button.TextOnlyButton(
+                    text = textOnlyButtonText,
+                    onClick = onPrimaryButtonClick,
+                )
+            },
+            {
+                Button.PrimaryButton(
+                    text = primaryButtonText,
+                    onClick = onTextOnlyButtonClick,
+                )
+            },
+        )
+    )
+}
+
+@Composable
+fun InlineAnchoredButtonGroup(
+    buttonGroup: List<@Composable RowScope.() -> Button>,
+    modifier: Modifier = Modifier,
+    withDivider: Boolean = false,
+) {
+    Box(
+        modifier = modifier
+            .fillMaxWidth()
+            .wrapContentHeight()
+            .background(DSTokens.colors.background.surface1)
+    ) {
+        if (withDivider) {
+            StrongDivider(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .align(Alignment.TopCenter)
+            )
+        }
+        Row(
+            modifier = Modifier
+                .padding(LocalSpacing.current.x16)
+                .align(Alignment.CenterEnd),
+            horizontalArrangement = Arrangement.spacedBy(
+                LocalSpacing.current.x16,
+            )
+        ) {
+            buttonGroup.forEach { button ->
+                button(this@Row).LocalButton()
+            }
+        }
+    }
+}
+
 @CombinedThemePreviews
 @Composable
 private fun AnchoredButtonGroupPreview() {
@@ -159,5 +222,13 @@ private fun HorizontalAnchoredButtonGroupPreview() {
             ),
             withDivider = true
         )
+    }
+}
+
+@CombinedThemePreviews
+@Composable
+private fun InlineAnchoredButtonGroupPreview() {
+    AndroidThemeForPreviews {
+        InlineAnchoredButtonGroup("Accept", "Cancel", {}, {})
     }
 }
