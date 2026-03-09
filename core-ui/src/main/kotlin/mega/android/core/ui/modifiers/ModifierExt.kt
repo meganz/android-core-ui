@@ -82,7 +82,7 @@ fun PaddingValues.excludingBottomPadding(): PaddingValues {
 fun Modifier.safeBottomPadding() = this.padding(bottom = BOTTOM_PADDING_DP.dp)
 
 /**
- * Creates a new Padding values with additional bottom space to follow our design system for lists content.
+ * Creates a new Padding values with additional bottom space to follow our design system for lists and grids content.
  */
 @Composable
 fun PaddingValues.plusSafeBottom(): PaddingValues {
@@ -96,9 +96,9 @@ fun PaddingValues.plusSafeBottom(): PaddingValues {
 }
 
 /**
- * The bottom padding with additional bottom space to follow our design system for lists content.
+ * The bottom padding with additional bottom space to follow our design system for lists and grids content.
  */
 fun PaddingValues.calculateSafeBottomPadding() =
     this.calculateBottomPadding() + BOTTOM_PADDING_DP.dp
 
-private const val BOTTOM_PADDING_DP = 58
+private const val BOTTOM_PADDING_DP = 100
