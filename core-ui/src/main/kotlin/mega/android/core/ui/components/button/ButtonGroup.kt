@@ -15,10 +15,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.PreviewParameter
 import mega.android.core.ui.components.MegaText
 import mega.android.core.ui.components.divider.StrongDivider
 import mega.android.core.ui.model.Button
 import mega.android.core.ui.model.LocalButton
+import mega.android.core.ui.preview.BooleanProvider
 import mega.android.core.ui.preview.CombinedThemePreviews
 import mega.android.core.ui.theme.AndroidThemeForPreviews
 import mega.android.core.ui.theme.AppTheme
@@ -31,7 +33,7 @@ fun HorizontalAnchoredButtonGroup(
     buttonGroup: List<@Composable RowScope.() -> Button>,
     modifier: Modifier = Modifier,
     withDivider: Boolean = false,
-    innerPadding: PaddingValues = PaddingValues(all = LocalSpacing.current.x16)
+    innerPadding: PaddingValues = PaddingValues(all = LocalSpacing.current.x16),
 ) {
     val spacing = LocalSpacing.current
 
@@ -68,7 +70,7 @@ fun AnchoredButtonGroup(
     modifier: Modifier = Modifier,
     title: String? = null,
     withDivider: Boolean = false,
-    innerPadding: PaddingValues = PaddingValues(all = LocalSpacing.current.x16)
+    innerPadding: PaddingValues = PaddingValues(all = LocalSpacing.current.x16),
 ) {
     val spacing = LocalSpacing.current
 
@@ -116,12 +118,13 @@ fun InlineAnchoredButtonGroup(
     onPrimaryButtonClick: () -> Unit,
     onTextOnlyButtonClick: () -> Unit,
     modifier: Modifier = Modifier,
+    primaryButtonEnabled: Boolean = true,
 ) {
     InlineAnchoredButtonGroup(
         modifier = modifier,
         buttonGroup = listOf(
             {
-                Button.TextOnlyButton(
+                Button.TextOnlyButtonM3(
                     text = textOnlyButtonText,
                     onClick = onPrimaryButtonClick,
                 )
@@ -130,6 +133,7 @@ fun InlineAnchoredButtonGroup(
                 Button.PrimaryButton(
                     text = primaryButtonText,
                     onClick = onTextOnlyButtonClick,
+                    enabled = primaryButtonEnabled,
                 )
             },
         )
@@ -140,7 +144,6 @@ fun InlineAnchoredButtonGroup(
 fun InlineAnchoredButtonGroup(
     buttonGroup: List<@Composable RowScope.() -> Button>,
     modifier: Modifier = Modifier,
-    withDivider: Boolean = false,
 ) {
     Box(
         modifier = modifier
@@ -148,13 +151,6 @@ fun InlineAnchoredButtonGroup(
             .wrapContentHeight()
             .background(DSTokens.colors.background.surface1)
     ) {
-        if (withDivider) {
-            StrongDivider(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .align(Alignment.TopCenter)
-            )
-        }
         Row(
             modifier = Modifier
                 .padding(LocalSpacing.current.x16)
@@ -227,8 +223,16 @@ private fun HorizontalAnchoredButtonGroupPreview() {
 
 @CombinedThemePreviews
 @Composable
-private fun InlineAnchoredButtonGroupPreview() {
+private fun InlineAnchoredButtonGroupPreview(
+    @PreviewParameter(BooleanProvider::class) enabled: Boolean,
+) {
     AndroidThemeForPreviews {
-        InlineAnchoredButtonGroup("Accept", "Cancel", {}, {})
+        InlineAnchoredButtonGroup(
+            primaryButtonText = "Accept",
+            textOnlyButtonText = "Cancel",
+            onPrimaryButtonClick = {},
+            onTextOnlyButtonClick = {},
+            primaryButtonEnabled = enabled
+        )
     }
 }

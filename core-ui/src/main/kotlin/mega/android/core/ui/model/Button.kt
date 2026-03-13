@@ -7,6 +7,7 @@ import mega.android.core.ui.components.button.MegaOutlinedButton
 import mega.android.core.ui.components.button.PrimaryFilledButton
 import mega.android.core.ui.components.button.SecondaryFilledButton
 import mega.android.core.ui.components.button.TextOnlyButton
+import mega.android.core.ui.components.button.TextOnlyButtonM3
 
 sealed interface Button {
     data class PrimaryButton(
@@ -34,6 +35,13 @@ sealed interface Button {
         val modifier: Modifier = Modifier,
         val onClick: () -> Unit = {},
         val enabled: Boolean = true
+    ) : Button
+
+    data class TextOnlyButtonM3(
+        val text: String,
+        val modifier: Modifier = Modifier,
+        val onClick: () -> Unit = {},
+        val enabled: Boolean = true,
     ) : Button
 
     data class MegaOutlinedButton(
@@ -84,6 +92,16 @@ private fun Button.TextOnlyButton.LocalTextOnlyButton() {
 }
 
 @Composable
+private fun Button.TextOnlyButtonM3.LocalTextOnlyButtonM3() {
+    TextOnlyButtonM3(
+        modifier = modifier,
+        text = text,
+        onClick = onClick,
+        enabled = enabled
+    )
+}
+
+@Composable
 private fun Button.MegaOutlinedButton.LocalMegaOutlinedButton() {
     MegaOutlinedButton(
         modifier = modifier,
@@ -103,5 +121,6 @@ internal fun Button.LocalButton() {
         is Button.SecondaryButton -> LocalSecondaryButton()
         is Button.TextOnlyButton -> LocalTextOnlyButton()
         is Button.MegaOutlinedButton -> LocalMegaOutlinedButton()
+        is Button.TextOnlyButtonM3 -> LocalTextOnlyButtonM3()
     }
 }

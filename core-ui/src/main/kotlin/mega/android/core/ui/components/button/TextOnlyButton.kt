@@ -29,22 +29,42 @@ fun TextOnlyButton(
         text = text,
         enabled = enabled,
         textColorDefault = DSTokens.colors.button.primary,
-        textColorDisabled = DSTokens.colors.text.disabled,
+        textColorDisabled = DSTokens.colors.button.disabled,
         textColorPressed = DSTokens.colors.button.primary,
         onClick = onClick
     )
 }
 
 @Composable
+fun TextOnlyButtonM3(
+    text: String,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+    enabled: Boolean = true,
+) {
+    BaseTextButton(
+        modifier = modifier,
+        text = text,
+        enabled = enabled,
+        textColorDefault = DSTokens.colors.button.primary,
+        textColorDisabled = DSTokens.colors.button.disabled,
+        textColorPressed = DSTokens.colors.button.primary,
+        onClick = onClick,
+        underLine = false
+    )
+}
+
+@Composable
 private fun BaseTextButton(
-    modifier: Modifier,
     text: String,
     enabled: Boolean,
     textColorDefault: Color,
     textColorDisabled: Color,
     textColorPressed: Color,
+    modifier: Modifier = Modifier,
+    contentPadding: PaddingValues = ButtonDefaults.TextButtonContentPadding,
+    underLine: Boolean = true,
     onClick: () -> Unit,
-    contentPadding: PaddingValues = ButtonDefaults.TextButtonContentPadding
 ) {
     val interactionSource = remember { MutableInteractionSource() }
     val isButtonPressed by interactionSource.collectIsPressedAsState()
@@ -62,7 +82,7 @@ private fun BaseTextButton(
     ) {
         Text(
             text = text,
-            textDecoration = TextDecoration.Underline,
+            textDecoration = if (underLine) TextDecoration.Underline else null,
             style = AppTheme.typography.labelLarge,
             color = textColor
         )
@@ -71,8 +91,16 @@ private fun BaseTextButton(
 
 @CombinedThemePreviews
 @Composable
-private fun PrimaryTextButtonPreview() {
+private fun TextOnlyButtonPreview() {
     AndroidThemeForPreviews {
         TextOnlyButton(text = "TextButton", onClick = {})
+    }
+}
+
+@CombinedThemePreviews
+@Composable
+private fun TextOnlyButtonM3Preview() {
+    AndroidThemeForPreviews {
+        TextOnlyButtonM3(text = "TextButton", onClick = {})
     }
 }
