@@ -23,10 +23,14 @@ import coil3.compose.AsyncImage
 import coil3.request.ImageRequest
 import coil3.request.addLastModifiedToFileCacheKey
 import mega.android.core.ui.components.MegaText
+import mega.android.core.ui.components.image.MegaIcon
+import androidx.compose.ui.graphics.vector.rememberVectorPainter
+import androidx.compose.ui.graphics.vector.ImageVector
 import mega.android.core.ui.preview.CombinedThemePreviews
 import mega.android.core.ui.theme.AndroidThemeForPreviews
 import mega.android.core.ui.theme.AppTheme
 import mega.android.core.ui.theme.values.TextColor
+import mega.android.core.ui.theme.values.IconColor
 import mega.android.core.ui.tokens.theme.DSTokens
 import java.io.File
 
@@ -41,6 +45,8 @@ private fun BaseProfilePicture(
     name: String?,
     contentDescription: String?,
     modifier: Modifier = Modifier,
+    icon: ImageVector? = null,
+    iconTint: IconColor = IconColor.Inverse,
     baseStyle: TextStyle = LocalTextStyle.current,
     avatarColor: Color = DSTokens.colors.background.surface3,
 ) {
@@ -76,14 +82,24 @@ private fun BaseProfilePicture(
                     ),
                 contentAlignment = Alignment.Center,
             ) {
-                MegaText(
-                    modifier = Modifier
-                        .wrapContentSize(unbounded = true),
-                    text = name?.take(1).orEmpty().uppercase(),
-                    textColor = TextColor.OnColor,
-                    style = baseStyle,
-                    textAlign = TextAlign.Center
-                )
+                icon?.let {
+                    MegaIcon(
+                        modifier = Modifier
+                            .wrapContentSize(unbounded = true),
+                        painter = rememberVectorPainter(icon),
+                        tint = iconTint,
+                        contentDescription = contentDescription,
+                    )
+                } ?: run {
+                    MegaText(
+                        modifier = Modifier
+                            .wrapContentSize(unbounded = true),
+                        text = name?.take(1).orEmpty().uppercase(),
+                        textColor = TextColor.OnColor,
+                        style = baseStyle,
+                        textAlign = TextAlign.Center
+                    )
+                }
             }
         }
     }
@@ -104,6 +120,27 @@ fun LargeProfilePicture(
         contentDescription = contentDescription,
         modifier = modifier,
         baseStyle = AppTheme.typography.titleLarge.copy(fontSize = 22.sp),
+        avatarColor = avatarColor
+    )
+}
+
+@Composable
+fun MediumProfileIcon(
+    icon: ImageVector?,
+    iconTint: IconColor = IconColor.Inverse,
+    contentDescription: String?,
+    modifier: Modifier = Modifier,
+    avatarColor: Color = DSTokens.colors.background.surface3,
+) {
+    BaseProfilePicture(
+        avatarSize = MEDIUM_PROFILE_PICTURE_SIZE,
+        imageFile = null,
+        icon = icon,
+        iconTint = iconTint,
+        name = null,
+        contentDescription = contentDescription,
+        modifier = modifier,
+        baseStyle = AppTheme.typography.bodyMedium,
         avatarColor = avatarColor
     )
 }
@@ -172,6 +209,17 @@ private fun MediumProfilePicturePreview() {
 
 @Composable
 @CombinedThemePreviews
+private fun MediumProfileIconPreview() {
+    AndroidThemeForPreviews {
+        MediumProfileIcon(
+            icon = null,
+            contentDescription = "Icon",
+        )
+    }
+}
+
+@Composable
+@CombinedThemePreviews
 private fun SmallProfilePicturePreview() {
     AndroidThemeForPreviews {
         SmallProfilePicture(
@@ -181,3 +229,5 @@ private fun SmallProfilePicturePreview() {
         )
     }
 }
+
+
