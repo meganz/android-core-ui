@@ -21,9 +21,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import mega.android.core.ui.R
 import mega.android.core.ui.components.buttonDefaultHeight
+import mega.android.core.ui.components.buttonDefaultHeightM3
 import mega.android.core.ui.preview.CombinedThemePreviews
 import mega.android.core.ui.theme.AndroidThemeForPreviews
 import mega.android.core.ui.theme.AppTheme
@@ -40,7 +42,38 @@ fun PrimaryFilledButton(
     isLoading: Boolean = false,
 ) {
     FilledButton(
-        modifier = modifier.heightIn(buttonDefaultHeight),
+        modifier = modifier,
+        text = text,
+        leadingIcon = leadingIcon,
+        trailingIcon = trailingIcon,
+        enabled = enabled,
+        isLoading = isLoading,
+        onClick = onClick,
+        containerColorDefault = DSTokens.colors.button.primary,
+        containerColorDisabled = DSTokens.colors.button.disabled,
+        containerColorPressed = DSTokens.colors.button.primaryPressed,
+        textColorDefault = DSTokens.colors.text.inverseAccent,
+        textColorDisabled = DSTokens.colors.text.onColorDisabled,
+        iconColorDefault = DSTokens.colors.icon.inverseAccent,
+        iconColorDisabled = DSTokens.colors.icon.onColorDisabled,
+        loaderIconColor = DSTokens.colors.icon.inverseAccent
+    )
+}
+
+@Composable
+fun PrimaryFilledButtonM3(
+    modifier: Modifier,
+    text: String,
+    onClick: () -> Unit,
+    leadingIcon: Painter? = null,
+    trailingIcon: Painter? = null,
+    enabled: Boolean = true,
+    isLoading: Boolean = false,
+) {
+    FilledButton(
+        modifier = modifier,
+        cornerSize = 12.dp,
+        height = buttonDefaultHeightM3,
         text = text,
         leadingIcon = leadingIcon,
         trailingIcon = trailingIcon,
@@ -69,7 +102,7 @@ fun SecondaryFilledButton(
     isLoading: Boolean = false
 ) {
     FilledButton(
-        modifier = modifier.heightIn(buttonDefaultHeight),
+        modifier = modifier,
         text = text,
         leadingIcon = leadingIcon,
         trailingIcon = trailingIcon,
@@ -104,6 +137,8 @@ private fun FilledButton(
     iconColorDefault: Color,
     iconColorDisabled: Color,
     loaderIconColor: Color,
+    height: Dp = buttonDefaultHeight,
+    cornerSize: Dp = 8.dp,
 ) {
     val interactionSource = remember { MutableInteractionSource() }
     val isButtonPressed by interactionSource.collectIsPressedAsState()
@@ -113,9 +148,9 @@ private fun FilledButton(
     }
 
     Button(
-        modifier = modifier,
+        modifier = modifier.heightIn(height),
         interactionSource = interactionSource,
-        shape = RoundedCornerShape(8.dp),
+        shape = RoundedCornerShape(cornerSize),
         onClick = { if (!isLoading) onClick() },
         colors = ButtonDefaults.buttonColors(
             containerColor = containerColor,
@@ -128,14 +163,14 @@ private fun FilledButton(
 
         if (isLoading) {
             CircularProgressIndicator(
-                modifier = Modifier.size(buttonDefaultHeight / 2),
+                modifier = Modifier.size(height / 2),
                 color = loaderIconColor,
             )
         } else {
             leadingIcon?.let {
                 Icon(
                     modifier = Modifier
-                        .size(buttonDefaultHeight / 2)
+                        .size(height / 2)
                         .padding(end = 8.dp),
                     painter = leadingIcon,
                     tint = iconColor,
@@ -148,7 +183,7 @@ private fun FilledButton(
             trailingIcon?.let {
                 Icon(
                     modifier = Modifier
-                        .size(buttonDefaultHeight / 2)
+                        .size(height / 2)
                         .padding(start = 8.dp),
                     painter = trailingIcon,
                     tint = iconColor,

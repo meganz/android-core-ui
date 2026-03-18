@@ -5,12 +5,23 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.painter.Painter
 import mega.android.core.ui.components.button.MegaOutlinedButton
 import mega.android.core.ui.components.button.PrimaryFilledButton
+import mega.android.core.ui.components.button.PrimaryFilledButtonM3
 import mega.android.core.ui.components.button.SecondaryFilledButton
 import mega.android.core.ui.components.button.TextOnlyButton
 import mega.android.core.ui.components.button.TextOnlyButtonM3
 
 sealed interface Button {
     data class PrimaryButton(
+        val text: String,
+        val modifier: Modifier = Modifier,
+        val onClick: () -> Unit = {},
+        val leadingIcon: Painter? = null,
+        val trailingIcon: Painter? = null,
+        val enabled: Boolean = true,
+        val isLoading: Boolean = false,
+    ) : Button
+
+    data class PrimaryButtonM3(
         val text: String,
         val modifier: Modifier = Modifier,
         val onClick: () -> Unit = {},
@@ -58,6 +69,19 @@ sealed interface Button {
 @Composable
 private fun Button.PrimaryButton.LocalPrimaryButton() {
     PrimaryFilledButton(
+        modifier = modifier,
+        text = text,
+        onClick = onClick,
+        leadingIcon = leadingIcon,
+        trailingIcon = trailingIcon,
+        enabled = enabled,
+        isLoading = isLoading,
+    )
+}
+
+@Composable
+private fun Button.PrimaryButtonM3.LocalPrimaryButtonM3() {
+    PrimaryFilledButtonM3(
         modifier = modifier,
         text = text,
         onClick = onClick,
@@ -118,6 +142,7 @@ private fun Button.MegaOutlinedButton.LocalMegaOutlinedButton() {
 internal fun Button.LocalButton() {
     when (this) {
         is Button.PrimaryButton -> LocalPrimaryButton()
+        is Button.PrimaryButtonM3 -> LocalPrimaryButtonM3()
         is Button.SecondaryButton -> LocalSecondaryButton()
         is Button.TextOnlyButton -> LocalTextOnlyButton()
         is Button.MegaOutlinedButton -> LocalMegaOutlinedButton()
