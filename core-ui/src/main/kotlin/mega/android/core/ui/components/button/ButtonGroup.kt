@@ -26,9 +26,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import kotlinx.coroutines.launch
+import mega.android.core.ui.R
 import mega.android.core.ui.components.MegaScaffold
 import mega.android.core.ui.components.MegaText
 import mega.android.core.ui.components.buttonDefaultHeightM3
@@ -153,6 +156,8 @@ fun InlineAnchoredButtonGroup(
     onTextOnlyButtonClick: () -> Unit,
     modifier: Modifier = Modifier,
     primaryButtonEnabled: Boolean = true,
+    primaryButtonLeadingIcon: Painter? = null,
+    primaryButtonTrailingIcon: Painter? = null,
     applyInsets: Boolean = true,
 ) {
     CompositionLocalProvider(
@@ -173,6 +178,8 @@ fun InlineAnchoredButtonGroup(
                         text = primaryButtonText,
                         onClick = onPrimaryButtonClick,
                         enabled = primaryButtonEnabled,
+                        leadingIcon = primaryButtonLeadingIcon,
+                        trailingIcon = primaryButtonTrailingIcon,
                     )
                 },
             )
@@ -281,7 +288,8 @@ private fun InlineAnchoredButtonGroupPreview(
             textOnlyButtonText = "Cancel",
             onPrimaryButtonClick = {},
             onTextOnlyButtonClick = {},
-            primaryButtonEnabled = enabled
+            primaryButtonEnabled = enabled,
+            primaryButtonLeadingIcon = painterResource(id = R.drawable.ic_search_large_medium_thin_outline),
         )
     }
 }
