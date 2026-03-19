@@ -19,6 +19,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.geometry.Offset
 import coil3.compose.AsyncImage
 import coil3.request.ImageRequest
 import coil3.request.addLastModifiedToFileCacheKey
@@ -32,6 +33,7 @@ import mega.android.core.ui.theme.AppTheme
 import mega.android.core.ui.theme.values.TextColor
 import mega.android.core.ui.theme.values.IconColor
 import mega.android.core.ui.tokens.theme.DSTokens
+import androidx.compose.ui.graphics.Brush
 import java.io.File
 
 private val LARGE_PROFILE_PICTURE_SIZE = 56.dp
@@ -49,6 +51,7 @@ private fun BaseProfilePicture(
     iconTint: IconColor = IconColor.Inverse,
     baseStyle: TextStyle = LocalTextStyle.current,
     avatarColor: Color = DSTokens.colors.background.surface3,
+    avatarSecondaryColor: Color? = null,
 ) {
     Box(
         modifier = modifier,
@@ -70,16 +73,32 @@ private fun BaseProfilePicture(
             }
         } ?: run {
             Box(
-                modifier = Modifier
-                    .size(avatarSize)
-                    .clip(CircleShape)
-                    .background(
-                        color = if (avatarColor == Color.Unspecified) {
-                            DSTokens.colors.background.surface3
-                        } else {
-                            avatarColor
-                        }
-                    ),
+                modifier =
+                    Modifier
+                        .size(avatarSize)
+                        .clip(CircleShape)
+                        .then(
+                            if (avatarSecondaryColor != null) {
+                                Modifier.background(
+                                    brush = Brush.linearGradient(
+                                        colors = listOf(
+                                            avatarSecondaryColor,
+                                            avatarColor
+                                        ),
+                                        start = Offset(0f, Float.POSITIVE_INFINITY),
+                                        end = Offset(Float.POSITIVE_INFINITY, 0f)
+                                    )
+                                )
+                            } else {
+                                Modifier.background(
+                                    color = if (avatarColor == Color.Unspecified) {
+                                        DSTokens.colors.background.surface3
+                                    } else {
+                                        avatarColor
+                                    }
+                                )
+                            }
+                        ),
                 contentAlignment = Alignment.Center,
             ) {
                 icon?.let {
@@ -131,7 +150,8 @@ fun MediumProfileIcon(
     contentDescription: String?,
     modifier: Modifier = Modifier,
     avatarColor: Color = DSTokens.colors.background.surface3,
-) {
+    avatarSecondaryColor: Color? = null,
+    ) {
     BaseProfilePicture(
         avatarSize = MEDIUM_PROFILE_PICTURE_SIZE,
         imageFile = null,
@@ -141,7 +161,29 @@ fun MediumProfileIcon(
         contentDescription = contentDescription,
         modifier = modifier,
         baseStyle = AppTheme.typography.bodyMedium,
-        avatarColor = avatarColor
+        avatarColor = avatarColor,
+        avatarSecondaryColor = avatarSecondaryColor
+    )
+}
+
+@Composable
+fun MediumProfilePicture(
+    imageFile: File?,
+    name: String?,
+    contentDescription: String?,
+    modifier: Modifier = Modifier,
+    avatarColor: Color = DSTokens.colors.background.surface3,
+    avatarSecondaryColor: Color? = null,
+    ) {
+    BaseProfilePicture(
+        avatarSize = MEDIUM_PROFILE_PICTURE_SIZE,
+        imageFile = imageFile,
+        name = name,
+        contentDescription = contentDescription,
+        modifier = modifier,
+        baseStyle = AppTheme.typography.bodyMedium,
+        avatarColor = avatarColor,
+        avatarSecondaryColor = avatarSecondaryColor
     )
 }
 
@@ -213,6 +255,19 @@ private fun MediumProfileIconPreview() {
     AndroidThemeForPreviews {
         MediumProfileIcon(
             icon = null,
+            contentDescription = "Icon",
+        )
+    }
+}
+
+@Composable
+@CombinedThemePreviews
+private fun MediumProfilePictureWithSecondaryColorPreview() {
+    AndroidThemeForPreviews {
+        MediumProfileIcon(
+            icon = null,
+            avatarColor = Color(-30327),
+            avatarSecondaryColor = Color(-44462),
             contentDescription = "Icon",
         )
     }
