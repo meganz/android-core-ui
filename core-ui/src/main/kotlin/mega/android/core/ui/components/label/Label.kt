@@ -44,7 +44,7 @@ fun Label(
     Box(
         modifier = modifier
             .size(16.dp)
-            .padding(3.dp)
+            .padding(4.5.dp)
             .background(color.color, shape = CircleShape)
     )
 }
