@@ -35,6 +35,7 @@ import mega.android.core.ui.theme.spacing.LocalSpacing
 import mega.android.core.ui.theme.values.BackgroundColor
 import mega.android.core.ui.theme.values.ComponentsColor
 import mega.android.core.ui.theme.values.IconColor
+import mega.android.core.ui.theme.values.IndicatorColor
 import mega.android.core.ui.theme.values.LinkColor
 import mega.android.core.ui.theme.values.SupportColor
 import mega.android.core.ui.theme.values.TextColor
@@ -140,6 +141,11 @@ internal fun DSTokens.linkColor(linkColor: LinkColor) =
 @Composable
 internal fun DSTokens.componentsColor(componentsColor: ComponentsColor) =
     componentsColor.getComponentsColor(colors.components)
+
+
+@Composable
+internal fun DSTokens.indicatorColor(indicatorC: IndicatorColor) =
+    indicatorC.getIndicatorColor(colors.indicator)
 
 @Composable
 internal fun DSTokens.backgroundColor(backgroundColor: BackgroundColor) =

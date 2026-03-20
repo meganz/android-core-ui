@@ -13,11 +13,13 @@ import mega.android.core.ui.preview.CombinedThemePreviews
 import mega.android.core.ui.theme.AndroidThemeForPreviews
 import mega.android.core.ui.theme.componentsColor
 import mega.android.core.ui.theme.iconColor
+import mega.android.core.ui.theme.indicatorColor
 import mega.android.core.ui.theme.linkColor
 import mega.android.core.ui.theme.supportColor
 import mega.android.core.ui.theme.textColor
 import mega.android.core.ui.theme.values.ComponentsColor
 import mega.android.core.ui.theme.values.IconColor
+import mega.android.core.ui.theme.values.IndicatorColor
 import mega.android.core.ui.theme.values.LinkColor
 import mega.android.core.ui.theme.values.SupportColor
 import mega.android.core.ui.theme.values.TextColor
@@ -140,6 +142,21 @@ fun MegaIcon(
         tint = LocalContentColor.current,
         contentDescription = contentDescription,
         modifier = modifier
+    )
+}
+
+@Composable
+fun MegaIcon(
+    imageVector: ImageVector,
+    indicatorColorTint: IndicatorColor,
+    modifier: Modifier = Modifier,
+    contentDescription: String? = null,
+) {
+    Icon(
+        painter = rememberVectorPainter(image = imageVector),
+        tint = DSTokens.indicatorColor(indicatorColorTint),
+        modifier = modifier,
+        contentDescription = contentDescription
     )
 }
 

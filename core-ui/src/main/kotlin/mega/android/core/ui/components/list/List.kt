@@ -33,6 +33,7 @@ import mega.android.core.ui.components.MegaText
 import mega.android.core.ui.components.image.MegaIcon
 import mega.android.core.ui.components.util.shimmerEffect
 import mega.android.core.ui.model.HighlightedText
+import mega.android.core.ui.modifiers.itemContainerStyle
 import mega.android.core.ui.preview.CombinedThemePreviews
 import mega.android.core.ui.theme.AndroidThemeForPreviews
 import mega.android.core.ui.theme.AppTheme
@@ -221,7 +222,7 @@ private fun HeaderListItem(
 private fun RowScope.MegaIconRight(
     modifier: Modifier,
     rightIconRes: Int,
-    iconColor: IconColor
+    iconColor: IconColor,
 ) {
     MegaIcon(
         modifier = modifier
@@ -422,7 +423,8 @@ private fun ListItem(
 ) {
     val effectiveTitleTextColor = if (enable) titleTextColor else TextColor.Disabled
     val effectiveSubtitleTextColor = if (enable) TextColor.Secondary else TextColor.Disabled
-    val effectiveIconColor = if (enable) DSTokens.colors.icon.primary else DSTokens.colors.icon.disabled
+    val effectiveIconColor =
+        if (enable) DSTokens.colors.icon.primary else DSTokens.colors.icon.disabled
 
     GenericListItem(
         modifier = modifier,
@@ -494,9 +496,14 @@ private fun ListItem(
  * @param subtitle Composable function for the subtitle of the list item.
  * @param leadingElement Optional composable function for a leading element (e.g., an icon).
  * @param trailingElement Optional composable function for a trailing element (e.g., an icon).
- * @param enableClick Whether the list item is clickable.
+ * @param enabled Whether the list item is enabled. The background will be set accordingly. Click actions are enabled by [enableClick] that takes its default value from [enabled].
+ * @param enableClick Whether the list item is clickable. [enabled] by default
  * @param onClickListener Click listener for the list item.
  * @param onLongClickListener Long click listener for the list item, if any.
+ * @param verticalAlignment Alignment of the content vertically.
+ * @param horizontalArrangement Arrangement of the content horizontally.
+ * @param selected Whether the list item is selected. The background will be set accordingly
+ * @param highlighted Whether the list item is highlighted. The background will be set accordingly
  */
 @Composable
 fun GenericListItem(
@@ -506,15 +513,19 @@ fun GenericListItem(
     contentPadding: PaddingValues = ListItemToken.defaultContentPadding,
     leadingElement: (@Composable (RowScope.() -> Unit))? = null,
     trailingElement: (@Composable (() -> Unit))? = null,
-    enableClick: Boolean = true,
+    enabled: Boolean = true,
+    enableClick: Boolean = enabled,
     onClickListener: () -> Unit = {},
     onLongClickListener: (() -> Unit)? = null,
     verticalAlignment: Alignment.Vertical = Alignment.CenterVertically,
-    horizontalArrangement: Arrangement.HorizontalOrVertical = Arrangement.spacedBy(DSTokens.spacings.s4)
+    horizontalArrangement: Arrangement.HorizontalOrVertical = Arrangement.spacedBy(DSTokens.spacings.s4),
+    selected: Boolean = false,
+    highlighted: Boolean = false,
 ) {
     Row(
         modifier = modifier
             .fillMaxWidth()
+            .itemContainerStyle(enabled = enabled, selected = selected, highlighted = highlighted)
             .combinedClickable(
                 enabled = enableClick,
                 onClick = onClickListener,
@@ -821,7 +832,10 @@ private fun MultiLineListItemPreviewWithElementsAndHighlights() {
         FlexibleLineListItem(
             modifier = Modifier,
             title = HighlightedText("List item", "item"),
-            subtitle = HighlightedText("Supporting line text lorem ipsum lorem ipsum", "lorem ipsum"),
+            subtitle = HighlightedText(
+                "Supporting line text lorem ipsum lorem ipsum",
+                "lorem ipsum"
+            ),
             leadingElement = {
                 Icon(
                     painter = painterResource(id = R.drawable.ic_alert_triangle_medium_thin_outline),
