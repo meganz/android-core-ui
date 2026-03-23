@@ -20,6 +20,7 @@ import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.TextRange
+import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
@@ -50,6 +51,7 @@ fun BasicInputDialog(
     onNegativeButtonClicked: (() -> Unit)? = null,
     dialogProperties: MegaDialogProperties = MegaDialogProperties.default,
     keyboardType: KeyboardType = KeyboardType.Text,
+    capitalization: KeyboardCapitalization = KeyboardCapitalization.Words,
     inputTextAlign: TextAlign = TextAlign.Unspecified,
     placeholder: String? = null,
     isAutoShowKeyboard: Boolean = true,
@@ -80,6 +82,7 @@ fun BasicInputDialog(
         onNegativeButtonClicked = onNegativeButtonClicked,
         dialogProperties = dialogProperties,
         keyboardType = keyboardType,
+        capitalization = capitalization,
         inputTextAlign = inputTextAlign,
         placeholder = placeholder,
         isAutoShowKeyboard = isAutoShowKeyboard,
@@ -153,6 +156,7 @@ fun BasicInputDialog(
     onNegativeButtonClicked: (() -> Unit)? = null,
     dialogProperties: MegaDialogProperties = MegaDialogProperties.default,
     keyboardType: KeyboardType = KeyboardType.Text,
+    capitalization: KeyboardCapitalization = KeyboardCapitalization.Words,
     inputTextAlign: TextAlign = TextAlign.Unspecified,
     placeholder: String? = null,
     isAutoShowKeyboard: Boolean = true,
@@ -181,7 +185,8 @@ fun BasicInputDialog(
             errorText = errorText,
             placeholder = placeholder,
             suffix = suffix,
-            inputTextAlign = inputTextAlign
+            inputTextAlign = inputTextAlign,
+            capitalization = capitalization,
         )
     }
 }
