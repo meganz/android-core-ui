@@ -96,16 +96,18 @@ fun Modifier.safeBottomPadding() = this.padding(bottom = BOTTOM_PADDING_DP.dp)
  */
 @Composable
 fun Modifier.itemContainerStyle(
-    enabled: Boolean = true, selected: Boolean = true, highlighted: Boolean = true,
+    enabled: Boolean = true, selected: Boolean = false, highlighted: Boolean = false,
 ) = this
-    .alpha(if (enabled) 1f else 0.5f)
-    .background(
-        when {
-            selected -> DSTokens.colors.background.surface1
-            highlighted -> DSTokens.colors.background.surface2
-            else -> DSTokens.colors.background.pageBackground
-        }
-    )
+    .conditional(!enabled) {
+        Modifier.alpha(0.5f)
+    }
+    .conditional(selected || highlighted) {
+        Modifier.background(
+            color =
+                if (selected) DSTokens.colors.background.surface1
+                else /*highlighted*/ DSTokens.colors.background.surface2
+        )
+    }
 
 /**
  * Creates a new Padding values with additional bottom space to follow our design system for lists and grids content.
