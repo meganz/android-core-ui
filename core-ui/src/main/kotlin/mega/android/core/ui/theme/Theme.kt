@@ -180,3 +180,7 @@ internal fun megaTypographyToken(typography: Typography = MaterialTheme.typograp
         headlineSmall = typography.headlineSmall.copy(fontWeight = FontWeight.SemiBold),
         titleLarge = typography.titleLarge.copy(fontWeight = FontWeight.Medium),
     )
+
+@Composable
+fun supportColor(supportColor: SupportColor): Color =
+    supportColor.getSupportColor(DSTokens.colors.support)
