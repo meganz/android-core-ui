@@ -170,8 +170,8 @@ private fun FilledButton(
             leadingIcon?.let {
                 Icon(
                     modifier = Modifier
-                        .size(height / 2)
-                        .padding(end = 8.dp),
+                        .padding(end = 8.dp)
+                        .size(height / 2),
                     painter = leadingIcon,
                     tint = iconColor,
                     contentDescription = "Leading Icon"
@@ -183,8 +183,8 @@ private fun FilledButton(
             trailingIcon?.let {
                 Icon(
                     modifier = Modifier
-                        .size(height / 2)
-                        .padding(start = 8.dp),
+                        .padding(start = 8.dp)
+                        .size(height / 2),
                     painter = trailingIcon,
                     tint = iconColor,
                     contentDescription = "Trailing Icon"
