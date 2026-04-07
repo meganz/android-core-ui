@@ -158,6 +158,7 @@ enum class SurfaceColor {
     Inverse,
     SurfaceTransparent,
     SurfaceInverseAccent,
+    None
 }
 
 @Composable
@@ -171,5 +172,6 @@ internal fun SurfaceColor.toBackgroundColor(): Color {
         SurfaceColor.Inverse -> DSTokens.colors.background.inverse
         SurfaceColor.SurfaceTransparent -> DSTokens.colors.background.surfaceTransparent
         SurfaceColor.SurfaceInverseAccent -> DSTokens.colors.background.surfaceInverseAccent
+        SurfaceColor.None -> Color.Transparent
     }
 }
