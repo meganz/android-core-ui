@@ -1,3 +1,4 @@
+import mega.android.core.ui.gradle.GenerateLlmsTxtTask
 import mega.privacy.megagradle.plugin.extension.Dependency
 
 plugins {
@@ -7,11 +8,49 @@ plugins {
     alias(libs.plugins.mega.artifactory.publish.convention)
     alias(libs.plugins.mega.android.library.jacoco.convention)
     alias(libs.plugins.compose.compiler)
+    alias(libs.plugins.screenshot)
+}
+
+tasks.register<GenerateLlmsTxtTask>("generateLlmsTxt") {
+    sourceDir.set(file("src/main/kotlin/mega/android/core/ui/components"))
+    outputDir.set(layout.buildDirectory.dir("generated/llms"))
+    screenshotTestDir.set(layout.buildDirectory.dir("generated/screenshotTest/kotlin"))
+    screenshotRefDir.set(file("src/screenshotTestDebug/reference"))
+}
+
+// Include llms.txt in the sources JAR (published for tooling) but NOT in
+// classes.jar, so it never ends up in a consumer's APK.
+afterEvaluate {
+    android.sourceSets.findByName("screenshotTest")?.kotlin?.srcDir(
+        layout.buildDirectory.dir("generated/screenshotTest/kotlin")
+    )
+
+    tasks.named("compileDebugScreenshotTestKotlin") {
+        dependsOn("generateLlmsTxt")
+    }
+
+    tasks.named("updateDebugScreenshotTest") {
+        dependsOn("generateLlmsTxt")
+    }
+
+    tasks.named<org.gradle.jvm.tasks.Jar>("releaseSourcesJar") {
+        dependsOn("updateDebugScreenshotTest")
+        from(layout.buildDirectory.dir("generated/llms")) {
+            into("META-INF/mega.android.core.ui")
+        }
+        val refDir = file("src/screenshotTestDebug/reference")
+        if (refDir.exists()) {
+            from(refDir) {
+                into("META-INF/mega.android.core.ui/screenshots")
+            }
+        }
+    }
 }
 
 android {
     namespace = "mega.android.core.ui"
     compileSdk = 35
+    experimentalProperties["android.experimental.enableScreenshotTest"] = true
 
     defaultConfig {
         minSdk = 26
@@ -71,7 +110,10 @@ megaPublish {
         "commit" to commit,
         "builder" to builder,
     )
-    dependentTasks = listOf("assembleRelease", "releaseSourcesJar")
+    dependentTasks = listOf(
+        "assembleRelease",
+        "releaseSourcesJar",
+    )
     // Add runtime dependencies in the Maven POM to ensure the dependent libraries are available to the client app at runtime, while remaining invisible at compile time.
     dependencies = listOf(
         Dependency(
@@ -87,19 +129,19 @@ megaPublish {
             scope = "runtime"
         ),
         Dependency(
-            groupId = libs.material3.get().group?:"",
+            groupId = libs.material3.get().group ?: "",
             artifactId = libs.material3.get().name,
             version = libs.versions.material3.get(),
             scope = "runtime"
         ),
         Dependency(
-            groupId = libs.androidx.material3.window.get().group?:"",
+            groupId = libs.androidx.material3.window.get().group ?: "",
             artifactId = libs.androidx.material3.window.get().name,
             version = libs.versions.material3.get(),
             scope = "runtime",
         ),
         Dependency(
-            groupId = libs.kotlinx.collections.immutable.get().group?:"",
+            groupId = libs.kotlinx.collections.immutable.get().group ?: "",
             artifactId = libs.kotlinx.collections.immutable.get().name,
             version = libs.versions.kotlinx.collections.immutable.get(),
             scope = "runtime"
@@ -128,4 +170,6 @@ dependencies {
     testImplementation(libs.mockito)
     testImplementation(libs.mockito.kotlin)
     implementation(libs.reorderable)
+    screenshotTestImplementation(libs.screenshot.validation.api)
+    screenshotTestImplementation(libs.ui.tooling)
 }

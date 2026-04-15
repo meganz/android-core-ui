@@ -62,3 +62,6 @@ captures
 ## Generated Files
 *.DS_Store
 wget-log
+
+firebase-debug.log
+.kotlin

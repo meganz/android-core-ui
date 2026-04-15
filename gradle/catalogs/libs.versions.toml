@@ -23,6 +23,7 @@ material3 = "1.4.0"
 mockito = "5.12.0"
 mockito-kotlin = "5.4.0"
 reorderable = "2.4.3"
+screenshot = "0.0.1-alpha10"
 
 [libraries]
 activity-compose = { module = "androidx.activity:activity-compose", version.ref = "activity-compose" }
@@ -55,6 +56,7 @@ roboelectric = { module = "org.robolectric:robolectric", version.ref = "robolect
 mockito = { module = "org.mockito:mockito-core", version.ref = "mockito" }
 mockito-kotlin = { module = "org.mockito.kotlin:mockito-kotlin", version.ref = "mockito-kotlin" }
 reorderable = { module = "sh.calvin.reorderable:reorderable", version.ref = "reorderable" }
+screenshot-validation-api = { group = "com.android.tools.screenshot", name = "screenshot-validation-api", version.ref = "screenshot" }
 
 [bundles]
 compose-bom = ["ui", "ui-tooling", "ui-tooling-preview", "material3", "ui-foundation", "ui-graphics"]
@@ -66,3 +68,4 @@ jfrog-artifactory = { id = "com.jfrog.artifactory", version.ref = "jfrog-artifac
 com-android-application = { id = "com.android.application", version.ref = "agp" }
 com-android-library = { id = "com.android.library", version.ref = "agp" }
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version = "2.1.0" }
+screenshot = { id = "com.android.compose.screenshot", version.ref = "screenshot" }
