@@ -596,6 +596,7 @@ abstract class GenerateLlmsTxtTask : DefaultTask() {
                 "import androidx.compose.ui.res.painterResource",
                 "import androidx.compose.ui.unit.dp",
                 "import mega.android.core.ui.theme.AndroidThemeForPreviews",
+                "import mega.android.core.ui.preview.CombinedThemePreviews",
                 "import mega.android.core.ui.R",
             )
             // Add wildcard imports for this category and common packages
@@ -668,7 +669,7 @@ abstract class GenerateLlmsTxtTask : DefaultTask() {
                 }
 
                 sb.appendLine("@PreviewTest")
-                sb.appendLine("@Preview(showBackground = true)")
+                sb.appendLine("@CombinedThemePreviews")
                 sb.appendLine("@Composable")
                 sb.appendLine("fun ${funcName}_Screenshot() {")
 
