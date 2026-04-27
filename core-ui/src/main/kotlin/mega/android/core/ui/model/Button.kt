@@ -7,6 +7,7 @@ import mega.android.core.ui.components.button.MegaOutlinedButton
 import mega.android.core.ui.components.button.PrimaryFilledButton
 import mega.android.core.ui.components.button.PrimaryFilledButtonM3
 import mega.android.core.ui.components.button.SecondaryFilledButton
+import mega.android.core.ui.components.button.SecondaryFilledButtonM3
 import mega.android.core.ui.components.button.TextOnlyButton
 import mega.android.core.ui.components.button.TextOnlyButtonM3
 
@@ -32,6 +33,16 @@ sealed interface Button {
     ) : Button
 
     data class SecondaryButton(
+        val text: String,
+        val modifier: Modifier = Modifier,
+        val onClick: () -> Unit = {},
+        val leadingIcon: Painter? = null,
+        val trailingIcon: Painter? = null,
+        val enabled: Boolean = true,
+        val isLoading: Boolean = false,
+    ) : Button
+
+    data class SecondaryButtonM3(
         val text: String,
         val modifier: Modifier = Modifier,
         val onClick: () -> Unit = {},
@@ -106,6 +117,19 @@ private fun Button.SecondaryButton.LocalSecondaryButton() {
 }
 
 @Composable
+private fun Button.SecondaryButtonM3.LocalSecondaryButtonM3() {
+    SecondaryFilledButtonM3(
+        modifier = modifier,
+        text = text,
+        onClick = onClick,
+        leadingIcon = leadingIcon,
+        trailingIcon = trailingIcon,
+        enabled = enabled,
+        isLoading = isLoading,
+    )
+}
+
+@Composable
 private fun Button.TextOnlyButton.LocalTextOnlyButton() {
     TextOnlyButton(
         modifier = modifier,
@@ -144,6 +168,7 @@ internal fun Button.LocalButton() {
         is Button.PrimaryButton -> LocalPrimaryButton()
         is Button.PrimaryButtonM3 -> LocalPrimaryButtonM3()
         is Button.SecondaryButton -> LocalSecondaryButton()
+        is Button.SecondaryButtonM3 -> LocalSecondaryButtonM3()
         is Button.TextOnlyButton -> LocalTextOnlyButton()
         is Button.MegaOutlinedButton -> LocalMegaOutlinedButton()
         is Button.TextOnlyButtonM3 -> LocalTextOnlyButtonM3()

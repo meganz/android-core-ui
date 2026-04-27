@@ -140,9 +140,9 @@ fun AnchoredButtonGroup(
  * correct placement if [applyInsets] is true.
  *
  * @param primaryButtonText The text to be displayed on the primary action button.
- * @param textOnlyButtonText The text to be displayed on the secondary text-only button.
+ * @param textOnlyButtonText The text to be displayed on the secondary button.
  * @param onPrimaryButtonClick The callback invoked when the primary button is clicked.
- * @param onTextOnlyButtonClick The callback invoked when the text-only button is clicked.
+ * @param onTextOnlyButtonClick The callback invoked when the button is clicked.
  * @param modifier The [Modifier] to be applied to the button group container.
  * @param primaryButtonEnabled Controls the enabled state of the primary button. Defaults to `true`.
  * @param applyInsets If `true` (the default), padding for the navigation bar and display
@@ -168,7 +168,7 @@ fun InlineAnchoredButtonGroup(
             applyInsets = applyInsets,
             buttonGroup = listOf(
                 {
-                    Button.TextOnlyButtonM3(
+                    Button.SecondaryButtonM3(
                         text = textOnlyButtonText,
                         onClick = onTextOnlyButtonClick,
                     )

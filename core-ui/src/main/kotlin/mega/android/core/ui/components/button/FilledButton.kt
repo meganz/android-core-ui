@@ -121,6 +121,37 @@ fun SecondaryFilledButton(
 }
 
 @Composable
+fun SecondaryFilledButtonM3(
+    modifier: Modifier,
+    text: String,
+    onClick: () -> Unit,
+    leadingIcon: Painter? = null,
+    trailingIcon: Painter? = null,
+    enabled: Boolean = true,
+    isLoading: Boolean = false,
+) {
+    FilledButton(
+        modifier = modifier,
+        cornerSize = 12.dp,
+        height = buttonDefaultHeightM3,
+        text = text,
+        leadingIcon = leadingIcon,
+        trailingIcon = trailingIcon,
+        enabled = enabled,
+        isLoading = isLoading,
+        onClick = onClick,
+        containerColorDefault = DSTokens.colors.button.secondary,
+        containerColorDisabled = DSTokens.colors.button.disabled,
+        containerColorPressed = DSTokens.colors.button.secondaryPressed,
+        textColorDefault = DSTokens.colors.text.accent,
+        textColorDisabled = DSTokens.colors.text.onColorDisabled,
+        iconColorDefault = DSTokens.colors.icon.accent,
+        iconColorDisabled = DSTokens.colors.icon.onColorDisabled,
+        loaderIconColor = DSTokens.colors.icon.accent
+    )
+}
+
+@Composable
 private fun FilledButton(
     modifier: Modifier,
     text: String,
