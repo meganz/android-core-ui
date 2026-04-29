@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -26,6 +27,7 @@ import androidx.compose.ui.unit.dp
 import mega.android.core.ui.R
 import mega.android.core.ui.components.buttonDefaultHeight
 import mega.android.core.ui.components.buttonDefaultHeightM3
+import mega.android.core.ui.components.buttonXSmallHeightM3
 import mega.android.core.ui.preview.CombinedThemePreviews
 import mega.android.core.ui.theme.AndroidThemeForPreviews
 import mega.android.core.ui.theme.AppTheme
@@ -151,6 +153,121 @@ fun SecondaryFilledButtonM3(
     )
 }
 
+/**
+ * Material 3 Filled button at the XSmall size (32dp height, 12dp corner).
+ *
+ * Use for compact contexts like banners and inline prompts where the standard
+ * [PrimaryFilledButtonM3] would feel too tall.
+ */
+@Composable
+fun PrimaryFilledButtonM3XSmall(
+    modifier: Modifier,
+    text: String,
+    onClick: () -> Unit,
+    leadingIcon: Painter? = null,
+    trailingIcon: Painter? = null,
+    enabled: Boolean = true,
+    isLoading: Boolean = false,
+) {
+    FilledButton(
+        modifier = modifier,
+        cornerSize = xSmallCornerSize,
+        height = buttonXSmallHeightM3,
+        contentPadding = xSmallContentPadding,
+        text = text,
+        leadingIcon = leadingIcon,
+        trailingIcon = trailingIcon,
+        enabled = enabled,
+        isLoading = isLoading,
+        onClick = onClick,
+        containerColorDefault = DSTokens.colors.button.primary,
+        containerColorDisabled = DSTokens.colors.button.disabled,
+        containerColorPressed = DSTokens.colors.button.primaryPressed,
+        textColorDefault = DSTokens.colors.text.inverseAccent,
+        textColorDisabled = DSTokens.colors.text.onColorDisabled,
+        iconColorDefault = DSTokens.colors.icon.inverseAccent,
+        iconColorDisabled = DSTokens.colors.icon.onColorDisabled,
+        loaderIconColor = DSTokens.colors.icon.inverseAccent,
+    )
+}
+
+/**
+ * Material 3 Filled button (secondary variant) at the XSmall size (32dp height, 12dp corner).
+ */
+@Composable
+fun SecondaryFilledButtonM3XSmall(
+    modifier: Modifier,
+    text: String,
+    onClick: () -> Unit,
+    leadingIcon: Painter? = null,
+    trailingIcon: Painter? = null,
+    enabled: Boolean = true,
+    isLoading: Boolean = false,
+) {
+    FilledButton(
+        modifier = modifier,
+        cornerSize = xSmallCornerSize,
+        height = buttonXSmallHeightM3,
+        contentPadding = xSmallContentPadding,
+        text = text,
+        leadingIcon = leadingIcon,
+        trailingIcon = trailingIcon,
+        enabled = enabled,
+        isLoading = isLoading,
+        onClick = onClick,
+        containerColorDefault = DSTokens.colors.button.secondary,
+        containerColorDisabled = DSTokens.colors.button.disabled,
+        containerColorPressed = DSTokens.colors.button.secondaryPressed,
+        textColorDefault = DSTokens.colors.text.accent,
+        textColorDisabled = DSTokens.colors.text.onColorDisabled,
+        iconColorDefault = DSTokens.colors.icon.accent,
+        iconColorDisabled = DSTokens.colors.icon.onColorDisabled,
+        loaderIconColor = DSTokens.colors.icon.accent,
+    )
+}
+
+/**
+ * Material 3 Filled button (brand variant) at the XSmall size (32dp height, 12dp corner).
+ *
+ * Uses MEGA brand colors for the container. Pair with [SecondaryFilledButtonM3XSmall] for
+ * a primary brand CTA + secondary action layout (e.g. "Create a free account" + "Log in").
+ */
+@Composable
+fun BrandFilledButtonM3XSmall(
+    modifier: Modifier,
+    text: String,
+    onClick: () -> Unit,
+    leadingIcon: Painter? = null,
+    trailingIcon: Painter? = null,
+    enabled: Boolean = true,
+    isLoading: Boolean = false,
+) {
+    FilledButton(
+        modifier = modifier,
+        cornerSize = xSmallCornerSize,
+        height = buttonXSmallHeightM3,
+        contentPadding = xSmallContentPadding,
+        text = text,
+        leadingIcon = leadingIcon,
+        trailingIcon = trailingIcon,
+        enabled = enabled,
+        isLoading = isLoading,
+        onClick = onClick,
+        containerColorDefault = DSTokens.colors.button.brand,
+        containerColorDisabled = DSTokens.colors.button.disabled,
+        containerColorPressed = DSTokens.colors.button.brandPressed,
+        textColorDefault = DSTokens.colors.text.inverseAccent,
+        textColorDisabled = DSTokens.colors.text.onColorDisabled,
+        iconColorDefault = DSTokens.colors.icon.inverseAccent,
+        iconColorDisabled = DSTokens.colors.icon.onColorDisabled,
+        loaderIconColor = DSTokens.colors.icon.inverseAccent,
+    )
+}
+
+private val xSmallCornerSize = 12.dp
+private val xSmallContentPadding =
+    PaddingValues(horizontal = 12.dp, vertical = 0.dp)
+
 @Composable
 private fun FilledButton(
     modifier: Modifier,
@@ -170,6 +287,7 @@ private fun FilledButton(
     loaderIconColor: Color,
     height: Dp = buttonDefaultHeight,
     cornerSize: Dp = 8.dp,
+    contentPadding: PaddingValues = ButtonDefaults.ContentPadding,
 ) {
     val interactionSource = remember { MutableInteractionSource() }
     val isButtonPressed by interactionSource.collectIsPressedAsState()
@@ -187,6 +305,7 @@ private fun FilledButton(
             containerColor = containerColor,
             disabledContainerColor = containerColorDisabled
         ),
+        contentPadding = contentPadding,
         enabled = enabled
     ) {
         val textColor = if (enabled) textColorDefault else textColorDisabled
@@ -277,6 +396,61 @@ private fun PrimaryFilledButtonDisabledPreview() {
                 text = "Filled Button",
                 enabled = false,
                 onClick = { })
+        }
+    }
+}
+
+@CombinedThemePreviews
+@Composable
+private fun PrimaryFilledButtonM3XSmallPreview() {
+    AndroidThemeForPreviews {
+        PrimaryFilledButtonM3XSmall(
+            modifier = Modifier.wrapContentWidth(),
+            text = "Create a free account",
+            onClick = { },
+        )
+    }
+}
+
+@CombinedThemePreviews
+@Composable
+private fun SecondaryFilledButtonM3XSmallPreview() {
+    AndroidThemeForPreviews {
+        SecondaryFilledButtonM3XSmall(
+            modifier = Modifier.wrapContentWidth(),
+            text = "Log in",
+            onClick = { },
+        )
+    }
+}
+
+@CombinedThemePreviews
+@Composable
+private fun BrandFilledButtonM3XSmallPreview() {
+    AndroidThemeForPreviews {
+        BrandFilledButtonM3XSmall(
+            modifier = Modifier.wrapContentWidth(),
+            text = "Create a free account",
+            onClick = { },
+        )
+    }
+}
+
+@CombinedThemePreviews
+@Composable
+private fun PrimaryFilledButtonM3XSmallDisabledPreview() {
+    AndroidThemeForPreviews {
+        Box(
+            modifier = Modifier
+                .padding(20.dp)
+                .background(DSTokens.colors.background.pageBackground)
+        ) {
+            PrimaryFilledButtonM3XSmall(
+                modifier = Modifier.wrapContentWidth(),
+                text = "Disabled",
+                enabled = false,
+                onClick = { },
+            )
         }
     }
 }
