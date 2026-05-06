@@ -1,4 +1,4 @@
-package mega.privacy.android.feature.contact.components
+package mega.android.core.ui.components.contact.state
 
 /**
  * Presentational status enum decoupled from any domain type.
