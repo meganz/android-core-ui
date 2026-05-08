@@ -9,6 +9,7 @@ plugins {
     alias(libs.plugins.mega.android.library.jacoco.convention)
     alias(libs.plugins.compose.compiler)
     alias(libs.plugins.screenshot)
+    alias(libs.plugins.figma.code.connect)
 }
 
 tasks.register<GenerateLlmsTxtTask>("generateLlmsTxt") {
@@ -172,4 +173,6 @@ dependencies {
     implementation(libs.reorderable)
     screenshotTestImplementation(libs.screenshot.validation.api)
     screenshotTestImplementation(libs.ui.tooling)
+    compileOnly(libs.figma.code.connect.lib)
 }
+

@@ -19,6 +19,12 @@ paths = [
     '''Database.refactorlog''',
     '''vendor''',
 ]
+regexes = [
+    # Figma fileKey for the `ANDROID - New` design file. Public — appears in every
+    # figma.com/design/<fileKey>/... URL and in every Code Connect `.figma.kt` file.
+    # Not a credential. Trips generic-api-key on high entropy.
+    '''HagXfSTF94ICEFj8rfNyLc''',
+]
 
 [[rules]]
 id = "adafruit-api-key"

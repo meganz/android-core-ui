@@ -65,3 +65,16 @@ wget-log
 
 firebase-debug.log
 .kotlin
+
+# Claude Code local-only files
+CLAUDE.local.md
+.claude/settings.local.json
+
+# User/session memory
+.claude/projects/
+.claude/memory/
+.claude/cache/
+.claude/logs/
+
+# OS/editor noise
+.claude/tmp/

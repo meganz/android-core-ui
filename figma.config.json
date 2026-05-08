@@ -1,0 +1,10 @@
+{
+  "codeConnect": {
+    "parser": "compose",
+    "gradleWrapperPath": "./gradlew",
+    "include": [
+      "core-ui/code-connect/**/*.figma.kt"
+    ],
+    "exclude": []
+  }
+}
