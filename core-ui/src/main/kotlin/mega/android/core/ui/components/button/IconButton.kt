@@ -3,6 +3,7 @@ package mega.android.core.ui.components.button
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.FilledIconButton
 import androidx.compose.material3.Icon
@@ -18,8 +19,8 @@ import androidx.compose.ui.res.painterResource
 import mega.android.core.ui.R
 import mega.android.core.ui.preview.CombinedThemePreviews
 import mega.android.core.ui.theme.AndroidThemeForPreviews
-import mega.android.core.ui.tokens.theme.DSTokens
 import mega.android.core.ui.theme.spacing.LocalSpacing
+import mega.android.core.ui.tokens.theme.DSTokens
 
 @Composable
 fun PrimaryLargeIconButton(
@@ -107,6 +108,32 @@ fun SecondarySmallIconButton(
         containerColorPressed = DSTokens.colors.button.secondary,
         containerColorDisabled = DSTokens.colors.button.disabled,
         iconColorDefault = DSTokens.colors.icon.primary,
+        iconColorDisabled = DSTokens.colors.icon.onColorDisabled,
+        contentDescription = contentDescription,
+        onClick = onClick
+    )
+}
+
+/**
+ * Circular icon button. The container stays light color even in dark mode
+ */
+@Composable
+fun CircularLightIconButton(
+    icon: Painter,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+    enabled: Boolean = true,
+    contentDescription: String? = null
+) {
+    BaseIconButton(
+        modifier = modifier.size(LocalSpacing.current.x56),
+        icon = icon,
+        shape = CircleShape,
+        enabled = enabled,
+        containerColorDefault = DSTokens.colors.button.onColor,
+        containerColorPressed = DSTokens.colors.button.onColorPressed,
+        containerColorDisabled = DSTokens.colors.button.disabled,
+        iconColorDefault = Color.Black, // Hard coded color
         iconColorDisabled = DSTokens.colors.icon.onColorDisabled,
         contentDescription = contentDescription,
         onClick = onClick
@@ -208,6 +235,17 @@ private fun PrimarySmallIconButtonPreview() {
 private fun SecondaryLargeIconButtonPreview() {
     AndroidThemeForPreviews {
         SecondaryLargeIconButton(
+            icon = painterResource(id = R.drawable.ic_close_medium_thin_outline),
+            onClick = {}
+        )
+    }
+}
+
+@CombinedThemePreviews
+@Composable
+private fun CircularLightIconButtonPreview() {
+    AndroidThemeForPreviews {
+        CircularLightIconButton(
             icon = painterResource(id = R.drawable.ic_close_medium_thin_outline),
             onClick = {}
         )
