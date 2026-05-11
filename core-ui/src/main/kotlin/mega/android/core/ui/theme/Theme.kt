@@ -24,6 +24,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import androidx.core.view.WindowCompat
+import mega.android.core.ui.components.surface.SurfaceColor
+import mega.android.core.ui.components.surface.toBackgroundColor
 import mega.android.core.ui.theme.AppTheme.typography
 import mega.android.core.ui.theme.activity.LocalActivity
 import mega.android.core.ui.theme.devicetype.DeviceType
@@ -189,3 +191,7 @@ fun supportColor(supportColor: SupportColor): Color =
 @Composable
 fun notificationsColor(notificationsColor: NotificationsColor): Color =
     notificationsColor.getNotificationsColor(DSTokens.colors.notifications)
+
+@Composable
+fun surfaceColor(surfaceColor: SurfaceColor): Color =
+    surfaceColor.toBackgroundColor()
