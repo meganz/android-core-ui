@@ -31,7 +31,8 @@ class GenerateColorTokens {
             "Support",
             "Link",
             "Components",
-            "Indicator"
+            "Indicator",
+            "Notifications"
         ),
         includeSemanticTokensInterface = true,
         internalSemanticTokens = false,

@@ -37,6 +37,7 @@ import mega.android.core.ui.theme.values.ComponentsColor
 import mega.android.core.ui.theme.values.IconColor
 import mega.android.core.ui.theme.values.IndicatorColor
 import mega.android.core.ui.theme.values.LinkColor
+import mega.android.core.ui.theme.values.NotificationsColor
 import mega.android.core.ui.theme.values.SupportColor
 import mega.android.core.ui.theme.values.TextColor
 import mega.android.core.ui.tokens.theme.DSTokens
@@ -184,3 +185,7 @@ internal fun megaTypographyToken(typography: Typography = MaterialTheme.typograp
 @Composable
 fun supportColor(supportColor: SupportColor): Color =
     supportColor.getSupportColor(DSTokens.colors.support)
+
+@Composable
+fun notificationsColor(notificationsColor: NotificationsColor): Color =
+    notificationsColor.getNotificationsColor(DSTokens.colors.notifications)

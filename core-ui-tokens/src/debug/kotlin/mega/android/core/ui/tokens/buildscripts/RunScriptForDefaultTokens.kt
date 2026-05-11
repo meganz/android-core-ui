@@ -4,6 +4,7 @@ import mega.android.core.ui.tokens.buildscripts.kotlingenerator.GenerateColorTok
 
 /**
  * Runs the Script to generate Kotlin files with the tokens from json files
+ * ./gradlew :core-ui-tokens:generateDefaultTokens
  */
 fun main(args: Array<String>) {
     GenerateColorTokens().generateThemeForAndroidNew()

@@ -76,3 +76,19 @@ dependencies {
     androidTestImplementation(libs.junit.test.ext)
     androidTestImplementation(libs.espresso.core)
 }
+
+// Use command "./gradlew :core-ui-tokens:generateDefaultTokens" to run this script to generate theme tokens
+tasks.register<JavaExec>("generateDefaultTokens") {
+    group = "generation"
+    description = "Generates color token Kotlin files from JSON token definitions"
+
+    val compileTask = tasks.named("compileDebugKotlin", org.jetbrains.kotlin.gradle.tasks.KotlinCompile::class)
+    dependsOn(compileTask)
+
+    mainClass.set("mega.android.core.ui.tokens.buildscripts.RunScriptForDefaultTokensKt")
+    workingDir = rootProject.projectDir
+    classpath = files(
+        compileTask.map { it.destinationDirectory },
+        compileTask.map { it.libraries },
+    )
+}
