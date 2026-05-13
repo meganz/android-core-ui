@@ -18,6 +18,7 @@ import androidx.compose.material3.OutlinedTextFieldDefaults.Container
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -67,28 +68,53 @@ fun SearchInputField(
     // Last external String we notified about
     var lastTextValue by rememberSaveable { mutableStateOf(text) }
 
-    // Sync external text changes without changing selection
-    LaunchedEffect(text) {
-        if (text != textFieldValueState.text) {
-            val oldText = textFieldValueState.text
-            val oldSelection = textFieldValueState.selection
-            val shouldMoveToEnd =
-                oldText.isEmpty() || (oldSelection.start == 0 && oldSelection.end == 0)
+    // Last external [text] we've observed. Used to react only to genuine external changes —
+    // mirrors the keying behaviour of LaunchedEffect(text) without a coroutine dispatch gap.
+    var lastSeenExternalText by remember { mutableStateOf(text) }
 
-            val newSelection = if (shouldMoveToEnd) {
-                TextRange(text.length)
-            } else {
-                val newStart = oldSelection.start.coerceAtMost(text.length)
-                val newEnd = oldSelection.end.coerceAtMost(text.length)
-                TextRange(newStart, newEnd)
-            }
+    // Sync external text changes without changing selection. SideEffect (not LaunchedEffect) so
+    // this runs synchronously after composition; a coroutine can run after further IME updates
+    // and apply a stale [text] over newer field state, which jumps the caret.
+    SideEffect {
+        if (text == lastSeenExternalText) return@SideEffect
 
-            textFieldValueState = textFieldValueState.copy(
-                text = text,
-                selection = newSelection,
-            )
-            lastTextValue = text
+        // External value changed. If it already matches internal state (sync parent echo), just
+        // acknowledge it.
+        if (text == textFieldValueState.text) {
+            lastSeenExternalText = text
+            return@SideEffect
         }
+
+        val internalText = textFieldValueState.text
+        val oldSelection = textFieldValueState.selection
+
+        // Parent can briefly lag on fast input. Do not replace newer field text with a strict
+        // prefix when the caret is at the end (typical append typing). Leave lastSeenExternalText
+        // unchanged so the next, up-to-date value from the parent isn't also short-circuited.
+        val selectionCollapsedAtEnd =
+            oldSelection.start == oldSelection.end &&
+                oldSelection.end == internalText.length
+        val isProbablyStaleParentEcho =
+            text.isNotEmpty() &&
+                internalText.startsWith(text) &&
+                text.length < internalText.length &&
+                selectionCollapsedAtEnd
+        if (isProbablyStaleParentEcho) return@SideEffect
+
+        val newSelection = if (internalText.isEmpty()) {
+            TextRange(text.length)
+        } else {
+            val newStart = oldSelection.start.coerceAtMost(text.length)
+            val newEnd = oldSelection.end.coerceAtMost(text.length)
+            TextRange(newStart, newEnd)
+        }
+
+        textFieldValueState = textFieldValueState.copy(
+            text = text,
+            selection = newSelection,
+        )
+        lastTextValue = text
+        lastSeenExternalText = text
     }
 
     BaseSearchInputField(
