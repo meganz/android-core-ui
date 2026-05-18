@@ -5,9 +5,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.BasicAlertDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -16,7 +14,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
-import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.TextRange
@@ -217,30 +214,11 @@ private fun BasicInputDialog(
     val inputContentModifier = Modifier
         .fillMaxWidth()
         .focusRequester(focusRequester)
-        .onFocusChanged {
-            if (it.isFocused && isAutoShowKeyboard) {
-                textFieldValueState.value = textFieldValueState.value.copy(
-                    selection = TextRange(0, textFieldValueState.value.text.length)
-                )
-            }
-        }
         .onGloballyPositioned {
             if (isAutoShowKeyboard) {
                 focusRequester.requestFocus()
             }
         }
-
-    // Update textFieldValue when inputValue changes
-    LaunchedEffect(inputValue) {
-        textFieldValueState.value = inputValue
-    }
-
-    // Request focus when dialog opens if auto-show keyboard is enabled
-    SideEffect {
-        if (isAutoShowKeyboard) {
-            focusRequester.requestFocus()
-        }
-    }
 
     BasicAlertDialog(
         onDismissRequest = onDismiss,
