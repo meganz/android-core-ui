@@ -42,6 +42,7 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.KeyboardCapitalization
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
@@ -280,6 +281,68 @@ fun MegaTopAppBar(
     )
 }
 
+@Composable
+@OptIn(ExperimentalMaterial3Api::class)
+private fun blurTopAppBarColors() = TopAppBarDefaults.topAppBarColors(
+    containerColor = DSTokens.colors.background.blur,
+    scrolledContainerColor = DSTokens.colors.background.blur,
+    navigationIconContentColor = DSTokens.colors.icon.primary,
+    titleContentColor = DSTokens.colors.text.primary,
+    actionIconContentColor = DSTokens.colors.icon.primary
+)
+
+/**
+ * A [MegaTopAppBar] variant with a blur background ([DSTokens.colors.background.blur]).
+ * Trailing icons are drawn before [actions] in the action area.
+ * [actions] is the preferred way to add simple actions; [trailingIcons] should be used for more
+ * complex cases such as animated widgets.
+ *
+ * @param title The title text displayed in the app bar.
+ * @param navigationType The navigation icon type and its click handler.
+ * @param actions The list of menu actions shown in the action area.
+ * @param onActionPressed Callback invoked when a menu action is pressed.
+ * @param modifier Modifier applied to the app bar.
+ * @param trailingIcons Additional icon composables drawn before [actions].
+ * @param subtitle Optional subtitle text shown below the title.
+ * @param drawBottomLineOnScrolledContent Whether to draw a divider at the bottom when content is scrolled.
+ * @param actionsEnabled Whether the action buttons are enabled.
+ * @param maxActionsToShow Maximum number of actions shown inline before overflow.
+ */
+@Composable
+fun BlurMegaTopAppBar(
+    title: String,
+    navigationType: AppBarNavigationType,
+    actions: List<MenuAction>,
+    onActionPressed: (MenuAction) -> Unit,
+    modifier: Modifier = Modifier,
+    trailingIcons: @Composable RowScope.() -> Unit = {},
+    subtitle: String? = null,
+    drawBottomLineOnScrolledContent: Boolean = false,
+    actionsEnabled: Boolean = true,
+    maxActionsToShow: Int = 4,
+) {
+    val actionsWithClick = remember(actions, onActionPressed) {
+        actions.map { action ->
+            MenuActionWithClick(action) { onActionPressed(action) }
+        }
+    }
+    @OptIn(ExperimentalMaterial3Api::class)
+    DefaultTopAppBar(
+        modifier = modifier,
+        title = title,
+        subtitle = subtitle,
+        navigationIcon = navigationType.navigationIcon(),
+        scrollBehavior = LocalTopAppBarScrollBehavior.current,
+        actions = {
+            trailingIcons()
+            TopAppBarActionsComponent(actionsWithClick, actionsEnabled, maxActionsToShow)
+        },
+        colors = blurTopAppBarColors(),
+        titleStyle = AppTheme.typography.titleMedium,
+        drawBottomLineOnScrolledContent = drawBottomLineOnScrolledContent,
+    )
+}
+
 internal fun List<MenuActionWithIcon>.addClick(onActionPressed: ((MenuActionWithIcon) -> Unit)?): List<MenuActionWithClick> =
     this.map { MenuActionWithClick(it) { onActionPressed?.invoke(it) } }
 
@@ -363,6 +426,7 @@ private fun DefaultTopAppBar(
     navigationIcon: @Composable () -> Unit = {},
     actions: @Composable RowScope.() -> Unit = {},
     colors: TopAppBarColors? = null,
+    titleStyle: TextStyle? = null,
     drawBottomLineOnScrolledContent: Boolean,
     scrollBehavior: TopAppBarScrollBehavior? = null,
 ) {
@@ -376,7 +440,7 @@ private fun DefaultTopAppBar(
                         text = title,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis,
-                        style = AppTheme.typography.titleLarge,
+                        style = titleStyle ?: AppTheme.typography.titleLarge,
                     )
 
                     subtitle?.let {
@@ -546,6 +610,19 @@ private fun MegaTopAppBarTypePreview(
                     )
                 }
             },
+        )
+    }
+}
+
+@CombinedThemePreviews
+@Composable
+private fun BlurMegaTopAppBarPreview() {
+    AndroidThemeForPreviews {
+        BlurMegaTopAppBar(
+            title = "Title",
+            navigationType = AppBarNavigationType.Back {},
+            actions = emptyList(),
+            onActionPressed = {},
         )
     }
 }
