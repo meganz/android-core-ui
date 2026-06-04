@@ -14,6 +14,7 @@ public data class Background(
     public val surface2: Color = Color.Magenta,
     public val blur: Color = Color.Magenta,
     public val surfaceTransparent: Color = Color.Magenta,
+    public val surfaceTransparentSubtle: Color = Color.Magenta,
     public val surfaceInverseAccent: Color = Color.Magenta,
 )
 

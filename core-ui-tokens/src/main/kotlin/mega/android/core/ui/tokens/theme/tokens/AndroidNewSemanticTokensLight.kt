@@ -13,6 +13,7 @@ public object AndroidNewSemanticTokensLight : SemanticTokens {
             surface2 = Colors.Grey.n50,
             blur = Colors.BlackOpacity.n020,
             surfaceTransparent = Colors.BlackOpacity.n070,
+            surfaceTransparentSubtle = Colors.WhiteOpacity.n090,
             surfaceInverseAccent = Colors.Accent.n700,
             )
 
