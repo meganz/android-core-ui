@@ -34,6 +34,17 @@ inline fun <T> T.composeLet(crossinline block: @Composable (T) -> Unit): @Compos
 }
 
 /**
+ * Safely requests focus, swallowing the [IllegalStateException] that Compose throws
+ * when the focus request races BringIntoView before the parent has been placed.
+ * Use this instead of [FocusRequester.requestFocus] inside `SideEffect`,
+ * `onGloballyPositioned`, or `LaunchedEffect` blocks that fire before the layout
+ * pass has completed.
+ */
+fun FocusRequester.safeRequestFocus() {
+    runCatching { requestFocus() }
+}
+
+/**
  * A scope function similar to "let" to be used with compose blocks.
  * Useful to create composable functions if [this] is not null or null (instead of empty composable) if it is null
  */
@@ -74,7 +85,7 @@ fun Modifier.focusRestorer(focusRequester: FocusRequester, defaultFocus: Boolean
     val imeVisibilityState by imeVisibilityAsState()
     LaunchedEffect(Unit) {
         if (shouldRequestFocus) {
-            focusRequester.requestFocus()
+            focusRequester.safeRequestFocus()
             shouldRequestFocus = false
         }
         snapshotFlow { imeVisibilityState }

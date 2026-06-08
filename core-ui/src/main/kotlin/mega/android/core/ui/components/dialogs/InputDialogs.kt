@@ -28,6 +28,7 @@ import mega.android.core.ui.components.dialogs.internal.MegaBasicDialogFlowRow
 import mega.android.core.ui.components.inputfields.PasswordTextInputField
 import mega.android.core.ui.components.inputfields.TextInputField
 import mega.android.core.ui.components.util.replaceNewlinesWithSpaces
+import mega.android.core.ui.extensions.safeRequestFocus
 import mega.android.core.ui.preview.CombinedThemePreviews
 import mega.android.core.ui.theme.AndroidThemeForPreviews
 import mega.android.core.ui.theme.AppTheme
@@ -216,7 +217,7 @@ private fun BasicInputDialog(
         .focusRequester(focusRequester)
         .onGloballyPositioned {
             if (isAutoShowKeyboard) {
-                focusRequester.requestFocus()
+                focusRequester.safeRequestFocus()
             }
         }
 
