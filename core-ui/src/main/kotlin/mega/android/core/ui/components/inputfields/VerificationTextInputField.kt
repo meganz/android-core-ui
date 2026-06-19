@@ -17,9 +17,12 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.text.selection.LocalTextSelectionColors
+import androidx.compose.foundation.text.selection.TextSelectionColors
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -76,99 +79,109 @@ fun VerificationTextInputField(
     val textColor = DSTokens.colors.text.primary
     val spacing = LocalSpacing.current
 
+    // The field draws its own blinking cursor, so hide the platform cursor drag
+    // handle and selection highlight. Their default color is inherited from the
+    // ambient Material theme, which would otherwise show as a colored teardrop.
+    val transparentSelectionColors = TextSelectionColors(
+        handleColor = Color.Transparent,
+        backgroundColor = Color.Transparent,
+    )
+
     Column(modifier = modifier) {
-        BasicTextField(
-            value = textFieldValue,
-            onValueChange = {
-                val newText = it.text.take(DEFAULT_VERIFICATION_INPUT_LENGTH)
-                if (lastTextValue != newText && newText.isDigitsOnly()) {
-                    lastTextValue = newText
-                    onValueChange(newText)
-                }
-            },
-            modifier = Modifier.onFocusChanged {
-                focusState.value = it.hasFocus
-            },
-            enabled = isEnabled,
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-            keyboardActions = KeyboardActions.Default,
-            textStyle = TextStyle(color = Color.Transparent),
-            singleLine = true,
-            cursorBrush = SolidColor(Color.Unspecified)
-        ) { inner ->
-            inner()
+        CompositionLocalProvider(LocalTextSelectionColors provides transparentSelectionColors) {
+            BasicTextField(
+                value = textFieldValue,
+                onValueChange = {
+                    val newText = it.text.take(DEFAULT_VERIFICATION_INPUT_LENGTH)
+                    if (lastTextValue != newText && newText.isDigitsOnly()) {
+                        lastTextValue = newText
+                        onValueChange(newText)
+                    }
+                },
+                modifier = Modifier.onFocusChanged {
+                    focusState.value = it.hasFocus
+                },
+                enabled = isEnabled,
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                keyboardActions = KeyboardActions.Default,
+                textStyle = TextStyle(color = Color.Transparent),
+                singleLine = true,
+                cursorBrush = SolidColor(Color.Unspecified)
+            ) { inner ->
+                inner()
 
-            Row(
-                horizontalArrangement = Arrangement.SpaceBetween,
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                repeat(DEFAULT_VERIFICATION_INPUT_LENGTH) { position ->
-                    val selection = position == value.length
+                Row(
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    repeat(DEFAULT_VERIFICATION_INPUT_LENGTH) { position ->
+                        val selection = position == value.length
 
-                    // Box for type each character
-                    Box(
-                        modifier = Modifier
-                            .border(
-                                when {
-                                    //error text is not empty
-                                    isCodeCorrect == false -> {
-                                        BorderStroke(
-                                            width = TextFieldDefaults.UnfocusedIndicatorThickness,
-                                            color = DSTokens.colors.support.error
-                                        )
-                                    }
+                        // Box for type each character
+                        Box(
+                            modifier = Modifier
+                                .border(
+                                    when {
+                                        //error text is not empty
+                                        isCodeCorrect == false -> {
+                                            BorderStroke(
+                                                width = TextFieldDefaults.UnfocusedIndicatorThickness,
+                                                color = DSTokens.colors.support.error
+                                            )
+                                        }
 
-                                    //pass the verification state
-                                    isCodeCorrect == true -> {
-                                        BorderStroke(
-                                            width = TextFieldDefaults.UnfocusedIndicatorThickness,
-                                            color = DSTokens.colors.support.success
-                                        )
-                                    }
+                                        //pass the verification state
+                                        isCodeCorrect == true -> {
+                                            BorderStroke(
+                                                width = TextFieldDefaults.UnfocusedIndicatorThickness,
+                                                color = DSTokens.colors.support.success
+                                            )
+                                        }
 
-                                    //the box is focus state
-                                    focusState.value && selection -> {
-                                        BorderStroke(
-                                            width = TextFieldDefaults.UnfocusedIndicatorThickness,
-                                            color = DSTokens.colors.border.strongSelected
-                                        )
-                                    }
+                                        //the box is focus state
+                                        focusState.value && selection -> {
+                                            BorderStroke(
+                                                width = TextFieldDefaults.UnfocusedIndicatorThickness,
+                                                color = DSTokens.colors.border.strongSelected
+                                            )
+                                        }
 
-                                    else -> {
-                                        BorderStroke(
-                                            width = TextFieldDefaults.UnfocusedIndicatorThickness,
-                                            color = DSTokens.colors.border.disabled
-                                        )
-                                    }
+                                        else -> {
+                                            BorderStroke(
+                                                width = TextFieldDefaults.UnfocusedIndicatorThickness,
+                                                color = DSTokens.colors.border.disabled
+                                            )
+                                        }
+                                    },
+                                    RoundedCornerShape(spacing.x8)
+                                )
+                                .size(
+                                    width = spacing.x40,
+                                    height = spacing.x48
+                                ),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            val cursorRectState = remember {
+                                mutableStateOf(Rect(0f, 0f, 0f, 0f))
+                            }
+                            val text = value.getOrNull(position)?.toString() ?: ""
+                            val showCursor = focusState.value && selection
+
+                            // the content of each input box
+                            Text(
+                                text = if (cipherMask.isNotEmpty() && text.isNotEmpty()) cipherMask else text,
+                                modifier = if (showCursor) Modifier.cursor(
+                                    cursorBrush = SolidColor(DSTokens.colors.text.primary),
+                                    cursorRect = cursorRectState.value,
+                                ) else Modifier,
+                                color = textColor,
+                                onTextLayout = { textLayoutResult ->
+                                    cursorRectState.value = textLayoutResult.getCursorRect(0)
                                 },
-                                RoundedCornerShape(spacing.x8)
+                                style = AppTheme.typography.bodyLarge
                             )
-                            .size(
-                                width = spacing.x40,
-                                height = spacing.x48
-                            ),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        val cursorRectState = remember {
-                            mutableStateOf(Rect(0f, 0f, 0f, 0f))
+
                         }
-                        val text = value.getOrNull(position)?.toString() ?: ""
-                        val showCursor = focusState.value && selection
-
-                        // the content of each input box
-                        Text(
-                            text = if (cipherMask.isNotEmpty() && text.isNotEmpty()) cipherMask else text,
-                            modifier = if (showCursor) Modifier.cursor(
-                                cursorBrush = SolidColor(DSTokens.colors.text.primary),
-                                cursorRect = cursorRectState.value,
-                            ) else Modifier,
-                            color = textColor,
-                            onTextLayout = { textLayoutResult ->
-                                cursorRectState.value = textLayoutResult.getCursorRect(0)
-                            },
-                            style = AppTheme.typography.bodyLarge
-                        )
-
                     }
                 }
             }
