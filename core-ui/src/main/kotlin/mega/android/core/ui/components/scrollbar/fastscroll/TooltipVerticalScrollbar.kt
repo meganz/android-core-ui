@@ -7,8 +7,8 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.animation.scaleIn
 import androidx.compose.animation.scaleOut
 import androidx.compose.foundation.gestures.ScrollableState
-import androidx.compose.foundation.gestures.detectTapGestures
-import androidx.compose.foundation.gestures.detectVerticalDragGestures
+import androidx.compose.foundation.gestures.awaitEachGesture
+import androidx.compose.foundation.gestures.awaitFirstDown
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.height
@@ -36,6 +36,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.TransformOrigin
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.input.pointer.positionChange
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.testTag
@@ -162,6 +163,7 @@ private fun TooltipVerticalScrollbar(
     var scrollableHeightPixels by remember { mutableFloatStateOf(0f) }
     var scrollableHeight by remember { mutableStateOf(0.dp) }
     var thumbPressed by remember { mutableStateOf(false) }
+    var dragOffsetY by remember { mutableFloatStateOf(0f) }
 
     // Calculate content padding values once and memoize
     val (topPaddingPx, bottomPaddingPx) = remember(contentPadding, density) {
@@ -198,7 +200,6 @@ private fun TooltipVerticalScrollbar(
         }
     }
 
-    // Full height box to capture drags
     Box(
         modifier = modifier
             .onGloballyPositioned { coordinates ->
@@ -208,40 +209,6 @@ private fun TooltipVerticalScrollbar(
                     val availableHeight = totalHeight - topPaddingPx - bottomPaddingPx
                     scrollableHeightPixels = availableHeight
                     scrollableHeight = scrollableHeightPixels.toDp()
-                }
-            }
-            .pointerInput(itemCount, reverseLayout) {
-                detectVerticalDragGestures(
-                    onDragEnd = {
-                        thumbPressed = false
-                    }
-                ) { change, _ ->
-                    if (thumbPressed && scrollableHeightPixels > 0 && itemCount > 0) {
-                        change.consume()
-
-                        val dragPositionY = change.position.y
-                        val adjustedY = dragPositionY - thumbHeightPixels / 2
-
-                        // Use total available height for drag calculations
-                        val totalAvailableHeight = scrollableHeightPixels + thumbHeightPixels
-
-                        val dragProportion = if (reverseLayout) {
-                            1 - (adjustedY / totalAvailableHeight)
-                        } else {
-                            adjustedY / totalAvailableHeight
-                        }
-
-                        val clampedProportion = dragProportion.coerceIn(0f, 1f)
-
-                        val targetIndex = (clampedProportion * (itemCount - 1))
-                            .toInt()
-                            .coerceIn(0, itemCount - 1)
-
-                        coroutineScope.launch {
-                            scrollBehaviorDesynchronized = true
-                            scrollToItem(targetIndex)
-                        }
-                    }
                 }
             },
     ) {
@@ -271,13 +238,47 @@ private fun TooltipVerticalScrollbar(
                 Thumb(
                     Modifier
                         .align(Alignment.TopEnd)
-                        .pointerInput(Unit) {
-                            detectTapGestures(
-                                onPress = {
-                                    thumbPressed = true
-                                    if (tryAwaitRelease()) thumbPressed = false
-                                }
-                            )
+                        .pointerInput(itemCount, reverseLayout) {
+                            awaitEachGesture {
+                                val down = awaitFirstDown(requireUnconsumed = false)
+                                thumbPressed = true
+                                dragOffsetY = with(density) { thumbOffset.toPx() } +
+                                        thumbHeightPixels / 2
+                                do {
+                                    val event = awaitPointerEvent()
+                                    val change = event.changes.firstOrNull { it.id == down.id }
+                                    val dragAmount = change?.positionChange()?.y ?: 0f
+                                    if (change != null && dragAmount != 0f
+                                        && scrollableHeightPixels > 0 && itemCount > 0
+                                    ) {
+                                        change.consume()
+
+                                        dragOffsetY += dragAmount
+                                        val adjustedY = dragOffsetY - thumbHeightPixels / 2
+
+                                        val totalAvailableHeight =
+                                            scrollableHeightPixels + thumbHeightPixels
+
+                                        val dragProportion = if (reverseLayout) {
+                                            1 - (adjustedY / totalAvailableHeight)
+                                        } else {
+                                            adjustedY / totalAvailableHeight
+                                        }
+
+                                        val clampedProportion = dragProportion.coerceIn(0f, 1f)
+
+                                        val targetIndex = (clampedProportion * (itemCount - 1))
+                                            .toInt()
+                                            .coerceIn(0, itemCount - 1)
+
+                                        coroutineScope.launch {
+                                            scrollBehaviorDesynchronized = true
+                                            scrollToItem(targetIndex)
+                                        }
+                                    }
+                                } while (event.changes.any { it.id == down.id && it.pressed })
+                                thumbPressed = false
+                            }
                         })
             }
             tooltipString?.let {
