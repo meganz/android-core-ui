@@ -33,8 +33,10 @@ fun VerificationTextInputFieldCatalog() {
                 value = value,
                 errorText = errorText,
                 isCodeCorrect = isCorrect,
+                cursorIndex = if (isCorrect == false) 0 else -1,
                 onValueChange = {
                     value = it
+                    isCorrect = null
                 }
             )
 

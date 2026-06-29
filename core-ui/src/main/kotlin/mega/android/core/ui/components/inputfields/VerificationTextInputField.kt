@@ -59,6 +59,10 @@ import mega.android.core.ui.theme.spacing.LocalSpacing
  * @param errorText                 when error state show the error text
  * @param isEnabled                 the input field enable state
  * @param shouldMaskInput           the input field will be masked when enabled
+ * @param cursorIndex               when >= 0, places the cursor at this digit index (preserving
+ *                                  the current value). Use it, for example, to move the cursor
+ *                                  back to the first digit on an incorrect code without clearing
+ *                                  the input. Defaults to -1, which keeps the cursor at the end.
  */
 @Composable
 fun VerificationTextInputField(
@@ -69,11 +73,13 @@ fun VerificationTextInputField(
     errorText: String = "",
     isEnabled: Boolean = true,
     shouldMaskInput: Boolean = false,
+    cursorIndex: Int = -1,
 ) {
     val focusState = remember {
         mutableStateOf(false)
     }
-    val textFieldValue = TextFieldValue(text = value, selection = TextRange(value.length))
+    val cursorPosition = if (cursorIndex >= 0) cursorIndex.coerceAtMost(value.length) else value.length
+    val textFieldValue = TextFieldValue(text = value, selection = TextRange(cursorPosition, value.length))
     var lastTextValue by remember { mutableStateOf(value) }
     val cipherMask = if (shouldMaskInput) CIPHER_MASK_CHAR.toString() else ""
     val textColor = DSTokens.colors.text.primary
@@ -115,7 +121,7 @@ fun VerificationTextInputField(
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     repeat(DEFAULT_VERIFICATION_INPUT_LENGTH) { position ->
-                        val selection = position == value.length
+                        val selection = position == cursorPosition
 
                         // Box for type each character
                         Box(
@@ -305,6 +311,23 @@ private fun VerificationTextInputFieldPreview() {
         VerificationTextInputField(
             value = text,
             shouldMaskInput = true,
+            onValueChange = {
+                text = it
+            },
+            errorText = "Incorrect verification code"
+        )
+    }
+}
+
+@CombinedThemePreviews
+@Composable
+private fun VerificationTextInputFieldErrorKeepValuePreview() {
+    var text by remember { mutableStateOf("123456") }
+    AndroidThemeForPreviews {
+        VerificationTextInputField(
+            value = text,
+            isCodeCorrect = false,
+            cursorIndex = 0,
             onValueChange = {
                 text = it
             },
