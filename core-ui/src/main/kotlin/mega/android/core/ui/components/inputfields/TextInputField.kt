@@ -25,6 +25,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.neverEqualPolicy
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
@@ -675,25 +676,30 @@ internal fun BaseTextField(
                 keyboardActions = keyboardActions,
                 value = textValue,
                 onValueChange = { textFieldValue ->
-                    val newTextValue = when {
-                        keyboardType == KeyboardType.Number -> {
-                            val digits = textFieldValue.text.filter { it.isDigit() }
-                            if (textFieldValue.text.length > maxCharLimit && digits.isNotBlank()) {
-                                digits.substring(0, digits.length.coerceAtMost(maxCharLimit))
-                            } else {
-                                digits
-                            }
-                        }
-
-                        else -> {
-                            if (textFieldValue.text.length > maxCharLimit) {
-                                textFieldValue.text.substring(0, maxCharLimit)
-                            } else {
-                                textFieldValue.text
-                            }
-                        }
+                    val filteredText = if (keyboardType == KeyboardType.Number) {
+                        textFieldValue.text.filter { it.isDigit() }
+                    } else {
+                        textFieldValue.text
                     }
-                    onValueChanged?.invoke(textFieldValue.copy(text = newTextValue))
+                    val limitedText = filteredText.limitedTo(maxCharLimit, textValue.text)
+                    val result = when {
+                        // Accepted as typed: honour the keyboard's cursor position.
+                        limitedText == textFieldValue.text -> textFieldValue
+                        // Blocked at the limit: keep the previous value (text and caret)
+                        // untouched, so an overflowing keystroke is a no-op rather than
+                        // jumping the caret to the end.
+                        limitedText == textValue.text -> textValue
+                        // Trimmed (e.g. a long paste): keep what fits, caret at the end.
+                        else -> textFieldValue.copy(
+                            text = limitedText,
+                            selection = TextRange(limitedText.length)
+                        )
+                    }
+                    // Emit on any change to text OR selection so the controlled caller can
+                    // round-trip the caret — otherwise cursor moves/selections get reverted.
+                    if (result != textValue) {
+                        onValueChanged?.invoke(result)
+                    }
                 },
                 colors = colors,
                 shape = RoundedCornerShape(8.dp),
@@ -806,7 +812,22 @@ internal fun BaseTextField(
 ) {
     val spacing = LocalSpacing.current
     val interactionSource: MutableInteractionSource = remember { MutableInteractionSource() }
-    var baseText by rememberSaveable(text) { mutableStateOf(text) }
+    // Drive the field with a TextFieldValue so we control the cursor. neverEqualPolicy
+    // makes every assignment re-sync the field — even when the value is unchanged — which
+    // is what restores the caret when an edit is rejected at the character limit.
+    var textFieldValue by rememberSaveable(stateSaver = TextFieldValue.Saver) {
+        mutableStateOf(
+            TextFieldValue(text, TextRange(text.length)),
+            neverEqualPolicy(),
+        )
+    }
+    // Re-seed only on a genuine external [text] change, never when it is just echoing back
+    // our own edit, so the caret is preserved mid-string instead of jumping to the end.
+    LaunchedEffect(text) {
+        if (text != textFieldValue.text) {
+            textFieldValue = TextFieldValue(text, TextRange(text.length))
+        }
+    }
     var isFocused by remember { mutableStateOf(false) }
     var showPassword by rememberSaveable { mutableStateOf(false) }
     val focusedColor = when {
@@ -869,27 +890,31 @@ internal fun BaseTextField(
                     capitalization = capitalization
                 ),
                 keyboardActions = keyboardActions,
-                value = baseText,
+                value = textFieldValue,
                 onValueChange = { newValue ->
-                    baseText = when {
-                        keyboardType == KeyboardType.Number -> {
-                            val digits = newValue.filter { it.isDigit() }
-                            if (newValue.length > maxCharLimit && digits.isNotBlank()) {
-                                digits.substring(0, digits.length.coerceAtMost(maxCharLimit))
-                            } else {
-                                digits
-                            }
-                        }
-
-                        else -> {
-                            if (newValue.length > maxCharLimit) {
-                                newValue.substring(0, maxCharLimit)
-                            } else {
-                                newValue
-                            }
-                        }
+                    val filteredText = if (keyboardType == KeyboardType.Number) {
+                        newValue.text.filter { it.isDigit() }
+                    } else {
+                        newValue.text
                     }
-                    onValueChanged?.invoke(baseText)
+                    val limitedText = filteredText.limitedTo(maxCharLimit, textFieldValue.text)
+                    val updated = when {
+                        // Accepted as typed: honour the keyboard's cursor position.
+                        limitedText == newValue.text -> newValue
+                        // Blocked at the limit: restore the previous text and cursor so the
+                        // caret doesn't drift forward on every rejected keystroke.
+                        limitedText == textFieldValue.text -> textFieldValue
+                        // Trimmed (e.g. a long paste): keep what fits, caret at the end.
+                        else -> newValue.copy(
+                            text = limitedText,
+                            selection = TextRange(limitedText.length),
+                        )
+                    }
+                    val textChanged = updated.text != textFieldValue.text
+                    textFieldValue = updated
+                    if (textChanged) {
+                        onValueChanged?.invoke(updated.text)
+                    }
                 },
                 placeholder = placeholder?.let {
                     {
@@ -915,14 +940,14 @@ internal fun BaseTextField(
                 } else {
                     if (showPassword) VisualTransformation.None else PasswordVisualTransformation()
                 },
-                trailingIcon = if (baseText.isNotEmpty() && showTrailingIcon) {
+                trailingIcon = if (textFieldValue.text.isNotEmpty() && showTrailingIcon) {
                     when {
                         isPasswordMode.not() && isFocused -> {
                             {
                                 Icon(
                                     modifier = Modifier
                                         .clickable {
-                                            baseText = ""
+                                            textFieldValue = TextFieldValue("")
                                             onValueChanged?.invoke("")
                                         }
                                         .testTag(BASE_TEXT_FIELD_CLEAR_TEXT_ICON_TAG),
@@ -987,6 +1012,20 @@ internal fun BaseTextField(
             }
         }
     }
+}
+
+/**
+ * Limits this proposed text to [maxCharLimit], similar to Android's
+ * [android.text.InputFilter.LengthFilter]:
+ * - if it already fits, accept it as is;
+ * - if the field was already full ([previous] at the limit), block the edit by keeping [previous]
+ *   so no character is silently dropped elsewhere;
+ * - otherwise there was still room, so keep the prefix that fits (e.g. a long paste is trimmed).
+ */
+private fun String.limitedTo(maxCharLimit: Int, previous: String): String = when {
+    length <= maxCharLimit -> this
+    previous.length >= maxCharLimit -> previous
+    else -> take(maxCharLimit)
 }
 
 @Composable
