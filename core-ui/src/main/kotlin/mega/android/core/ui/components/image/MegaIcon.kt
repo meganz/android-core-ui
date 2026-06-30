@@ -1,13 +1,22 @@
 package mega.android.core.ui.components.image
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.unit.dp
 import mega.android.core.ui.R
 import mega.android.core.ui.preview.CombinedThemePreviews
 import mega.android.core.ui.theme.AndroidThemeForPreviews
@@ -160,6 +169,56 @@ fun MegaIcon(
     )
 }
 
+@Composable
+fun MegaIconWithIndicator(
+    imageVector: ImageVector,
+    tint: IconColor,
+    showIndicator: Boolean,
+    modifier: Modifier = Modifier,
+    contentDescription: String? = null,
+) {
+    MegaIconWithIndicator(
+        painter = rememberVectorPainter(image = imageVector),
+        tint = tint,
+        showIndicator = showIndicator,
+        modifier = modifier,
+        contentDescription = contentDescription
+    )
+}
+
+@Composable
+fun MegaIconWithIndicator(
+    painter: Painter,
+    tint: IconColor,
+    showIndicator: Boolean,
+    modifier: Modifier = Modifier,
+    contentDescription: String? = null,
+) {
+    val iconColor = DSTokens.iconColor(iconColor = tint)
+    Column(
+        modifier = modifier,
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center,
+    ) {
+        Icon(
+            painter = painter,
+            tint = iconColor,
+            contentDescription = contentDescription,
+        )
+
+        if (showIndicator) {
+            Box(
+                modifier = Modifier
+                    .padding(top = 1.dp)
+                    .size(4.dp)
+                    .background(
+                        color = iconColor,
+                        shape = CircleShape,
+                    )
+            )
+        }
+    }
+}
 
 @Composable
 @CombinedThemePreviews
@@ -211,6 +270,30 @@ private fun MegaIconWithComponentsTintPreview() {
         MegaIcon(
             painter = painterResource(id = R.drawable.ic_close_medium_thin_outline),
             componentsColorTint = ComponentsColor.Interactive
+        )
+    }
+}
+
+@Composable
+@CombinedThemePreviews
+private fun MegaIconWithIndicatorShowingPreview() {
+    AndroidThemeForPreviews {
+        MegaIconWithIndicator(
+            painter = painterResource(id = R.drawable.ic_close_medium_thin_outline),
+            tint = IconColor.Brand,
+            showIndicator = true
+        )
+    }
+}
+
+@Composable
+@CombinedThemePreviews
+private fun MegaIconWithIndicatorHiddenPreview() {
+    AndroidThemeForPreviews {
+        MegaIconWithIndicator(
+            painter = painterResource(id = R.drawable.ic_close_medium_thin_outline),
+            tint = IconColor.Primary,
+            showIndicator = false
         )
     }
 }
