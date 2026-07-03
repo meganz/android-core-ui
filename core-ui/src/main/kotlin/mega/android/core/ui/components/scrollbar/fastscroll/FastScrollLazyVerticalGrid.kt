@@ -21,6 +21,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import mega.android.core.ui.components.MegaText
 import mega.android.core.ui.preview.CombinedThemePreviews
@@ -59,6 +60,7 @@ fun FastScrollLazyVerticalGrid(
     horizontalArrangement: Arrangement.Horizontal = Arrangement.Start,
     flingBehavior: FlingBehavior = ScrollableDefaults.flingBehavior(),
     userScrollEnabled: Boolean = true,
+    fastScrollerVerticalOffset: Dp = 0.dp,
     content: LazyGridScope.() -> Unit,
 ) {
     Box {
@@ -92,7 +94,8 @@ fun FastScrollLazyVerticalGrid(
                 contentPadding = contentPadding,
                 modifier = Modifier
                     .fillMaxHeight()
-                    .align(Alignment.TopEnd),
+                    .align(Alignment.TopEnd)
+                    .padding(top = fastScrollerVerticalOffset),
             )
         }
     }
