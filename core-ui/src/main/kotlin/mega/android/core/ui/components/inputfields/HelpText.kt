@@ -129,10 +129,13 @@ private fun HelpText(
     onAnnotationClick: (String) -> Unit = {},
     spanStyles: Map<SpanIndicator, SpanStyleWithAnnotation> = emptyMap(),
 ) {
-    Row(modifier = modifier) {
+    Row(
+        modifier = modifier,
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
         Icon(
             modifier = Modifier
-                .padding(top = LocalSpacing.current.x2, end = LocalSpacing.current.x8)
+                .padding(end = LocalSpacing.current.x8)
                 .size(16.dp)
                 .testTag(HELP_TEXT_ICON_TEST_TAG),
             painter = painterResource(id = iconResId),
@@ -142,7 +145,6 @@ private fun HelpText(
         LinkSpannedText(
             modifier = Modifier
                 .fillMaxWidth()
-                .align(Alignment.CenterVertically)
                 .testTag(HELP_TEXT_TEXT_TEST_TAG),
             value = text,
             baseStyle = textStyle,

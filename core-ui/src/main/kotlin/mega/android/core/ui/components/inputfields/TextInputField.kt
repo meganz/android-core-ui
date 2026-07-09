@@ -277,16 +277,22 @@ fun TextInputField(
 }
 
 /**
- * Password text input field with
- * @param modifier
- * @param onValueChanged
- * @param errorText
+ * Password text input field with a masked value, a show/hide (eye) toggle and, while focused,
+ * a clear (X) action.
+ *
+ * @param modifier the [Modifier] to be applied to this text field
+ * @param label optional label rendered above the field; pass null for a label-less field
+ * @param text the input text to be shown in the text field
+ * @param placeholder optional hint shown inside the field while it is empty
+ * @param onValueChanged called whenever the text changes
+ * @param errorText optional footer text; when set, drives the error (red) styling
  */
 @Composable
 fun PasswordTextInputField(
     modifier: Modifier,
     label: String?,
     text: String = "",
+    placeholder: String? = null,
     inputTextAlign: TextAlign = TextAlign.Unspecified,
     showTrailingIcon: Boolean = true,
     imeAction: ImeAction = ImeAction.Done,
@@ -314,6 +320,7 @@ fun PasswordTextInputField(
         }
     },
     text = text,
+    placeholder = placeholder,
     keyboardType = KeyboardType.Password,
     keyboardActions = keyboardActions,
     imeAction = imeAction,
@@ -715,7 +722,37 @@ internal fun BaseTextField(
                 },
                 trailingIcon = if (textValue.text.isNotEmpty() && showTrailingIcon) {
                     when {
-                        isPasswordMode.not() && isFocused -> {
+                        isPasswordMode -> {
+                            {
+                                Row(verticalAlignment = Alignment.CenterVertically) {
+                                    if (isFocused) {
+                                        Icon(
+                                            modifier = Modifier
+                                                .clickable {
+                                                    onValueChanged?.invoke(TextFieldValue(""))
+                                                }
+                                                .testTag(BASE_TEXT_FIELD_CLEAR_TEXT_ICON_TAG),
+                                            painter = painterResource(id = R.drawable.ic_close_medium_thin_outline),
+                                            tint = DSTokens.colors.icon.primary,
+                                            contentDescription = "Clear Text"
+                                        )
+                                    }
+                                    val eyeIcon =
+                                        if (showPassword) R.drawable.ic_eye_off_medium_thin_outline else R.drawable.ic_eye_medium_thin_outline
+                                    Icon(
+                                        modifier = Modifier
+                                            .padding(horizontal = spacing.x8)
+                                            .clickable { showPassword = !showPassword }
+                                            .testTag(BASE_TEXT_FIELD_PASSWORD_VISIBILITY_ICON_TAG),
+                                        painter = painterResource(id = eyeIcon),
+                                        tint = DSTokens.colors.icon.secondary,
+                                        contentDescription = "Show Password"
+                                    )
+                                }
+                            }
+                        }
+
+                        isFocused -> {
                             {
                                 Icon(
                                     modifier = Modifier
@@ -726,22 +763,6 @@ internal fun BaseTextField(
                                     painter = painterResource(id = R.drawable.ic_close_medium_thin_outline),
                                     tint = DSTokens.colors.icon.primary,
                                     contentDescription = "Clear Text"
-                                )
-                            }
-                        }
-
-                        isPasswordMode -> {
-                            val eyeIcon =
-                                if (showPassword) R.drawable.ic_eye_off_medium_thin_outline else R.drawable.ic_eye_medium_thin_outline
-                            {
-                                Icon(
-                                    modifier = Modifier
-                                        .padding(horizontal = spacing.x8)
-                                        .clickable { showPassword = !showPassword }
-                                        .testTag(BASE_TEXT_FIELD_PASSWORD_VISIBILITY_ICON_TAG),
-                                    painter = painterResource(id = eyeIcon),
-                                    tint = DSTokens.colors.icon.secondary,
-                                    contentDescription = "Show Password"
                                 )
                             }
                         }
@@ -942,7 +963,38 @@ internal fun BaseTextField(
                 },
                 trailingIcon = if (textFieldValue.text.isNotEmpty() && showTrailingIcon) {
                     when {
-                        isPasswordMode.not() && isFocused -> {
+                        isPasswordMode -> {
+                            {
+                                Row(verticalAlignment = Alignment.CenterVertically) {
+                                    if (isFocused) {
+                                        Icon(
+                                            modifier = Modifier
+                                                .clickable {
+                                                    textFieldValue = TextFieldValue("")
+                                                    onValueChanged?.invoke("")
+                                                }
+                                                .testTag(BASE_TEXT_FIELD_CLEAR_TEXT_ICON_TAG),
+                                            painter = painterResource(id = R.drawable.ic_close_medium_thin_outline),
+                                            tint = DSTokens.colors.icon.primary,
+                                            contentDescription = "Clear Text"
+                                        )
+                                    }
+                                    val eyeIcon =
+                                        if (showPassword) R.drawable.ic_eye_off_medium_thin_outline else R.drawable.ic_eye_medium_thin_outline
+                                    Icon(
+                                        modifier = Modifier
+                                            .padding(horizontal = spacing.x8)
+                                            .clickable { showPassword = !showPassword }
+                                            .testTag(BASE_TEXT_FIELD_PASSWORD_VISIBILITY_ICON_TAG),
+                                        painter = painterResource(id = eyeIcon),
+                                        tint = DSTokens.colors.icon.secondary,
+                                        contentDescription = "Show Password"
+                                    )
+                                }
+                            }
+                        }
+
+                        isFocused -> {
                             {
                                 Icon(
                                     modifier = Modifier
@@ -954,22 +1006,6 @@ internal fun BaseTextField(
                                     painter = painterResource(id = R.drawable.ic_close_medium_thin_outline),
                                     tint = DSTokens.colors.icon.primary,
                                     contentDescription = "Clear Text"
-                                )
-                            }
-                        }
-
-                        isPasswordMode -> {
-                            val eyeIcon =
-                                if (showPassword) R.drawable.ic_eye_off_medium_thin_outline else R.drawable.ic_eye_medium_thin_outline
-                            {
-                                Icon(
-                                    modifier = Modifier
-                                        .padding(horizontal = spacing.x8)
-                                        .clickable { showPassword = !showPassword }
-                                        .testTag(BASE_TEXT_FIELD_PASSWORD_VISIBILITY_ICON_TAG),
-                                    painter = painterResource(id = eyeIcon),
-                                    tint = DSTokens.colors.icon.secondary,
-                                    contentDescription = "Show Password"
                                 )
                             }
                         }
