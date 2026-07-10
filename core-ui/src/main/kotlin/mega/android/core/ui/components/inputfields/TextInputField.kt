@@ -284,6 +284,8 @@ fun TextInputField(
  * @param label optional label rendered above the field; pass null for a label-less field
  * @param text the input text to be shown in the text field
  * @param placeholder optional hint shown inside the field while it is empty
+ * @param showClearIcon when true (default) a clear (X) action is shown next to the eye while the
+ * field is focused and has text; pass false to keep only the show/hide eye
  * @param onValueChanged called whenever the text changes
  * @param errorText optional footer text; when set, drives the error (red) styling
  */
@@ -295,6 +297,7 @@ fun PasswordTextInputField(
     placeholder: String? = null,
     inputTextAlign: TextAlign = TextAlign.Unspecified,
     showTrailingIcon: Boolean = true,
+    showClearIcon: Boolean = true,
     imeAction: ImeAction = ImeAction.Done,
     successText: String? = null,
     errorText: String? = null,
@@ -331,6 +334,7 @@ fun PasswordTextInputField(
     inputTextAlign = inputTextAlign,
     isPasswordMode = true,
     showTrailingIcon = showTrailingIcon,
+    showClearIcon = showClearIcon,
     maxCharLimit = maxCharLimit,
     contentType = contentType,
     onValueChanged = onValueChanged,
@@ -586,6 +590,7 @@ internal fun BaseTextField(
     textValue: TextFieldValue,
     isPasswordMode: Boolean,
     showTrailingIcon: Boolean,
+    showClearIcon: Boolean = true,
     keyboardType: KeyboardType,
     imeAction: ImeAction,
     capitalization: KeyboardCapitalization,
@@ -725,7 +730,7 @@ internal fun BaseTextField(
                         isPasswordMode -> {
                             {
                                 Row(verticalAlignment = Alignment.CenterVertically) {
-                                    if (isFocused) {
+                                    if (isFocused && showClearIcon) {
                                         Icon(
                                             modifier = Modifier
                                                 .clickable {
@@ -752,7 +757,7 @@ internal fun BaseTextField(
                             }
                         }
 
-                        isFocused -> {
+                        isFocused && showClearIcon -> {
                             {
                                 Icon(
                                     modifier = Modifier
@@ -813,6 +818,7 @@ internal fun BaseTextField(
     text: String,
     isPasswordMode: Boolean,
     showTrailingIcon: Boolean,
+    showClearIcon: Boolean = true,
     keyboardType: KeyboardType,
     imeAction: ImeAction,
     capitalization: KeyboardCapitalization,
@@ -966,7 +972,7 @@ internal fun BaseTextField(
                         isPasswordMode -> {
                             {
                                 Row(verticalAlignment = Alignment.CenterVertically) {
-                                    if (isFocused) {
+                                    if (isFocused && showClearIcon) {
                                         Icon(
                                             modifier = Modifier
                                                 .clickable {
@@ -994,7 +1000,7 @@ internal fun BaseTextField(
                             }
                         }
 
-                        isFocused -> {
+                        isFocused && showClearIcon -> {
                             {
                                 Icon(
                                     modifier = Modifier

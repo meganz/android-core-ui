@@ -239,4 +239,23 @@ class TextInputFieldTest {
 
         assertEquals("", latest)
     }
+
+    @Test
+    fun `test that the clear icon is hidden when showClearIcon is false`() {
+        composeRule.setContent {
+            AndroidTheme(isDark = false) {
+                PasswordTextInputField(
+                    modifier = Modifier,
+                    label = null,
+                    text = "secret",
+                    showClearIcon = false,
+                )
+            }
+        }
+
+        composeRule.onNode(hasSetTextAction()).performClick()
+
+        composeRule.onNodeWithTag(BASE_TEXT_FIELD_CLEAR_TEXT_ICON_TAG).assertDoesNotExist()
+        composeRule.onNodeWithTag(BASE_TEXT_FIELD_PASSWORD_VISIBILITY_ICON_TAG).assertIsDisplayed()
+    }
 }
