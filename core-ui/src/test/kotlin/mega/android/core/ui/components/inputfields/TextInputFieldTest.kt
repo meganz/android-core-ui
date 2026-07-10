@@ -261,7 +261,7 @@ class TextInputFieldTest {
     }
 
     @Test
-    fun `test that a non-password field shows the clear icon on focus regardless of showClearIcon`() {
+    fun `test that a non-password field never shows the clear icon on focus`() {
         composeRule.setContent {
             AndroidTheme(isDark = false) {
                 var text by remember { mutableStateOf("hello") }
@@ -276,6 +276,6 @@ class TextInputFieldTest {
 
         composeRule.onNode(hasSetTextAction()).performClick()
 
-        composeRule.onNodeWithTag(BASE_TEXT_FIELD_CLEAR_TEXT_ICON_TAG).assertIsDisplayed()
+        composeRule.onNodeWithTag(BASE_TEXT_FIELD_CLEAR_TEXT_ICON_TAG).assertDoesNotExist()
     }
 }

@@ -756,21 +756,6 @@ internal fun BaseTextField(
                             }
                         }
 
-                        isFocused -> {
-                            {
-                                Icon(
-                                    modifier = Modifier
-                                        .clickable {
-                                            onValueChanged?.invoke(TextFieldValue(""))
-                                        }
-                                        .testTag(BASE_TEXT_FIELD_CLEAR_TEXT_ICON_TAG),
-                                    painter = painterResource(id = R.drawable.ic_close_medium_thin_outline),
-                                    tint = DSTokens.colors.icon.primary,
-                                    contentDescription = "Clear Text"
-                                )
-                            }
-                        }
-
                         else -> {
                             null
                         }
@@ -996,22 +981,6 @@ internal fun BaseTextField(
                                         contentDescription = "Show Password"
                                     )
                                 }
-                            }
-                        }
-
-                        isFocused -> {
-                            {
-                                Icon(
-                                    modifier = Modifier
-                                        .clickable {
-                                            textFieldValue = TextFieldValue("")
-                                            onValueChanged?.invoke("")
-                                        }
-                                        .testTag(BASE_TEXT_FIELD_CLEAR_TEXT_ICON_TAG),
-                                    painter = painterResource(id = R.drawable.ic_close_medium_thin_outline),
-                                    tint = DSTokens.colors.icon.primary,
-                                    contentDescription = "Clear Text"
-                                )
                             }
                         }
 
