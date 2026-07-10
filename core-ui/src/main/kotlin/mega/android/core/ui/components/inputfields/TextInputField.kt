@@ -756,7 +756,7 @@ internal fun BaseTextField(
                             }
                         }
 
-                        isFocused && showClearIcon -> {
+                        isFocused -> {
                             {
                                 Icon(
                                     modifier = Modifier
@@ -999,7 +999,7 @@ internal fun BaseTextField(
                             }
                         }
 
-                        isFocused && showClearIcon -> {
+                        isFocused -> {
                             {
                                 Icon(
                                     modifier = Modifier
