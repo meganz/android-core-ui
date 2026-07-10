@@ -277,15 +277,14 @@ fun TextInputField(
 }
 
 /**
- * Password text input field with a masked value, a show/hide (eye) toggle and, while focused,
- * a clear (X) action.
+ * Password text input field with a masked value and a show/hide (eye) toggle.
  *
  * @param modifier the [Modifier] to be applied to this text field
  * @param label optional label rendered above the field; pass null for a label-less field
  * @param text the input text to be shown in the text field
  * @param placeholder optional hint shown inside the field while it is empty
- * @param showClearIcon when true (default) a clear (X) action is shown next to the eye while the
- * field is focused and has text; pass false to keep only the show/hide eye
+ * @param showClearIcon when true, a clear (X) action is shown next to the eye while the field is
+ * focused and has text; defaults to false (eye only)
  * @param onValueChanged called whenever the text changes
  * @param errorText optional footer text; when set, drives the error (red) styling
  */
@@ -297,7 +296,7 @@ fun PasswordTextInputField(
     placeholder: String? = null,
     inputTextAlign: TextAlign = TextAlign.Unspecified,
     showTrailingIcon: Boolean = true,
-    showClearIcon: Boolean = true,
+    showClearIcon: Boolean = false,
     imeAction: ImeAction = ImeAction.Done,
     successText: String? = null,
     errorText: String? = null,
@@ -590,7 +589,7 @@ internal fun BaseTextField(
     textValue: TextFieldValue,
     isPasswordMode: Boolean,
     showTrailingIcon: Boolean,
-    showClearIcon: Boolean = true,
+    showClearIcon: Boolean = false,
     keyboardType: KeyboardType,
     imeAction: ImeAction,
     capitalization: KeyboardCapitalization,
@@ -818,7 +817,7 @@ internal fun BaseTextField(
     text: String,
     isPasswordMode: Boolean,
     showTrailingIcon: Boolean,
-    showClearIcon: Boolean = true,
+    showClearIcon: Boolean = false,
     keyboardType: KeyboardType,
     imeAction: ImeAction,
     capitalization: KeyboardCapitalization,

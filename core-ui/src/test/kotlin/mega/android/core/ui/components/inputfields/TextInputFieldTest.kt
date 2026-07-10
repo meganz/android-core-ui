@@ -226,6 +226,7 @@ class TextInputFieldTest {
                     modifier = Modifier,
                     label = null,
                     text = text,
+                    showClearIcon = true,
                     onValueChanged = {
                         text = it
                         latest = it
