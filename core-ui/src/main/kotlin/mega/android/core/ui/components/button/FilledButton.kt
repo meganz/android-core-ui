@@ -154,6 +154,38 @@ fun SecondaryFilledButtonM3(
 }
 
 /**
+ * Full-size Filled button using MEGA brand colours, for a high-emphasis brand CTA.
+ */
+@Composable
+fun BrandFilledButton(
+    modifier: Modifier,
+    text: String,
+    onClick: () -> Unit,
+    leadingIcon: Painter? = null,
+    trailingIcon: Painter? = null,
+    enabled: Boolean = true,
+    isLoading: Boolean = false,
+) {
+    FilledButton(
+        modifier = modifier,
+        text = text,
+        leadingIcon = leadingIcon,
+        trailingIcon = trailingIcon,
+        enabled = enabled,
+        isLoading = isLoading,
+        onClick = onClick,
+        containerColorDefault = DSTokens.colors.button.brand,
+        containerColorDisabled = DSTokens.colors.button.disabled,
+        containerColorPressed = DSTokens.colors.button.brandPressed,
+        textColorDefault = DSTokens.colors.text.inverseAccent,
+        textColorDisabled = DSTokens.colors.text.onColorDisabled,
+        iconColorDefault = DSTokens.colors.icon.inverseAccent,
+        iconColorDisabled = DSTokens.colors.icon.onColorDisabled,
+        loaderIconColor = DSTokens.colors.icon.inverseAccent,
+    )
+}
+
+/**
  * Material 3 Filled button at the XSmall size (32dp height, 12dp corner).
  *
  * Use for compact contexts like banners and inline prompts where the standard
@@ -419,6 +451,18 @@ private fun SecondaryFilledButtonM3XSmallPreview() {
         SecondaryFilledButtonM3XSmall(
             modifier = Modifier.wrapContentWidth(),
             text = "Log in",
+            onClick = { },
+        )
+    }
+}
+
+@CombinedThemePreviews
+@Composable
+private fun BrandFilledButtonPreview() {
+    AndroidThemeForPreviews {
+        BrandFilledButton(
+            modifier = Modifier.wrapContentWidth(),
+            text = "Get Pro I for €4.99/month",
             onClick = { },
         )
     }
