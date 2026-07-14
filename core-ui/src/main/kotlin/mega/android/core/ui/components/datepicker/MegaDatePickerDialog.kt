@@ -85,35 +85,44 @@ fun MegaDatePickerDialog(
  * Maps the Material3 date-picker palette onto MEGA design tokens so the picker matches the design
  * in light and dark. Every slot is set explicitly; any left unspecified would re-derive from the
  * unthemed Material3 baseline scheme.
+ *
+ * The result is remembered against the (theme-stable) token set so it is rebuilt only when the
+ * theme changes, not on every recomposition.
  */
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
-private fun megaDatePickerColors(): DatePickerColors = DatePickerDefaults.colors(
-    containerColor = DSTokens.colors.background.surface1,
-    titleContentColor = DSTokens.colors.text.secondary,
-    headlineContentColor = DSTokens.colors.text.primary,
-    weekdayContentColor = DSTokens.colors.text.secondary,
-    subheadContentColor = DSTokens.colors.text.secondary,
-    navigationContentColor = DSTokens.colors.icon.primary,
-    yearContentColor = DSTokens.colors.text.primary,
-    disabledYearContentColor = DSTokens.colors.text.disabled,
-    currentYearContentColor = DSTokens.colors.text.accent,
-    selectedYearContentColor = DSTokens.colors.text.onColor,
-    disabledSelectedYearContentColor = DSTokens.colors.text.onColorDisabled,
-    selectedYearContainerColor = DSTokens.colors.button.brand,
-    disabledSelectedYearContainerColor = DSTokens.colors.button.disabled,
-    dayContentColor = DSTokens.colors.text.primary,
-    disabledDayContentColor = DSTokens.colors.text.disabled,
-    selectedDayContentColor = DSTokens.colors.text.onColor,
-    disabledSelectedDayContentColor = DSTokens.colors.text.onColorDisabled,
-    selectedDayContainerColor = DSTokens.colors.button.brand,
-    disabledSelectedDayContainerColor = DSTokens.colors.button.disabled,
-    todayContentColor = DSTokens.colors.text.accent,
-    todayDateBorderColor = DSTokens.colors.border.strongSelected,
-    dayInSelectionRangeContentColor = DSTokens.colors.text.primary,
-    dayInSelectionRangeContainerColor = DSTokens.colors.background.surface2,
-    dividerColor = DSTokens.colors.border.subtle,
-)
+private fun megaDatePickerColors(): DatePickerColors {
+    val colors = DSTokens.colors
+    val defaults = DatePickerDefaults.colors()
+    return remember(colors) {
+        defaults.copy(
+            containerColor = colors.background.surface1,
+            titleContentColor = colors.text.secondary,
+            headlineContentColor = colors.text.primary,
+            weekdayContentColor = colors.text.secondary,
+            subheadContentColor = colors.text.secondary,
+            navigationContentColor = colors.icon.primary,
+            yearContentColor = colors.text.primary,
+            disabledYearContentColor = colors.text.disabled,
+            currentYearContentColor = colors.text.primary,
+            selectedYearContentColor = colors.text.inverseAccent,
+            disabledSelectedYearContentColor = colors.text.onColorDisabled,
+            selectedYearContainerColor = colors.components.selectionControl,
+            disabledSelectedYearContainerColor = colors.button.disabled,
+            dayContentColor = colors.text.primary,
+            disabledDayContentColor = colors.text.disabled,
+            selectedDayContentColor = colors.text.inverseAccent,
+            disabledSelectedDayContentColor = colors.text.onColorDisabled,
+            selectedDayContainerColor = colors.components.selectionControl,
+            disabledSelectedDayContainerColor = colors.button.disabled,
+            todayContentColor = colors.text.primary,
+            todayDateBorderColor = colors.border.strong,
+            dayInSelectionRangeContentColor = colors.text.primary,
+            dayInSelectionRangeContainerColor = colors.background.surface2,
+            dividerColor = colors.border.subtle,
+        )
+    }
+}
 
 @CombinedThemePreviews
 @Composable
