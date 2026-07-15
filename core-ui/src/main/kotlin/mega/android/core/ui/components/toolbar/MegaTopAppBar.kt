@@ -418,6 +418,58 @@ fun TransparentTopBar(
 }
 
 @Composable
+fun TransparentTopBar(
+    modifier: Modifier = Modifier,
+    title: String = "",
+    subtitle: String? = null,
+    navigationIcon: Painter? = null,
+    trailingIcons: @Composable RowScope.() -> Unit = {},
+    actions: List<MenuAction> = emptyList(),
+    onActionPressed: (MenuAction) -> Unit = {},
+    onNavigationIconClicked: () -> Unit = {},
+    backgroundAlpha: Float = 0f,
+) {
+    val actionsWithClick = remember(actions, onActionPressed) {
+        actions.map { action -> MenuActionWithClick(action) { onActionPressed(action) } }
+    }
+    @OptIn(ExperimentalMaterial3Api::class)
+    DefaultTopAppBar(
+        modifier = Modifier
+            .background(DSTokens.colors.background.pageBackground.copy(alpha = backgroundAlpha))
+            .then(modifier),
+        title = title,
+        subtitle = subtitle,
+        navigationIcon = {
+            navigationIcon?.let {
+                IconButton(
+                    modifier = Modifier
+                        .padding(start = LocalSpacing.current.x12)
+                        .size(32.dp),
+                    onClick = onNavigationIconClicked
+                ) {
+                    Icon(
+                        painter = navigationIcon,
+                        contentDescription = null,
+                    )
+                }
+            }
+        },
+        actions = {
+            trailingIcons()
+            TopAppBarActionsComponent(actionsWithClick, true, Int.MAX_VALUE)
+        },
+        colors = TopAppBarDefaults.topAppBarColors(
+            containerColor = Color.Transparent,
+            scrolledContainerColor = Color.Transparent,
+            navigationIconContentColor = DSTokens.colors.icon.primary,
+            titleContentColor = DSTokens.colors.text.primary,
+            actionIconContentColor = DSTokens.colors.icon.primary
+        ),
+        drawBottomLineOnScrolledContent = false
+    )
+}
+
+@Composable
 @OptIn(ExperimentalMaterial3Api::class)
 private fun DefaultTopAppBar(
     modifier: Modifier,
@@ -641,6 +693,34 @@ private fun MegaTransparentTopAppBarPreview() {
                             .size(32.dp),
                         icon = painterResource(id = R.drawable.ic_close_medium_thin_outline),
                         onClick = { })
+                },
+                onNavigationIconClicked = {}
+            )
+        }
+    }
+}
+
+@CombinedThemePreviews
+@Composable
+private fun MegaTransparentTopAppBarWithTitlePreview() {
+    AndroidThemeForPreviews {
+        Box(modifier = Modifier.background(color = Color.Red)) {
+            TransparentTopBar(
+                title = "Title",
+                subtitle = "Subtitle",
+                navigationIcon = painterResource(id = R.drawable.ic_arrow_left_medium_thin_outline),
+                trailingIcons = {
+                    IconButton(
+                        modifier = Modifier
+                            .padding(end = LocalSpacing.current.x12)
+                            .size(32.dp),
+                        onClick = {}
+                    ) {
+                        Icon(
+                            painter = painterResource(id = R.drawable.ic_close_medium_thin_outline),
+                            contentDescription = null,
+                        )
+                    }
                 },
                 onNavigationIconClicked = {}
             )
