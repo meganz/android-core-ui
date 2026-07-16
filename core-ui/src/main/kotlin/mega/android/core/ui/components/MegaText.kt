@@ -1,11 +1,18 @@
 package mega.android.core.ui.components
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.basicMarquee
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.InlineTextContent
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.TextLayoutResult
 import androidx.compose.ui.text.TextStyle
@@ -121,6 +128,69 @@ fun MegaText(
         onTextLayout = onTextLayout,
         inlineContent = inlineContent
     )
+}
+
+/**
+ * Text with an indicator dot below
+ *
+ * @param text text to show
+ * @param textColor color of the text and the indicator dot
+ * @param showIndicator whether to show the indicator dot below the text
+ * @param modifier
+ * @param style
+ */
+@Composable
+fun MegaTextWithIndicator(
+    text: String,
+    textColor: TextColor,
+    showIndicator: Boolean,
+    modifier: Modifier = Modifier,
+    style: TextStyle = LocalTextStyle.current,
+) {
+    val resolvedColor = DSTokens.textColor(textColor = textColor)
+    Column(
+        modifier = modifier,
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center,
+    ) {
+        MegaText(
+            text = text,
+            textColor = textColor,
+            style = style,
+        )
+        if (showIndicator) {
+            Box(
+                modifier = Modifier
+                    .padding(top = 1.dp)
+                    .size(4.dp)
+                    .background(
+                        color = resolvedColor,
+                        shape = CircleShape,
+                    )
+            )
+        }
+    }
+}
+
+@CombinedThemePreviews
+@Composable
+private fun MegaTextWithIndicatorPreview() {
+    AndroidThemeForPreviews {
+        Column {
+            MegaTextWithIndicator(
+                text = "1.75x",
+                textColor = TextColor.Brand,
+                showIndicator = true,
+                modifier = Modifier.padding(horizontal = 16.dp, vertical = 4.dp),
+            )
+            MegaTextWithIndicator(
+                text = "1.25x",
+                textColor = TextColor.Primary,
+                showIndicator = false,
+                modifier = Modifier.padding(horizontal = 16.dp, vertical = 4.dp),
+            )
+        }
+    }
 }
 
 @CombinedThemePreviews
