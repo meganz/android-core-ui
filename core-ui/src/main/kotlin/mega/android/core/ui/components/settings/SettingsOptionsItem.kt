@@ -47,6 +47,7 @@ import mega.android.core.ui.theme.values.TextColor
  * @param modifier
  * @param valueToString lambda function to get the name of each value. Default will use `toString` of each value.
  * @param enabled
+ * @param footerText optional footer text for this setting
  * @param onValueSelected callback for clicks on this component
  */
 @Composable
@@ -58,17 +59,22 @@ fun <T> SettingsOptionsItem(
     modifier: Modifier = Modifier,
     valueToString: (T) -> String = { it.toString() },
     enabled: Boolean = true,
+    footerText: String? = null,
     onValueSelected: (key: String, value: T) -> Unit,
 ) {
     var showOptions by remember { mutableStateOf(false) }
-    SettingsNavigationItem(
-        key = key,
-        title = title,
+    SettingsWithFooter(
+        footerText = footerText,
         modifier = modifier,
-        enabled = enabled,
-        subtitle = selectedValue?.let { valueToString(it) },
     ) {
-        showOptions = true
+        SettingsNavigationItem(
+            key = key,
+            title = title,
+            enabled = enabled,
+            subtitle = selectedValue?.let { valueToString(it) },
+        ) {
+            showOptions = true
+        }
     }
     if (showOptions) {
         SettingsOptionsModal(
@@ -274,6 +280,7 @@ private fun SettingsOptionsItemPreview() {
             title = "Options Settings",
             values = values,
             selectedValue = selectedValue,
+            footerText = "Apply view mode per folder, or use the same view mode for all folders.",
         ) { _, value ->
             selectedValue = value
         }
