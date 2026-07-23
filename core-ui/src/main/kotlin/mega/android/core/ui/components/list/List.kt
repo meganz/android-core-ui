@@ -440,7 +440,8 @@ private fun ListItem(
                         textColor = effectiveTitleTextColor,
                         style = AppTheme.typography.bodyLarge,
                         maxLines = titleMaxLines,
-                        overflow = TextOverflow.Ellipsis
+                        overflow = TextOverflow.Ellipsis,
+                        applyMarqueEffect = titleMaxLines == 1,
                     )
                     titleTrailingElement?.invoke()
                 }
@@ -454,6 +455,7 @@ private fun ListItem(
                     style = AppTheme.typography.bodyMedium,
                     maxLines = subtitleMaxLines,
                     overflow = subtitleOverflow,
+                    applyMarqueEffect = subtitleMaxLines == 1,
                 )
             } else if (replaceNullSubtitleWithShimmer) {
                 Spacer(
