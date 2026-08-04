@@ -148,6 +148,7 @@ fun AnchoredButtonGroup(
  * @param applyInsets If `true` (the default), padding for the navigation bar and display
  * cutouts is applied. Set to `false` if padding is already handled at a higher level and not consumed.
  */
+@Deprecated("Use InlineAnchoredButtonGroup with buttonGroup param")
 @Composable
 fun InlineAnchoredButtonGroup(
     primaryButtonText: String,
@@ -160,31 +161,27 @@ fun InlineAnchoredButtonGroup(
     primaryButtonTrailingIcon: Painter? = null,
     applyInsets: Boolean = true,
 ) {
-    CompositionLocalProvider(
-        LocalMinimumInteractiveComponentSize provides buttonDefaultHeightM3
-    ) {
-        InlineAnchoredButtonGroup(
-            modifier = modifier,
-            applyInsets = applyInsets,
-            buttonGroup = listOf(
-                {
-                    Button.SecondaryButtonM3(
-                        text = textOnlyButtonText,
-                        onClick = onTextOnlyButtonClick,
-                    )
-                },
-                {
-                    Button.PrimaryButtonM3(
-                        text = primaryButtonText,
-                        onClick = onPrimaryButtonClick,
-                        enabled = primaryButtonEnabled,
-                        leadingIcon = primaryButtonLeadingIcon,
-                        trailingIcon = primaryButtonTrailingIcon,
-                    )
-                },
-            )
+    InlineAnchoredButtonGroup(
+        modifier = modifier,
+        applyInsets = applyInsets,
+        buttonGroup = listOf(
+            {
+                Button.SecondaryButtonM3(
+                    text = textOnlyButtonText,
+                    onClick = onTextOnlyButtonClick,
+                )
+            },
+            {
+                Button.PrimaryButtonM3(
+                    text = primaryButtonText,
+                    onClick = onPrimaryButtonClick,
+                    enabled = primaryButtonEnabled,
+                    leadingIcon = primaryButtonLeadingIcon,
+                    trailingIcon = primaryButtonTrailingIcon,
+                )
+            },
         )
-    }
+    )
 }
 
 @Composable
@@ -193,30 +190,38 @@ fun InlineAnchoredButtonGroup(
     modifier: Modifier = Modifier,
     applyInsets: Boolean = true,
 ) {
-    Box(
-        modifier = modifier
-            .fillMaxWidth()
-            .wrapContentHeight()
-            .background(DSTokens.colors.background.surface1)
+    CompositionLocalProvider(
+        LocalMinimumInteractiveComponentSize provides buttonDefaultHeightM3
     ) {
-        Row(
-            modifier = Modifier
-                .then(
-                    if (applyInsets) {
-                        Modifier
-                            .navigationBarsPadding()
-                            .windowInsetsPadding(WindowInsets.displayCutout.only(WindowInsetsSides.Horizontal))
-                    } else Modifier
-                )
-                .padding(LocalSpacing.current.x16)
-                .align(Alignment.CenterEnd),
-            horizontalArrangement = Arrangement.spacedBy(
-                LocalSpacing.current.x16,
-            ),
-            verticalAlignment = Alignment.CenterVertically
+        Box(
+            modifier = modifier
+                .fillMaxWidth()
+                .wrapContentHeight()
+                .background(DSTokens.colors.background.surface1)
         ) {
-            buttonGroup.forEach { button ->
-                button(this@Row).LocalButton()
+            Row(
+                modifier = Modifier
+                    .then(
+                        if (applyInsets) {
+                            Modifier
+                                .navigationBarsPadding()
+                                .windowInsetsPadding(
+                                    WindowInsets.displayCutout.only(
+                                        WindowInsetsSides.Horizontal
+                                    )
+                                )
+                        } else Modifier
+                    )
+                    .padding(LocalSpacing.current.x16)
+                    .align(Alignment.CenterEnd),
+                horizontalArrangement = Arrangement.spacedBy(
+                    LocalSpacing.current.x16,
+                ),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                buttonGroup.forEach { button ->
+                    button(this@Row).LocalButton()
+                }
             }
         }
     }
