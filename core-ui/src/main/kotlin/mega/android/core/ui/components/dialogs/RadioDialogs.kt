@@ -13,6 +13,7 @@ import androidx.compose.runtime.Immutable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.DialogProperties
 import kotlinx.collections.immutable.ImmutableList
@@ -45,6 +46,7 @@ fun BasicRadioDialog(
     onDismissRequest: () -> Unit,
     onOptionSelected: (BasicDialogRadioOption) -> Unit,
     modifier: Modifier = Modifier,
+    description: SpannableText? = null,
     selectedOption: BasicDialogRadioOption? = null,
     dialogProperties: DialogProperties = DialogProperties(
         dismissOnBackPress = true,
@@ -72,6 +74,19 @@ fun BasicRadioDialog(
                         onAnnotationClick = title.onAnnotationClick ?: {},
                         baseStyle = AppTheme.typography.headlineSmall,
                         baseTextColor = TextColor.Primary,
+                    )
+                }
+
+                description?.text?.takeIf { it.isNotEmpty() }?.let {
+                    LinkSpannedText(
+                        modifier = Modifier
+                            .padding(top = DSTokens.spacings.s5)
+                            .testTag(BASIC_RADIO_DIALOG_DESCRIPTION_TAG),
+                        value = it,
+                        spanStyles = description.annotations ?: emptyMap(),
+                        onAnnotationClick = description.onAnnotationClick ?: {},
+                        baseStyle = AppTheme.typography.bodyMedium,
+                        baseTextColor = TextColor.Secondary,
                     )
                 }
 
@@ -121,6 +136,32 @@ fun BasicRadioDialog(
                 }
             }
         }
+    }
+}
+
+internal const val BASIC_RADIO_DIALOG_DESCRIPTION_TAG = "basic_radio_dialog:text_description"
+
+@Composable
+@CombinedThemePreviews
+private fun BasicRadioDialogWithDescriptionPreview() {
+    AndroidThemeForPreviews {
+        BasicRadioDialog(
+            title = SpannableText("Basic dialog title"),
+            description = SpannableText("Supporting text that explains what the options below do."),
+            options = persistentListOf(
+                BasicDialogRadioOption(0, "Option 1"),
+                BasicDialogRadioOption(1, "Option 2"),
+            ),
+            selectedOption = BasicDialogRadioOption(0, "Option 1"),
+            onOptionSelected = {},
+            buttons = persistentListOf(
+                BasicDialogButton(
+                    text = "Cancel",
+                    onClick = {}
+                )
+            ),
+            onDismissRequest = {}
+        )
     }
 }
 
