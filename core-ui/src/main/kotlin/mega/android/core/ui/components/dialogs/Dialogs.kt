@@ -6,6 +6,7 @@ import androidx.compose.animation.expandIn
 import androidx.compose.animation.shrinkOut
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.BasicAlertDialog
@@ -22,6 +23,8 @@ import androidx.compose.ui.window.DialogProperties
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import mega.android.core.ui.components.LinkSpannedText
+import mega.android.core.ui.components.MegaText
+import mega.android.core.ui.components.checkbox.Checkbox
 import mega.android.core.ui.components.dialogs.internal.MegaBasicDialogContent
 import mega.android.core.ui.components.dialogs.internal.MegaBasicDialogFlowRow
 import mega.android.core.ui.components.text.SpannableText
@@ -170,6 +173,7 @@ fun BasicDialog(
     dismissOnBackPress: Boolean = true,
     isVisible: Boolean = true,
     @BasicDialogButtonsDirection buttonDirection: Int = HORIZONTAL,
+    content: (@Composable () -> Unit)? = null,
 ) {
     BasicDialog(
         modifier = modifier,
@@ -180,7 +184,8 @@ fun BasicDialog(
         dismissOnClickOutside = dismissOnClickOutside,
         dismissOnBackPress = dismissOnBackPress,
         isVisible = isVisible,
-        buttonDirection = buttonDirection
+        buttonDirection = buttonDirection,
+        content = content,
     )
 }
 
@@ -196,6 +201,7 @@ fun BasicDialog(
     dismissOnBackPress: Boolean = true,
     isVisible: Boolean = true,
     @BasicDialogButtonsDirection buttonDirection: Int = HORIZONTAL,
+    content: (@Composable () -> Unit)? = null,
 ) {
     AnimatedVisibility(
         visible = isVisible,
@@ -271,11 +277,37 @@ fun BasicDialog(
                         )
                     }
                 },
+                content = content,
             )
         }
     }
 }
 
+
+@Composable
+@CombinedThemePreviews
+private fun BasicDialogWithContentPreview() {
+    AndroidThemeForPreviews {
+        BasicDialog(
+            title = "Basic dialog title",
+            description = "A dialog can carry extra content between its description and its buttons.",
+            buttons = persistentListOf(
+                BasicDialogButton(text = "Cancel", onClick = {}),
+                BasicDialogButton(text = "Confirm", onClick = {}),
+            ),
+            onDismissRequest = {},
+        ) {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Checkbox(checked = true, onCheckStateChanged = {})
+                MegaText(
+                    text = "Apply to all",
+                    textColor = TextColor.Primary,
+                    style = AppTheme.typography.bodyMedium,
+                )
+            }
+        }
+    }
+}
 
 @Composable
 @CombinedThemePreviews
