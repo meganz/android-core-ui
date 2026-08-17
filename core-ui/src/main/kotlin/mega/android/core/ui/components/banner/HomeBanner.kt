@@ -11,10 +11,12 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -39,6 +41,7 @@ import coil3.compose.AsyncImage
 import coil3.request.ImageRequest
 import coil3.request.crossfade
 import mega.android.core.ui.R
+import mega.android.core.ui.components.button.OnColorFilledButtonXXSmall
 import mega.android.core.ui.preview.CombinedThemePreviews
 import mega.android.core.ui.theme.AndroidThemeForPreviews
 import mega.android.core.ui.theme.AppTheme
@@ -116,10 +119,7 @@ fun HomeBanner(
                     modifier = Modifier
                         .weight(0.7f)
                         .wrapContentHeight()
-                        .padding(
-                            start = spacing.x4,
-                            top = spacing.x2
-                        ),
+                        .padding(start = spacing.x4),
                     verticalArrangement = Arrangement.Top
                 ) {
                     // Title
@@ -171,10 +171,10 @@ fun HomeBanner(
                     modifier = Modifier
                         .align(Alignment.TopEnd)
                         .padding(
-                            end = 4.dp,
-                            top = 4.dp
+                            end = spacing.x8,
+                            top = spacing.x8
                         )
-                        .size(spacing.x24)
+                        .size(spacing.x16)
                         .clickable { onDismissClick() }
                         .testTag(HOME_BANNER_DISMISS_BUTTON_TEST_TAG),
                     painter = painterResource(id = R.drawable.ic_close_medium_thin_outline),
@@ -188,31 +188,13 @@ fun HomeBanner(
 
 @Composable
 private fun BannerButton(text: String, onClick: () -> Unit, modifier: Modifier = Modifier) {
-    val interactionSource = remember { MutableInteractionSource() }
-    val isButtonPressed by interactionSource.collectIsPressedAsState()
-    val containerColor = when {
-        isButtonPressed -> DSTokens.colors.button.onColorPressed
-        else -> DSTokens.colors.button.onColor
-    }
-    Button(
+    OnColorFilledButtonXXSmall(
         modifier = modifier
             .padding(top = 10.dp)
-            .heightIn(min = 24.dp)
             .testTag(HOME_BANNER_BUTTON_TEST_TAG),
-        shape = RoundedCornerShape(4.dp),
-        colors = ButtonDefaults.buttonColors(
-            containerColor = containerColor,
-        ),
-        contentPadding = PaddingValues(horizontal = 12.dp, vertical = 4.dp),
+        text = text,
         onClick = onClick,
-        interactionSource = interactionSource
-    ) {
-        Text(
-            text = text,
-            style = AppTheme.typography.labelMedium,
-            color = DSTokens.colors.text.onColorInverse,
-        )
-    }
+    )
 }
 
 @CombinedThemePreviews

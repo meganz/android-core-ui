@@ -16,8 +16,11 @@ import mega.android.core.ui.components.button.AccessoryBarButtonGroup
 import mega.android.core.ui.components.button.AnchoredButtonGroup
 import mega.android.core.ui.components.button.BrandFilledButtonM3XSmall
 import mega.android.core.ui.components.button.MegaOutlinedButton
+import mega.android.core.ui.components.button.OnColorFilledButtonXXSmall
 import mega.android.core.ui.components.button.PrimaryFilledButton
 import mega.android.core.ui.components.button.PrimaryFilledButtonM3XSmall
+import mega.android.core.ui.components.button.PrimaryFilledButtonXSmall
+import mega.android.core.ui.components.button.PrimaryFilledButtonXXSmall
 import mega.android.core.ui.components.button.SecondaryFilledButton
 import mega.android.core.ui.components.button.SecondaryFilledButtonM3XSmall
 import mega.android.core.ui.components.button.TextOnlyButton
@@ -64,6 +67,26 @@ fun ButtonComponentCatalog(onClick: (String) -> Unit = {}) {
             modifier = Modifier.padding(all = 16.dp),
             text = "Brand XSmall",
             onClick = { onClick("Brand XSmall button clicked") },
+        )
+    }
+
+    Section(header = "Filled Buttons Compact") {
+        PrimaryFilledButtonXSmall(
+            modifier = Modifier.padding(all = 16.dp),
+            text = "Primary XSmall",
+            onClick = { onClick("Primary XSmall button clicked") },
+        )
+
+        PrimaryFilledButtonXXSmall(
+            modifier = Modifier.padding(all = 16.dp),
+            text = "Primary XXSmall",
+            onClick = { onClick("Primary XXSmall button clicked") },
+        )
+
+        OnColorFilledButtonXXSmall(
+            modifier = Modifier.padding(all = 16.dp),
+            text = "On colour XXSmall",
+            onClick = { onClick("On colour XXSmall button clicked") },
         )
     }
 
