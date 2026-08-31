@@ -5,7 +5,6 @@ import androidx.compose.animation.scaleIn
 import androidx.compose.animation.scaleOut
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsFocusedAsState
 import androidx.compose.foundation.interaction.collectIsPressedAsState
@@ -13,6 +12,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.selection.toggleable
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.ripple
@@ -29,6 +29,9 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
 import mega.android.core.ui.R
 import mega.android.core.ui.modifiers.conditional
@@ -90,6 +93,10 @@ private fun getBorderColor(isChecked: Boolean, color: CheckboxColors, enabled: B
         enabled
     )
 
+/**
+ * @param contentDescription optional label announced by accessibility services; provide one when
+ * the checkbox is used standalone, without a visible label merged into the same semantics node
+ */
 @Composable
 fun Checkbox(
     checked: Boolean,
@@ -97,7 +104,8 @@ fun Checkbox(
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
     clickable: Boolean = true,
-    tapTargetArea: Boolean = true
+    tapTargetArea: Boolean = true,
+    contentDescription: String? = null,
 ) {
     val mutableInteractionSource = remember { MutableInteractionSource() }
     val focusRequester = remember { FocusRequester() }
@@ -110,21 +118,33 @@ fun Checkbox(
     Box(
         modifier = Modifier
             .conditional(tapTargetArea) { size(checkboxContainerSize) }
+            .then(modifier)
+            .conditional(contentDescription != null) {
+                // captured locally: inside the semantics lambda the bare parameter name would
+                // resolve to the SemanticsPropertyReceiver extension, whose getter throws
+                val description = contentDescription.orEmpty()
+                semantics { this.contentDescription = description }
+            }
             .then(
                 if (enabled && clickable) {
-                    modifier
-                        .clickable(
-                            interactionSource = mutableInteractionSource,
-                            indication = ripple(
-                                bounded = true,
-                                radius = checkboxContainerSize / 2f,
-                                color = DSTokens.colors.icon.primary
-                            )
-                        ) {
-                            isChecked = !isChecked
-                            onCheckStateChanged(isChecked)
+                    // A non-interactive checkbox must stay pointer-transparent: even a disabled
+                    // toggleable consumes taps, breaking callers that render the checkbox as
+                    // display-only and handle the click on an enclosing parent
+                    Modifier.toggleable(
+                        value = isChecked,
+                        role = Role.Checkbox,
+                        interactionSource = mutableInteractionSource,
+                        indication = ripple(
+                            bounded = true,
+                            radius = checkboxContainerSize / 2f,
+                            color = DSTokens.colors.icon.primary
+                        ),
+                        onValueChange = {
+                            isChecked = it
+                            onCheckStateChanged(it)
                         }
-                } else modifier
+                    )
+                } else Modifier
             )
     ) {
         Box(
@@ -176,7 +196,8 @@ fun Checkbox(
                         modifier = Modifier
                             .size(checkMarkSize),
                         painter = painterResource(id = R.drawable.ic_check_medium_regular_outline),
-                        contentDescription = "check icon",
+                        // decorative: checked state is exposed via toggleable semantics
+                        contentDescription = null,
                         tint = if (enabled) color.checkedCheckmarkColor else color.disabledCheckedCheckmarkColor
                     )
                 }

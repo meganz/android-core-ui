@@ -165,7 +165,11 @@ internal fun IconButtonWithTooltip(
         tooltip = {
             PlainTooltip { Text(description) }
         },
-        state = tooltipState
+        state = tooltipState,
+        // The long press that shows the tooltip is handled by combinedClickable below (with
+        // haptic feedback); letting TooltipBox also handle it would stack two long-clickable
+        // nodes with identical bounds (ATF DuplicateClickableBoundsCheck)
+        enableUserInput = false,
     ) {
         Box(
             modifier = Modifier
