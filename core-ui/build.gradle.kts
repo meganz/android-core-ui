@@ -3,10 +3,8 @@ import mega.privacy.megagradle.plugin.extension.Dependency
 
 plugins {
     id("com.android.library")
-    id("org.jetbrains.kotlin.android")
     id("kotlin-parcelize")
     alias(libs.plugins.mega.artifactory.publish.convention)
-    alias(libs.plugins.mega.android.library.jacoco.convention)
     alias(libs.plugins.compose.compiler)
     alias(libs.plugins.screenshot)
     alias(libs.plugins.figma.code.connect)
@@ -22,8 +20,9 @@ tasks.register<GenerateLlmsTxtTask>("generateLlmsTxt") {
 // Include llms.txt in the sources JAR (published for tooling) but NOT in
 // classes.jar, so it never ends up in a consumer's APK.
 afterEvaluate {
-    android.sourceSets.findByName("screenshotTest")?.kotlin?.srcDir(
-        layout.buildDirectory.dir("generated/screenshotTest/kotlin")
+    extensions.getByType<com.android.build.api.dsl.LibraryExtension>()
+        .sourceSets.findByName("screenshotTest")?.kotlin?.srcDir(
+        layout.buildDirectory.dir("generated/screenshotTest/kotlin").get().asFile
     )
 
     tasks.named("compileDebugScreenshotTestKotlin") {
@@ -34,7 +33,7 @@ afterEvaluate {
         dependsOn("generateLlmsTxt")
     }
 
-    tasks.named<org.gradle.jvm.tasks.Jar>("releaseSourcesJar") {
+    tasks.withType<org.gradle.jvm.tasks.Jar>().matching { it.name == "releaseSourcesJar" }.configureEach {
         dependsOn("updateDebugScreenshotTest")
         from(layout.buildDirectory.dir("generated/llms")) {
             into("META-INF/mega.android.core.ui")
@@ -68,9 +67,6 @@ android {
     buildFeatures {
         compose = true
     }
-    composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.14"
-    }
 
     buildTypes {
         release {
@@ -81,15 +77,11 @@ android {
             )
         }
     }
-    val jdk: String by rootProject.extra
     val javaVersion: JavaVersion by rootProject.extra
 
     compileOptions {
         sourceCompatibility = javaVersion
         targetCompatibility = javaVersion
-    }
-    kotlinOptions {
-        jvmTarget = jdk
     }
 }
 
@@ -176,3 +168,10 @@ dependencies {
     compileOnly(libs.figma.code.connect.lib)
 }
 
+
+configure<org.jetbrains.kotlin.gradle.dsl.KotlinAndroidProjectExtension> {
+    val jdk: String by rootProject.extra
+    compilerOptions {
+        jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.fromTarget(jdk))
+    }
+}

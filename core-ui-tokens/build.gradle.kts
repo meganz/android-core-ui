@@ -1,6 +1,5 @@
 plugins {
     id("com.android.library")
-    id("org.jetbrains.kotlin.android")
     alias(libs.plugins.mega.artifactory.publish.convention)
     alias(libs.plugins.compose.compiler)
 }
@@ -18,9 +17,6 @@ android {
     buildFeatures {
         compose = true
     }
-    composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.14"
-    }
 
     buildTypes {
         release {
@@ -31,14 +27,10 @@ android {
             )
         }
     }
-    val jdk: String by rootProject.extra
     val javaVersion: JavaVersion by rootProject.extra
     compileOptions {
         sourceCompatibility = javaVersion
         targetCompatibility = javaVersion
-    }
-    kotlinOptions {
-        jvmTarget = jdk
     }
 }
 
@@ -91,4 +83,10 @@ tasks.register<JavaExec>("generateDefaultTokens") {
         compileTask.map { it.destinationDirectory },
         compileTask.map { it.libraries },
     )
+}
+configure<org.jetbrains.kotlin.gradle.dsl.KotlinAndroidProjectExtension> {
+    val jdk: String by rootProject.extra
+    compilerOptions {
+        jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.fromTarget(jdk))
+    }
 }
