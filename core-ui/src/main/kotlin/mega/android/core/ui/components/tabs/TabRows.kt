@@ -662,3 +662,28 @@ private fun MegaScrollableTabRowWithContentPreview() {
         }
     }
 }
+
+@CombinedThemePreviews
+@Composable
+private fun MegaCollapsibleTabRowPreview() {
+    AndroidThemeForPreviews {
+        MegaCollapsibleTabRow(
+            modifier = Modifier.height(260.dp),
+        ) {
+            addTextTab(TabItems("Tab A", false)) {
+                MegaOutlinedButton(
+                    text = "Tab A content",
+                    modifier = Modifier.align(Alignment.Center),
+                    onClick = {},
+                )
+            }
+            addTextTab(TabItems("Tab B", true)) {
+                MegaOutlinedButton(
+                    text = "Tab B content",
+                    modifier = Modifier.align(Alignment.Center),
+                    onClick = {},
+                )
+            }
+        }
+    }
+}
