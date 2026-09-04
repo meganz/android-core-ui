@@ -162,6 +162,11 @@ fun BasicDialog(
     )
 }
 
+/**
+ * @param content extra body content, laid out below the description. The dialog body scrolls
+ * when it does not fit, so this must not itself be vertically scrollable (a `LazyColumn` or
+ * `Modifier.verticalScroll` here will throw).
+ */
 @Composable
 fun BasicDialog(
     title: String?,
@@ -189,6 +194,11 @@ fun BasicDialog(
     )
 }
 
+/**
+ * @param content extra body content, laid out below the description. The dialog body scrolls
+ * when it does not fit, so this must not itself be vertically scrollable (a `LazyColumn` or
+ * `Modifier.verticalScroll` here will throw).
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BasicDialog(
