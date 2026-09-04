@@ -2,6 +2,9 @@
 
 package mega.android.core.ui.modifiers
 
+import androidx.compose.animation.core.AnimationSpec
+import androidx.compose.animation.core.animate
+import androidx.compose.animation.core.tween
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
@@ -22,9 +25,14 @@ import androidx.compose.ui.layout.MeasureScope
 import androidx.compose.ui.node.CompositionLocalConsumerModifierNode
 import androidx.compose.ui.node.LayoutModifierNode
 import androidx.compose.ui.node.ModifierNodeElement
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.node.currentValueOf
 import androidx.compose.ui.platform.InspectorInfo
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Constraints
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.Velocity
+import androidx.compose.ui.unit.dp
 import mega.android.core.ui.components.LocalScrollToHideBehavior
 import mega.android.core.ui.components.LocalTopAppBarScrollBehavior
 
@@ -35,13 +43,18 @@ import mega.android.core.ui.components.LocalTopAppBarScrollBehavior
  * The component will translate up proportionally to scroll offset, making it feel
  * like it's part of the content being pushed up.
  *
+ * @param snapAnimationSpec When set, a scroll ending with the component partially collapsed
+ * settles it to the nearest edge (fully shown or fully hidden) with this animation; null
+ * (the default) leaves it wherever the scroll stopped.
  * @return A remembered [ScrollToHideBehavior] instance
  */
 @Composable
-fun rememberScrollToHideBehavior(): ScrollToHideBehavior {
+fun rememberScrollToHideBehavior(
+    snapAnimationSpec: AnimationSpec<Float>? = null,
+): ScrollToHideBehavior {
     return rememberSaveable(saver = ScrollToHideBehavior.Saver) {
         ScrollToHideBehavior()
-    }
+    }.apply { this.snapAnimationSpec = snapAnimationSpec }
 }
 
 /**
@@ -65,6 +78,31 @@ fun Modifier.applyScrollToHideBehavior(
     else this
         .clipToBounds()
         .then(ScrollOffsetContentElement(behavior))
+
+/**
+ * Slides a bottom-anchored component (e.g. a floating toolbar) down and out of view in step
+ * with the collapse of the component driven by [behavior], so both retreat together as the
+ * user scrolls into the content. The translation is proportional to the collapse fraction,
+ * up to [slideDistance].
+ *
+ * @param behavior The [ScrollToHideBehavior] that drives the collapse
+ * @param slideDistance How far the component travels when the collapse completes
+ */
+@Composable
+fun Modifier.applyScrollToHideBottomBarBehavior(
+    behavior: ScrollToHideBehavior? = LocalScrollToHideBehavior.current,
+    slideDistance: Dp = DefaultBottomBarSlideDistance,
+): Modifier {
+    if (behavior == null) return this
+    val slideDistancePx = with(LocalDensity.current) { slideDistance.toPx() }
+    return graphicsLayer {
+        val limit = behavior.heightOffsetLimit
+        val hiddenFraction = if (limit < 0f) (behavior.offset / limit).coerceIn(0f, 1f) else 0f
+        translationY = hiddenFraction * slideDistancePx
+    }
+}
+
+private val DefaultBottomBarSlideDistance = 100.dp
 
 private data class ScrollOffsetContentElement(
     private val state: ScrollToHideBehavior,
@@ -150,6 +188,12 @@ class ScrollToHideBehavior {
     }
 
     /**
+     * When set, a scroll ending with the component partially collapsed settles it to the
+     * nearest edge with this animation. Null disables snapping.
+     */
+    var snapAnimationSpec: AnimationSpec<Float>? = null
+
+    /**
      * The limit for the height offset. Should be a negative value representing
      * the maximum distance the component can collapse. Similar to
      * Material3's TopAppBarState.heightOffsetLimit.
@@ -213,6 +257,22 @@ class ScrollToHideBehavior {
             heightOffset = (heightOffset + consumed.y).coerceIn(heightOffsetLimit, 0f)
             return Offset.Zero
         }
+
+        override suspend fun onPostFling(consumed: Velocity, available: Velocity): Velocity {
+            snapToNearestEdge()
+            return Velocity.Zero
+        }
+    }
+
+    private suspend fun snapToNearestEdge() {
+        val spec = snapAnimationSpec ?: return
+        val limit = heightOffsetLimit
+        val current = heightOffset
+        if (limit >= 0f || current <= limit || current >= 0f) return
+        val target = if (current < limit / 2) limit else 0f
+        animate(current, target, animationSpec = spec) { value, _ ->
+            heightOffset = value
+        }
     }
 
     /**
@@ -223,7 +283,24 @@ class ScrollToHideBehavior {
         scrollDirectionOffset = 0f
     }
 
+    /**
+     * Animates the hidden component back to fully expanded — the animated counterpart of
+     * [reset], for tap-to-reveal and back-press flows. A scroll arriving while the animation
+     * runs writes [heightOffset] directly and wins; callers who need exclusivity should
+     * cancel and relaunch.
+     */
+    suspend fun expand(animationSpec: AnimationSpec<Float> = tween(EXPAND_ANIMATION_MS)) {
+        val start = heightOffset
+        if (start == 0f) return
+        animate(start, 0f, animationSpec = animationSpec) { value, _ ->
+            heightOffset = value
+        }
+        scrollDirectionOffset = 0f
+    }
+
     companion object {
+        private const val EXPAND_ANIMATION_MS = 200
+
         val Saver: Saver<ScrollToHideBehavior, Float> = Saver(
             save = { it.heightOffset },
             restore = {
