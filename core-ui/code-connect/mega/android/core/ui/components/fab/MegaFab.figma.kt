@@ -10,7 +10,7 @@
  * a Missing-in-Figma stub in button/IconButtons.figma.kt.
  *
  * Compose side:
- *   - MegaFab(onClick, modifier, painter)
+ *   - MegaFab(onClick, modifier, painter, contentDescription)
  *
  * No `@FigmaProperty` mappings: the Compose `MegaFab` API has no flat parameters that
  * line up with the Figma `Style` / `Status` / `Enabled` / `Loading` axes. Wiring those
@@ -37,6 +37,7 @@ class MegaFabConnection {
         MegaFab(
             onClick = {},
             painter = painterResource(R.drawable.ic_alert_circle_medium_thin_outline),
+            contentDescription = "Add",
         )
     }
 }

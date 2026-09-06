@@ -12,16 +12,22 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import mega.android.core.ui.R
 import mega.android.core.ui.components.MegaText
+import mega.android.core.ui.components.minimumTouchTargetSize
 import mega.android.core.ui.components.image.MegaIcon
 import mega.android.core.ui.components.tooltip.component.TooltipBody
 import mega.android.core.ui.components.tooltip.component.TooltipTitle
@@ -32,6 +38,12 @@ import mega.android.core.ui.theme.spacing.LocalSpacing
 import mega.android.core.ui.theme.values.IconColor
 import mega.android.core.ui.theme.values.TextColor
 import mega.android.core.ui.tokens.theme.DSTokens
+
+/**
+ * Fallback label for the tooltip's close icon. The library ships no string resources, so callers
+ * that need a localised label pass their own through `closeIconDescription`.
+ */
+internal const val DEFAULT_CLOSE_ICON_DESCRIPTION = "Close"
 
 @Stable
 class InteractiveTooltipButtonProperties(
@@ -55,7 +67,8 @@ internal fun InteractiveTooltipContent(
     stepCounter: InteractiveTooltipStepCounterProperties? = null,
     needCloseIcon: Boolean = false,
     onCloseClick: (() -> Unit)? = null,
-    needDivider: Boolean = false
+    needDivider: Boolean = false,
+    closeIconDescription: String = DEFAULT_CLOSE_ICON_DESCRIPTION
 ) {
     val spacing = LocalSpacing.current
 
@@ -79,6 +92,7 @@ internal fun InteractiveTooltipContent(
             modifier = Modifier.fillMaxHeight(),
             stepCounter = stepCounter,
             needCloseIcon = needCloseIcon,
+            closeIconDescription = closeIconDescription,
             onCloseClick = { onCloseClick?.invoke() }
         )
     }
@@ -117,8 +131,12 @@ private fun LeftContent(
             MegaText(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .clickable(onClick = { it.onClick() })
-                    .padding(top = spacing.x8),
+                    .padding(top = spacing.x8)
+                    .clickable(onClick = { it.onClick() }, role = Role.Button)
+                    // The minimum height has to sit inside the clickable so that it is part of the
+                    // hit area; the top padding above it is spacing between the rows only.
+                    .sizeIn(minHeight = minimumTouchTargetSize)
+                    .wrapContentHeight(Alignment.CenterVertically),
                 text = it.text,
                 style = AppTheme.typography.labelLarge.copy(
                     fontWeight = FontWeight.SemiBold
@@ -131,8 +149,10 @@ private fun LeftContent(
             MegaText(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .clickable(onClick = { it.onClick() })
-                    .padding(top = spacing.x8),
+                    .padding(top = spacing.x8)
+                    .clickable(onClick = { it.onClick() }, role = Role.Button)
+                    .sizeIn(minHeight = minimumTouchTargetSize)
+                    .wrapContentHeight(Alignment.CenterVertically),
                 text = it.text,
                 style = AppTheme.typography.labelLarge,
                 textColor = TextColor.InverseSecondary
@@ -146,7 +166,8 @@ private fun RightContent(
     onCloseClick: () -> Unit,
     modifier: Modifier = Modifier,
     stepCounter: InteractiveTooltipStepCounterProperties? = null,
-    needCloseIcon: Boolean = false
+    needCloseIcon: Boolean = false,
+    closeIconDescription: String = DEFAULT_CLOSE_ICON_DESCRIPTION
 ) {
     Column(
         modifier = modifier,
@@ -154,8 +175,17 @@ private fun RightContent(
     ) {
         if (needCloseIcon) {
             MegaIcon(
-                modifier = Modifier.clickable(onClick = onCloseClick),
+                modifier = Modifier
+                    .clickable(onClick = onCloseClick, role = Role.Button)
+                    // Same as the buttons above: the 24dp icon keeps its size, the clickable around
+                    // it grows to the minimum touch target
+                    .sizeIn(
+                        minWidth = minimumTouchTargetSize,
+                        minHeight = minimumTouchTargetSize
+                    )
+                    .wrapContentSize(Alignment.Center),
                 painter = painterResource(R.drawable.ic_close_medium_thin_outline),
+                contentDescription = closeIconDescription,
                 tint = IconColor.InverseSecondary
             )
         }

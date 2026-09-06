@@ -225,6 +225,7 @@ private fun MegaScaffoldCollapsibleHeaderPreview() {
                     modifier = Modifier.applyScrollToHideFabBehavior(),
                     onClick = {},
                     painter = painterResource(R.drawable.ic_arrow_left_medium_thin_outline),
+                    contentDescription = "Back",
                 )
             },
             scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()

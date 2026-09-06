@@ -34,7 +34,8 @@ fun InteractiveLeftDirectionTooltipPopup(
     secondaryButton: InteractiveTooltipButtonProperties? = null,
     stepCounter: InteractiveTooltipStepCounterProperties? = null,
     needCloseIcon: Boolean = false,
-    needDivider: Boolean = false
+    needDivider: Boolean = false,
+    closeIconDescription: String = DEFAULT_CLOSE_ICON_DESCRIPTION
 ) {
     BasicTooltipPopup(
         properties = properties,
@@ -56,7 +57,8 @@ fun InteractiveLeftDirectionTooltipPopup(
                     stepCounter = stepCounter,
                     needCloseIcon = needCloseIcon,
                     onCloseClick = tooltipState::dismiss,
-                    needDivider = needDivider
+                    needDivider = needDivider,
+                    closeIconDescription = closeIconDescription
                 )
             }
         )
@@ -77,7 +79,8 @@ fun InteractiveTopDirectionTooltipPopup(
     secondaryButton: InteractiveTooltipButtonProperties? = null,
     stepCounter: InteractiveTooltipStepCounterProperties? = null,
     needCloseIcon: Boolean = false,
-    needDivider: Boolean = false
+    needDivider: Boolean = false,
+    closeIconDescription: String = DEFAULT_CLOSE_ICON_DESCRIPTION
 ) {
     BasicTooltipPopup(
         properties = properties,
@@ -101,7 +104,8 @@ fun InteractiveTopDirectionTooltipPopup(
                     stepCounter = stepCounter,
                     needCloseIcon = needCloseIcon,
                     onCloseClick = tooltipState::dismiss,
-                    needDivider = needDivider
+                    needDivider = needDivider,
+                    closeIconDescription = closeIconDescription
                 )
             }
         )
@@ -121,7 +125,8 @@ fun InteractiveRightDirectionTooltipPopup(
     secondaryButton: InteractiveTooltipButtonProperties? = null,
     stepCounter: InteractiveTooltipStepCounterProperties? = null,
     needCloseIcon: Boolean = false,
-    needDivider: Boolean = false
+    needDivider: Boolean = false,
+    closeIconDescription: String = DEFAULT_CLOSE_ICON_DESCRIPTION
 ) {
     BasicTooltipPopup(
         properties = properties,
@@ -143,7 +148,8 @@ fun InteractiveRightDirectionTooltipPopup(
                     stepCounter = stepCounter,
                     needCloseIcon = needCloseIcon,
                     onCloseClick = tooltipState::dismiss,
-                    needDivider = needDivider
+                    needDivider = needDivider,
+                    closeIconDescription = closeIconDescription
                 )
             }
         )
@@ -164,7 +170,8 @@ fun InteractiveBottomDirectionTooltipPopup(
     secondaryButton: InteractiveTooltipButtonProperties? = null,
     stepCounter: InteractiveTooltipStepCounterProperties? = null,
     needCloseIcon: Boolean = false,
-    needDivider: Boolean = false
+    needDivider: Boolean = false,
+    closeIconDescription: String = DEFAULT_CLOSE_ICON_DESCRIPTION
 ) {
     BasicTooltipPopup(
         properties = properties,
@@ -188,7 +195,8 @@ fun InteractiveBottomDirectionTooltipPopup(
                     stepCounter = stepCounter,
                     needCloseIcon = needCloseIcon,
                     onCloseClick = tooltipState::dismiss,
-                    needDivider = needDivider
+                    needDivider = needDivider,
+                    closeIconDescription = closeIconDescription
                 )
             }
         )
@@ -209,7 +217,8 @@ fun InteractiveNoneTooltipPopup(
     secondaryButton: InteractiveTooltipButtonProperties? = null,
     stepCounter: InteractiveTooltipStepCounterProperties? = null,
     needCloseIcon: Boolean = false,
-    needDivider: Boolean = false
+    needDivider: Boolean = false,
+    closeIconDescription: String = DEFAULT_CLOSE_ICON_DESCRIPTION
 ) {
     val positionProvider = getNoneTooltipPopupPositionProvider(
         position = position,
@@ -233,7 +242,8 @@ fun InteractiveNoneTooltipPopup(
                     stepCounter = stepCounter,
                     needCloseIcon = needCloseIcon,
                     onCloseClick = tooltipState::dismiss,
-                    needDivider = needDivider
+                    needDivider = needDivider,
+                    closeIconDescription = closeIconDescription
                 )
             }
         )

@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
@@ -19,10 +20,12 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import mega.android.core.ui.R
 import mega.android.core.ui.components.MegaText
+import mega.android.core.ui.components.minimumTouchTargetSize
 import mega.android.core.ui.components.button.PrimaryFilledButton
 import mega.android.core.ui.components.button.SecondaryFilledButton
 import mega.android.core.ui.components.image.MegaIcon
 import mega.android.core.ui.components.list.FlexibleLineListItem
+import mega.android.core.ui.modifiers.conditional
 import mega.android.core.ui.preview.CombinedThemePreviews
 import mega.android.core.ui.theme.AndroidThemeForPreviews
 import mega.android.core.ui.theme.AppTheme
@@ -140,7 +143,16 @@ fun PlansCard(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(top = spacing.x24)
-                        .clickable { onLinkClickListener?.invoke() }
+                        // The link is only made interactive when there is a listener: a display-only
+                        // link has to stay pointer-transparent so callers that handle the click on an
+                        // enclosing parent keep receiving the taps.
+                        .conditional(onLinkClickListener != null) {
+                            clickable { onLinkClickListener?.invoke() }
+                                // The minimum touch height has to sit inside the clickable to become
+                                // part of its hit area; the outer top padding is spacing only.
+                                .sizeIn(minHeight = minimumTouchTargetSize)
+                                .wrapContentHeight(Alignment.CenterVertically)
+                        }
                         .testTag(PlansCardTestTags.LINK),
                     text = it,
                     linkColor = LinkColor.Primary,

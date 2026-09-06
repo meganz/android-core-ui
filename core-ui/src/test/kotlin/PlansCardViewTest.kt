@@ -1,8 +1,12 @@
 import androidx.compose.ui.test.assert
+import androidx.compose.ui.test.assertHasClickAction
+import androidx.compose.ui.test.assertHasNoClickAction
+import androidx.compose.ui.test.assertHeightIsAtLeast
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithTag
+import androidx.compose.ui.unit.dp
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import mega.android.core.ui.R
 import mega.android.core.ui.components.card.PlanFeature
@@ -118,6 +122,25 @@ class PlansCardViewTest {
         composeTestRule.onNodeWithTag(PlansCardTestTags.LINK)
             .assertIsDisplayed()
             .assert(hasText(expected))
+    }
+
+    @Test
+    fun `test that link has a minimum 48dp touch target when a click listener is set`() {
+        composeTestRule.setContent {
+            PlansCard(title = "Title", linkText = "Link Text", onLinkClickListener = {})
+        }
+        composeTestRule.onNodeWithTag(PlansCardTestTags.LINK)
+            .assertHasClickAction()
+            .assertHeightIsAtLeast(48.dp)
+    }
+
+    @Test
+    fun `test that link is not clickable when no click listener is set`() {
+        composeTestRule.setContent {
+            PlansCard(title = "Title", linkText = "Link Text", onLinkClickListener = null)
+        }
+        composeTestRule.onNodeWithTag(PlansCardTestTags.LINK)
+            .assertHasNoClickAction()
     }
 
     @Test
