@@ -25,6 +25,7 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -182,7 +183,7 @@ private fun HeaderListItem(
     Row(
         modifier = modifier
             .defaultMinSize(minHeight = headerListItemMinHeight)
-            .combinedClickable(
+            .clickableWhenEnabled(
                 enabled = enableClick,
                 onClick = onClickListener,
                 onLongClick = onLongClickListener
@@ -216,6 +217,25 @@ private fun HeaderListItem(
             }
         }
     }
+}
+
+/**
+ * Applies [combinedClickable] only when [enabled], rather than applying it disabled.
+ *
+ * `combinedClickable(enabled = false)` still publishes a clickable semantics node over the row's
+ * bounds and still consumes pointer input, so a non-interactive row is reported to accessibility
+ * services as an undersized touch target and swallows taps meant for an enclosing parent. The
+ * disabled branch keeps only the descendant-semantics merging that `combinedClickable` also does,
+ * so a row is announced as a single node whether or not it is clickable.
+ */
+private fun Modifier.clickableWhenEnabled(
+    enabled: Boolean,
+    onClick: () -> Unit,
+    onLongClick: (() -> Unit)?,
+): Modifier = if (enabled) {
+    combinedClickable(onClick = onClick, onLongClick = onLongClick)
+} else {
+    semantics(mergeDescendants = true) { }
 }
 
 @Composable
@@ -528,7 +548,7 @@ fun GenericListItem(
         modifier = modifier
             .fillMaxWidth()
             .itemContainerStyle(enabled = enabled, selected = selected, highlighted = highlighted)
-            .combinedClickable(
+            .clickableWhenEnabled(
                 enabled = enableClick,
                 onClick = onClickListener,
                 onLongClick = onLongClickListener
