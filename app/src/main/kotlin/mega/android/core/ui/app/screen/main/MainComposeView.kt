@@ -40,6 +40,7 @@ import mega.android.core.ui.app.component.PromotionalDialogsCatalog
 import mega.android.core.ui.app.component.PromotionalSheetsCatalog
 import mega.android.core.ui.app.component.PromptCatalog
 import mega.android.core.ui.app.component.RadioButtonCatalog
+import mega.android.core.ui.app.component.MegaDropDownSelectorComponent
 import mega.android.core.ui.app.component.ReadOnlyInputFieldComponent
 import mega.android.core.ui.app.component.SearchFieldComponent
 import mega.android.core.ui.app.component.SettingsCatalog
@@ -433,6 +434,10 @@ internal fun MainComposeView(
                         style = AppTheme.typography.titleSmall
                     )
                 }
+            }
+
+            item(key = 44) {
+                MegaDropDownSelectorComponent()
             }
 
         }
