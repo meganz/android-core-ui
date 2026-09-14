@@ -28,6 +28,7 @@ import mega.android.core.ui.app.component.BottomSheetComponentCatalog
 import mega.android.core.ui.app.component.ButtonComponentCatalog
 import mega.android.core.ui.app.component.CardComponentCatalog
 import mega.android.core.ui.app.component.CheckboxCatalog
+import mega.android.core.ui.app.component.ChipComponent
 import mega.android.core.ui.app.component.ContentListComponent
 import mega.android.core.ui.app.component.DividerComponentCatalog
 import mega.android.core.ui.app.component.DropDownMenuComponent
@@ -438,6 +439,10 @@ internal fun MainComposeView(
 
             item(key = 44) {
                 MegaDropDownSelectorComponent()
+            }
+
+            item(key = 45) {
+                ChipComponent()
             }
 
         }

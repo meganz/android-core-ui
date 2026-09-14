@@ -13,7 +13,7 @@
  *   Figma cannot supply a runtime Painter.
  *
  * Compose side:
- *   - MegaChip(selected, text, style, enabled, leadingIcon?, trailingIcon?, onClick)
+ *   - MegaChip(selected, text, style, enabled, leadingIcon?, trailingIcon?, onClick, trailingAction?)
  *   - HighlightChip also exists for highlighted search text (not mapped here).
  *
  * NOTE — this file requires the `com.figma.code.connect` Gradle plugin.
