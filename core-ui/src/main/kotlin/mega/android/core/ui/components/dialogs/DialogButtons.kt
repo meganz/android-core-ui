@@ -19,6 +19,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.dp
 import mega.android.core.ui.preview.CombinedThemePreviews
 import mega.android.core.ui.theme.AndroidThemeForPreviews
@@ -38,21 +39,23 @@ fun DialogButton(
     val isFocused by mutableInteractionSource.collectIsFocusedAsState()
     val borderColor = if (isFocused) DSTokens.colors.focus.colorFocus else Color.Unspecified
     val pressedBackgroundColor = DSTokens.colors.button.primaryPressed
+    val textColor = if (enabled) {
+        DSTokens.colors.button.primary
+    } else {
+        DSTokens.colors.text.disabled
+    }
 
     Box(
         modifier = modifier
             .wrapContentSize()
             .focusRequester(focusRequester)
             .clip(RoundedCornerShape(8.dp))
-            .then(
-                if (enabled) {
-                    Modifier.clickable(
-                        interactionSource = mutableInteractionSource,
-                        indication = ripple(color = pressedBackgroundColor),
-                    ) {
-                        onButtonClicked()
-                    }
-                } else Modifier
+            .clickable(
+                interactionSource = mutableInteractionSource,
+                indication = ripple(color = pressedBackgroundColor),
+                enabled = enabled,
+                role = Role.Button,
+                onClick = onButtonClicked,
             )
             .then(
                 if (isFocused) {
@@ -73,7 +76,7 @@ fun DialogButton(
     ) {
         Text(
             text = buttonText,
-            color = DSTokens.colors.button.primary,
+            color = textColor,
             style = AppTheme.typography.labelLarge,
         )
     }
@@ -86,6 +89,18 @@ private fun BasicDialogPreview() {
         DialogButton(
             buttonText = "Button",
             onButtonClicked = {},
+        )
+    }
+}
+
+@Composable
+@CombinedThemePreviews
+private fun BasicDialogDisabledPreview() {
+    AndroidThemeForPreviews {
+        DialogButton(
+            buttonText = "Button",
+            onButtonClicked = {},
+            enabled = false,
         )
     }
 }
