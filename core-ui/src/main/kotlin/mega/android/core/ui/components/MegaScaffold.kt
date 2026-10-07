@@ -33,6 +33,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.layout.SubcomposeLayout
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -70,21 +71,23 @@ fun MegaScaffold(
     floatingActionButtonPosition: FabPosition = FabPosition.End,
     fromAutofill: Boolean = false,
     contentWindowInsets: WindowInsets = ScaffoldDefaults.contentWindowInsets,
+    showTopBanner: Boolean = true,
     content: @Composable (PaddingValues) -> Unit,
 ) {
     @OptIn(ExperimentalMaterial3Api::class)
     MegaScaffoldWithTopAppBarScrollBehavior(
-        modifier,
-        snackbarHost,
-        bottomBar,
-        topBar,
-        floatingActionButton,
-        floatingActionButtonPosition,
-        fromAutofill,
-        null,
-        null,
-        contentWindowInsets,
-        content
+        modifier = modifier,
+        snackbarHost = snackbarHost,
+        bottomBar = bottomBar,
+        topBar = topBar,
+        floatingActionButton = floatingActionButton,
+        floatingActionButtonPosition = floatingActionButtonPosition,
+        fromAutofill = fromAutofill,
+        scrollBehavior = null,
+        scrollToHideBehavior = null,
+        contentWindowInsets = contentWindowInsets,
+        showTopBanner = showTopBanner,
+        content = content,
     )
 }
 
@@ -92,6 +95,8 @@ fun MegaScaffold(
  * Scaffold following Mega design system.
  * It also injects LocalSnackBarHostState with CompositionLocalProvider to show snackbar messages without the need to pass the state along views hierarchy
  * @param snackbarHost default to [MegaSnackbar]
+ * @param showTopBanner whether the banner provided through [LocalMegaScaffoldTopBanner] is shown
+ * beneath [topBar]. Pass false to hide it on this screen and every scaffold nested inside it.
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -106,8 +111,10 @@ fun MegaScaffoldWithTopAppBarScrollBehavior(
     scrollBehavior: TopAppBarScrollBehavior? = TopAppBarDefaults.pinnedScrollBehavior(),
     scrollToHideBehavior: ScrollToHideBehavior? = rememberScrollToHideBehavior(),
     contentWindowInsets: WindowInsets = ScaffoldDefaults.contentWindowInsets,
+    showTopBanner: Boolean = true,
     content: @Composable (PaddingValues) -> Unit,
 ) {
+    val topBanner = LocalMegaScaffoldTopBanner.current?.takeIf { showTopBanner }
     // check if the root composable has a LocalSnackBarHostState, if not create a new one
     val snackbarHostState = LocalSnackBarHostState.current ?: remember { SnackbarHostState() }
     val forceRaisedTopAppBar = remember { mutableIntStateOf(0) }
@@ -115,7 +122,8 @@ fun MegaScaffoldWithTopAppBarScrollBehavior(
         LocalSnackBarHostState provides snackbarHostState,
         LocalTopAppBarScrollBehavior provides scrollBehavior,
         LocalForceRaiseTopAppBar provides forceRaisedTopAppBar,
-        LocalScrollToHideBehavior provides scrollToHideBehavior
+        LocalScrollToHideBehavior provides scrollToHideBehavior,
+        LocalMegaScaffoldTopBanner provides null,
     ) {
         Scaffold(
             modifier = modifier
@@ -130,7 +138,9 @@ fun MegaScaffoldWithTopAppBarScrollBehavior(
                     } else this
                 },
             snackbarHost = { snackbarHost(snackbarHostState) },
-            topBar = topBar,
+            topBar = if (topBanner == null) topBar else {
+                { TopBarWithBanner(topBar = topBar, banner = topBanner) }
+            },
             bottomBar = bottomBar,
             floatingActionButton = floatingActionButton,
             floatingActionButtonPosition = floatingActionButtonPosition,
@@ -146,6 +156,55 @@ fun MegaScaffoldWithTopAppBarScrollBehavior(
  * This is a convenient accessor to [SnackbarHostState] without the need to send it to all the view hierarchy
  */
 val LocalSnackBarHostState = compositionLocalOf<SnackbarHostState?> { null }
+
+/**
+ * Banner shown beneath the top bar of every [MegaScaffoldWithTopAppBarScrollBehavior] (and
+ * [MegaScaffold]) inside this provider, e.g. an app-wide status banner provided by the app shell.
+ * The scaffold does not know what the banner is; it only reserves space for it under the top bar.
+ *
+ * The banner is not shown when the scaffold has no top bar, or when the scaffold opts out with
+ * `showTopBanner = false`. A scaffold consumes the banner, so nested scaffolds never show it twice.
+ */
+val LocalMegaScaffoldTopBanner = compositionLocalOf<(@Composable () -> Unit)?> { null }
+
+/**
+ * Places [banner] directly beneath [topBar]. The banner is only composed when [topBar] has a height,
+ * so a scaffold without a top bar shows no banner and [Scaffold] keeps falling back to its content
+ * window insets.
+ */
+@Composable
+private fun TopBarWithBanner(
+    topBar: @Composable () -> Unit,
+    banner: @Composable () -> Unit,
+) {
+    SubcomposeLayout { constraints ->
+        val looseConstraints = constraints.copy(minWidth = 0, minHeight = 0)
+        val topBarPlaceables = subcompose(TopBarSlot.TopBar, topBar).map {
+            it.measure(looseConstraints)
+        }
+        val topBarHeight = topBarPlaceables.maxOfOrNull { it.height } ?: 0
+        val bannerPlaceables = if (topBarHeight == 0) {
+            emptyList()
+        } else {
+            val bannerConstraints = if (looseConstraints.hasBoundedHeight) {
+                looseConstraints.copy(
+                    maxHeight = (looseConstraints.maxHeight - topBarHeight).coerceAtLeast(0)
+                )
+            } else {
+                looseConstraints
+            }
+            subcompose(TopBarSlot.Banner, banner).map { it.measure(bannerConstraints) }
+        }
+        val bannerHeight = bannerPlaceables.maxOfOrNull { it.height } ?: 0
+        val width = (topBarPlaceables + bannerPlaceables).maxOfOrNull { it.width } ?: 0
+        layout(width, topBarHeight + bannerHeight) {
+            topBarPlaceables.forEach { it.placeRelative(0, 0) }
+            bannerPlaceables.forEach { it.placeRelative(0, topBarHeight) }
+        }
+    }
+}
+
+private enum class TopBarSlot { TopBar, Banner }
 
 
 internal val LocalTopAppBarScrollBehavior =
@@ -318,6 +377,31 @@ private fun MegaScaffoldWithTabRowProvidedPreview() {
                 (0..1).forEach { tabIndex ->
                     addTextTabWithProvidedScrollableModifier(TabItems("Tab $tabIndex", false)) {
                         ExampleInnerLazyList(Modifier.fillMaxSize())
+                    }
+                }
+            }
+        }
+    }
+}
+
+@CombinedThemePreviews
+@Composable
+private fun MegaScaffoldWithTopBannerPreview() {
+    AndroidThemeForPreviews {
+        CompositionLocalProvider(
+            LocalMegaScaffoldTopBanner provides { ErrorPrompt("Top banner") }
+        ) {
+            MegaScaffold(
+                topBar = {
+                    MegaTopAppBar(
+                        title = "Scaffold with top banner",
+                        navigationType = AppBarNavigationType.Back {},
+                    )
+                }
+            ) { paddingValues ->
+                LazyColumn(modifier = Modifier.padding(paddingValues)) {
+                    items(100) {
+                        OneLineListItem("List ${it + 1}")
                     }
                 }
             }
