@@ -14,7 +14,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -44,7 +44,7 @@ fun MegaAnimatedLinearProgressIndicator(
 ) {
     if (indicatorProgress != null) {// If progress is not null, it will be a determinate progress indicator
         val isInPreview = LocalInspectionMode.current
-        var progress by remember { mutableFloatStateOf(if (isInPreview) indicatorProgress else 0f) }
+        var progress by rememberSaveable { mutableFloatStateOf(if (isInPreview) indicatorProgress else 0f) }
         val progressAnimation by animateFloatAsState(
             targetValue = progress,
             animationSpec = tween(
