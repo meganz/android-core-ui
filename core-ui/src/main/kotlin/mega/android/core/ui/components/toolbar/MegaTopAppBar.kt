@@ -10,11 +10,13 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -74,12 +76,14 @@ fun MegaTopAppBar(
     subtitle: String? = null,
     drawBottomLineOnScrolledContent: Boolean = false,
     trailingIcons: @Composable RowScope.() -> Unit = {},
+    subtitleTrailingContent: (@Composable RowScope.() -> Unit)? = null,
 ) {
     @OptIn(ExperimentalMaterial3Api::class)
     DefaultTopAppBar(
         modifier = modifier,
         title = title,
         subtitle = subtitle,
+        subtitleTrailingContent = subtitleTrailingContent,
         navigationIcon = navigationType.navigationIcon(),
         actions = trailingIcons,
         scrollBehavior = LocalTopAppBarScrollBehavior.current,
@@ -150,6 +154,7 @@ fun MegaTopAppBar(
     drawBottomLineOnScrolledContent: Boolean = false,
     actionsEnabled: Boolean = true,
     maxActionsToShow: Int = 4,
+    subtitleTrailingContent: (@Composable RowScope.() -> Unit)? = null,
 ) {
     val actionsWithClick = remember(actions, onActionPressed) {
         actions.map { action ->
@@ -161,6 +166,7 @@ fun MegaTopAppBar(
         modifier = modifier,
         title = title,
         subtitle = subtitle,
+        subtitleTrailingContent = subtitleTrailingContent,
         navigationIcon = navigationType.navigationIcon(),
         scrollBehavior = LocalTopAppBarScrollBehavior.current,
         actions = {
@@ -180,12 +186,14 @@ fun MegaTopAppBar(
     drawBottomLineOnScrolledContent: Boolean = false,
     actionsEnabled: Boolean = true,
     maxActionsToShow: Int = Int.MAX_VALUE,
+    subtitleTrailingContent: (@Composable RowScope.() -> Unit)? = null,
 ) {
     @OptIn(ExperimentalMaterial3Api::class)
     DefaultTopAppBar(
         modifier = modifier,
         title = title,
         subtitle = subtitle,
+        subtitleTrailingContent = subtitleTrailingContent,
         navigationIcon = navigationType.navigationIcon(),
         scrollBehavior = LocalTopAppBarScrollBehavior.current,
         actions = {
@@ -206,6 +214,8 @@ fun MegaTopAppBar(
  * @param drawBottomLineOnScrolledContent
  * @param actionsEnabled
  * @param maxActionsToShow
+ * @param subtitleTrailingContent Optional content drawn after [subtitle] on the same line, for
+ * example [MegaTopAppBarSubtitleChevron]. It is not drawn when [subtitle] is null.
  */
 @Composable
 fun MegaTopAppBar(
@@ -218,12 +228,14 @@ fun MegaTopAppBar(
     drawBottomLineOnScrolledContent: Boolean = false,
     actionsEnabled: Boolean = true,
     maxActionsToShow: Int = Int.MAX_VALUE,
+    subtitleTrailingContent: (@Composable RowScope.() -> Unit)? = null,
 ) {
     @OptIn(ExperimentalMaterial3Api::class)
     DefaultTopAppBar(
         modifier = modifier,
         title = title,
         subtitle = subtitle,
+        subtitleTrailingContent = subtitleTrailingContent,
         navigationIcon = navigationType.navigationIcon(),
         scrollBehavior = LocalTopAppBarScrollBehavior.current,
         actions = {
@@ -247,6 +259,8 @@ fun MegaTopAppBar(
  * @param drawBottomLineOnScrolledContent
  * @param actionsEnabled
  * @param maxActionsToShow
+ * @param subtitleTrailingContent Optional content drawn after [subtitle] on the same line, for
+ * example [MegaTopAppBarSubtitleChevron]. It is not drawn when [subtitle] is null.
  */
 @Composable
 fun MegaTopAppBar(
@@ -260,6 +274,7 @@ fun MegaTopAppBar(
     drawBottomLineOnScrolledContent: Boolean = false,
     actionsEnabled: Boolean = true,
     maxActionsToShow: Int = 4,
+    subtitleTrailingContent: (@Composable RowScope.() -> Unit)? = null,
 ) {
     val actionsWithClick = remember(actions, onActionPressed) {
         actions.map { action ->
@@ -271,6 +286,7 @@ fun MegaTopAppBar(
         modifier = modifier,
         title = title,
         subtitle = subtitle,
+        subtitleTrailingContent = subtitleTrailingContent,
         navigationIcon = navigationType.navigationIcon(),
         scrollBehavior = LocalTopAppBarScrollBehavior.current,
         actions = {
@@ -307,6 +323,8 @@ private fun blurTopAppBarColors() = TopAppBarDefaults.topAppBarColors(
  * @param drawBottomLineOnScrolledContent Whether to draw a divider at the bottom when content is scrolled.
  * @param actionsEnabled Whether the action buttons are enabled.
  * @param maxActionsToShow Maximum number of actions shown inline before overflow.
+ * @param subtitleTrailingContent Optional content drawn after [subtitle] on the same line, for
+ * example [MegaTopAppBarSubtitleChevron]. It is not drawn when [subtitle] is null.
  */
 @Composable
 fun BlurMegaTopAppBar(
@@ -320,6 +338,7 @@ fun BlurMegaTopAppBar(
     drawBottomLineOnScrolledContent: Boolean = false,
     actionsEnabled: Boolean = true,
     maxActionsToShow: Int = 4,
+    subtitleTrailingContent: (@Composable RowScope.() -> Unit)? = null,
 ) {
     val actionsWithClick = remember(actions, onActionPressed) {
         actions.map { action ->
@@ -331,6 +350,7 @@ fun BlurMegaTopAppBar(
         modifier = modifier,
         title = title,
         subtitle = subtitle,
+        subtitleTrailingContent = subtitleTrailingContent,
         navigationIcon = navigationType.navigationIcon(),
         scrollBehavior = LocalTopAppBarScrollBehavior.current,
         actions = {
@@ -475,6 +495,7 @@ private fun DefaultTopAppBar(
     modifier: Modifier,
     title: String,
     subtitle: String? = null,
+    subtitleTrailingContent: (@Composable RowScope.() -> Unit)? = null,
     navigationIcon: @Composable () -> Unit = {},
     actions: @Composable RowScope.() -> Unit = {},
     colors: TopAppBarColors? = null,
@@ -496,14 +517,22 @@ private fun DefaultTopAppBar(
                     )
 
                     subtitle?.let {
-                        Text(
-                            modifier = Modifier.testTag(DEFAULT_TOP_APP_BAR_SUBTITLE_TAG),
-                            text = it,
-                            maxLines = 1,
-                            overflow = TextOverflow.Ellipsis,
-                            style = AppTheme.typography.bodyMedium,
-                            color = DSTokens.colors.text.secondary
-                        )
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Text(
+                                modifier = Modifier
+                                    .weight(1f, fill = false)
+                                    .testTag(DEFAULT_TOP_APP_BAR_SUBTITLE_TAG),
+                                text = it,
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis,
+                                style = AppTheme.typography.bodyMedium,
+                                color = DSTokens.colors.text.secondary
+                            )
+                            subtitleTrailingContent?.let { content ->
+                                Spacer(modifier = Modifier.width(LocalSpacing.current.x4))
+                                content()
+                            }
+                        }
                     }
                 }
             },
@@ -526,6 +555,34 @@ private fun DefaultTopAppBar(
             StrongDivider(Modifier.align(Alignment.BottomCenter))
         }
     }
+}
+
+/**
+ * Chevron for the subtitleTrailingContent slot of [MegaTopAppBar], for a subtitle that opens
+ * other content when it is tapped.
+ *
+ * @param isExpanded Whether the content opened from the subtitle is shown. The chevron points down
+ * when false and rotates up when true.
+ * @param modifier [Modifier]
+ */
+@Composable
+fun MegaTopAppBarSubtitleChevron(
+    isExpanded: Boolean,
+    modifier: Modifier = Modifier,
+) {
+    val rotation by animateFloatAsState(
+        targetValue = if (isExpanded) 180f else 0f,
+        label = "subtitle_chevron_rotation",
+    )
+    Icon(
+        modifier = modifier
+            .size(16.dp)
+            .graphicsLayer { rotationZ = rotation }
+            .testTag(MEGA_TOP_APP_BAR_SUBTITLE_CHEVRON_TAG),
+        painter = painterResource(id = R.drawable.ic_chevron_down_medium_thin_outline),
+        contentDescription = null,
+        tint = DSTokens.colors.icon.secondary,
+    )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -936,5 +993,32 @@ private fun MegaTopAppBarWithTrailingIconsAndSubtitlePreview() {
     }
 }
 
+@CombinedThemePreviews
+@Composable
+private fun MegaTopAppBarWithSubtitleChevronPreview(
+    @PreviewParameter(BooleanProvider::class) isSubtitleExpanded: Boolean,
+) {
+    AndroidThemeForPreviews {
+        MegaTopAppBar(
+            title = "Title",
+            subtitle = "Subtitle",
+            navigationType = AppBarNavigationType.None,
+            subtitleTrailingContent = {
+                MegaTopAppBarSubtitleChevron(isExpanded = isSubtitleExpanded)
+            },
+        )
+    }
+}
+
+private class BooleanProvider : PreviewParameterProvider<Boolean> {
+    override val values: Sequence<Boolean>
+        get() = sequenceOf(false, true)
+}
+
 internal const val DEFAULT_TOP_APP_BAR_TITLE_TAG = "default_top_app_bar:text_title"
 internal const val DEFAULT_TOP_APP_BAR_SUBTITLE_TAG = "default_top_app_bar:text_subtitle"
+
+/**
+ * Test tag of [MegaTopAppBarSubtitleChevron].
+ */
+const val MEGA_TOP_APP_BAR_SUBTITLE_CHEVRON_TAG = "default_top_app_bar:icon_subtitle_chevron"
