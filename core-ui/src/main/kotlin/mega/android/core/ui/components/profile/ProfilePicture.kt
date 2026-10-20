@@ -36,6 +36,7 @@ import mega.android.core.ui.tokens.theme.DSTokens
 import androidx.compose.ui.graphics.Brush
 import java.io.File
 
+private val EXTRA_LARGE_PROFILE_PICTURE_SIZE = 88.dp
 private val LARGE_PROFILE_PICTURE_SIZE = 56.dp
 private val MEDIUM_PROFILE_PICTURE_SIZE = 32.dp
 private val SMALL_PROFILE_PICTURE_SIZE = 24.dp
@@ -122,6 +123,29 @@ private fun BaseProfilePicture(
             }
         }
     }
+}
+
+/**
+ * Profile picture at 88 dp, for screens where the avatar is the main visual element.
+ * When [imageFile] is null, it shows the first letter of [name] on [avatarColor].
+ */
+@Composable
+fun ExtraLargeProfilePicture(
+    imageFile: File?,
+    name: String?,
+    contentDescription: String?,
+    modifier: Modifier = Modifier,
+    avatarColor: Color = DSTokens.colors.background.surface3,
+) {
+    BaseProfilePicture(
+        avatarSize = EXTRA_LARGE_PROFILE_PICTURE_SIZE,
+        imageFile = imageFile,
+        name = name,
+        contentDescription = contentDescription,
+        modifier = modifier,
+        baseStyle = AppTheme.typography.headlineLarge,
+        avatarColor = avatarColor
+    )
 }
 
 @Composable
@@ -232,6 +256,18 @@ private fun LargeProfilePicturePreview() {
         LargeProfilePicture(
             imageFile = null,
             name = "Large",
+            contentDescription = "Avatar",
+        )
+    }
+}
+
+@Composable
+@CombinedThemePreviews
+private fun ExtraLargeProfilePicturePreview() {
+    AndroidThemeForPreviews {
+        ExtraLargeProfilePicture(
+            imageFile = null,
+            name = "Extra large",
             contentDescription = "Avatar",
         )
     }
