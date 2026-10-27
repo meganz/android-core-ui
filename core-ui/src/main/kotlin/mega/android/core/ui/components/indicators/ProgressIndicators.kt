@@ -73,6 +73,34 @@ fun ProgressBarIndicator(
     )
 }
 
+/**
+ * Linear progress bar whose fill uses an icon colour token, for a neutral or non-status fill.
+ *
+ * @param modifier The modifier to apply to the progress bar.
+ * @param progressPercentage The progress from 0 to 100.
+ * @param iconColor The icon colour token for the filled part of the bar.
+ * @param surfaceColor The surface colour token for the track behind the fill.
+ */
+@Composable
+fun ProgressBarIndicator(
+    modifier: Modifier = Modifier,
+    progressPercentage: Float = 0f,
+    iconColor: IconColor,
+    surfaceColor: SurfaceColor = SurfaceColor.Surface1
+) {
+    LinearProgressIndicator(
+        modifier = modifier
+            .wrapContentHeight()
+            .fillMaxWidth(),
+        progress = { progressPercentage / 100f },
+        color = DSTokens.iconColor(iconColor),
+        strokeCap = StrokeCap.Square,
+        gapSize = 0.dp,
+        trackColor = surfaceColor.toBackgroundColor(),
+        drawStopIndicator = {}
+    )
+}
+
 @Composable
 fun InfiniteProgressBarIndicator(
     modifier: Modifier = Modifier,
@@ -227,6 +255,20 @@ private fun ProgressBarIndicatorSupportColorPreview(
     AndroidThemeForPreviews {
         Box(modifier = Modifier.padding(16.dp)) {
             ProgressBarIndicator(progressPercentage = 50f, supportColor = supportColor)
+        }
+    }
+}
+
+@CombinedThemePreviews
+@Composable
+private fun ProgressBarIndicatorIconColorPreview() {
+    AndroidThemeForPreviews {
+        Box(modifier = Modifier.padding(16.dp)) {
+            ProgressBarIndicator(
+                progressPercentage = 50f,
+                iconColor = IconColor.Secondary,
+                surfaceColor = SurfaceColor.Surface3,
+            )
         }
     }
 }
