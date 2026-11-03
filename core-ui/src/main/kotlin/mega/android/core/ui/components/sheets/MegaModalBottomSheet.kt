@@ -53,6 +53,9 @@ enum class MegaModalBottomSheetBackground {
 
 /**
  * Modal Bottom Sheet following our design system
+ *
+ * @param topBar Toolbar at the top of the sheet. Without a partially expanded state, it replaces
+ * the 22dp space above the content.
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -63,6 +66,7 @@ fun MegaModalBottomSheet(
     modifier: Modifier = Modifier,
     windowInsets: WindowInsets? = null,
     properties: ModalBottomSheetProperties = ModalBottomSheetDefaults.properties,
+    topBar: (@Composable () -> Unit)? = null,
     content: @Composable ColumnScope.() -> Unit,
 ) {
     val containerColor = when (bottomSheetBackground) {
@@ -91,6 +95,9 @@ fun MegaModalBottomSheet(
                     BottomSheetDefaults.DragHandle()
                 }
             }
+        } else if (topBar != null) {
+            // The top bar is in the content, because this slot gets the expand/collapse semantics.
+            null
         } else {
             { Spacer(Modifier.height(22.dp)) }
         },
@@ -111,6 +118,7 @@ fun MegaModalBottomSheet(
                         !isDarkMode
                 }
             }
+            topBar?.invoke()
             content()
         }
     )

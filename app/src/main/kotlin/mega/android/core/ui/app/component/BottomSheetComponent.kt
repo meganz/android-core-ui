@@ -1,11 +1,13 @@
 package mega.android.core.ui.app.component
 
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -20,12 +22,14 @@ import mega.android.core.ui.app.R
 import mega.android.core.ui.app.util.Section
 import mega.android.core.ui.components.button.PrimaryFilledButton
 import mega.android.core.ui.components.image.MegaIcon
+import mega.android.core.ui.components.list.FlexibleLineListItem
 import mega.android.core.ui.components.list.OneLineListItem
 import mega.android.core.ui.components.settings.SettingsOptionsModal
 import mega.android.core.ui.components.sheets.MegaModalBottomSheet
 import mega.android.core.ui.components.sheets.MegaModalBottomSheetBackground
 import mega.android.core.ui.theme.spacing.LocalSpacing
 import mega.android.core.ui.theme.values.IconColor
+import mega.android.core.ui.theme.values.SupportColor
 import mega.android.core.ui.R as coreR
 
 enum class Server {
@@ -59,6 +63,19 @@ fun BottomSheetComponentCatalog() {
             text = "Show Setting Bottom Sheet",
             onClick = { showSettingBottomSheet = true }
         )
+
+        var showEditTopBarBottomSheet by remember { mutableStateOf(false) }
+        PrimaryFilledButton(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 16.dp)
+                .padding(horizontal = LocalSpacing.current.x16),
+            text = "Show Bottom Sheet with edit top bar",
+            onClick = { showEditTopBarBottomSheet = true }
+        )
+        if (showEditTopBarBottomSheet) {
+            EditTopBarBottomSheet(onDismiss = { showEditTopBarBottomSheet = false })
+        }
 
         if (showSettingBottomSheet) {
             SettingsOptionsModal(
@@ -123,6 +140,88 @@ fun BottomSheetComponentCatalog() {
                     },
                 )
             }
+        }
+    }
+}
+
+/**
+ * Sheet with an edit top bar: the top bar is at the top edge of the sheet, without the 22dp space,
+ * and has an edit action, or a close action in edit mode.
+ */
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun EditTopBarBottomSheet(onDismiss: () -> Unit) {
+    var isEditMode by remember { mutableStateOf(false) }
+    MegaModalBottomSheet(
+        sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true),
+        bottomSheetBackground = MegaModalBottomSheetBackground.Surface1,
+        onDismissRequest = onDismiss,
+        topBar = {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(64.dp)
+                    .padding(horizontal = 4.dp),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                if (isEditMode) {
+                    IconButton(onClick = { isEditMode = false }) {
+                        MegaIcon(
+                            painter = painterResource(id = coreR.drawable.ic_close_medium_thin_outline),
+                            tint = IconColor.Primary,
+                            contentDescription = "Close",
+                        )
+                    }
+                }
+                Spacer(modifier = Modifier.weight(1f))
+                if (!isEditMode) {
+                    IconButton(onClick = { isEditMode = true }) {
+                        MegaIcon(
+                            painter = painterResource(id = R.drawable.ic_pen_1_medium_thin_outline),
+                            tint = IconColor.Primary,
+                            contentDescription = "Edit",
+                        )
+                    }
+                }
+            }
+        },
+    ) {
+        FlexibleLineListItem(
+            title = "Item 1",
+            enable = !isEditMode,
+            trailingElement = {
+                val checkPainter = painterResource(id = coreR.drawable.ic_check_medium_thin_outline)
+                if (isEditMode) {
+                    MegaIcon(
+                        painter = checkPainter,
+                        contentDescription = null,
+                        tint = IconColor.Disabled,
+                        modifier = Modifier.size(24.dp)
+                    )
+                } else {
+                    MegaIcon(
+                        painter = checkPainter,
+                        contentDescription = null,
+                        supportTint = SupportColor.Success,
+                        modifier = Modifier.size(24.dp)
+                    )
+                }
+            },
+        )
+        listOf("Item 2", "Item 3").forEach { title ->
+            FlexibleLineListItem(
+                title = title,
+                trailingElement = if (isEditMode) {
+                    {
+                        MegaIcon(
+                            painter = painterResource(id = R.drawable.ic_trash_medium_thin_outline),
+                            contentDescription = null,
+                            supportTint = SupportColor.Error,
+                            modifier = Modifier.size(24.dp)
+                        )
+                    }
+                } else null,
+            )
         }
     }
 }
