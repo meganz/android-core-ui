@@ -46,6 +46,7 @@ import sh.calvin.reorderable.rememberReorderableLazyListState
  * @param dragEnabled The function to specify if an item is draggable. Default is true for all items
  * @param dragStartType Defines how the drag will be started. Default is [StartAfterLongPressWithHapticFeedback]
  * @param draggingElevation The elevation of the dragged item. Default 6.dp
+ * @param itemAnimationEnabled Whether non-dragged items animate their position changes. Default true
  * @param itemContent The composable for each item
  */
 @Composable
@@ -60,6 +61,7 @@ fun <T, K : Any> MegaReorderableLazyColumn(
     dragEnabled: (item: T) -> Boolean = { true },
     dragStartType: DragStartType = StartAfterLongPressWithHapticFeedback,
     draggingElevation: Dp = 6.dp,
+    itemAnimationEnabled: Boolean = true,
     itemContent: @Composable LazyItemScope.(item: T) -> Unit,
 ) {
     val state = rememberReorderableLazyListState(lazyListState, onMove = onMove)
@@ -68,7 +70,11 @@ fun <T, K : Any> MegaReorderableLazyColumn(
         modifier = modifier
     ) {
         items(items, key) { item ->
-            ReorderableItem(state, key = key(item)) { isDragging ->
+            ReorderableItem(
+                state,
+                key = key(item),
+                animateItemModifier = if (itemAnimationEnabled) Modifier.animateItem() else Modifier,
+            ) { isDragging ->
                 val elevation by animateDpAsState(if (isDragging) draggingElevation else 0.dp)
                 val view = LocalView.current
                 Surface(

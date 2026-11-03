@@ -8,6 +8,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performTouchInput
@@ -108,12 +109,32 @@ class MegaReorderableLazyColumnTest {
         verify(onMove).invoke(any(), argThat { this.key == 3 }, any())
     }
 
+    @Test
+    fun `test that items are rendered and onMove is called when item animation is disabled`() {
+        val onMove = mock<(CoroutineScope, from: LazyListItemInfo, to: LazyListItemInfo) -> Unit>()
+        initComposeTestRule(
+            onMove = onMove,
+            dragStartType = DragStartType.StartImmediately,
+            itemAnimationEnabled = false,
+        )
+        composeTestRule.onNodeWithTag("3").assertIsDisplayed()
+
+        composeTestRule.onNodeWithTag("3")
+            .performTouchInput {
+                down(center)
+                moveBy(Offset(0f, height * 2f))
+            }
+
+        verify(onMove).invoke(any(), argThat { this.key == 3 }, argThat { this.key == 5 })
+    }
+
     private data class Item(val id: Int, val title: String)
 
     private fun initComposeTestRule(
         onMove: (CoroutineScope, from: LazyListItemInfo, to: LazyListItemInfo) -> Unit,
         dragStartType: DragStartType = DragStartType.StartAfterLongPress,
         dragEnabled: (item: Item) -> Boolean = { true },
+        itemAnimationEnabled: Boolean = true,
     ) {
         composeTestRule.setContent {
             val itemsList = (1..50).map { Item(it, "Item $it") }
@@ -125,6 +146,7 @@ class MegaReorderableLazyColumnTest {
                 onMove = onMove,
                 dragEnabled = dragEnabled,
                 dragStartType = dragStartType,
+                itemAnimationEnabled = itemAnimationEnabled,
             ) { item ->
                 OneLineListItem(item.title, modifier = Modifier.testTag(item.id.toString()))
             }
