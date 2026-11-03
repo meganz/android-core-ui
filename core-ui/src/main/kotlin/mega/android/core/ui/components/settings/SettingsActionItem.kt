@@ -1,5 +1,6 @@
 package mega.android.core.ui.components.settings
 
+import androidx.compose.foundation.layout.Column
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -7,11 +8,14 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import mega.android.core.ui.R
 import mega.android.core.ui.components.dialogs.BasicDialog
 import mega.android.core.ui.components.indicators.SmallInfiniteSpinnerIndicator
 import mega.android.core.ui.components.list.FlexibleLineListItem
@@ -32,6 +36,8 @@ import kotlin.time.Duration.Companion.seconds
  * @param destructive destructive color will be used if this parameter is true to emphasize destructive actions
  * @param loading if it's true a indeterminate progress indicator will be shown
  * @param footerText optional footer text for this action
+ * @param confirmAction optional parameters of a confirmation dialog shown before [onClicked] is invoked
+ * @param leadingIcon optional icon shown before the title. It uses the same disabled and destructive colours as the title
  * @param onClicked callback for clicks on this component, either the toggle or the main component, but not the footer if exists
  */
 @Composable
@@ -45,6 +51,7 @@ fun SettingsActionItem(
     loading: Boolean = false,
     footerText: String? = null,
     confirmAction: ConfirmActionParameters? = null,
+    leadingIcon: Painter? = null,
     onClicked: (key: String) -> Unit,
 ) {
     SettingsWithFooter(
@@ -65,6 +72,12 @@ fun SettingsActionItem(
             },
             title = title,
             subtitle = subtitle,
+            leadingElement = settingsLeadingElement(
+                leadingIcon = leadingIcon,
+                key = key,
+                disabled = !enabled,
+                destructive = destructive,
+            ),
             titleTextColor = when {
                 !enabled -> TextColor.Disabled
                 destructive -> TextColor.Error
@@ -122,6 +135,32 @@ data class ConfirmActionParameters(
     val cancelTitle: String,
 )
 
+@CombinedThemePreviews
+@Composable
+private fun SettingsActionItemWithLeadingIconPreview() {
+    AndroidThemeForPreviews {
+        Column {
+            SettingsActionItem(
+                key = "copy",
+                title = "Copy recovery key",
+                leadingIcon = painterResource(R.drawable.ic_copy_01_medium_thin_outline),
+            ) { }
+            SettingsActionItem(
+                key = "delete",
+                title = "Delete all older versions of files",
+                destructive = true,
+                leadingIcon = painterResource(R.drawable.ic_alert_triangle_medium_thin_outline),
+            ) { }
+            SettingsActionItem(
+                key = "disabled",
+                title = "Clear cache",
+                subtitle = "193.8MB",
+                enabled = false,
+                leadingIcon = painterResource(R.drawable.ic_info_medium_thin_outline),
+            ) { }
+        }
+    }
+}
 
 @CombinedThemePreviews
 @Composable

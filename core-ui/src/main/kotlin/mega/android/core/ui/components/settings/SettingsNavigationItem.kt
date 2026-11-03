@@ -2,6 +2,7 @@ package mega.android.core.ui.components.settings
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.PreviewParameter
@@ -21,6 +22,7 @@ import mega.android.core.ui.R
  * @param modifier
  * @param enabled
  * @param subtitle optional subtitle
+ * @param leadingIcon optional icon shown before the title
  * @param onClicked callback for option selected
  */
 @Composable
@@ -30,6 +32,7 @@ fun SettingsNavigationItem(
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
     subtitle: String? = null,
+    leadingIcon: Painter? = null,
     onClicked: (key: String) -> Unit,
 ) {
     FlexibleLineListItem(
@@ -41,6 +44,7 @@ fun SettingsNavigationItem(
         },
         title = title,
         subtitle = subtitle,
+        leadingElement = settingsLeadingElement(leadingIcon, key),
         trailingElement = {
             MegaIcon(
                 painter = painterResource(R.drawable.ic_chevron_right_medium_thin_outline),
@@ -61,6 +65,19 @@ private fun SettingActionItemPreview(
             key = "key",
             title = "Notification Settings",
             subtitle = if (hasSubtitle) "Offline" else null,
+        ) { }
+    }
+}
+
+@CombinedThemePreviews
+@Composable
+private fun SettingsNavigationItemWithLeadingIconPreview() {
+    AndroidThemeForPreviews {
+        SettingsNavigationItem(
+            key = "key",
+            title = "About",
+            subtitle = "Version and legal information",
+            leadingIcon = painterResource(R.drawable.ic_info_medium_thin_outline),
         ) { }
     }
 }

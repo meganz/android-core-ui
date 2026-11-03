@@ -1,6 +1,9 @@
 package mega.android.core.ui.components.settings
 
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.painter.ColorPainter
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsNotDisplayed
 import androidx.compose.ui.test.hasClickAction
@@ -137,6 +140,24 @@ class SettingsActionItemTest {
         verifyNoInteractions(onClicked)
     }
 
+    @Test
+    fun `test that leading icon is shown when leadingIcon is not null`() {
+        initComposeRuleContent(
+            leadingIcon = ColorPainter(Color.Red),
+        )
+        composeRule.onNodeWithTag(SettingsItemConst.leadingIconTag(defaultKey), useUnmergedTree = true)
+            .assertIsDisplayed()
+    }
+
+    @Test
+    fun `test that leading icon is not shown when leadingIcon is null`() {
+        initComposeRuleContent(
+            leadingIcon = null,
+        )
+        composeRule.onNodeWithTag(SettingsItemConst.leadingIconTag(defaultKey), useUnmergedTree = true)
+            .assertDoesNotExist()
+    }
+
     private fun initComposeRuleContent(
         key: String = defaultKey,
         title: String = "title",
@@ -146,6 +167,7 @@ class SettingsActionItemTest {
         footerText: String? = null,
         confirmAction: ConfirmActionParameters? = null,
         onClicked: (key: String) -> Unit = { },
+        leadingIcon: Painter? = null,
     ) {
         composeRule.setContent {
             SettingsActionItem(
@@ -158,6 +180,7 @@ class SettingsActionItemTest {
                 onClicked = onClicked,
                 subtitle = subtitle,
                 confirmAction = confirmAction,
+                leadingIcon = leadingIcon,
             )
         }
     }

@@ -15,6 +15,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import kotlinx.collections.immutable.ImmutableList
@@ -48,6 +49,7 @@ import mega.android.core.ui.theme.values.TextColor
  * @param valueToString lambda function to get the name of each value. Default will use `toString` of each value.
  * @param enabled
  * @param footerText optional footer text for this setting
+ * @param leadingIcon optional icon shown before the title
  * @param onValueSelected callback for clicks on this component
  */
 @Composable
@@ -60,6 +62,7 @@ fun <T> SettingsOptionsItem(
     valueToString: (T) -> String = { it.toString() },
     enabled: Boolean = true,
     footerText: String? = null,
+    leadingIcon: Painter? = null,
     onValueSelected: (key: String, value: T) -> Unit,
 ) {
     var showOptions by remember { mutableStateOf(false) }
@@ -72,6 +75,7 @@ fun <T> SettingsOptionsItem(
             title = title,
             enabled = enabled,
             subtitle = selectedValue?.let { valueToString(it) },
+            leadingIcon = leadingIcon,
         ) {
             showOptions = true
         }
@@ -281,6 +285,24 @@ private fun SettingsOptionsItemPreview() {
             values = values,
             selectedValue = selectedValue,
             footerText = "Apply view mode per folder, or use the same view mode for all folders.",
+        ) { _, value ->
+            selectedValue = value
+        }
+    }
+}
+
+@CombinedThemePreviews
+@Composable
+private fun SettingsOptionsItemWithLeadingIconPreview() {
+    AndroidThemeForPreviews {
+        val values = listOf("List", "Grid")
+        var selectedValue by remember { mutableStateOf(values.first()) }
+        SettingsOptionsItem(
+            key = "key",
+            title = "View mode",
+            values = values,
+            selectedValue = selectedValue,
+            leadingIcon = painterResource(R.drawable.ic_eye_medium_thin_outline),
         ) { _, value ->
             selectedValue = value
         }

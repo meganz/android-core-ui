@@ -6,9 +6,12 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
+import mega.android.core.ui.R
 import mega.android.core.ui.components.list.FlexibleLineListItem
 import mega.android.core.ui.components.toggle.Toggle
 import mega.android.core.ui.preview.CombinedThemePreviews
@@ -24,6 +27,7 @@ import mega.android.core.ui.theme.AndroidThemeForPreviews
  * @param modifier
  * @param enabled
  * @param footerText optional footer text for this setting
+ * @param leadingIcon optional icon shown before the title
  * @param onSettingsChanged callback for clicks on this component, either the toggle or the main component, but not the footer if exists
  */
 @Composable
@@ -35,6 +39,7 @@ fun SettingsToggleItem(
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
     footerText: String? = null,
+    leadingIcon: Painter? = null,
     onSettingsChanged: (key: String, newValue: Boolean) -> Unit,
 ) {
     SettingsWithFooter(
@@ -50,6 +55,7 @@ fun SettingsToggleItem(
             },
             title = title,
             subtitle = subtitle,
+            leadingElement = settingsLeadingElement(leadingIcon, key),
             trailingElement = {
                 Toggle(
                     modifier = Modifier.testTag(SettingsItemConst.toggleTag(key)),
@@ -64,6 +70,22 @@ fun SettingsToggleItem(
     }
 }
 
+@CombinedThemePreviews
+@Composable
+private fun SettingsToggleItemWithLeadingIconPreview() {
+    AndroidThemeForPreviews {
+        var checked by remember { mutableStateOf(true) }
+        SettingsToggleItem(
+            key = "key",
+            title = "Show hidden items",
+            subtitle = "Show hidden files and folders in your Cloud drive",
+            checked = checked,
+            leadingIcon = painterResource(R.drawable.ic_eye_medium_thin_outline),
+        ) { _, value ->
+            checked = value
+        }
+    }
+}
 
 @CombinedThemePreviews
 @Composable

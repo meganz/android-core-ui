@@ -1,6 +1,9 @@
 package mega.android.core.ui.components.settings
 
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.painter.ColorPainter
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithTag
@@ -62,12 +65,31 @@ class SettingsNavigationItemTest {
         verifyNoInteractions(onClicked)
     }
 
+    @Test
+    fun `test that leading icon is shown when leadingIcon is not null`() {
+        initComposeRuleContent(
+            leadingIcon = ColorPainter(Color.Red),
+        )
+        composeRule.onNodeWithTag(SettingsItemConst.leadingIconTag(defaultKey), useUnmergedTree = true)
+            .assertIsDisplayed()
+    }
+
+    @Test
+    fun `test that leading icon is not shown when leadingIcon is null`() {
+        initComposeRuleContent(
+            leadingIcon = null,
+        )
+        composeRule.onNodeWithTag(SettingsItemConst.leadingIconTag(defaultKey), useUnmergedTree = true)
+            .assertDoesNotExist()
+    }
+
     private fun initComposeRuleContent(
         key: String = defaultKey,
         title: String = "title",
         subtitle: String? = "subtitle",
         enabled: Boolean = true,
         onClicked: (key: String) -> Unit = { },
+        leadingIcon: Painter? = null,
     ) {
         composeRule.setContent {
             SettingsNavigationItem(
@@ -77,6 +99,7 @@ class SettingsNavigationItemTest {
                 enabled = enabled,
                 modifier = Modifier,
                 onClicked = onClicked,
+                leadingIcon = leadingIcon,
             )
         }
     }
